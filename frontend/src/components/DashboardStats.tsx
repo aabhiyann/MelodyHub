@@ -1,51 +1,86 @@
 import { useMusicStore } from "@/stores/MusicStore";
-import { Library, ListMusic , Users , UserRound  } from "lucide-react";
+import { Library, ListMusic, PlayCircle, Users, UserRound } from "lucide-react";
 import StatsCard from "./StatsCard";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 
 const DashboardStats = () => {
 	const { stats } = useMusicStore();
 
 	const statsData = [
 		{
-			icon: ListMusic ,
+			icon: ListMusic,
 			label: "Total Songs",
 			value: stats.totalSongs.toString(),
-			iconColor: "text-emerald-900 "
+			iconColor: "text-emerald-500",
 		},
 		{
 			icon: Library,
 			label: "Total Albums",
 			value: stats.totalAlbums.toString(),
-			iconColor: "text-purple-900",
+			iconColor: "text-violet-500",
 		},
 		{
-			icon: UserRound ,
+			icon: UserRound,
 			label: "Total Artists",
 			value: stats.totalArtists.toString(),
-	
-			iconColor: "text-amber-900",
+			iconColor: "text-orange-500",
 		},
 		{
-			icon: Users ,
+			icon: Users,
 			label: "Total Users",
 			value: stats.totalUsers.toLocaleString(),
-			
-			iconColor: "text-amber-900",
+			iconColor: "text-sky-500",
 		},
 	];
 
+	// Prepare data for the chart
+	const chartData = [
+		{ name: "Songs", count: stats.totalSongs, fill: "#10b981" }, // emerald-500
+		{ name: "Albums", count: stats.totalAlbums, fill: "#8b5cf6" }, // violet-500
+		{ name: "Artists", count: stats.totalArtists, fill: "#f97316" }, // orange-500
+		{ name: "Users", count: stats.totalUsers, fill: "#0ea5e9" }, // sky-500
+	];
+
 	return (
-		<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 p-6 border  '>
+		<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
+			{/* Stats Cards */}
 			{statsData.map((stat) => (
-				<StatsCard 
+				<StatsCard
 					key={stat.label}
 					icon={stat.icon}
 					label={stat.label}
 					value={stat.value}
-					
 					iconColor={stat.iconColor}
 				/>
 			))}
+
+			{/* Chart Section - Spans full width */}
+			<div className="col-span-1 md:col-span-2 lg:col-span-4 bg-zinc-800/50 p-6 rounded-lg border border-zinc-700/50 hover:bg-zinc-800/80 transition-colors">
+				<div className="flex items-center justify-between mb-6">
+					<h2 className="text-xl font-bold text-white flex items-center gap-2">
+						<PlayCircle className="text-emerald-500" size={20} />
+						Platform Overview
+					</h2>
+				</div>
+				<div className="h-[300px] w-full">
+					<ResponsiveContainer width="100%" height="100%">
+						<BarChart data={chartData}>
+							<CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+							<XAxis dataKey="name" stroke="#9ca3af" />
+							<YAxis stroke="#9ca3af" />
+							<Tooltip
+								contentStyle={{
+									backgroundColor: "#18181b",
+									border: "1px solid #3f3f46",
+									borderRadius: "8px",
+								}}
+								itemStyle={{ color: "#e4e4e7" }}
+							/>
+							<Bar dataKey="count" radius={[4, 4, 0, 0]} />
+						</BarChart>
+					</ResponsiveContainer>
+				</div>
+			</div>
 		</div>
 	);
 };
