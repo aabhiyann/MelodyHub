@@ -107,4 +107,3 @@ The `Socket.io` implementation handles transient data that doesn't always need p
 -   **Authentication**: Handled via Clerk. Backend middleware verifies the JWT token.
 -   **Authorization**: Admin routes (`/api/admin/*`) check for specific admin email in env vars.
 -   **File Validation**: Files uploaded to `/api/songs` are checked for MIME types (audio/mpeg, image/jpeg).
-
