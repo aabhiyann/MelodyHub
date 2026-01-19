@@ -24,5 +24,6 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/tests/setup.ts',
     css: true,
+    exclude: ['node_modules', 'tests/**'],
   },
 });
