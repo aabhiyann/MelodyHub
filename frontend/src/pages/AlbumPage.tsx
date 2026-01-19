@@ -47,8 +47,8 @@ const AlbumPage = () => {
 				<div className='relative min-h-full'>
 					{/* bg gradient */}
 					<div
-						className='absolute inset-0 bg-gradient-to-b from-[#5038a0]/80 via-zinc-900/80
-					 to-zinc-900 pointer-events-none'
+						className='absolute inset-0 bg-gradient-to-b from-[var(--melody-purple-600)]/80 
+							via-[var(--color-bg-secondary)]/80 to-[var(--color-bg-primary)] pointer-events-none'
 						aria-hidden='true'
 					/>
 
@@ -75,9 +75,9 @@ const AlbumPage = () => {
 						<div className='px-6 pb-4 flex items-center gap-6'>
 							<Button
 								onClick={handlePlayAlbum}
-								size='icon'
-								className='w-14 h-14 rounded-full bg-purple-500 hover:bg-purple-400 
-                hover:scale-105 transition-all'
+								variant='success'
+								shape='pill'
+								className='w-14 h-14'
 							>
 								{isPlaying && currentAlbum?.songs.some((song) => song._id === currentSong?._id) ? (
 									<Pause className='h-7 w-7 text-black' />
