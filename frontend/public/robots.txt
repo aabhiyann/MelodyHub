@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Disallow admin routes
+Disallow: /admin
+Disallow: /auth-callback
+Disallow: /sso-callback
+
+# Sitemap
+Sitemap: https://udaymelodyhhub.vercel.app/sitemap.xml
