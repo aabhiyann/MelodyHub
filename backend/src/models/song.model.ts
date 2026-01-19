@@ -42,4 +42,9 @@ const songSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
+// Indexes for query optimization
+songSchema.index({ createdAt: -1 }); // For trending/recent song queries
+songSchema.index({ albumId: 1 }); // For album-specific song queries
+songSchema.index({ title: 'text', artist: 'text' }); // For text search (future feature)
+
 export const Song = mongoose.model<ISong>("Song", songSchema);

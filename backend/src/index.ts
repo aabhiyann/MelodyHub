@@ -18,8 +18,10 @@ import albumRoutes from './routes/album.route.js';
 import statRoutes from './routes/stat.route.js';
 import aiRoutes from './routes/ai.route.js';
 import messageRoutes from './routes/message.route.js';
+import healthRoutes from './routes/health.route.js';
 import { connectDB } from './lib/db.js';
 import { validateEnv } from './lib/env.js';
+import { requestLogger } from './middleware/logger.middleware.js';
 
 dotenv.config();
 validateEnv();
@@ -60,6 +62,12 @@ app.use(cors({
 
 app.use(clerkMiddleware());
 app.use(express.json());
+
+// Request logging middleware
+if (process.env.NODE_ENV !== 'test') {
+	app.use(requestLogger);
+}
+
 app.use(fileUpload({
 	useTempFiles: true,
 	tempFileDir: path.join(__dirname, 'tmp'),
@@ -82,6 +90,10 @@ cron.schedule("0 * * * *", () => {
 	}
 });
 
+// Health check routes (public, no auth required)
+app.use("/api/health", healthRoutes);
+
+// API routes
 app.use("/api/users", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/auth", authRoutes);

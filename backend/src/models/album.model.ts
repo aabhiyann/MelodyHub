@@ -21,4 +21,9 @@ const albumSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
+// Indexes for query optimization
+albumSchema.index({ createdAt: -1 }); // For recent albums
+albumSchema.index({ artist: 1 }); // For artist-specific queries
+albumSchema.index({ title: 'text', artist: 'text' }); // For text search (future feature)
+
 export const Album = mongoose.model<IAlbum>("Album", albumSchema);

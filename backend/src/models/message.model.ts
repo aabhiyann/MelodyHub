@@ -17,4 +17,9 @@ const messageSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
+// Indexes for query optimization
+messageSchema.index({ senderId: 1, receiverId: 1 }); // For chat conversations
+messageSchema.index({ createdAt: -1 }); // For recent messages
+messageSchema.index({ receiverId: 1, createdAt: -1 }); // For fetching user's recent messages
+
 export const Message = mongoose.model<IMessage>("Message", messageSchema);
