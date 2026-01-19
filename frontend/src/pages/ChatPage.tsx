@@ -8,6 +8,7 @@ import ChatHeader from "../components/ChatHeader";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import MessageInput from "../components/MessageInput";
+import { MascotImage } from "@/components/MascotImage";
 
 const formatTime = (date: string) => {
 	return new Date(date).toLocaleTimeString("en-US", {
@@ -93,6 +94,12 @@ export default ChatPage;
 
 const NoConversationPlaceholder = () => (
 	<div className='flex flex-col items-center justify-center h-full space-y-6 rounded-md overflow-hidden bg-gradient-to-b from-gray-300 to-gray-500'>
+		{/* Melody chatting mascot */}
+		<MascotImage
+			state='chatting'
+			size='lg'
+			className='drop-shadow-xl'
+		/>
 
 		<div className='text-center '>
 			<h3 className='text-zinc-900 text-lg font-medium mb-1'>Happy Chatting</h3>
