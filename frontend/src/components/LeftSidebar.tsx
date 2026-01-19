@@ -11,11 +11,11 @@ import {
   MessageSquare,
   LockKeyholeOpen,
   LockKeyhole,
-  
 } from "lucide-react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "@/stores/AuthStore";
+import AIPlaylistDialog from "./AIPlaylistDialog";
 
 const LeftSidebar = () => {
   const { albums, fetchAlbums, isLoading } = useMusicStore();
@@ -44,6 +44,13 @@ const LeftSidebar = () => {
             <Music2 className='mr-2 size-6' />
             <span className='hidden md:inline'>Home</span>
           </Link>
+
+          {/* AI Playlist - Only if logged in */}
+          {user && (
+            <div className="hidden md:block">
+              <AIPlaylistDialog />
+            </div>
+          )}
 
           {/* Chat (clickable only if logged in) */}
           {user ? (
@@ -102,8 +109,6 @@ const LeftSidebar = () => {
               <span className='hidden md:inline'>Admin (Restricted)</span>
             </div>
           )}
-
-         
 
         </div>
       </div>
