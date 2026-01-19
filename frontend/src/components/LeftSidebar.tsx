@@ -29,7 +29,7 @@ const LeftSidebar = () => {
   return (
     <div className='h-full flex flex-col gap-2'>
       {/* Navigation Menu */}
-      <div className='h-full bg-purple-950 rounded-lg flex flex-col p-4'>
+      <div className='h-full glass bg-[var(--color-bg-primary)] border border-[var(--color-border-primary)] rounded-lg flex flex-col p-4'>
         <div className='space-y-2'>
           {/* Home */}
           <Link
@@ -37,7 +37,7 @@ const LeftSidebar = () => {
             className={cn(
               buttonVariants({
                 variant: 'ghost',
-                className: 'w-full justify-start text-white hover:bg-zinc-500',
+                className: 'w-full justify-start text-[var(--color-text-primary)] hover:bg-white/5 hover:text-[var(--melody-purple-400)]',
               })
             )}
           >
@@ -114,9 +114,9 @@ const LeftSidebar = () => {
       </div>
 
       {/* Library Section */}
-      <div className='h-full bg-purple-950 rounded-lg flex flex-col p-4'>
+      <div className='h-full glass bg-[var(--color-bg-primary)] border border-[var(--color-border-primary)] rounded-lg flex flex-col p-4'>
         <div className='flex items-center justify-between mb-4'>
-          <div className='flex items-center text-white px-2'>
+          <div className='flex items-center text-[var(--color-text-primary)] px-2'>
             <Library className='size-5 mr-2' />
             <span className='hidden md:inline'>Albums</span>
           </div>
@@ -131,7 +131,7 @@ const LeftSidebar = () => {
                 <Link
                   to={`/albums/${album._id}`}
                   key={album._id}
-                  className='p-2 hover:bg-zinc-500 rounded-md flex items-center gap-3 group cursor-pointer'
+                  className='p-2 hover:bg-white/5 hover:border-[var(--melody-purple-500)]/30 rounded-md flex items-center gap-3 group cursor-pointer transition-all'
                 >
                   <img
                     src={album.imageUrl}

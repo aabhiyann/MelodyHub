@@ -17,17 +17,17 @@ const MessageInput = () => {
 	};
 
 	return (
-		<div className='p-4 mt-auto border-t border-zinc-800 '>
+		<div className='p-4 mt-auto border-t border-[var(--color-border-primary)] glass'>
 			<div className='flex items-center gap-2 '>
 				<Input
 					placeholder='Type here ....'
 					value={newMessage}
 					onChange={(e) => setNewMessage(e.target.value)}
-					className='bg-zinc-800 border-none'
+					className='glass border-[var(--color-border-primary)]'
 					onKeyDown={(e) => e.key === "Enter" && handleSend()}
 				/>
 
-				<Button size={"icon"} onClick={handleSend} disabled={!newMessage.trim()}>
+				<Button variant={'success'} shape={'pill'} size={'icon'} onClick={handleSend} disabled={!newMessage.trim()}>
 					<Send className='size-10 ' />
 				</Button>
 			</div>
