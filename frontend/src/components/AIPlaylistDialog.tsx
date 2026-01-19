@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAIStore } from "@/stores/AIStore";
 import { usePlayerStore } from "@/stores/PlayerStore";
-import { Bot, Loader2, Play, Sparkles } from "lucide-react";
+import { Loader2, Play, Sparkles } from "lucide-react";
 import { useState } from "react";
 
 const AIPlaylistDialog = () => {
