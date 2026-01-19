@@ -1,190 +1,128 @@
-# MelodyHub
+# MelodyHub 🎵
 
-A modern music streaming platform built with React, Node.js, and MongoDB. MelodyHub provides a comprehensive music listening experience with real-time chat, user management, and admin controls.
+![CI Pipeline](https://github.com/aabhiyann/MelodyHub/actions/workflows/ci.yml/badge.svg)
+![License](https://img.shields.io/github/license/aabhiyann/MelodyHub)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
+![React](https://img.shields.io/badge/React-19-blue)
+![Node.js](https://img.shields.io/badge/Node.js-20-green)
+![Docker](https://img.shields.io/badge/Docker-Enabled-blue)
+
+**MelodyHub** is a modern, full-stack music streaming platform designed to demonstrate advanced software engineering practices. It features real-time social interactions, AI-powered playlist generation, and a robust microservices-ready architecture.
 
 ![MelodyHub Screenshot](https://github.com/user-attachments/assets/86a7d631-8d30-42cf-a827-23556282c12d)
+*(Note: Screenshot is a placeholder)*
 
-## Live Demo
+## 🚀 Live Demo & Documentation
 
-**[View Live Application](https://udaymelodyhhub.vercel.app/)**
+-   **Live Application**: [https://udaymelodyhhub.vercel.app/](https://udaymelodyhhub.vercel.app/)
+-   **API Documentation**: [View API Docs](Docs/professional/API.md)
+-   **System Design**: [View Architecture](Docs/professional/04_SYSTEM_DESIGN.md)
+-   **Project Management**: [View PM Handbook](Docs/professional/ROLE_PROJECT_MANAGER.md)
 
-## Features
+## ✨ Key Features
 
-### Core Functionality
-- **Music Streaming**: High-quality audio playback with full player controls
-- **Album Management**: Browse and organize music by albums
-- **Playlist Support**: Create and manage custom playlists
-- **Search & Discovery**: Advanced search functionality with filtering options
-- **User Authentication**: Secure login/signup with Clerk integration
+### 🧠 AI & Smart Discovery
+-   **AI Playlist Generator**: Powered by **Google Gemini 1.5 Flash**, creating custom playlists from natural language prompts (e.g., "Upbeat songs for a gym workout").
+-   **Personalized Feeds**: "Made for You" and "Trending" sections.
 
-### Interactive Features
-- **Real-time Chat**: Live messaging system with Socket.io
-- **User Profiles**: Customizable user profiles and settings
-- **Admin Dashboard**: Comprehensive admin panel for content management
-- **Analytics**: User activity tracking and statistics
-- **Responsive Design**: Optimized for desktop and mobile devices
+### 🎧 Immersive Playback
+-   **Modern Player**: Gapless playback, volume control, and queue management.
+-   **Background Play**: Persistent audio state across navigation using Zustand.
 
-### Technical Features
-- **Dark Mode**: Theme switching capability
-- **Keyboard Shortcuts**: Enhanced user experience with hotkeys
-- **Loading States**: Smooth loading animations and skeletons
-- **Error Handling**: Comprehensive error management
-- **Form Validation**: Client and server-side validation
+### 💬 Real-Time Social
+-   **Live Chat**: Instant messaging with friends using **Socket.io**.
+-   **Activity Status**: See what your friends are listening to in real-time.
+-   **Online Presence**: Live online/offline status indicators.
 
-## Technology Stack
+### 🛡️ Admin & Security
+-   **Admin Dashboard**: Manage songs, albums, and users.
+-   **Role-Based Access**: Secure admin routes protected by Clerk middleware.
+-   **Secure Uploads**: Media streaming optimized via Cloudinary.
 
-### Frontend
-- **React 19** - Modern UI library
-- **TypeScript** - Type-safe development
-- **Vite** - Fast build tool and development server
-- **Tailwind CSS v4** - Utility-first CSS framework
-- **Zustand** - Lightweight state management
-- **Socket.io Client** - Real-time communication
+## 🛠️ Technology Stack
 
-### Backend
-- **Node.js (TypeScript)** - Modern server-side runtime
-- **Express.js** - Web application framework
-- **MongoDB** - NoSQL database
-- **Socket.io** - Real-time bidirectional communication
-- **Cloudinary** - Cloud-based media management
-- **Jest** - Testing framework
+| Category | Technologies |
+| :--- | :--- |
+| **Frontend** | React 19, TypeScript, Vite, Tailwind CSS v4, Zustand, Radix UI, Lucide Icons |
+| **Backend** | Node.js, Express.js, TypeScript, Socket.io, Google Gemini AI SDK |
+| **Database** | MongoDB Atlas (Mongoose ODM) |
+| **Auth** | Clerk (JWT-based Authentication) |
+| **Storage** | Cloudinary (Audio & Image CDN) |
+| **DevOps** | Docker, Docker Compose, GitHub Actions (CI/CD) |
+| **Testing** | Vitest (Unit), Playwright (E2E), Jest (Backend Integration) |
 
-### Deployment & Tools
-- **Docker** - Containerization
-- **Vercel** - Frontend deployment
-- **MongoDB Atlas** - Cloud database hosting
-- **Cloudinary** - Image and audio storage
-- **Clerk** - Authentication service
-- **GitHub Actions** - CI/CD pipeline
+## 📚 Role-Based Documentation
 
-## Project Structure
+We have prepared detailed guides for different stakeholders:
 
-```
-MelodyHub/
-├── frontend/                 # React frontend application
-│   ├── src/
-│   │   ├── components/       # Reusable UI components
-│   │   ├── pages/            # Application pages
-│   │   ├── stores/           # State management
-│   │   ├── providers/        # Context providers
-│   │   └── types/            # TypeScript type definitions
-│   └── public/               # Static assets
-├── backend/                  # Node.js backend API
-│   ├── src/
-│   │   ├── controllers/      # Request handlers
-│   │   ├── models/           # Database models
-│   │   ├── routes/           # API routes
-│   │   ├── services/         # Business logic
-│   │   └── middleware/       # Custom middleware
-│   └── dist/                 # Compiled TypeScript output
-└── docs/                     # Project documentation
-```
+-   **👨‍💻 Frontend Developers**: [Frontend Guide](Docs/professional/ROLE_FRONTEND_GUIDE.md) - Architecture, State, Components.
+-   **⚙️ Backend Developers**: [Backend Guide](Docs/professional/ROLE_BACKEND_GUIDE.md) - API Patterns, DB Schema.
+-   **📅 Project Managers**: [PM Handbook](Docs/professional/ROLE_PROJECT_MANAGER.md) - Roadmap, SDLC, Risks.
+-   **📐 System Architects**: [System Design](Docs/professional/04_SYSTEM_DESIGN.md) - C4 Diagrams, Data Flow.
+-   **🧪 QA Engineers**: [Test Strategy](Docs/professional/06_TEST_STRATEGY.md) - E2E & Unit Test Plans.
+-   **🚀 DevOps Engineers**: [Deployment Guide](Docs/professional/DEPLOYMENT.md) - Render & Vercel Setup.
 
-## Getting Started
+## ⚡ Getting Started
 
 ### Prerequisites
-- Node.js (v18 or higher)
-- MongoDB Atlas account
-- Cloudinary account
-- Clerk account
-- Docker (optional)
+-   Node.js v18+
+-   Docker (Optional, but recommended)
+-   MongoDB Atlas, Cloudinary, Clerk, & Google Gemini API Keys.
 
-### Docker Installation (Recommended)
+### 🐳 Docker Installation (Recommended)
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/aabhiyann/MelodyHub.git
-   cd MelodyHub
-   ```
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/aabhiyann/MelodyHub.git
+    cd MelodyHub
+    ```
 
-2. **Environment Setup**
-   ```bash
-   # Create environment file in backend directory
-   cd backend
-   cp .env.example .env
-   # Fill in your credentials
-   ```
+2.  **Configure Environment**
+    Create a `.env` file in `backend/` based on provided examples.
 
-3. **Run with Docker Compose**
-   ```bash
-   docker-compose up --build
-   ```
+3.  **Run Application**
+    ```bash
+    docker-compose up --build
+    ```
+    Access Frontend: `http://localhost:5173` | Backend: `http://localhost:5000`
 
-### Manual Installation
+### 💻 Manual Installation
 
-1. **Install dependencies**
-   ```bash
-   # Install backend dependencies
-   cd backend
-   npm install
-   
-   # Install frontend dependencies
-   cd ../frontend
-   npm install
-   ```
+1.  **Backend Setup**
+    ```bash
+    cd backend
+    npm install
+    npm run dev
+    ```
 
-2. **Run the application**
-   ```bash
-   # Start backend server
-   cd backend
-   npm run dev
-   
-   # Start frontend development server
-   cd frontend
-   npm run dev
-   ```
+2.  **Frontend Setup**
+    ```bash
+    cd frontend
+    npm install
+    npm run dev
+    ```
 
-## API Endpoints
+## 🧪 Testing
 
-### Authentication
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User login
-- `GET /api/auth/profile` - Get user profile
+We ensure quality with a comprehensive test suite.
 
-### Music Management
-- `GET /api/songs` - Get all songs
-- `POST /api/songs` - Upload new song
-- `GET /api/albums` - Get all albums
-- `POST /api/albums` - Create new album
+-   **Unit Tests (Frontend)**: `cd frontend && npm test`
+-   **Integration Tests (Backend)**: `cd backend && npm test`
+-   **E2E Tests**: `cd frontend && npx playwright test`
 
-### User Management
-- `GET /api/users` - Get all users (admin)
-- `PUT /api/users/:id` - Update user
-- `DELETE /api/users/:id` - Delete user (admin)
+## 🤝 Contributing
 
-## Development
+We welcome contributions! Please read our [Contributing Guide](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
 
-### Code Style
-- ESLint for code linting
-- Prettier for code formatting
-- TypeScript for type safety
-
-### Testing
-- Backend tests are written with Jest.
-- Run tests:
-  ```bash
-  cd backend
-  npm test
-  ```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Contact
+## 👤 Author
 
-- **Developer**: [Abhiyan Sainju](https://github.com/aabhiyann)
-- **Project Link**: [https://github.com/aabhiyann/MelodyHub](https://github.com/aabhiyann/MelodyHub)
-- **Live Demo**: [https://udaymelodyhhub.vercel.app/](https://udaymelodyhhub.vercel.app/)
+**Abhiyan Sainju**
+-   GitHub: [@aabhiyann](https://github.com/aabhiyann)
+-   LinkedIn: [Abhiyan Sainju](https://linkedin.com/in/abhiyansainju)
 
 ---
-
-**Note**: This project was developed as a comprehensive music streaming platform showcasing modern web development practices and full-stack integration.
+*Built with ❤️ for the Advanced Software Paradigms Class.*
