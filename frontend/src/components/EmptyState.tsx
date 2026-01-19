@@ -37,14 +37,13 @@ export const EmptyState = ({
             {/* Optional Action Button */}
             {actionLabel && onAction && (
                 <Button
-                    onClick={on Action}
-            className='bg-emerald-500 hover:bg-emerald-600 text-white'
-        >
-            <Plus className='mr-2 h-4 w-4' />
-            {actionLabel}
-        </Button>
-    )
-}
-    </div >
-  );
+                    onClick={onAction}
+                    className='bg-emerald-500 hover:bg-emerald-600 text-white'
+                >
+                    <Plus className='mr-2 h-4 w-4' />
+                    {actionLabel}
+                </Button>
+            )}
+        </div >
+    );
 };
