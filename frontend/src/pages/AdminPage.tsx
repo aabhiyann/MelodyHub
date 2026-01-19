@@ -22,9 +22,7 @@ const AdminPage = () => {
     if (!isAdmin && !isLoading) return <div>Unauthorized</div>;
 
     return (
-        className = 'rounded-md overflow-hidden h-full 
-				bg - gradient - to - b from - [var(--color - bg - primary)]to - [var(--color - bg - secondary)]'
-        >
+        <div className='rounded-md overflow-hidden h-full bg-gradient-to-b from-[var(--color-bg-primary)] to-[var(--color-bg-secondary)]'>
             <Header />
 
             <DashboardStats />
@@ -48,7 +46,7 @@ const AdminPage = () => {
                     <AlbumsTabContent />
                 </TabsContent>
             </Tabs>
-        </div >
+        </div>
     );
 };
 export default AdminPage;
