@@ -166,6 +166,18 @@
     font-family: var(-- font-display);
     font-weight: 700;
   }
+
+  /* Accessibility: Visible focus indicators */
+  *:focus-visible {
+    outline: 2px solid var(--melody-purple-500);
+    outline-offset: 2px;
+  }
+
+  button:focus-visible,
+  a:focus-visible {
+    outline: 2px solid var(--melody-purple-400);
+    outline-offset: 3px;
+  }
 }
 
 /* ============================================
