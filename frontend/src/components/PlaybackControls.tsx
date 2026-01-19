@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { usePlayerStore } from "@/stores/PlayerStore";
-import {  Pause, Play, Repeat, Shuffle, SkipBack, SkipForward, Volume2  } from "lucide-react";
+import { Pause, Play, Repeat, Shuffle, SkipBack, SkipForward, Volume2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 const formatTime = (seconds: number) => {
@@ -63,7 +63,11 @@ export const PlaybackControls = () => {
     };
 
     return (
-        <footer className='h-30 sm:h-34 bg-slate-800 border-t border-slate-950 px bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]'>
+        <footer
+            className='h-30 sm:h-34 bg-slate-800 border-t border-slate-950 px bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]'
+            role="contentinfo"
+            aria-label="Media player controls"
+        >
             <div className='flex justify-between items-center h-full max-w-[1800px] mx-auto'>
                 {/* currently playing song */}
                 <div className='hidden sm:flex items-center gap-4 min-w-[180px] w-[30%] font-sans'>
@@ -110,7 +114,7 @@ export const PlaybackControls = () => {
 
                         <Button
                             size='icon'
-                           className=" button-3d hover:text-gray-900"
+                            className=" button-3d hover:text-gray-900"
                             // className='bg-cyan-950 hover:bg-white/80 text-black rounded-full h-8 w-8'
                             onClick={handlePlayPause} // Use the new play/pause handler
                             disabled={!currentSong}
@@ -129,13 +133,13 @@ export const PlaybackControls = () => {
                         </Button>
 
                         <Button
-            size='icon'
-            variant='ghost'
-            className='button-3d '
-            onClick={handleRepeat} // Set the onClick to call handleRepeat when clicked
-        >
-            <Repeat className='h-4 w-4' />
-        </Button>
+                            size='icon'
+                            variant='ghost'
+                            className='button-3d '
+                            onClick={handleRepeat} // Set the onClick to call handleRepeat when clicked
+                        >
+                            <Repeat className='h-4 w-4' />
+                        </Button>
                     </div>
 
                     <div className='hidden sm:flex items-center gap-2 w-full '>
@@ -153,12 +157,12 @@ export const PlaybackControls = () => {
                 </div>
                 {/* volume controls */}
                 <div className='hidden sm:flex items-center gap-4 min-w-[180px] w-[30%] justify-end'>
-                
+
 
                     <div className='flex items-center gap-2'>
                         <Button size='icon' variant='ghost' className='hover:text-white text-zinc-400'>
-                            
-                            <Volume2  className='h-4 w-4' 
+
+                            <Volume2 className='h-4 w-4'
                             />
 
                         </Button>
@@ -168,7 +172,7 @@ export const PlaybackControls = () => {
                             max={100}
                             step={1}
                             className='w-24 hover:cursor-grab active:cursor-grabbing slider-track'
-                            
+
                             onValueChange={(value) => {
                                 setVolume(value[0]);
                                 if (audioRef.current) {
