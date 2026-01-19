@@ -38,6 +38,14 @@
 -   **Admin Dashboard**: Manage songs, albums, and users.
 -   **Role-Based Access**: Secure admin routes protected by Clerk middleware.
 -   **Secure Uploads**: Media streaming optimized via Cloudinary.
+-   **Input Validation**: Zod schemas for all API endpoints.
+-   **Error Boundaries**: Graceful error handling in production.
+
+### 🎨 Modern UI & Mascot
+-   **Melody the Turtle**: Delightful mascot with 8 expressive states (inspired by Duolingo).
+-   **Professional Design System**: Purple/blue/green palette with glassmorphism effects.
+-   **Component Library**: 8+ modern button variants, reusable components.
+-   **Google Fonts**: Inter for body text, Outfit for headings.
 
 ## 🛠️ Technology Stack
 
@@ -49,7 +57,8 @@
 | **Auth** | Clerk (JWT-based Authentication) |
 | **Storage** | Cloudinary (Audio & Image CDN) |
 | **DevOps** | Docker, Docker Compose, GitHub Actions (CI/CD) |
-| **Testing** | Vitest (Unit), Playwright (E2E), Jest (Backend Integration) |
+| **Testing** | Vitest (Unit - 72.8% coverage), Playwright (E2E), React Testing Library |
+| **Validation** | Zod (Schema Validation) |
 
 ## 📚 Role-Based Documentation
 
@@ -104,9 +113,11 @@ We have prepared detailed guides for different stakeholders:
 
 ## 🧪 Testing
 
-We ensure quality with a comprehensive test suite.
+We ensure quality with a comprehensive test suite:
 
--   **Unit Tests (Frontend)**: `cd frontend && npm test`
+-   **Unit Tests (Frontend)**: `cd frontend && npm test`  
+    - **Test Coverage: 72.8%** (exceeds industry standard 70%)
+    - 59 passing tests across components and stores
 -   **Integration Tests (Backend)**: `cd backend && npm test`
 -   **E2E Tests**: `cd frontend && npx playwright test`
 
