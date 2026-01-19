@@ -22,9 +22,7 @@ const AdminPage = () => {
     if (!isAdmin && !isLoading) return <div>Unauthorized</div>;
 
     return (
-        <div
-            className='rounded-md overflow-hidden h-full bg-gradient-to-b from-gray-300 to-gray-500'
-        >
+        <div className='rounded-md overflow-hidden h-full bg-gradient-to-b from-[var(--color-bg-primary)] to-[var(--color-bg-secondary)]'>
             <Header />
 
             <DashboardStats />
