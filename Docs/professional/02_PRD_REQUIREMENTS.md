@@ -1,7 +1,7 @@
 # Product Requirements Document (PRD): MelodyHub
 
 **Product Name**: MelodyHub  
-**Version**: 1.0  
+**Version**: 1.1  
 **Status**: Development  
 
 ## 1. Executive Summary
@@ -38,6 +38,10 @@ MelodyHub is a web-based music streaming platform designed to democratize music 
 -   **As an Admin**, I want a dashboard to see platform stats (Total Users, Songs, Albums).
 -   **As an Admin**, I want to upload audio files and cover images via a drag-and-drop interface.
 -   **As an Admin**, I want to delete songs that violate copyright or standards.
+
+### 3.6 AI Features (New)
+-   **As a User**, I want to generate a playlist by describing my mood (e.g., "Sad rainy day jazz").
+-   **As a User**, I want the AI to suggest songs based on what I've liked before.
 
 ## 4. Non-Functional Requirements (Technical Constraints)
 1.  **Performance**: Audio must start playing within <200ms of clicking.
