@@ -34,19 +34,19 @@ const HomePage = () => {
 	}, [initializeQueue, madeForYouSongs, trendingSongs, featuredSongs]);
 
 	return (
-		<main className='rounded-md overflow-hidden h-full bg-gradient-to-b from-gray-300 to-gray-500'>
+		<main className='rounded-md overflow-hidden h-full bg-gradient-to-b from-[var(--color-bg-primary)] to-[var(--color-bg-secondary)]'>
 			<Topbar />
 			<ScrollArea className='h-[calc(100vh-180px)]'>
 				<div className='p-4 sm:p-6 '>
 					{/* Welcome Hero Section */}
 					<div className='flex flex-col md:flex-row items-center justify-between gap-6 mb-8'>
 						<div className='flex-1'>
-							<h1 className='sm:text-3xl mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl'>
-								<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-950">
+							<h1 className='sm:text-3xl mb-4 text-3xl font-extrabold font-display text-[var(--color-text-primary)] md:text-5xl lg:text-6xl'>
+								<span className="bg-gradient-to-r from-[var(--melody-purple-400)] to-[var(--melody-blue-400)] bg-clip-text text-transparent">
 									Welcome!!
 								</span>
 							</h1>
-							<p className='text-lg text-gray-700 dark:text-gray-300 max-w-2xl'>
+							<p className='text-lg text-[var(--color-text-secondary)] max-w-2xl'>
 								Discover your perfect soundtrack with AI-powered playlists and personalized recommendations 🎵
 							</p>
 						</div>
@@ -54,7 +54,7 @@ const HomePage = () => {
 							<MascotImage
 								state='default'
 								size='lg'
-								className='drop-shadow-2xl'
+								className='drop-shadow-2xl hover-lift'
 							/>
 						</div>
 					</div>
