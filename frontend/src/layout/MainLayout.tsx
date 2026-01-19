@@ -12,20 +12,28 @@ const MainLayout = () => {
 
     const [isMobile, setIsMobile] = useState(false);
 
-	useEffect(() => {
-		const checkMobile = () => {
-			setIsMobile(window.innerWidth < 768);
-		};
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
 
-		checkMobile();
-		window.addEventListener("resize", checkMobile);
-		return () => window.removeEventListener("resize", checkMobile);
-	}, []);
+        checkMobile();
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
+    }, []);
 
     return (
         <div className='h-screen bg-black text-white flex flex-col'>
+            {/* Skip to main content link for keyboard users */}
+            <a
+                href="#main-content"
+                className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-[var(--melody-purple-600)] focus:text-white focus:rounded-md"
+            >
+                Skip to main content
+            </a>
+
             <ResizablePanelGroup direction='horizontal' className='flex-1 flex h-full overflow-hidden p-2'>
-            <AudioPlayer />
+                <AudioPlayer />
                 {/* left sidebar */}
                 <ResizablePanel defaultSize={20} minSize={isMobile ? 0 : 10} maxSize={30}>
                     <LeftSidebar />
@@ -35,19 +43,21 @@ const MainLayout = () => {
 
                 {/* Main content */}
                 <ResizablePanel defaultSize={isMobile ? 80 : 60}>
-                    <Outlet />
+                    <main id="main-content" role="main" aria-label="Main content">
+                        <Outlet />
+                    </main>
                 </ResizablePanel>
 
                 {/* {!isMobile && (
                     <> */}
-                        <ResizableHandle className='w-2 bg-black rounded-lg transition-colors' />
+                <ResizableHandle className='w-2 bg-black rounded-lg transition-colors' />
 
-                        {/* right sidebar */}
-                        <ResizablePanel defaultSize={20} minSize={0} maxSize={25} collapsedSize={0}>
-                          <ActivitySidebar />
-                        </ResizablePanel>
-                    {/* </> */}
-                
+                {/* right sidebar */}
+                <ResizablePanel defaultSize={20} minSize={0} maxSize={25} collapsedSize={0}>
+                    <ActivitySidebar />
+                </ResizablePanel>
+                {/* </> */}
+
             </ResizablePanelGroup>
 
             <PlaybackControls />
