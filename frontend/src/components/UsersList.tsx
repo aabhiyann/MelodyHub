@@ -1,10 +1,11 @@
 import UsersListSkeleton from "../layout/UsersListSkeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ChatStore } from "@/stores/ChatStore";
+import { useChatStore } from "@/stores/ChatStore";
+import { User } from "@/types";
 
 const UsersList = () => {
-	const { users, selectedUser, isLoading, setSelectedUser, onlineUsers } = ChatStore();
+	const { users, selectedUser, isLoading, setSelectedUser, onlineUsers } = useChatStore();
 
 	return (
 		<div className='border-r border-zinc-800'>
@@ -14,7 +15,7 @@ const UsersList = () => {
 						{isLoading ? (
 							<UsersListSkeleton />
 						) : (
-							users.map((user) => (
+							users.map((user: User) => (
 								<div
 									key={user._id}
 									onClick={() => setSelectedUser(user)}
