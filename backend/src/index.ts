@@ -8,6 +8,7 @@ import cors from 'cors';
 import cron from "node-cron";
 import fs from "fs";
 import { createServer } from "http"; 
+import rateLimit from "express-rate-limit";
 
 import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
@@ -24,6 +25,15 @@ validateEnv();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Rate Limiting
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+    message: "Too many requests from this IP, please try again after 15 minutes"
+});
+app.use("/api", limiter);
+
 const __dirname = path.resolve();
 
 const httpServer = createServer(app);
