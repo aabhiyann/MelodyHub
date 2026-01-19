@@ -5,6 +5,7 @@ import FeaturedSection from "./components/FeaturedSection";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import SectionGrid from "./components/SectionGrid";
 import { usePlayerStore } from "@/stores/PlayerStore";
+import { MascotImage } from "@/components/MascotImage";
 
 const HomePage = () => {
 	const {
@@ -37,10 +38,27 @@ const HomePage = () => {
 			<Topbar />
 			<ScrollArea className='h-[calc(100vh-180px)]'>
 				<div className='p-4 sm:p-6 '>
-					<h1 className=' sm:text-3xl mb-6 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl'>
-					<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-950">
-    Welcome!!
-  </span>{" "}</h1>
+					{/* Welcome Hero Section */}
+					<div className='flex flex-col md:flex-row items-center justify-between gap-6 mb-8'>
+						<div className='flex-1'>
+							<h1 className='sm:text-3xl mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl'>
+								<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-950">
+									Welcome!!
+								</span>
+							</h1>
+							<p className='text-lg text-gray-700 dark:text-gray-300 max-w-2xl'>
+								Discover your perfect soundtrack with AI-powered playlists and personalized recommendations 🎵
+							</p>
+						</div>
+						<div className='flex-shrink-0'>
+							<MascotImage
+								state='default'
+								size='lg'
+								className='drop-shadow-2xl'
+							/>
+						</div>
+					</div>
+
 					<FeaturedSection />
 
 					<div className='space-y-8 '>
