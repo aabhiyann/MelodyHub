@@ -1,8 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ChatStore } from "@/stores/ChatStore";
+import { useChatStore } from "@/stores/ChatStore";
 import { useUser } from "@clerk/clerk-react";
-import { Heart , Headphones , CircleUserRound  } from "lucide-react";
+import { Heart, Headphones, CircleUserRound } from "lucide-react";
 import { useEffect } from "react";
 
 const FriendsActivity = () => {
@@ -52,7 +52,7 @@ const FriendsActivity = () => {
 									<div className='flex-1 min-w-0'>
 										<div className='flex items-center gap-2'>
 											<span className='font-medium text-sm text-white'>{user.fullName}</span>
-											{isPlaying && <Headphones  className='size-3.5 text-purple-400 shrink-0' />}
+											{isPlaying && <Headphones className='size-3.5 text-purple-400 shrink-0' />}
 										</div>
 
 										{isPlaying ? (
@@ -88,7 +88,7 @@ const LoginPrompt = () => (
 				aria-hidden='true'
 			/>
 			<div className='relative rounded-full p-4 overflow-hidden h-full bg-gradient-to-b from-gray-100 to-gray-500'>
-				<Heart  className='size-8 text-purple-900 animate-pulse animate-infinite animate-alternate-reverse animate-fill-backwards' />
+				<Heart className='size-8 text-purple-900 animate-pulse animate-infinite animate-alternate-reverse animate-fill-backwards' />
 			</div>
 		</div>
 
