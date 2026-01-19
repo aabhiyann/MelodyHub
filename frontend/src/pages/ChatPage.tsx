@@ -33,10 +33,14 @@ const ChatPage = () => {
 	console.log({ messages });
 
 	return (
-		<main className='h-full rounded-lg bg-gradient-to-b from-zinc-800 to-zinc-900 overflow-hidden'>
+		<main className='h-full rounded-lg overflow-hidden
+			bg-gradient-to-b from-[var(--color-bg-primary)] to-[var(--color-bg-secondary)]
+		'>
 			<Topbar />
 
-			<div className='grid lg:grid-cols-[300px_1fr] grid-cols-[80px_1fr] h-[calc(100vh-180px)]  space-y-6 rounded-md overflow-hidden bg-gradient-to-b from-violet-300 to-violet-900'>
+			<div className='grid lg:grid-cols-[300px_1fr] grid-cols-[80px_1fr] h-[calc(100vh-180px)] rounded-md overflow-hidden 
+				bg-gradient-to-b from-[var(--color-bg-secondary)] to-[var(--color-bg-elevated)]
+			'>
 				<UsersList />
 
 				{/* chat message */}
