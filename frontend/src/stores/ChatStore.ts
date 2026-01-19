@@ -1,24 +1,65 @@
 import { io, Socket } from "socket.io-client";
 import { create } from "zustand";
 import { useAuthStore } from "./AuthStore";
+import { axiosInstance } from "@/lib/axios";
+import { Message, User } from "@/types";
 
 interface ChatStore {
-	messages: any[];
+	messages: Message[];
 	socket: Socket | null;
 	onlineUsers: Set<string>;
 	activities: Map<string, string>;
+	users: User[];
+	selectedUser: User | null;
+	isLoading: boolean;
+
 	initSocket: (userId: string) => void;
 	disconnectSocket: () => void;
 	sendMessage: (receiverId: string, content: string) => void;
+	fetchUsers: () => Promise<void>;
+	fetchMessages: (userId: string) => Promise<void>;
+	setSelectedUser: (user: User | null) => void;
 }
 
 const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5000" : "/";
 
-export const ChatStore = create<ChatStore>((set, get) => ({
+export const useChatStore = create<ChatStore>((set, get) => ({
 	messages: [],
 	socket: null,
 	onlineUsers: new Set(),
 	activities: new Map(),
+	users: [],
+	selectedUser: null,
+	isLoading: false,
+
+	fetchUsers: async () => {
+		set({ isLoading: true });
+		try {
+			const response = await axiosInstance.get("/users");
+			set({ users: response.data, isLoading: false });
+		} catch (error) {
+			console.error("Failed to fetch users:", error);
+			set({ isLoading: false });
+		}
+	},
+
+	fetchMessages: async (userId: string) => {
+		set({ isLoading: true });
+		try {
+			const response = await axiosInstance.get(`/messages/${userId}`);
+			set({ messages: response.data, isLoading: false });
+		} catch (error) {
+			console.error("Failed to fetch messages:", error);
+			set({ isLoading: false });
+		}
+	},
+
+	setSelectedUser: (user: User | null) => {
+		set({ selectedUser: user, messages: [] });
+		if (user) {
+			get().fetchMessages(user._id);
+		}
+	},
 
 	initSocket: (userId: string) => {
 		const socket = io(BASE_URL, {
