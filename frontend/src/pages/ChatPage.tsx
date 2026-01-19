@@ -1,5 +1,6 @@
 import Topbar from "@/components/Topbar";
-import { ChatStore } from "@/stores/ChatStore";
+import { useChatStore } from "@/stores/ChatStore";
+import { Message } from "@/types";
 import { useUser } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import UsersList from "../components/UsersList";
@@ -18,7 +19,7 @@ const formatTime = (date: string) => {
 
 const ChatPage = () => {
 	const { user } = useUser();
-	const { messages, selectedUser, fetchUsers, fetchMessages } = ChatStore();
+	const { messages, selectedUser, fetchUsers, fetchMessages } = useChatStore();
 
 	useEffect(() => {
 		if (user) fetchUsers();
@@ -46,13 +47,12 @@ const ChatPage = () => {
 							{/* Messages */}
 							<ScrollArea className='h-[calc(95vh-340px)]'>
 								<div className='p-4 space-y-4'>
-									
-									{messages.map((message) => (
+
+									{messages.map((message: Message) => (
 										<div
 											key={message._id}
-											className={`flex items-start gap-3 ${
-												message.senderId === user?.id ? "flex-row-reverse" : ""
-											}`}
+											className={`flex items-start gap-3 ${message.senderId === user?.id ? "flex-row-reverse" : ""
+												}`}
 										>
 											<Avatar className='size-8'>
 												<AvatarImage
@@ -93,7 +93,7 @@ export default ChatPage;
 
 const NoConversationPlaceholder = () => (
 	<div className='flex flex-col items-center justify-center h-full space-y-6 rounded-md overflow-hidden bg-gradient-to-b from-gray-300 to-gray-500'>
-		
+
 		<div className='text-center '>
 			<h3 className='text-zinc-900 text-lg font-medium mb-1'>Happy Chatting</h3>
 			<p className='text-zinc-900 text-sm'>Select a friend to open Chat</p>
