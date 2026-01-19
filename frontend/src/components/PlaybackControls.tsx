@@ -3,6 +3,7 @@ import { Slider } from "@/components/ui/slider";
 import { usePlayerStore } from "@/stores/PlayerStore";
 import { Pause, Play, Repeat, Shuffle, SkipBack, SkipForward, Volume2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 
 const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -17,6 +18,9 @@ export const PlaybackControls = () => {
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
     const audioRef = useRef<HTMLAudioElement | null>(null);
+
+    // Enable keyboard shortcuts for media control
+    useKeyboardShortcuts(audioRef);
 
     useEffect(() => {
         audioRef.current = document.querySelector("audio");
