@@ -17,8 +17,10 @@ import albumRoutes from './routes/album.route.js';
 import statRoutes from './routes/stat.route.js';
 import aiRoutes from './routes/ai.route.js';
 import { connectDB } from './lib/db.js';
+import { validateEnv } from './lib/env.js';
 
 dotenv.config();
+validateEnv();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
