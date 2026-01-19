@@ -1,12 +1,13 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useChatStore } from "@/stores/ChatStore";
+import { User } from "@/types";
 import { useUser } from "@clerk/clerk-react";
 import { Heart, Headphones, CircleUserRound } from "lucide-react";
 import { useEffect } from "react";
 
 const FriendsActivity = () => {
-	const { users, fetchUsers, onlineUsers, userActivities } = ChatStore();
+	const { users, fetchUsers, onlineUsers, activities } = useChatStore();
 	const { user } = useUser();
 
 	useEffect(() => {
@@ -26,8 +27,8 @@ const FriendsActivity = () => {
 
 			<ScrollArea className='flex-1'>
 				<div className='p-4 space-y-4'>
-					{users.map((user) => {
-						const activity = userActivities.get(user.clerkId);
+					{users.map((user: User) => {
+						const activity = activities.get(user.clerkId);
 						const isPlaying = activity && activity !== "Idle";
 
 						return (
