@@ -18,6 +18,29 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    // Optimize bundle size and loading performance
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // React core bundle
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          // UI library components (only include what's actually used)
+          'ui-vendor': [
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-scroll-area',
+            '@radix-ui/react-avatar',
+          ],
+          // Authentication
+          'clerk': ['@clerk/clerk-react'],
+          // State management
+          'zustand': ['zustand'],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1000, // Increase limit to 1MB for vendor chunks
+    sourcemap: false, // Disable sourcemaps in production for smaller builds
+  },
   // @ts-ignore - Vitest types extend Vite config but TS complains
   test: {
     globals: true,

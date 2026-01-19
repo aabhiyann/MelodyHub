@@ -1,8 +1,30 @@
 import { Song } from "../models/song.model.js";
 
 export class SongService {
-  async getAllSongs() {
-    return await Song.find().sort({ createdAt: -1 });
+  async getAllSongs(page: number = 1, limit: number = 20) {
+    const skip = (page - 1) * limit;
+
+    // Get total count for pagination metadata
+    const total = await Song.countDocuments();
+
+    // Get paginated songs
+    const songs = await Song.find()
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean(); // Use lean() for better performance
+
+    return {
+      data: songs,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+        hasNextPage: page < Math.ceil(total / limit),
+        hasPrevPage: page > 1,
+      },
+    };
   }
 
   async getFeaturedSongs() {
