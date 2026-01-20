@@ -11,7 +11,7 @@ const buttonVariants = cva(
       variant: {
         // Modern Purple Primary (Melody Brand)
         default:
-          "bg-[var(--melody-purple-600)] text-white shadow-md hover:bg-[var(--melody-purple-700)] hover:shadow-[var(--shadow-glow)] hover:scale-105 active:scale-100",
+          "bg-[var(--melody-purple-600)] text-white shadow-md hover:bg-[var(--melody-purple-700)] hover:shadow-[var(--shadow-raised)] hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
 
         // Blue Secondary (Social/Info)
         secondary:

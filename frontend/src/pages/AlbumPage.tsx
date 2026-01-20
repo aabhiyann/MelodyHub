@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useMusicStore } from "@/stores/MusicStore";
 import { usePlayerStore } from "@/stores/PlayerStore";
-import { Clock, Pause, Play } from "lucide-react";
+import { Clock, Pause, Play, Music, Disc } from "lucide-react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
@@ -64,8 +64,8 @@ const AlbumPage = () => {
 								<h1 className='text-5xl md:text-7xl font-bold my-4 text-white tracking-tight'>{currentAlbum?.title}</h1>
 								<div className='flex items-center gap-2 text-sm text-zinc-300'>
 									<span className='font-medium text-white'>{currentAlbum?.artist}</span>
-									<span>• {currentAlbum?.songs.length} songs</span>
-									<span>• {currentAlbum?.releaseYear}</span>
+									<span className="flex items-center text-zinc-500"><Disc className="w-3 h-3 mx-2" /> {currentAlbum?.songs.length} songs</span>
+									<span className="flex items-center text-zinc-500"><span className="w-1 h-1 rounded-full bg-zinc-600 mx-2" /> {currentAlbum?.releaseYear}</span>
 								</div>
 							</div>
 						</div>
@@ -111,13 +111,14 @@ const AlbumPage = () => {
 												key={song._id}
 												onClick={() => handlePlaySong(index)}
 												className={`grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-4 py-2 text-sm 
-                       rounded-md group cursor-pointer transition-colors duration-200
+                       rounded-md group cursor-pointer transition-all duration-200 ease-out
+                       hover:scale-[1.01] active:scale-[0.99]
                        ${isCurrentSong ? "bg-brand-primary/10" : "hover:bg-white/5"}
                        `}
 											>
 												<div className='flex items-center justify-center'>
 													{isCurrentSong && isPlaying ? (
-														<div className='size-4 text-brand-primary animate-pulse'>♫</div>
+														<Music className='size-4 text-brand-primary animate-pulse' />
 													) : (
 														<span className='group-hover:hidden text-zinc-400'>{index + 1}</span>
 													)}

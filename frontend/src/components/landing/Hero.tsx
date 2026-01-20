@@ -197,7 +197,9 @@ const Hero = () => {
                                 {/* Song Info */}
                                 <div className="space-y-4 mb-8 text-center">
                                     <h3 className="text-2xl font-bold text-white tracking-tight">Midnight City</h3>
-                                    <p className="text-white/50 text-base font-medium">M83 • Hurry Up, We're Dreaming</p>
+                                    <p className="text-white/50 text-base font-medium flex items-center justify-center gap-2">
+                                        M83 <span className="w-1 h-1 rounded-full bg-white/40" /> Hurry Up, We're Dreaming
+                                    </p>
                                 </div>
 
                                 {/* Progress Bar */}

@@ -158,7 +158,7 @@ const LeftSidebar = () => {
                   <div className='flex-1 min-w-0 hidden md:block'>
                     <p className='font-medium text-text-primary truncate text-sm'>{album.title}</p>
                     <p className='text-xs text-text-secondary truncate group-hover:text-text-primary transition-colors'>
-                      Album • {album.artist}
+                      Album <span className="inline-block w-1 h-1 rounded-full bg-zinc-600 mx-1" /> {album.artist}
                     </p>
                   </div>
                 </Link>

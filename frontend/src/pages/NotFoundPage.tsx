@@ -1,4 +1,4 @@
-import { Home } from "lucide-react";
+import { Home, Music } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { MascotImage } from "@/components/MascotImage";
@@ -23,7 +23,7 @@ export default function NotFoundPage() {
 					<h1 className='text-7xl font-bold text-white'>404</h1>
 					<h2 className='text-2xl font-semibold text-white'>Lost in the Music?</h2>
 					<p className='text-neutral-400 max-w-md mx-auto'>
-						Looks like this page wandered off to find the perfect playlist. Let's get you back on track! 🎵
+						Looks like this page wandered off to find the perfect playlist. Let's get you back on track! <Music className="inline-block w-5 h-5 ml-1 text-emerald-500 animate-bounce" />
 					</p>
 				</div>
 
