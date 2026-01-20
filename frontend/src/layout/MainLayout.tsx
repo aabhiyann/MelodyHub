@@ -23,7 +23,7 @@ const MainLayout = () => {
     }, []);
 
     return (
-        <div className='h-screen bg-black text-white flex flex-col'>
+        <div className='h-screen bg-black text-text-primary flex flex-col font-sans selection:bg-brand-primary/30'>
             {/* Skip to main content link for keyboard users */}
             <a
                 href="#main-content"
@@ -32,28 +32,28 @@ const MainLayout = () => {
                 Skip to main content
             </a>
 
-            <ResizablePanelGroup direction='horizontal' className='flex-1 flex h-full overflow-hidden p-2'>
+            <ResizablePanelGroup direction='horizontal' className='flex-1 flex h-full overflow-hidden p-2 gap-2'>
                 <AudioPlayer />
                 {/* left sidebar */}
-                <ResizablePanel defaultSize={20} minSize={isMobile ? 0 : 10} maxSize={30}>
+                <ResizablePanel defaultSize={20} minSize={isMobile ? 0 : 10} maxSize={30} className="bg-transparent">
                     <LeftSidebar />
                 </ResizablePanel>
 
-                <ResizableHandle className='w-2 bg-black rounded-lg transition-colors' />
+                <ResizableHandle className='w-1 bg-transparent hover:bg-white/10 transition-colors rounded-full' />
 
                 {/* Main content */}
-                <ResizablePanel defaultSize={isMobile ? 80 : 60}>
-                    <main id="main-content" role="main" aria-label="Main content">
+                <ResizablePanel defaultSize={isMobile ? 80 : 60} className="bg-transparent">
+                    <main id="main-content" role="main" aria-label="Main content" className="h-full rounded-2xl bg-[#121212]/50 overflow-hidden border border-white/5 relative">
                         <Outlet />
                     </main>
                 </ResizablePanel>
 
                 {/* {!isMobile && (
                     <> */}
-                <ResizableHandle className='w-2 bg-black rounded-lg transition-colors' />
+                <ResizableHandle className='w-1 bg-transparent hover:bg-white/10 transition-colors rounded-full' />
 
                 {/* right sidebar */}
-                <ResizablePanel defaultSize={20} minSize={0} maxSize={25} collapsedSize={0}>
+                <ResizablePanel defaultSize={20} minSize={0} maxSize={25} collapsedSize={0} className="bg-transparent">
                     <ActivitySidebar />
                 </ResizablePanel>
                 {/* </> */}
@@ -61,6 +61,11 @@ const MainLayout = () => {
             </ResizablePanelGroup>
 
             <PlaybackControls />
+
+            {/* Ambient Background Gradient for the whole app */}
+            <div className="absolute inset-0 pointer-events-none -z-10 bg-gradient-to-br from-black via-[#0a0a0a] to-[#121212]" />
+            <div className="absolute top-[-10%] left-[-10%] w-[50vh] h-[50vh] bg-brand-primary/5 rounded-full blur-[120px] pointer-events-none -z-10" />
+            <div className="absolute bottom-[-10%] right-[-10%] w-[50vh] h-[50vh] bg-accent-blue/5 rounded-full blur-[120px] pointer-events-none -z-10" />
         </div>
     );
 };

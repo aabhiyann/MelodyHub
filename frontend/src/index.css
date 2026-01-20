@@ -2,410 +2,223 @@
 @import "tw-animate-css";
 
 /* ============================================
-   MELODYHUB MODERN DESIGN SYSTEM
-   Inspired by: Spotify, Duolingo, Twitter/X
+   MELODYHUB PREMIUM DESIGN SYSTEM
+   Inspired by: Spotify, Apple Music, Linear
    ============================================ */
 
-/* ============================================
-   CSS VARIABLES - Modern Color System
-   ============================================ */
 @layer base {
   :root {
-    /* ===== Primary Brand Colors (Purple) ===== */
-    --melody-purple-50: #FAF5FF;
-    --melody-purple-100: #F3E8FF;
-    --melody-purple-200: #E9D5FF;
-    --melody-purple-400: #C084FC;
-    --melody-purple-600: #9333EA;
-    --melody-purple-700: #7E22CE;
-    --melody-purple-900: #581C87;
+    /* ===== Brand Core (Rich Blue/Purple) ===== */
+    --primary-50: #eff0ff;
+    --primary-100: #e0e3ff;
+    --primary-200: #c7ccfe;
+    --primary-300: #a5acfd;
+    --primary-400: #7d85fc;
+    --primary-500: #5856d6;
+    /* Primary Brand - Rich Purple/Blue */
+    --primary-600: #4b44ca;
+    --primary-700: #3d34a9;
+    --primary-800: #342e88;
+    --primary-900: #2e2a6d;
+    --primary-950: #1b183f;
 
-    /* ===== Secondary Colors (Blue) ===== */
-    --melody-blue-400: #60A5FA;
-    --melody-blue-500: #3B82F6;
-    --melody-blue-600: #2563EB;
+    /* ===== Neutral / Surface System (True Black Foundation) ===== */
+    --background-base: #000000;
+    /* True Black */
+    --background-elevated: #121212;
+    /* Elevated Surface */
+    --background-highlight: #1c1c1e;
+    /* Hover State */
+    --background-press: #2c2c2e;
+    /* Active State */
 
-    /* ===== Success/Active (Green) ===== */
-    --melody-green-400: #4ADE80;
-    --melody-green-500: #22C55E;
+    /* ===== Text System ===== */
+    --text-primary: #ffffff;
+    --text-secondary: rgba(235, 235, 245, 0.6);
+    /* Apple-like secondary */
+    --text-tertiary: rgba(235, 235, 245, 0.3);
+    --text-disabled: rgba(235, 235, 245, 0.15);
+
+    /* ===== Accent Colors ===== */
+    --accent-blue: #0a84ff;
+    /* Electric Blue */
+    --accent-orange: #ff9f0a;
+    /* Sunset Orange */
 
     /* ===== Semantic Colors ===== */
-    --color-success: #22C55E;
-    --color-warning: #F59E0B;
-    --color-error: #EF4444;
-    --color-info: #3B82F6;
+    --success: #30d158;
+    /* Premium Green */
+    --warning: #ffd60a;
+    /* Premium Amber */
+    --error: #ff453a;
+    /* Premium Red */
+    --info: #64d2ff;
+    /* Premium Info Blue */
 
-    /* ===== Dark Mode Backgrounds (Twitter/X Inspired) ===== */
-    --color-bg-primary: #0A0E27;
-    --color-bg-secondary: #141B2D;
-    --color-bg-elevated: #1E293B;
-    --color-bg-tertiary: #202327;
+    /* ===== Borders & Dividers ===== */
+    --border-subtle: rgba(255, 255, 255, 0.1);
+    --border-medium: rgba(255, 255, 255, 0.15);
+    --border-strong: rgba(255, 255, 255, 0.25);
 
-    /* ===== Text Colors ===== */
-    --color-text-primary: #F8FAFC;
-    --color-text-secondary: #CBD5E1;
-    --color-text-muted: #64748B;
+    /* ===== Shadows ===== */
+    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-raised: 0 8px 24px rgba(0, 0, 0, 0.5);
+    --shadow-floating: 0 16px 40px rgba(0, 0, 0, 0.6);
+    --shadow-modal: 0 24px 60px rgba(0, 0, 0, 0.7);
 
-    /* ===== Border Colors ===== */
-    --color-border-primary: #2F3336;
-    --color-border-hover: #3E4144;
-
-    /* ===== Typography ===== */
-    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --font-display: 'Outfit', sans-serif;
-
-    /* ===== Spacing System ===== */
-    --spacing-xs: 0.5rem;
-    /* 8px */
-    --spacing-sm: 1rem;
-    /* 16px */
-    --spacing-md: 1.5rem;
-    /* 24px */
-    --spacing-lg: 2rem;
-    /* 32px */
-    --spacing-xl: 3rem;
-    /* 48px */
-
-    /* ===== Border Radius ===== */
+    /* ===== Design Tokens ===== */
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 16px;
     --radius-xl: 24px;
     --radius-full: 9999px;
 
-    /* ===== Shadows ===== */
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
-    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
-    --shadow-glow: 0 0 20px rgba(147, 51, 234, 0.3);
-    --shadow-glow-blue: 0 0 20px rgba(59, 130, 246, 0.3);
-
-    /* ===== Glassmorphism ===== */
-    --glass-bg: rgba(255, 255, 255, 0.05);
+    /* ===== Glass Morphism Tokens ===== */
+    --glass-background: rgba(18, 18, 18, 0.8);
     --glass-border: rgba(255, 255, 255, 0.1);
-    --glass-blur: blur(12px);
 
-    /* ===== Legacy ShadCN Variables (Keep for compatibility) ===== */
-    --background: 20 14.3% 4.1%;
-    --foreground: 0 0% 95%;
-    --card: 24 9.8% 10%;
-    --card-foreground: 0 0% 95%;
-    --popover: 0 0% 9%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 142.1 70.6% 45.3%;
-    --primary-foreground: 144.9 80.4% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 12 6.5% 15.1%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 85.7% 97.3%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 142.4 71.8% 29.2%;
-    --radius: 0.5rem;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-  }
-
-  /* Dark theme (primary mode) */
-  .dark {
-    --background: 20 14.3% 4.1%;
-    --foreground: 0 0% 95%;
-    --card: 24 9.8% 10%;
-    --card-foreground: 0 0% 95%;
-    --popover: 0 0% 9%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 142.1 70.6% 45.3%;
-    --primary-foreground: 144.9 80.4% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 12 6.5% 15.1%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 85.7% 97.3%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 142.4 71.8% 29.2%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    /* ===== Typography ===== */
+    --font-primary: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-display: 'SF Pro Display', 'Inter', sans-serif;
   }
 }
 
-/* ============================================
-   BASE STYLES
-   ============================================ */
 @layer base {
-  * {
-    @apply border-border;
-  }
-
   body {
-    @apply bg-[var(--color-bg-primary)] text-[var(--color-text-primary)];
+    background-color: var(--background-base);
+    color: var(--text-primary);
     font-family: var(--font-primary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    /* Selection Color */
+    ::selection {
+      background-color: rgba(139, 92, 246, 0.3);
+      /* Primary 500 with opacity */
+      color: white;
+    }
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: var(-- font-display);
-    font-weight: 700;
+  /* Custom Scrollbar (Thin & Dark) */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
   }
 
-  /* Accessibility: Visible focus indicators */
-  *:focus-visible {
-    outline: 2px solid var(--melody-purple-500);
-    outline-offset: 2px;
+  ::-webkit-scrollbar-track {
+    background: transparent;
   }
 
-  button:focus-visible,
-  a:focus-visible {
-    outline: 2px solid var(--melody-purple-400);
-    outline-offset: 3px;
-  }
-}
-
-/* ============================================
-   CUSTOM ANIMATIONS
-   ============================================ */
-@keyframes slow-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
+  ::-webkit-scrollbar-thumb {
+    background: var(--background-press);
+    border-radius: var(--radius-full);
   }
 
-  to {
-    opacity: 1;
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-tertiary);
   }
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(10px);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes glow {
-
-  0%,
-  100% {
-    box-shadow: 0 0 20px rgba(147, 51, 234, 0.3);
-  }
-
-  50% {
-    box-shadow: 0 0 40px rgba(147, 51, 234, 0.6);
-  }
-}
-
-/* ============================================
-   GLASSMORPHISM UTILITIES
-   ============================================ */
-.glass {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-}
-
-.glass-strong {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* ============================================
-   CUSTOM COMPONENT STYLES
-   ============================================ */
-
-/* Slider/Range Input Styling */
-.slider-track {
-  height: 2px;
-  background-color: rgba(255, 255, 255, 0.2);
-  width: 120px;
-}
-
-/* 3D Button Effect (Legacy - can be deprecated) */
-.button-3d {
-  color: #eeeaea;
-  font-size: 44px;
-  border-radius: 50px;
-  box-shadow: 7px 7px 10px rgba(11, 1, 14, 0.3);
-  transition: all 0.4s ease;
-}
-
-.button-3d:hover {
-  transform: translate(1px, 1px);
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
-}
-
-.button-3d:active {
-  transform: translate(3px, 3px);
-  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2);
-}
-
-/* ============================================
-   CUSTOM FONTS (Local)
-   ============================================ */
-@font-face {
-  font-family: 'Doto';
-  src: url('/fonts/Doto-Regular.ttf');
-}
-
-@font-face {
-  font-family: 'Bitshow';
-  src: url('/fonts/Bitshow.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'Shivana';
-  src: url('/fonts/Sivana.ttf') format('truetype');
-}
-
-@theme {
-  --font-doto: 'Doto', sans-serif;
-  --font-shivana: 'Shivana', sans-serif;
-  --font-bitshow: 'Bitshow', sans-serif;
-}
-
-@font-face {
-  font-family: 'Bytesized';
-  src: url('https://fonts.googleapis.com/css2?family=Bytesized&display=swap') format('woff2');
-  font-weight: normal;
-  font-style: normal;
 }
 
 /* ============================================
    UTILITY CLASSES
    ============================================ */
-.animate-fade-in {
-  animation: fadeIn 0.3s ease-in;
+
+/* Glassmorphism Presets */
+/* Glassmorphism Presets */
+.glass-panel {
+  background: var(--glass-background);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
 }
 
-.animate-slide-up {
-  animation: slideUp 0.3s ease-out;
+.glass-modal {
+  background: var(--glass-background);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-modal);
 }
 
-.animate-glow {
-  animation: glow 2s ease-in-out infinite;
+.glass-toolbar {
+  background: rgba(18, 18, 18, 0.7);
+  /* Slightly more transparent */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-border);
 }
 
-/* Smooth Transitions */
-.transition-smooth {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* Typography Utilities */
+.text-display-lg {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
-/* Hover Lift Effect (Spotify Pattern) */
-.hover-lift {
-  transition: transform 200ms ease, box-shadow 200ms ease;
+.text-display-md {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
-.hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+/* Animation Utilities */
+.hover-scale {
+  transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* ============================================
-   ACCESSIBILITY: REDUCED MOTION
-   ============================================ */
-/* Respect user's motion preferences for accessibility */
-@media (prefers-reduced-motion: reduce) {
+.hover-scale:hover {
+  transform: scale(1.02);
+}
 
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+.active-scale:active {
+  transform: scale(0.98);
+}
+
+/* Skeleton Loading Shimmer */
+.skeleton-shimmer {
+  background: linear-gradient(90deg,
+      var(--background-elevated) 25%,
+      var(--background-highlight) 50%,
+      var(--background-elevated) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
   }
 
-  /* Disable specific animations */
-  .animate-spin,
-  .animate-pulse,
-  .animate-bounce,
-  .animate-fade-in,
-  .animate-slide-up,
-  .animate-glow {
-    animation: none !important;
-  }
-
-  /* But keep transforms for hover states (non-animated) */
-  .hover-lift:hover {
-    transform: none;
-  }
-}
-/* ============================================
-   MOBILE: TOUCH TARGETS
-   ============================================ */
-/* Ensure minimum 44x44px touch targets for mobile usability */
-@media (max-width: 768px) {
-  /* Buttons should be at least 44x44px on mobile */
-  button,
-  a[role="button"],
-  .button,
-  [role="tab"],
-  [role="menuitem"] {
-    min-height: 44px;
-    min-width: 44px;
-  }
-  
-  /* Player controls need larger touch targets */
-  .player-control-button {
-    min-height: 48px;
-    min-width: 48px;
-  }
-  
-  /* Ensure adequate spacing between touch targets */
-  button + button,
-  a + a {
-    margin-left: 8px;
-  }
-  
-  /* Icon buttons need padding for larger touch area */
-  button[aria-label] {
-    padding: 12px;
+  100% {
+    background-position: -200% 0;
   }
 }
 
-/* ============================================
-   MOBILE: PLAYER OPTIMIZATIONS
-   ============================================ */
-@media (max-width: 640px) {
-  /* Make play/pause button more prominent on mobile */
-  .play-pause-button {
-    min-height: 56px !important;
-    min-width: 56px !important;
-  }
-  
-  /* Ensure controls are spaced for fat fingers */
-  .player-controls {
-    gap: 16px;
-  }
+/* Custom Range Slider (for Player) */
+input[type=range] {
+  -webkit-appearance: none;
+  background: transparent;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  background: white;
+  margin-top: -4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+input[type=range]:hover::-webkit-slider-thumb {
+  transform: scale(1.2);
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  background: var(--background-press);
+  border-radius: 2px;
 }
