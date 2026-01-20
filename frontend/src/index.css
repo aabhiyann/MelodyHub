@@ -361,3 +361,51 @@
     transform: none;
   }
 }
+/* ============================================
+   MOBILE: TOUCH TARGETS
+   ============================================ */
+/* Ensure minimum 44x44px touch targets for mobile usability */
+@media (max-width: 768px) {
+  /* Buttons should be at least 44x44px on mobile */
+  button,
+  a[role="button"],
+  .button,
+  [role="tab"],
+  [role="menuitem"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Player controls need larger touch targets */
+  .player-control-button {
+    min-height: 48px;
+    min-width: 48px;
+  }
+  
+  /* Ensure adequate spacing between touch targets */
+  button + button,
+  a + a {
+    margin-left: 8px;
+  }
+  
+  /* Icon buttons need padding for larger touch area */
+  button[aria-label] {
+    padding: 12px;
+  }
+}
+
+/* ============================================
+   MOBILE: PLAYER OPTIMIZATIONS
+   ============================================ */
+@media (max-width: 640px) {
+  /* Make play/pause button more prominent on mobile */
+  .play-pause-button {
+    min-height: 56px !important;
+    min-width: 56px !important;
+  }
+  
+  /* Ensure controls are spaced for fat fingers */
+  .player-controls {
+    gap: 16px;
+  }
+}
