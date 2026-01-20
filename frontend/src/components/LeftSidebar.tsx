@@ -29,19 +29,19 @@ const LeftSidebar = () => {
   return (
     <div className='h-full flex flex-col gap-2'>
       {/* Navigation Menu */}
-      <div className='h-full glass bg-[var(--color-bg-primary)] border border-[var(--color-border-primary)] rounded-lg flex flex-col p-4'>
-        <div className='space-y-2'>
+      <div className='rounded-xl bg-black/40 backdrop-blur-md border border-white/5 flex flex-col p-3 shadow-sm'>
+        <div className='space-y-1'>
           {/* Home */}
           <Link
             to={'/'}
             className={cn(
               buttonVariants({
                 variant: 'ghost',
-                className: 'w-full justify-start text-[var(--color-text-primary)] hover:bg-white/5 hover:text-[var(--melody-purple-400)]',
+                className: 'w-full justify-start text-text-secondary hover:text-white hover:bg-white/10 h-10 px-4 font-medium transition-all group',
               })
             )}
           >
-            <Music2 className='mr-2 size-6' />
+            <Music2 className='mr-3 size-5 group-hover:scale-110 transition-transform' />
             <span className='hidden md:inline'>Home</span>
           </Link>
 
@@ -52,18 +52,18 @@ const LeftSidebar = () => {
             </div>
           )}
 
-          {/* Chat (clickable only if logged in) */}
+          {/* Chat */}
           {user ? (
             <Link
               to={'/chat'}
               className={cn(
                 buttonVariants({
                   variant: 'ghost',
-                  className: 'w-full justify-start text-white hover:bg-zinc-500',
+                  className: 'w-full justify-start text-text-secondary hover:text-white hover:bg-white/10 h-10 px-4 font-medium transition-all group',
                 })
               )}
             >
-              <MessageSquare className='mr-2 size-6 text-emerald-500' />
+              <MessageSquare className='mr-3 size-5 group-hover:scale-110 transition-transform' />
               <span className='hidden md:inline'>Chat</span>
             </Link>
           ) : (
@@ -72,12 +72,12 @@ const LeftSidebar = () => {
                 buttonVariants({
                   variant: 'ghost',
                   className:
-                    'w-full justify-start text-white opacity-70 cursor-not-allowed',
+                    'w-full justify-start text-text-disabled cursor-not-allowed h-10 px-4',
                 })
               )}
             >
-              <MessageSquare className='mr-2 size-6 text-red-500' />
-              <span className='hidden md:inline'>Chat (Login Required)</span>
+              <MessageSquare className='mr-3 size-5' />
+              <span className='hidden md:inline'>Chat</span>
             </div>
           )}
 
@@ -88,12 +88,12 @@ const LeftSidebar = () => {
               className={cn(
                 buttonVariants({
                   variant: 'ghost',
-                  className: 'w-full justify-start text-white hover:bg-zinc-500',
+                  className: 'w-full justify-start text-text-secondary hover:text-white hover:bg-white/10 h-10 px-4 font-medium transition-all group',
                 })
               )}
             >
-              <LockKeyholeOpen className='mr-2 size-6 text-emerald-500' />
-              <span className='hidden md:inline'>Admin Dashboard</span>
+              <LockKeyholeOpen className='mr-3 size-5 group-hover:scale-110 transition-transform' />
+              <span className='hidden md:inline'>Admin</span>
             </Link>
           ) : (
             <div
@@ -101,12 +101,12 @@ const LeftSidebar = () => {
                 buttonVariants({
                   variant: 'ghost',
                   className:
-                    'w-full justify-start text-white opacity-70 cursor-not-allowed',
+                    'w-full justify-start text-text-disabled cursor-not-allowed hidden',
                 })
               )}
             >
-              <LockKeyhole className='mr-2 size-6 text-red-500' />
-              <span className='hidden md:inline'>Admin (Restricted)</span>
+              <LockKeyhole className='mr-3 size-5' />
+              <span className='hidden md:inline'>Admin</span>
             </div>
           )}
 
@@ -114,16 +114,16 @@ const LeftSidebar = () => {
       </div>
 
       {/* Library Section */}
-      <div className='h-full glass bg-[var(--color-bg-primary)] border border-[var(--color-border-primary)] rounded-lg flex flex-col p-4'>
-        <div className='flex items-center justify-between mb-4'>
-          <div className='flex items-center text-[var(--color-text-primary)] px-2'>
-            <Library className='size-5 mr-2' />
-            <span className='hidden md:inline'>Albums</span>
+      <div className='flex-1 rounded-xl bg-black/40 backdrop-blur-md border border-white/5 flex flex-col p-4 shadow-sm'>
+        <div className='flex items-center justify-between mb-4 px-2'>
+          <div className='flex items-center text-text-secondary group cursor-pointer hover:text-white transition-colors'>
+            <Library className='size-5 mr-3 group-hover:scale-110 transition-transform' />
+            <span className='hidden md:inline font-semibold tracking-tight'>Your Library</span>
           </div>
         </div>
 
-        <ScrollArea className='h-[calc(100vh-300px)]'>
-          <div className='space-y-2'>
+        <ScrollArea className='h-[calc(100vh-340px)]'>
+          <div className='space-y-1 p-1'>
             {isLoading ? (
               <PlaylistTab />
             ) : (
@@ -131,17 +131,17 @@ const LeftSidebar = () => {
                 <Link
                   to={`/albums/${album._id}`}
                   key={album._id}
-                  className='p-2 hover:bg-white/5 hover:border-[var(--melody-purple-500)]/30 rounded-md flex items-center gap-3 group cursor-pointer transition-all'
+                  className='p-2 hover:bg-white/10 rounded-lg flex items-center gap-3 group cursor-pointer transition-all'
                 >
                   <img
                     src={album.imageUrl}
                     alt='Playlist img'
-                    className='size-12 rounded-md flex-shrink-0 object-cover'
+                    className='size-10 rounded-md flex-shrink-0 object-cover shadow-sm group-hover:shadow-md transition-shadow'
                   />
                   <div className='flex-1 min-w-0 hidden md:block'>
-                    <p className='font-medium truncate'>{album.title}</p>
-                    <p className='text-sm text-zinc-400 truncate'>
-                      Album by  {album.artist}
+                    <p className='font-medium text-text-primary truncate text-sm'>{album.title}</p>
+                    <p className='text-xs text-text-secondary truncate group-hover:text-text-primary transition-colors'>
+                      Album • {album.artist}
                     </p>
                   </div>
                 </Link>

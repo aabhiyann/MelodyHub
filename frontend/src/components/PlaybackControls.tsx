@@ -68,25 +68,28 @@ export const PlaybackControls = () => {
 
     return (
         <footer
-            className='h-30 sm:h-34 bg-slate-800 border-t border-slate-950 px bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]'
+            className='h-auto sm:h-24 glass-toolbar border-t border-white/5 px-4 fixed bottom-0 left-0 right-0 z-50 bg-[#09090b]/60 backdrop-blur-2xl'
             role="contentinfo"
             aria-label="Media player controls"
         >
-            <div className='flex justify-between items-center h-full max-w-[1800px] mx-auto'>
+            <div className='flex justify-between items-center h-full max-w-[1800px] mx-auto py-3 sm:py-0'>
                 {/* currently playing song */}
-                <div className='hidden sm:flex items-center gap-4 min-w-[180px] w-[30%] font-sans'>
+                <div className='hidden sm:flex items-center gap-4 min-w-[200px] w-[30%]'>
                     {currentSong && (
                         <>
-                            <img
-                                src={currentSong.imageUrl}
-                                alt={currentSong.title}
-                                className={`w-24 h-24 object-cover rounded-full ${isPlaying ? 'animate-[spin_3s_linear_infinite]' : ''}`}
-                            />
+                            <div className="relative group">
+                                <img
+                                    src={currentSong.imageUrl}
+                                    alt={currentSong.title}
+                                    className={`size-14 object-cover rounded-md shadow-lg border border-white/5 ${isPlaying ? 'animate-spin-slow' : ''}`}
+                                />
+                                <div className="absolute inset-0 bg-black/10 rounded-md group-hover:bg-black/0 transition-colors" />
+                            </div>
                             <div className='flex-1 min-w-0'>
-                                <div className='font-mono text-xl truncate hover:underline cursor-pointer'>
+                                <div className='font-medium text-white text-sm truncate cursor-pointer hover:underline tracking-tight'>
                                     {currentSong.title}
                                 </div>
-                                <div className='text-l text-zinc-400 truncate hover:underline cursor-pointer'>
+                                <div className='text-xs text-text-secondary truncate hover:text-white cursor-pointer transition-colors'>
                                     {currentSong.artist}
                                 </div>
                             </div>
@@ -95,93 +98,84 @@ export const PlaybackControls = () => {
                 </div>
 
                 {/* player controls */}
-                <div className='flex flex-col items-center gap-2 flex-1 max-w-full sm:max-w-[45%]'>
-                    <div className='flex items-center gap-4 sm:gap-6'>
+                <div className='flex flex-col items-center gap-1.5 flex-1 max-w-full sm:max-w-[45%]'>
+                    <div className='flex items-center gap-6'>
                         <Button
                             size='icon'
                             variant='ghost'
-                            className='button-3d player-control-button'
+                            className='text-text-secondary hover:text-white hover:bg-transparent transition-colors'
                             onClick={handleShuffle}
                             aria-label={shuffled ? 'Disable shuffle' : 'Enable shuffle'}
                             aria-pressed={shuffled}
                         >
-                            <Shuffle className={`h-8 w-9 ${shuffled ? 'text-white' : 'text-zinc-400'}`} />
+                            <Shuffle className={`h-4 w-4 ${shuffled ? 'text-brand-primary' : ''}`} />
                         </Button>
 
                         <Button
                             size='icon'
                             variant='ghost'
-                            className='button-3d player-control-button'
+                            className='text-white hover:text-white/80 hover:bg-transparent transition-colors'
                             onClick={playPrevious}
                             disabled={!currentSong}
                             aria-label='Previous song'
                         >
-                            <SkipBack className='h-4 w-4' />
+                            <SkipBack className='h-5 w-5 fill-current' />
                         </Button>
 
                         <Button
                             size='icon'
-                            className=" button-3d hover:text-gray-900 play-pause-button"
-                            // className='bg-cyan-950 hover:bg-white/80 text-black rounded-full h-8 w-8'
-                            onClick={handlePlayPause} // Use the new play/pause handler
+                            className="h-10 w-10 rounded-full bg-white text-black hover:scale-105 transition-transform shadow-lg hover:bg-white/90"
+                            onClick={handlePlayPause}
                             disabled={!currentSong}
                             aria-label={isPlaying ? 'Pause' : 'Play'}
                             aria-pressed={isPlaying}
                         >
-                            {isPlaying ? <Pause className='h-5 w-5' /> : <Play className='h-5 w-5' />}
+                            {isPlaying ? <Pause className='h-5 w-5 fill-current' /> : <Play className='h-5 w-5 fill-current ml-0.5' />}
                         </Button>
 
                         <Button
                             size='icon'
                             variant='ghost'
-                            className='button-3d '
+                            className='text-white hover:text-white/80 hover:bg-transparent transition-colors'
                             onClick={playNext}
                             disabled={!currentSong}
                         >
-                            <SkipForward className='h-6 w-6' />
+                            <SkipForward className='h-5 w-5 fill-current' />
                         </Button>
 
                         <Button
                             size='icon'
                             variant='ghost'
-                            className='button-3d '
-                            onClick={handleRepeat} // Set the onClick to call handleRepeat when clicked
+                            className={`hover:bg-transparent transition-colors ${usePlayerStore(state => state.isRepeating) ? 'text-brand-primary' : 'text-text-secondary hover:text-white'}`}
+                            onClick={handleRepeat}
                         >
                             <Repeat className='h-4 w-4' />
                         </Button>
                     </div>
 
-                    <div className='hidden sm:flex items-center gap-2 w-full '>
-                        <div className='text-s text-zinc-400'>{formatTime(currentTime)}</div>
+                    <div className='hidden sm:flex items-center gap-2 w-full max-w-md'>
+                        <div className='text-xs text-text-tertiary tabular-nums w-10 text-right'>{formatTime(currentTime)}</div>
                         <Slider
                             value={[currentTime]}
                             max={duration || 100}
                             step={1}
-                            className='w-full hover:cursor- active:cursor-grabbing '
-                            style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
+                            className='w-full cursor-pointer hover:cursor-pointer'
                             onValueChange={handleSeek}
                         />
-                        <div className='text-s text-zinc-400'>{formatTime(duration)}</div>
+                        <div className='text-xs text-text-tertiary tabular-nums w-10'>{formatTime(duration)}</div>
                     </div>
                 </div>
+
                 {/* volume controls */}
-                <div className='hidden sm:flex items-center gap-4 min-w-[180px] w-[30%] justify-end'>
-
-
+                <div className='hidden sm:flex items-center gap-3 min-w-[200px] w-[30%] justify-end relative'>
+                    {/* Glass panel container for volume could be added here if desired, keeping simple for now to match Spotify */}
                     <div className='flex items-center gap-2'>
-                        <Button size='icon' variant='ghost' className='hover:text-white text-zinc-400'>
-
-                            <Volume2 className='h-4 w-4'
-                            />
-
-                        </Button>
-
+                        <Volume2 className='h-4 w-4 text-text-secondary' />
                         <Slider
                             value={[volume]}
                             max={100}
                             step={1}
-                            className='w-24 hover:cursor-grab active:cursor-grabbing slider-track'
-
+                            className='w-24 cursor-pointer'
                             onValueChange={(value) => {
                                 setVolume(value[0]);
                                 if (audioRef.current) {
