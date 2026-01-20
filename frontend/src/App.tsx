@@ -10,6 +10,7 @@ const ChatPage = lazy(() => import("./pages/ChatPage"));
 const AlbumPage = lazy(() => import("./pages/AlbumPage"));
 const AdminPage = lazy(() => import("./pages/AdminPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
+const LandingPage = lazy(() => import("./pages/LandingPage"));
 const MainLayout = lazy(() => import("./layout/MainLayout"));
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
 				/>
 				<Route path='/auth-callback' element={<AuthCallbackPage />} />
 				<Route path='/admin' element={<AdminPage />} />
+				<Route path='/landing' element={<LandingPage />} />
 
 				<Route element={<MainLayout />}>
 					<Route path='/' element={<HomePage />} />
