@@ -34,24 +34,24 @@ const HomePage = () => {
 	}, [initializeQueue, madeForYouSongs, trendingSongs, featuredSongs]);
 
 	return (
-		<main className='rounded-md overflow-hidden h-full bg-gradient-to-b from-background-elevated to-background-base'>
+		<main className='rounded-md overflow-hidden h-full bg-transparent'>
 			<Topbar />
 			<ScrollArea className='h-[calc(100vh-180px)]'>
 				<div className='p-6'>
 					{/* Welcome Hero Section with Gradient Glow */}
-					<div className='relative rounded-3xl bg-gradient-to-br from-brand-primary/20 to-transparent p-8 mb-8 border border-border-subtle overflow-hidden'>
+					<div className='relative rounded-3xl bg-white/5 backdrop-blur-md p-8 mb-8 border border-white/5 overflow-hidden group'>
 						{/* Background Decorative Blob */}
-						<div className="absolute -top-20 -right-20 w-80 h-80 bg-brand-primary/30 rounded-full blur-3xl pointer-events-none" />
+						<div className="absolute -top-20 -right-20 w-80 h-80 bg-brand-primary/20 rounded-full blur-3xl pointer-events-none transition-all duration-1000 group-hover:bg-brand-primary/30" />
 
 						<div className='relative z-10 flex flex-col md:flex-row items-center justify-between gap-8'>
 							<div className='flex-1 space-y-4 text-center md:text-left'>
-								<h1 className='text-4xl md:text-6xl font-display font-bold text-text-primary tracking-tight'>
+								<h1 className='text-4xl md:text-6xl font-display font-bold text-white tracking-tight'>
 									Welcome to <br />
 									<span className="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">
 										MelodyHub
 									</span>
 								</h1>
-								<p className='text-lg text-text-secondary max-w-xl mx-auto md:mx-0'>
+								<p className='text-lg text-zinc-400 max-w-xl mx-auto md:mx-0'>
 									Your personal AI-powered soundtrack. Discover new favorites and rediscover old classics.
 								</p>
 							</div>
