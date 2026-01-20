@@ -1,7 +1,9 @@
 import { Play, MoreHorizontal, Heart, Plus, ListMusic } from "lucide-react";
 import { Song } from "@/types";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { HeartParticles } from "@/components/HeartParticles";
+import { heartVariants } from "@/lib/animation-variants";
 
 interface MusicCardProps {
     song: Song;
@@ -12,6 +14,24 @@ interface MusicCardProps {
 const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
     const [showMenu, setShowMenu] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
+    const [showParticles, setShowParticles] = useState(false);
+
+    const handleLikeClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        const newLikedState = !isLiked;
+        setIsLiked(newLikedState);
+
+        // Show particles when liking
+        if (newLikedState) {
+            setShowParticles(true);
+            setTimeout(() => setShowParticles(false), 600);
+
+            // Haptic feedback on mobile
+            if ('vibrate' in navigator) {
+                navigator.vibrate(50);
+            }
+        }
+    };
 
     return (
         <div
@@ -33,22 +53,40 @@ const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
                 {/* Like Button (Top Right) */}
                 <div className="absolute top-3 right-3 z-20 opacity-0 translate-y-[-10px] group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 delay-75">
                     <motion.button
+                        onClick={handleLikeClick}
+                        className="relative p-2 rounded-full bg-black/20 backdrop-blur-md hover:bg-black/40 text-white transition-colors border border-white/5"
                         whileTap={{ scale: 0.8 }}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            setIsLiked(!isLiked);
-                        }}
-                        className="p-2 rounded-full bg-black/20 backdrop-blur-md hover:bg-black/40 text-white transition-colors border border-white/5"
                     >
-                        <Heart className={`w-5 h-5 transition-colors duration-300 ${isLiked ? "fill-brand-primary text-brand-primary line-clamp-none" : "text-white"}`} />
-                        {isLiked && (
-                            <motion.div
-                                initial={{ scale: 0, opacity: 1 }}
-                                animate={{ scale: 1.5, opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                                className="absolute inset-0 rounded-full bg-brand-primary/50 pointer-events-none"
+                        <motion.div
+                            variants={heartVariants}
+                            initial="unliked"
+                            animate={isLiked ? "liked" : "unliked"}
+                        >
+                            <Heart
+                                className={`w-5 h-5 transition-all duration-300 ${isLiked
+                                        ? "fill-red-500 text-red-500"
+                                        : "text-white"
+                                    }`}
                             />
-                        )}
+                        </motion.div>
+
+                        {/* Glow Effect on Like */}
+                        <AnimatePresence>
+                            {isLiked && (
+                                <motion.div
+                                    initial={{ scale: 0.8, opacity: 1 }}
+                                    animate={{ scale: 1.5, opacity: 0 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.5 }}
+                                    className="absolute inset-0 rounded-full bg-red-500/50 pointer-events-none"
+                                />
+                            )}
+                        </AnimatePresence>
+
+                        {/* Particle Burst */}
+                        <AnimatePresence>
+                            {showParticles && <HeartParticles count={8} color="#ef4444" size={8} />}
+                        </AnimatePresence>
                     </motion.button>
                 </div>
 
@@ -107,7 +145,7 @@ const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
 };
 
 export const MusicCardSkeleton = () => (
-    <div className='w-[160px] md:w-[200px] flex-shrink-0 animate-pulse skeleton-shimmer rounded-2xl'>
+    <div className='w-[160px] md:w-[200px] flex-shrink-0 animate-pulse skeleton-shimmer-enhanced rounded-2xl'>
         <div className="aspect-square rounded-2xl bg-white/5" />
         <div className="mt-3 space-y-2">
             <div className="h-4 w-3/4 rounded bg-white/5" />
