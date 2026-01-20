@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
-
+import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
@@ -69,20 +69,61 @@ function Button({
   size,
   shape,
   asChild = false,
+  disabled,
   ...props
 }: React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean
   }) {
-  const Comp = asChild ? Slot : "button"
 
+  // Animation variants for the button
+  const animationVariants = {
+    initial: { scale: 1 },
+    hover: disabled ? {} : {
+      scale: variant === 'link' ? 1 : 1.02,
+      y: variant === 'link' ? 0 : -1,
+    },
+    tap: disabled ? {} : {
+      scale: 0.98,
+      y: 0,
+    },
+  };
+
+  const buttonClassName = cn(
+    buttonVariants({ variant, size, shape, className }),
+    "will-change-transform"
+  );
+
+  // If asChild, use Slot without Framer Motion
+  if (asChild) {
+    return (
+      <Slot
+        data-slot="button"
+        className={buttonClassName}
+        {...props}
+      />
+    );
+  }
+
+  // Otherwise use motion.button with animations
   return (
-    <Comp
+    <motion.button
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, shape, className }))}
-      {...props}
+      className={buttonClassName}
+      variants={animationVariants}
+      initial="initial"
+      whileHover="hover"
+      whileTap="tap"
+      transition={{
+        type: "tween",
+        duration: 0.2,
+        ease: "easeOut",
+      }}
+      disabled={disabled}
+      {...(props as any)}
     />
   )
 }
 
 export { Button, buttonVariants }
+
