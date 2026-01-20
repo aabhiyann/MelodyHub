@@ -11,6 +11,7 @@ import {
   MessageSquare,
   LockKeyholeOpen,
   LockKeyhole,
+  Sparkles,
 } from "lucide-react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -44,6 +45,22 @@ const LeftSidebar = () => {
             <Music2 className='mr-3 size-5 group-hover:scale-110 transition-transform' />
             <span className='hidden md:inline'>Home</span>
           </Link>
+
+          {/* Ask Melody AI */}
+          {user && (
+            <Link
+              to={'/ai'}
+              className={cn(
+                buttonVariants({
+                  variant: 'ghost',
+                  className: 'w-full justify-start text-text-secondary hover:text-white hover:bg-white/10 h-10 px-4 font-medium transition-all group',
+                })
+              )}
+            >
+              <Sparkles className='mr-3 size-5 group-hover:scale-110 transition-transform text-brand-primary' />
+              <span className='hidden md:inline'>Ask Melody</span>
+            </Link>
+          )}
 
           {/* AI Playlist - Only if logged in */}
           {user && (
