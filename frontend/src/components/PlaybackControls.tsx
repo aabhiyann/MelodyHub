@@ -185,22 +185,58 @@ export const PlaybackControls = () => {
                 </div>
 
                 {/* 3. Right Section: Volume & Extras */}
-                <div className='hidden sm:flex items-center gap-3 w-[30%] min-w-[180px] justify-end'>
-                    {/* Glass panel container for volume could be added here if desired, keeping simple for now to match Spotify */}
-                    <div className='flex items-center gap-2'>
-                        <Volume2 className='h-4 w-4 text-text-secondary' />
-                        <Slider
-                            value={[volume]}
-                            max={100}
-                            step={1}
-                            className='w-24 cursor-pointer'
-                            onValueChange={(value) => {
-                                setVolume(value[0]);
-                                if (audioRef.current) {
-                                    audioRef.current.volume = value[0] / 100;
-                                }
-                            }}
-                        />
+                <div className='hidden sm:flex items-center gap-4 min-w-[180px] w-[30%] justify-end'>
+                    <Button
+                        size='icon'
+                        variant='ghost'
+                        className='text-text-secondary hover:text-white hover:bg-transparent hidden lg:flex'
+                        onClick={() => { /* Placeholder for lyrics view if separate from left toggle, or remove if redundant */ }}
+                    >
+                        {/* Mic icon again if needed, or maybe lyrics view toggle */}
+                        {/* <Mic2 className='h-4 w-4' /> */}
+                    </Button>
+
+                    <Button
+                        size='icon'
+                        variant='ghost'
+                        className={`text-text-secondary hover:text-white hover:bg-transparent ${usePlayerStore(state => state.isQueueOpen) ? 'text-brand-primary' : ''}`}
+                        onClick={usePlayerStore(state => state.toggleQueue)}
+                    >
+                        <ListMusic className='h-4 w-4' />
+                    </Button>
+
+                    <Button
+                        size='icon'
+                        variant='ghost'
+                        className='text-text-secondary hover:text-white hover:bg-transparent'
+                    >
+                        <Laptop2 className='h-4 w-4' />
+                    </Button>
+
+                    <div className='flex items-center gap-2 group/volume'>
+                        <Button
+                            size='icon'
+                            variant='ghost'
+                            className='text-text-secondary hover:text-white hover:bg-transparent p-0 h-8 w-8'
+                        >
+                            <Volume2 className='h-4 w-4' />
+                        </Button>
+
+                        <div className="w-24 h-1.5 bg-white/10 rounded-full relative overflow-hidden group-hover/volume:bg-white/20 transition-colors cursor-pointer">
+                            {/* Volume styling to match progress bar but smaller */}
+                            <Slider
+                                value={[volume]}
+                                max={100}
+                                step={1}
+                                className='w-full [&>span:first-child]:h-1.5 [&>span:first-child]:bg-white [&_span[data-orientation=horizontal]]:bg-transparent [&_span[data-orientation=horizontal]]:border-none'
+                                onValueChange={(value) => {
+                                    setVolume(value[0]);
+                                    if (audioRef.current) {
+                                        audioRef.current.volume = value[0] / 100;
+                                    }
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
