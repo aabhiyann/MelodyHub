@@ -34,28 +34,36 @@ const HomePage = () => {
 	}, [initializeQueue, madeForYouSongs, trendingSongs, featuredSongs]);
 
 	return (
-		<main className='rounded-md overflow-hidden h-full bg-gradient-to-b from-[var(--color-bg-primary)] to-[var(--color-bg-secondary)]'>
+		<main className='rounded-md overflow-hidden h-full bg-gradient-to-b from-background-elevated to-background-base'>
 			<Topbar />
 			<ScrollArea className='h-[calc(100vh-180px)]'>
-				<div className='p-4 sm:p-6 '>
-					{/* Welcome Hero Section */}
-					<div className='flex flex-col md:flex-row items-center justify-between gap-6 mb-8'>
-						<div className='flex-1'>
-							<h1 className='sm:text-3xl mb-4 text-3xl font-extrabold font-display text-[var(--color-text-primary)] md:text-5xl lg:text-6xl'>
-								<span className="bg-gradient-to-r from-[var(--melody-purple-400)] to-[var(--melody-blue-400)] bg-clip-text text-transparent">
-									Welcome!!
-								</span>
-							</h1>
-							<p className='text-lg text-[var(--color-text-secondary)] max-w-2xl'>
-								Discover your perfect soundtrack with AI-powered playlists and personalized recommendations 🎵
-							</p>
-						</div>
-						<div className='flex-shrink-0'>
-							<MascotImage
-								state={isPlaying ? 'playing' : 'default'}
-								size='lg'
-								className={`drop-shadow-2xl hover-lift ${isPlaying ? 'animate-bounce' : ''}`}
-							/>
+				<div className='p-6'>
+					{/* Welcome Hero Section with Gradient Glow */}
+					<div className='relative rounded-3xl bg-gradient-to-br from-brand-primary/20 to-transparent p-8 mb-8 border border-border-subtle overflow-hidden'>
+						{/* Background Decorative Blob */}
+						<div className="absolute -top-20 -right-20 w-80 h-80 bg-brand-primary/30 rounded-full blur-3xl pointer-events-none" />
+
+						<div className='relative z-10 flex flex-col md:flex-row items-center justify-between gap-8'>
+							<div className='flex-1 space-y-4 text-center md:text-left'>
+								<h1 className='text-4xl md:text-6xl font-display font-bold text-text-primary tracking-tight'>
+									Welcome to <br />
+									<span className="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">
+										MelodyHub
+									</span>
+								</h1>
+								<p className='text-lg text-text-secondary max-w-xl mx-auto md:mx-0'>
+									Your personal AI-powered soundtrack. Discover new favorites and rediscover old classics.
+								</p>
+							</div>
+							<div className='flex-shrink-0 relative'>
+								{/* Glow behind mascot */}
+								<div className="absolute inset-0 bg-brand-secondary/20 blur-2xl rounded-full scale-110" />
+								<MascotImage
+									state={isPlaying ? 'playing' : 'default'}
+									size='lg'
+									className={`relative drop-shadow-2xl hover-scale ${isPlaying ? 'animate-bounce' : ''}`}
+								/>
+							</div>
 						</div>
 					</div>
 
