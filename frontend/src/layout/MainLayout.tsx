@@ -78,15 +78,5 @@ const MainLayout = () => {
         </div>
     );
 };
-
-<PlaybackControls />
-
-{/* Ambient Background Gradient for the whole app */ }
-            <div className="absolute inset-0 pointer-events-none -z-10 bg-gradient-to-br from-black via-[#0a0a0a] to-[#121212]" />
-            <div className="absolute top-[-10%] left-[-10%] w-[50vh] h-[50vh] bg-brand-primary/5 rounded-full blur-[120px] pointer-events-none -z-10" />
-            <div className="absolute bottom-[-10%] right-[-10%] w-[50vh] h-[50vh] bg-accent-blue/5 rounded-full blur-[120px] pointer-events-none -z-10" />
-        </div >
-    );
-};
 export default MainLayout;
 
