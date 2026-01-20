@@ -12,6 +12,7 @@ const AdminPage = lazy(() => import("./pages/AdminPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
 const MainLayout = lazy(() => import("./layout/MainLayout"));
+const AIGenPage = lazy(() => import("./pages/ai/AIGenPage"));
 
 function App() {
 	return (
@@ -28,6 +29,7 @@ function App() {
 				<Route element={<MainLayout />}>
 					<Route path='/' element={<HomePage />} />
 					<Route path='/chat' element={<ChatPage />} />
+					<Route path='/ai' element={<AIGenPage />} />
 					<Route path='/albums/:albumId' element={<AlbumPage />} />
 					<Route path='*' element={<NotFoundPage />} />
 				</Route>
