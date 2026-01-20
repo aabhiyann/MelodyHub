@@ -100,8 +100,10 @@ export const PlaybackControls = () => {
                         <Button
                             size='icon'
                             variant='ghost'
-                            className='button-3d'
+                            className='button-3d player-control-button'
                             onClick={handleShuffle}
+                            aria-label={shuffled ? 'Disable shuffle' : 'Enable shuffle'}
+                            aria-pressed={shuffled}
                         >
                             <Shuffle className={`h-8 w-9 ${shuffled ? 'text-white' : 'text-zinc-400'}`} />
                         </Button>
@@ -109,19 +111,22 @@ export const PlaybackControls = () => {
                         <Button
                             size='icon'
                             variant='ghost'
-                            className='button-3d'
+                            className='button-3d player-control-button'
                             onClick={playPrevious}
                             disabled={!currentSong}
+                            aria-label='Previous song'
                         >
                             <SkipBack className='h-4 w-4' />
                         </Button>
 
                         <Button
                             size='icon'
-                            className=" button-3d hover:text-gray-900"
+                            className=" button-3d hover:text-gray-900 play-pause-button"
                             // className='bg-cyan-950 hover:bg-white/80 text-black rounded-full h-8 w-8'
                             onClick={handlePlayPause} // Use the new play/pause handler
                             disabled={!currentSong}
+                            aria-label={isPlaying ? 'Pause' : 'Play'}
+                            aria-pressed={isPlaying}
                         >
                             {isPlaying ? <Pause className='h-5 w-5' /> : <Play className='h-5 w-5' />}
                         </Button>
