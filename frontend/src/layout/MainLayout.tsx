@@ -1,5 +1,6 @@
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { useEffect, useState } from "react";
 
@@ -13,6 +14,7 @@ import { usePlayerStore } from "@/stores/PlayerStore";
 
 const MainLayout = () => {
 
+    const location = useLocation();
     const [isMobile, setIsMobile] = useState(false);
     const { isQueueOpen } = usePlayerStore();
 
@@ -52,9 +54,18 @@ const MainLayout = () => {
                 {/* Main content */}
                 <ResizablePanel defaultSize={isMobile ? 80 : 60} className="bg-transparent z-10">
                     <main id="main-content" role="main" aria-label="Main content" className="h-full rounded-2xl bg-[#121212]/50 overflow-hidden border border-white/5 relative">
-                        <div className="h-full animate-fade-in">
-                            <Outlet />
-                        </div>
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={location.pathname}
+                                initial={{ opacity: 0, y: 20, scale: 0.98 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, y: -20, scale: 0.98 }}
+                                transition={{ duration: 0.3, ease: "easeInOut" }}
+                                className="h-full"
+                            >
+                                <Outlet />
+                            </motion.div>
+                        </AnimatePresence>
                     </main>
                 </ResizablePanel>
 

@@ -89,11 +89,11 @@ const UsersList = () => {
 export default UsersList;
 
 const UsersListSkeleton = () => (
-	<div className='flex items-center gap-4 p-3 rounded-2xl animate-pulse'>
-		<div className='size-12 bg-white/5 rounded-full' />
+	<div className='flex items-center gap-4 p-3 rounded-2xl animate-pulse skeleton-shimmer bg-white/5'>
+		<div className='size-12 bg-white/10 rounded-full' />
 		<div className='flex-1 space-y-2 hidden lg:block'>
-			<div className='h-3 bg-white/5 rounded w-24' />
-			<div className='h-2 bg-white/5 rounded w-32' />
+			<div className='h-3 bg-white/10 rounded w-24' />
+			<div className='h-2 bg-white/10 rounded w-32' />
 		</div>
 	</div>
 );
