@@ -25,26 +25,26 @@ const SongsTable = () => {
 	return (
 		<Table>
 			<TableHeader>
-				<TableRow className=' text-rose-950 font-extrabold'>
-					<TableHead className='w-[50px] text-fuchsia-950' ></TableHead>
-					<TableHead>Title</TableHead>
-					<TableHead>Artist</TableHead>
-					<TableHead>Release Date</TableHead>
-					<TableHead className='text-right'>Actions</TableHead>
+				<TableRow className='border-b border-white/5 hover:bg-white/5'>
+					<TableHead className='w-[50px]'></TableHead>
+					<TableHead className='text-zinc-400 font-medium'>Title</TableHead>
+					<TableHead className='text-zinc-400 font-medium'>Artist</TableHead>
+					<TableHead className='text-zinc-400 font-medium'>Release Date</TableHead>
+					<TableHead className='text-right text-zinc-400 font-medium'>Actions</TableHead>
 				</TableRow>
 			</TableHeader>
 
 			<TableBody>
 				{songs.map((song) => (
-					<TableRow key={song._id} className='hover:bg-zinc-800/50'>
+					<TableRow key={song._id} className='hover:bg-white/5 border-b border-white/5 transition-colors group'>
 						<TableCell>
-							<img src={song.imageUrl} alt={song.title} className='size-10 rounded  object-cover' />
+							<img src={song.imageUrl} alt={song.title} className='size-10 rounded object-cover shadow-sm' />
 						</TableCell>
-						<TableCell className='font-medium text-fuchsia-950'>{song.title}</TableCell>
-						<TableCell className="text-fuchsia-950">{song.artist}</TableCell>
+						<TableCell className='font-medium text-white group-hover:text-brand-primary transition-colors'>{song.title}</TableCell>
+						<TableCell className="text-zinc-400">{song.artist}</TableCell>
 						<TableCell>
-							<span className='inline-flex items-center gap-1 text-fuchsia-950'>
-								<Calendar className='h-4 w-4' />
+							<span className='inline-flex items-center gap-1 text-zinc-400'>
+								<Calendar className='h-4 w-4 mr-1' />
 								{song.createdAt.split("T")[0]}
 							</span>
 						</TableCell>
@@ -54,7 +54,7 @@ const SongsTable = () => {
 								<Button
 									variant={"ghost"}
 									size={"sm"}
-									className='text-red-900 hover:text-red-300'
+									className='text-zinc-400 hover:text-red-400 hover:bg-red-400/10'
 									onClick={() => deleteSong(song._id)}
 								>
 									<Trash2 className='size-4' />
