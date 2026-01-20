@@ -1,8 +1,11 @@
-import { lazy, Suspense } from "react";
-import { Route, Routes } from "react-router-dom";
+import { lazy, Suspense, useState, useEffect } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { AuthenticateWithRedirectCallback } from "@clerk/clerk-react";
 import { LoadingScreen } from "./components/LoadingScreen";
 import { Toaster } from "react-hot-toast";
+import { AnimatePresence } from "framer-motion";
+import { LoadingBar } from "./components/LoadingBar";
+import { PageTransition } from "./components/PageTransition";
 
 // Lazy load all pages for better code splitting
 const AuthCallbackPage = lazy(() => import("./pages/AuthCallbackPage"));
@@ -16,10 +19,21 @@ const MainLayout = lazy(() => import("./layout/MainLayout"));
 const AIGenPage = lazy(() => import("./pages/ai/AIGenPage"));
 
 function App() {
+	const location = useLocation();
+	const [isLoading, setIsLoading] = useState(false);
+
+	// Show loading bar during route transitions
+	useEffect(() => {
+		setIsLoading(true);
+		const timer = setTimeout(() => setIsLoading(false), 300);
+		return () => clearTimeout(timer);
+	}, [location.pathname]);
+
 	return (
 		<Suspense fallback={<LoadingScreen />}>
+			<LoadingBar isLoading={isLoading} />
 			<Toaster
-				position="top-center"
+				position="top-right"
 				reverseOrder={false}
 				toastOptions={{
 					style: {
@@ -47,23 +61,25 @@ function App() {
 					},
 				}}
 			/>
-			<Routes>
-				<Route
-					path='/sso-callback'
-					element={<AuthenticateWithRedirectCallback signUpForceRedirectUrl={"/auth-callback"} />}
-				/>
-				<Route path='/auth-callback' element={<AuthCallbackPage />} />
-				<Route path='/admin' element={<AdminPage />} />
-				<Route path='/landing' element={<LandingPage />} />
+			<AnimatePresence mode="wait">
+				<Routes location={location} key={location.pathname}>
+					<Route
+						path='/sso-callback'
+						element={<AuthenticateWithRedirectCallback signUpForceRedirectUrl={"/auth-callback"} />}
+					/>
+					<Route path='/auth-callback' element={<PageTransition><AuthCallbackPage /></PageTransition>} />
+					<Route path='/admin' element={<PageTransition><AdminPage /></PageTransition>} />
+					<Route path='/landing' element={<PageTransition><LandingPage /></PageTransition>} />
 
-				<Route element={<MainLayout />}>
-					<Route path='/' element={<HomePage />} />
-					<Route path='/chat' element={<ChatPage />} />
-					<Route path='/ai' element={<AIGenPage />} />
-					<Route path='/albums/:albumId' element={<AlbumPage />} />
-					<Route path='*' element={<NotFoundPage />} />
-				</Route>
-			</Routes>
+					<Route element={<MainLayout />}>
+						<Route path='/' element={<PageTransition><HomePage /></PageTransition>} />
+						<Route path='/chat' element={<PageTransition><ChatPage /></PageTransition>} />
+						<Route path='/ai' element={<PageTransition><AIGenPage /></PageTransition>} />
+						<Route path='/albums/:albumId' element={<PageTransition><AlbumPage /></PageTransition>} />
+						<Route path='*' element={<PageTransition><NotFoundPage /></PageTransition>} />
+					</Route>
+				</Routes>
+			</AnimatePresence>
 		</Suspense>
 	);
 }
