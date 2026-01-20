@@ -52,7 +52,9 @@ const MainLayout = () => {
                 {/* Main content */}
                 <ResizablePanel defaultSize={isMobile ? 80 : 60} className="bg-transparent z-10">
                     <main id="main-content" role="main" aria-label="Main content" className="h-full rounded-2xl bg-[#121212]/50 overflow-hidden border border-white/5 relative">
-                        <Outlet />
+                        <div className="h-full animate-fade-in">
+                            <Outlet />
+                        </div>
                     </main>
                 </ResizablePanel>
 
