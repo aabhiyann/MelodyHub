@@ -97,7 +97,8 @@ describe('UsersList Component', () => {
             const { container } = render(<UsersList />);
 
             // Check for selected styling
-            const selectedElement = container.querySelector('.bg-zinc-800');
+            // Check for selected styling (updated to glassmorphism)
+            const selectedElement = container.querySelector('.bg-white\\/10');
             expect(selectedElement).toBeInTheDocument();
         });
     });
@@ -167,12 +168,12 @@ describe('UsersList Component', () => {
 
             const { container } = render(<UsersList />);
 
-            // Check for online indicator (green)
-            const onlineIndicator = container.querySelector('.bg-green-500');
+            // Check for online indicator (emerald-500)
+            const onlineIndicator = container.querySelector('.bg-emerald-500');
             expect(onlineIndicator).toBeInTheDocument();
 
-            // Check for offline indicator (gray)
-            const offlineIndicator = container.querySelector('.bg-zinc-500');
+            // Check for offline indicator (zinc-600)
+            const offlineIndicator = container.querySelector('.bg-zinc-600');
             expect(offlineIndicator).toBeInTheDocument();
         });
     });
