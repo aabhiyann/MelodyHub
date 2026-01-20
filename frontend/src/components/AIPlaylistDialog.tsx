@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { MascotImage } from "@/components/MascotImage";
 import { useAIStore } from "@/stores/AIStore";
 import { usePlayerStore } from "@/stores/PlayerStore";
 import { Loader2, Play, Sparkles } from "lucide-react";
@@ -35,8 +36,8 @@ const AIPlaylistDialog = () => {
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			<DialogTrigger asChild>
-				<Button 
-					variant='outline' 
+				<Button
+					variant='outline'
 					className='w-full justify-start gap-2 text-zinc-400 hover:text-white border-zinc-800 hover:bg-zinc-800/50 hover:border-emerald-500/50 transition-all duration-300 group'
 				>
 					<Sparkles className='size-4 group-hover:text-emerald-400 transition-colors' />
@@ -45,11 +46,14 @@ const AIPlaylistDialog = () => {
 			</DialogTrigger>
 			<DialogContent className='bg-zinc-950 border-zinc-800 max-w-md shadow-2xl shadow-emerald-500/10'>
 				<DialogHeader>
-					<DialogTitle className='flex items-center gap-2 text-xl font-bold'>
-						<div className="p-2 bg-emerald-500/10 rounded-lg">
-							<Sparkles className='size-5 text-emerald-500' />
+					<DialogTitle className='flex items-center gap-3 text-xl font-bold'>
+						<MascotImage state="ai" size="sm" className="drop-shadow-lg" />
+						<div className="flex items-center gap-2">
+							<div className="p-2 bg-emerald-500/10 rounded-lg">
+								<Sparkles className='size-5 text-emerald-500' />
+							</div>
+							AI DJ
 						</div>
-						AI DJ
 					</DialogTitle>
 					<DialogDescription className="text-zinc-400">
 						Tell me your mood, activity, or genre, and I'll curate the perfect vibe.
