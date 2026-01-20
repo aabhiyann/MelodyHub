@@ -18,7 +18,7 @@ const HomePage = () => {
 		trendingSongs,
 	} = useMusicStore();
 
-	const { initializeQueue } = usePlayerStore();
+	const { initializeQueue, isPlaying } = usePlayerStore();
 
 	useEffect(() => {
 		fetchFeaturedSongs();
@@ -52,9 +52,9 @@ const HomePage = () => {
 						</div>
 						<div className='flex-shrink-0'>
 							<MascotImage
-								state='default'
+								state={isPlaying ? 'playing' : 'default'}
 								size='lg'
-								className='drop-shadow-2xl hover-lift'
+								className={`drop-shadow-2xl hover-lift ${isPlaying ? 'animate-bounce' : ''}`}
 							/>
 						</div>
 					</div>
