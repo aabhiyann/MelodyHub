@@ -1,13 +1,14 @@
 import Topbar from "@/components/Topbar";
 import { useMusicStore } from "@/stores/MusicStore";
 import { useEffect } from "react";
-import FeaturedSection from "./components/FeaturedSection";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import SectionGrid from "./components/SectionGrid";
 import { usePlayerStore } from "@/stores/PlayerStore";
-import { MascotImage } from "@/components/MascotImage";
+import HorizontalScrollSection from "./home/components/HorizontalScrollSection";
+import MusicCard, { MusicCardSkeleton } from "./home/components/MusicCard";
+import { useUser } from "@clerk/clerk-react";
 
 const HomePage = () => {
+	const { user } = useUser();
 	const {
 		fetchFeaturedSongs,
 		fetchMadeForYouSongs,
@@ -18,7 +19,7 @@ const HomePage = () => {
 		trendingSongs,
 	} = useMusicStore();
 
-	const { initializeQueue, isPlaying } = usePlayerStore();
+	const { initializeQueue } = usePlayerStore();
 
 	useEffect(() => {
 		fetchFeaturedSongs();
@@ -33,49 +34,114 @@ const HomePage = () => {
 		}
 	}, [initializeQueue, madeForYouSongs, trendingSongs, featuredSongs]);
 
+	// Calculate greeting
+	const getGreeting = () => {
+		const hour = new Date().getHours();
+		if (hour < 12) return "Good morning";
+		if (hour < 18) return "Good afternoon";
+		return "Good evening";
+	};
+
 	return (
 		<main className='rounded-md overflow-hidden h-full bg-transparent'>
 			<Topbar />
 			<ScrollArea className='h-[calc(100vh-180px)]'>
-				<div className='p-6'>
-					{/* Welcome Hero Section with Gradient Glow */}
-					<div className='relative rounded-3xl bg-white/5 backdrop-blur-md p-8 mb-8 border border-white/5 overflow-hidden group'>
-						{/* Background Decorative Blob */}
-						<div className="absolute -top-20 -right-20 w-80 h-80 bg-brand-primary/20 rounded-full blur-3xl pointer-events-none transition-all duration-1000 group-hover:bg-brand-primary/30" />
-
-						<div className='relative z-10 flex flex-col md:flex-row items-center justify-between gap-8'>
-							<div className='flex-1 space-y-4 text-center md:text-left'>
-								<h1 className='text-4xl md:text-6xl font-display font-bold text-white tracking-tight'>
-									Welcome to <br />
-									<span className="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">
-										MelodyHub
-									</span>
-								</h1>
-								<p className='text-lg text-zinc-400 max-w-xl mx-auto md:mx-0'>
-									Your personal AI-powered soundtrack. Discover new favorites and rediscover old classics.
-								</p>
-							</div>
-							<div className='flex-shrink-0 relative'>
-								{/* Glow behind mascot */}
-								<div className="absolute inset-0 bg-brand-secondary/20 blur-2xl rounded-full scale-110" />
-								<MascotImage
-									state={isPlaying ? 'playing' : 'default'}
-									size='lg'
-									className={`relative drop-shadow-2xl hover-scale ${isPlaying ? 'animate-bounce' : ''}`}
-								/>
-							</div>
+				<div className='p-6 space-y-12 min-h-full pb-24'>
+					{/* Welcome Header */}
+					<div className="flex items-center justify-between">
+						<div className="space-y-1">
+							<h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent tracking-tight">
+								{getGreeting()}, {user?.firstName || "Music Lover"}
+							</h1>
+							<p className="text-zinc-400 text-lg">Let's find your vibe for today</p>
 						</div>
 					</div>
 
-					<FeaturedSection />
+					{/* Featured / Trending Section */}
+					<HorizontalScrollSection title="Trending Now" subtitle="The hottest tracks on MelodyHub">
+						{isLoading ? (
+							Array(5).fill(0).map((_, i) => <MusicCardSkeleton key={i} />)
+						) : (
+							trendingSongs.map((song) => (
+								<MusicCard
+									key={song._id}
+									song={song}
+									onClick={() => initializeQueue(trendingSongs)}
+									onPlayClick={(e) => {
+										e.stopPropagation();
+										initializeQueue(trendingSongs);
+									}}
+								/>
+							))
+						)}
+					</HorizontalScrollSection>
 
-					<div className='space-y-8 '>
-						<SectionGrid title='Made For You' songs={madeForYouSongs} isLoading={isLoading} />
-						<SectionGrid title='Trending' songs={trendingSongs} isLoading={isLoading} />
+					{/* Made For You Section (Grid Layout as requested) */}
+					<div>
+						<h2 className="text-2xl font-bold text-white tracking-tight mb-6">Made For You</h2>
+						<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+							{isLoading ? (
+								Array(5).fill(0).map((_, i) => <MusicCardSkeleton key={i} />)
+							) : (
+								madeForYouSongs.map((song) => (
+									<MusicCard
+										key={song._id}
+										song={song}
+										onClick={() => initializeQueue(madeForYouSongs)}
+										onPlayClick={(e) => {
+											e.stopPropagation();
+											initializeQueue(madeForYouSongs);
+										}}
+									/>
+								))
+							)}
+						</div>
+					</div>
+
+					{/* Genre Exploration (New) */}
+					<div>
+						<h2 className="text-2xl font-bold text-white tracking-tight mb-6">Explore Genres</h2>
+						<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+							{['Pop', 'Rock', 'Jazz', 'Electronic', 'Classical', 'Hip Hop', 'Indie', 'Ambient'].map((genre) => (
+								<div
+									key={genre}
+									className="group relative h-32 rounded-xl overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+								>
+									{/* Gradient Background */}
+									<div className={`absolute inset-0 bg-gradient-to-br from-brand-primary/80 to-brand-secondary/80 opacity-60 transition-opacity group-hover:opacity-80`} />
+
+									<span className="absolute bottom-3 left-3 text-xl font-bold text-white tracking-wide z-10 w-full text-center md:text-left drop-shadow-md">
+										{genre}
+									</span>
+								</div>
+							))}
+						</div>
+					</div>
+
+					{/* Featured Section (Classic Grid for Featured) */}
+					<div>
+						<h2 className="text-2xl font-bold text-white tracking-tight mb-6">Featured Hits</h2>
+						<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+							{isLoading ? (
+								Array(10).fill(0).map((_, i) => <MusicCardSkeleton key={i} />)
+							) : (
+								featuredSongs.map((song) => (
+									<MusicCard
+										key={song._id}
+										song={song}
+										onClick={() => initializeQueue(featuredSongs)}
+										onPlayClick={(e) => {
+											e.stopPropagation();
+											initializeQueue(featuredSongs);
+										}}
+									/>
+								))
+							)}
+						</div>
 					</div>
 				</div>
 			</ScrollArea>
-		</main>
+		</main >
 	);
 };
 export default HomePage;
