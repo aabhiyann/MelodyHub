@@ -9,6 +9,8 @@ interface PlayerStore {
 	currentIndex: number;
 	shuffled: boolean;
 	isRepeating: boolean;
+	isLyricsOpen: boolean;
+	isQueueOpen: boolean;
 
 	initializeQueue: (songs: Song[]) => void;
 	playAlbum: (songs: Song[], startIndex?: number) => void;
@@ -18,6 +20,8 @@ interface PlayerStore {
 	playPrevious: () => void;
 	shuffleQueue: () => void;
 	toggleRepeat: () => void;
+	toggleLyrics: () => void;
+	toggleQueue: () => void;
 }
 
 export const usePlayerStore = create<PlayerStore>((set, get) => {
@@ -30,6 +34,8 @@ export const usePlayerStore = create<PlayerStore>((set, get) => {
 		currentIndex: -1,
 		shuffled: false,
 		isRepeating: false,
+		isLyricsOpen: false,
+		isQueueOpen: false,
 
 		initializeQueue: manager.initializeQueue.bind(manager),
 		playAlbum: manager.playAlbum.bind(manager),
@@ -39,5 +45,7 @@ export const usePlayerStore = create<PlayerStore>((set, get) => {
 		playPrevious: manager.playPrevious.bind(manager),
 		shuffleQueue: manager.shuffleQueue.bind(manager),
 		toggleRepeat: manager.toggleRepeat.bind(manager),
+		toggleLyrics: () => set(state => ({ isLyricsOpen: !state.isLyricsOpen })),
+		toggleQueue: () => set(state => ({ isQueueOpen: !state.isQueueOpen })),
 	};
 });
