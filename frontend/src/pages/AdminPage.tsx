@@ -22,27 +22,35 @@ const AdminPage = () => {
     if (!isAdmin && !isLoading) return <div>Unauthorized</div>;
 
     return (
-        <div className='rounded-md overflow-hidden h-full bg-gradient-to-b from-[var(--color-bg-primary)] to-[var(--color-bg-secondary)]'>
+        <div className='min-h-full bg-transparent flex flex-col p-6 space-y-8'>
             <Header />
 
-            <DashboardStats />
+            <div className="space-y-8">
+                <DashboardStats />
+            </div>
 
             <Tabs defaultValue='songs' className='space-y-6'>
-                <TabsList className='p-1 bg-zinc-800/50'>
-                    <TabsTrigger value='songs' className='data-[state=active]:bg-zinc-700 text-amber-50'>
+                <TabsList className='bg-white/5 backdrop-blur-lg border border-white/5 p-1 h-12 rounded-xl w-auto inline-flex'>
+                    <TabsTrigger
+                        value='songs'
+                        className='data-[state=active]:bg-brand-primary data-[state=active]:text-white text-zinc-400 hover:text-white transition-colors h-10 px-6 rounded-lg'
+                    >
                         <Music className='mr-2 size-4' />
                         Songs
                     </TabsTrigger>
-                    <TabsTrigger value='albums' className='data-[state=active]:bg-zinc-700 text-amber-50'>
+                    <TabsTrigger
+                        value='albums'
+                        className='data-[state=active]:bg-brand-primary data-[state=active]:text-white text-zinc-400 hover:text-white transition-colors h-10 px-6 rounded-lg'
+                    >
                         <Album className='mr-2 size-4' />
                         Albums
                     </TabsTrigger>
                 </TabsList>
 
-                <TabsContent value='songs'>
+                <TabsContent value='songs' className="outline-none focus:outline-none">
                     <SongsTabContent />
                 </TabsContent>
-                <TabsContent value='albums'>
+                <TabsContent value='albums' className="outline-none focus:outline-none">
                     <AlbumsTabContent />
                 </TabsContent>
             </Tabs>
