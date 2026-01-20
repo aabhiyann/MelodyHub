@@ -131,14 +131,21 @@ export const PlaybackControls = () => {
                             <SkipBack className='h-5 w-5 fill-current' />
                         </Button>
 
-                        <Button
-                            size='icon'
-                            className="h-12 w-12 rounded-full bg-white text-black hover:scale-105 transition-transform shadow-lg hover:bg-white/90 flex items-center justify-center p-0"
-                            onClick={handlePlayPause}
-                            disabled={!currentSong}
-                        >
-                            {isPlaying ? <Pause className='h-6 w-6 fill-current' /> : <Play className='h-6 w-6 fill-current ml-0.5' />}
-                        </Button>
+                        <div className="relative flex items-center justify-center p-2">
+                            {/* Play/Pause Button with Morph/Scale Animation */}
+                            <Button
+                                size='icon'
+                                className="h-12 w-12 rounded-full bg-white text-black hover:scale-105 active:scale-95 transition-transform shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] flex items-center justify-center p-0 z-10"
+                                onClick={handlePlayPause}
+                                disabled={!currentSong}
+                            >
+                                {isPlaying ? (
+                                    <Pause className='h-6 w-6 fill-current' />
+                                ) : (
+                                    <Play className='h-6 w-6 fill-current ml-0.5' />
+                                )}
+                            </Button>
+                        </div>
 
                         <Button
                             size='icon'
@@ -161,18 +168,19 @@ export const PlaybackControls = () => {
                     </div>
 
                     {/* Progress Bar */}
-                    <div className='hidden sm:flex items-center gap-2 w-full max-w-lg'>
-                        <div className='text-xs text-text-tertiary tabular-nums w-10 text-right font-medium'>{formatTime(currentTime)}</div>
-                        <div className="flex-1 h-3 group flex items-center cursor-pointer">
+                    <div className='hidden sm:flex items-center gap-2 w-full max-w-lg group/progress'>
+                        <div className='text-xs text-text-tertiary tabular-nums w-10 text-right font-medium group-hover/progress:text-white transition-colors'>{formatTime(currentTime)}</div>
+                        <div className="flex-1 h-3 group flex items-center cursor-pointer relative">
+                            {/* Hover Ghost Track */}
                             <Slider
                                 value={[currentTime]}
                                 max={duration || 100}
                                 step={0.1}
-                                className='w-full'
+                                className='w-full [&>span:first-child]:h-1 [&>span:first-child]:group-hover:h-1.5 [&>span:first-child]:transition-all [&>span:first-child]:bg-white/20 [&_span[data-orientation=horizontal]]:bg-white [&_span[data-orientation=horizontal]]:border-none'
                                 onValueChange={handleSeek}
                             />
                         </div>
-                        <div className='text-xs text-text-tertiary tabular-nums w-10 font-medium'>{formatTime(duration)}</div>
+                        <div className='text-xs text-text-tertiary tabular-nums w-10 font-medium group-hover/progress:text-white transition-colors'>{formatTime(duration)}</div>
                     </div>
                 </div>
 
