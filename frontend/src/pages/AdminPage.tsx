@@ -1,10 +1,11 @@
 import { useAuthStore } from "@/stores/AuthStore";
 import Header from "../components/AdminHeader";
 import DashboardStats from "../components/DashboardStats";
-import { Album, Music } from "lucide-react";
+import { Album, Music, BarChart3 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SongsTabContent from "../components/SongsTabContent";
 import AlbumsTabContent from "../components/AlbumsTabContent";
+import AnalyticsTabContent from "./admin/components/AnalyticsTabContent";
 import { useEffect } from "react";
 import { useMusicStore } from "@/stores/MusicStore";
 
@@ -45,6 +46,13 @@ const AdminPage = () => {
                         <Album className='mr-2 size-4' />
                         Albums
                     </TabsTrigger>
+                    <TabsTrigger
+                        value='analytics'
+                        className='data-[state=active]:bg-brand-primary data-[state=active]:text-white text-zinc-400 hover:text-white transition-colors h-10 px-6 rounded-lg'
+                    >
+                        <BarChart3 className='mr-2 size-4' />
+                        Analytics
+                    </TabsTrigger>
                 </TabsList>
 
                 <TabsContent value='songs' className="outline-none focus:outline-none">
@@ -52,6 +60,9 @@ const AdminPage = () => {
                 </TabsContent>
                 <TabsContent value='albums' className="outline-none focus:outline-none">
                     <AlbumsTabContent />
+                </TabsContent>
+                <TabsContent value='analytics' className="outline-none focus:outline-none">
+                    <AnalyticsTabContent />
                 </TabsContent>
             </Tabs>
         </div>
