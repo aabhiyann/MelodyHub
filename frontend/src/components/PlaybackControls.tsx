@@ -68,16 +68,16 @@ export const PlaybackControls = () => {
 
     return (
         <footer
-            className='h-auto sm:h-24 glass-toolbar border-t border-white/5 px-4 fixed bottom-0 left-0 right-0 z-50 bg-[#09090b]/60 backdrop-blur-2xl'
+            className='h-20 sm:h-24 glass-toolbar border-t border-white/5 px-4 fixed bottom-0 left-0 right-0 z-50 bg-[#09090b]/80 backdrop-blur-xl'
             role="contentinfo"
             aria-label="Media player controls"
         >
-            <div className='flex justify-between items-center h-full max-w-[1800px] mx-auto py-3 sm:py-0'>
-                {/* currently playing song */}
-                <div className='hidden sm:flex items-center gap-4 min-w-[200px] w-[30%]'>
+            <div className='flex justify-between items-center h-full max-w-[1800px] mx-auto py-2 sm:py-0'>
+                {/* 1. Left Section: Now Playing */}
+                <div className='flex items-center gap-4 w-[30%] min-w-[180px]'>
                     {currentSong && (
                         <>
-                            <div className="relative group">
+                            <div className="relative group flex-shrink-0">
                                 <img
                                     src={currentSong.imageUrl}
                                     alt={currentSong.title}
@@ -85,28 +85,38 @@ export const PlaybackControls = () => {
                                 />
                                 <div className="absolute inset-0 bg-black/10 rounded-md group-hover:bg-black/0 transition-colors" />
                             </div>
-                            <div className='flex-1 min-w-0'>
-                                <div className='font-medium text-white text-sm truncate cursor-pointer hover:underline tracking-tight'>
+                            <div className='flex-1 min-w-0 flex flex-col justify-center'>
+                                <div className='font-semibold text-white text-base truncate cursor-pointer hover:underline tracking-tight'>
                                     {currentSong.title}
                                 </div>
-                                <div className='text-xs text-text-secondary truncate hover:text-white cursor-pointer transition-colors'>
+                                <div className='text-xs text-text-secondary truncate hover:text-white cursor-pointer transition-colors font-medium'>
                                     {currentSong.artist}
                                 </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Button
+                                    size='icon'
+                                    variant='ghost'
+                                    className={`text-text-secondary hover:text-white hidden lg:flex ${usePlayerStore(state => state.isLyricsOpen) ? 'text-brand-primary' : ''}`}
+                                    onClick={usePlayerStore(state => state.toggleLyrics)}
+                                >
+                                    {/* Lyrics Icon using Mic2 or similar if available, creating a simple SVG here for now or assuming Mic2 import later (keeping existing imports for now, using MessageSquare as placeholder for lyrics or just a custom icon) */}
+                                    {/* Using generic Heart for now as requested in requirements, will add Lyrics icon if imported */}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-mic-2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><line x1="12" x2="12" y1="19" y2="22" /></svg>
+                                </Button>
                             </div>
                         </>
                     )}
                 </div>
 
-                {/* player controls */}
-                <div className='flex flex-col items-center gap-1.5 flex-1 max-w-full sm:max-w-[45%]'>
+                {/* 2. Center Section: Controls */}
+                <div className='flex flex-col items-center gap-2 flex-1 max-w-[40%]'>
                     <div className='flex items-center gap-6'>
                         <Button
                             size='icon'
                             variant='ghost'
                             className='text-text-secondary hover:text-white hover:bg-transparent transition-colors'
                             onClick={handleShuffle}
-                            aria-label={shuffled ? 'Disable shuffle' : 'Enable shuffle'}
-                            aria-pressed={shuffled}
                         >
                             <Shuffle className={`h-4 w-4 ${shuffled ? 'text-brand-primary' : ''}`} />
                         </Button>
@@ -117,20 +127,17 @@ export const PlaybackControls = () => {
                             className='text-white hover:text-white/80 hover:bg-transparent transition-colors'
                             onClick={playPrevious}
                             disabled={!currentSong}
-                            aria-label='Previous song'
                         >
                             <SkipBack className='h-5 w-5 fill-current' />
                         </Button>
 
                         <Button
                             size='icon'
-                            className="h-10 w-10 rounded-full bg-white text-black hover:scale-105 transition-transform shadow-lg hover:bg-white/90"
+                            className="h-12 w-12 rounded-full bg-white text-black hover:scale-105 transition-transform shadow-lg hover:bg-white/90 flex items-center justify-center p-0"
                             onClick={handlePlayPause}
                             disabled={!currentSong}
-                            aria-label={isPlaying ? 'Pause' : 'Play'}
-                            aria-pressed={isPlaying}
                         >
-                            {isPlaying ? <Pause className='h-5 w-5 fill-current' /> : <Play className='h-5 w-5 fill-current ml-0.5' />}
+                            {isPlaying ? <Pause className='h-6 w-6 fill-current' /> : <Play className='h-6 w-6 fill-current ml-0.5' />}
                         </Button>
 
                         <Button
@@ -153,21 +160,24 @@ export const PlaybackControls = () => {
                         </Button>
                     </div>
 
-                    <div className='hidden sm:flex items-center gap-2 w-full max-w-md'>
-                        <div className='text-xs text-text-tertiary tabular-nums w-10 text-right'>{formatTime(currentTime)}</div>
-                        <Slider
-                            value={[currentTime]}
-                            max={duration || 100}
-                            step={1}
-                            className='w-full cursor-pointer hover:cursor-pointer'
-                            onValueChange={handleSeek}
-                        />
-                        <div className='text-xs text-text-tertiary tabular-nums w-10'>{formatTime(duration)}</div>
+                    {/* Progress Bar */}
+                    <div className='hidden sm:flex items-center gap-2 w-full max-w-lg'>
+                        <div className='text-xs text-text-tertiary tabular-nums w-10 text-right font-medium'>{formatTime(currentTime)}</div>
+                        <div className="flex-1 h-3 group flex items-center cursor-pointer">
+                            <Slider
+                                value={[currentTime]}
+                                max={duration || 100}
+                                step={0.1}
+                                className='w-full'
+                                onValueChange={handleSeek}
+                            />
+                        </div>
+                        <div className='text-xs text-text-tertiary tabular-nums w-10 font-medium'>{formatTime(duration)}</div>
                     </div>
                 </div>
 
-                {/* volume controls */}
-                <div className='hidden sm:flex items-center gap-3 min-w-[200px] w-[30%] justify-end relative'>
+                {/* 3. Right Section: Volume & Extras */}
+                <div className='hidden sm:flex items-center gap-3 w-[30%] min-w-[180px] justify-end'>
                     {/* Glass panel container for volume could be added here if desired, keeping simple for now to match Spotify */}
                     <div className='flex items-center gap-2'>
                         <Volume2 className='h-4 w-4 text-text-secondary' />
