@@ -21,7 +21,7 @@ interface ChatStore {
 	setSelectedUser: (user: User | null) => void;
 }
 
-const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5000" : "/";
+const BASE_URL = import.meta.env.VITE_API_URL?.replace("/api", "") || (import.meta.env.MODE === "development" ? "http://localhost:5001" : "/");
 
 export const useChatStore = create<ChatStore>((set, get) => ({
 	messages: [],
