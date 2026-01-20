@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Play } from "lucide-react";
 
 const QueueView = () => {
-    const { queue, currentSong, isPlaying, togglePlay, setCurrentSong } = usePlayerStore();
+    const { queue, currentSong, isPlaying, setCurrentSong } = usePlayerStore();
 
     // Filter queue to show upcoming songs (simple version just shows playing + rest)
     // For a real app we might want to slice the queue from current index

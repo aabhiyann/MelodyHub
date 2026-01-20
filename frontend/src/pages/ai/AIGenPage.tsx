@@ -1,10 +1,9 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { useMusicStore } from "@/stores/MusicStore";
 import { usePlayerStore } from "@/stores/PlayerStore";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ArrowLeft, Send, Sparkles, Plus, Play } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Send, Sparkles, Play } from "lucide-react";
 import MelodyAvatar from "./components/MelodyAvatar";
 import { Song } from "@/types";
 import MusicCard from "../home/components/MusicCard";
@@ -20,7 +19,6 @@ const SUGGESTIONS = [
 ];
 
 const AIGenPage = () => {
-    const navigate = useNavigate();
     const { generatePlaylist } = useMusicStore();
     const { initializeQueue } = usePlayerStore();
 

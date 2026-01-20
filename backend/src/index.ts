@@ -9,6 +9,8 @@ import cron from "node-cron";
 import fs from "fs";
 import { createServer } from "http";
 import rateLimit from "express-rate-limit";
+import helmet from "helmet";
+import compression from "compression";
 
 import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
@@ -61,6 +63,12 @@ app.use(cors({
 	},
 	credentials: true,
 }));
+
+app.use(helmet({
+	contentSecurityPolicy: false, // Disabled for now to prevent breaking Cloudinary/Clerk
+	crossOriginEmbedderPolicy: false,
+}));
+app.use(compression());
 
 app.use(clerkMiddleware());
 app.use(express.json());

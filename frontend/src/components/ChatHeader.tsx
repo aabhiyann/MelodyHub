@@ -25,5 +25,6 @@ const ChatHeader = () => {
 				</div>
 			</div>
 		</div>
+	);
 };
 export default ChatHeader;
