@@ -295,3 +295,211 @@ input[type=range]::-webkit-slider-runnable-track {
 .animate-heart-burst {
   animation: heart-burst 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
+/* ============================================
+   ENHANCED MICRO-INTERACTIONS
+   ============================================ */
+
+/* Ripple Effect (Material Design-inspired) */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+  animation: ripple 0.6s ease-out;
+}
+
+/* Form Validation Animations */
+@keyframes shake-enhanced {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-8px);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(8px);
+  }
+}
+
+.animate-shake-enhanced {
+  animation: shake-enhanced 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+/* Success Checkmark Animation */
+@keyframes checkmark-draw {
+  0% {
+    stroke-dashoffset: 100;
+  }
+
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-checkmark {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: checkmark-draw 0.4s ease-out forwards;
+}
+
+/* Focus Glow (Brand Color) */
+.focus-glow {
+  transition: box-shadow 0.3s ease-out;
+}
+
+.focus-glow:focus {
+  box-shadow: 0 0 0 3px rgba(88, 86, 214, 0.2), 0 0 20px rgba(88, 86, 214, 0.4);
+}
+
+/* Enhanced Shimmer for Skeletons */
+.skeleton-shimmer-enhanced {
+  background: linear-gradient(90deg,
+      var(--background-elevated) 0%,
+      var(--background-highlight) 25%,
+      rgba(139, 92, 246, 0.1) 50%,
+      var(--background-highlight) 75%,
+      var(--background-elevated) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+/* Pulse Animation (Alternative to Shimmer) */
+@keyframes pulse-subtle {
+
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.skeleton-pulse {
+  animation: pulse-subtle 1.5s ease-in-out infinite;
+}
+
+/* Button Press Effect */
+.button-press {
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.button-press:active {
+  transform: scale(0.95) translateY(2px);
+}
+
+/* List Item Slide In */
+@keyframes slide-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-in-up {
+  animation: slide-in-up 0.3s ease-out;
+}
+
+/* Toast Slide In from Right */
+@keyframes toast-slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-toast-slide-in {
+  animation: toast-slide-in 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Loading Bar Progress */
+@keyframes loading-bar {
+  0% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  50% {
+    transform: scaleX(0.5);
+    transform-origin: left;
+  }
+
+  100% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+.loading-bar {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: loading-bar 0.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+/* Performance Optimization */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Reduce Motion Support */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .skeleton-shimmer,
+  .skeleton-shimmer-enhanced {
+    animation: none;
+    opacity: 0.6;
+  }
+}
