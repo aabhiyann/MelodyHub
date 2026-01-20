@@ -19,6 +19,14 @@ const formatTime = (date: string) => {
 	});
 };
 
+const formatDate = (date: string) => {
+	return new Date(date).toLocaleDateString("en-US", {
+		weekday: "short",
+		month: "short",
+		day: "numeric",
+	});
+};
+
 const ChatPage = () => {
 	const { user } = useUser();
 	const { messages, selectedUser, fetchUsers, fetchMessages } = useChatStore();
@@ -49,38 +57,64 @@ const ChatPage = () => {
 							{/* Messages */}
 							<ScrollArea className='h-[calc(100vh-340px)] w-full'>
 								<div className='p-4 space-y-4 min-h-0'>
-									{messages.map((message: Message, index) => (
-										<motion.div
-											key={message._id}
-											initial={{ opacity: 0, y: 10, scale: 0.9 }}
-											animate={{ opacity: 1, y: 0, scale: 1 }}
-											transition={{ duration: 0.3, delay: index * 0.05 }}
-											className={`flex items-end gap-3 ${message.senderId === user?.id ? "flex-row-reverse" : ""}`}
-										>
-											<Avatar className='size-8 border border-white/10'>
-												<AvatarImage
-													src={
-														message.senderId === user?.id
-															? user.imageUrl
-															: selectedUser.imageUrl
-													}
-												/>
-												<AvatarFallback>{message.senderId === user?.id ? "Me" : selectedUser.fullName[0]}</AvatarFallback>
-											</Avatar>
+									{messages.map((message: Message, index) => {
+										const isMyMessage = message.senderId === user?.id;
+										const previousMessage = messages[index - 1];
+										const isSameSender = previousMessage?.senderId === message.senderId;
+										const showDate = !previousMessage ||
+											new Date(message.createdAt).toDateString() !== new Date(previousMessage.createdAt).toDateString();
 
-											<div
-												className={`rounded-2xl p-4 max-w-[70%] shadow-lg backdrop-blur-md border border-white/5
-													${message.senderId === user?.id ? "bg-brand-primary/20 text-white rounded-br-none" : "bg-white/5 text-zinc-100 rounded-bl-none"}
-												`}
-											>
-												<p className='text-sm leading-relaxed'>{message.content}</p>
-												<span className='text-[10px] text-white/50 mt-1 block text-right'>
-													{formatTime(message.createdAt)}
-												</span>
+										return (
+											<div key={message._id}>
+												{showDate && (
+													<div className="flex justify-center my-4">
+														<span className="text-xs text-zinc-500 bg-white/5 px-2 py-1 rounded-full">
+															{formatDate(message.createdAt)}
+														</span>
+													</div>
+												)}
+
+												<motion.div
+													initial={{ opacity: 0, y: 10, scale: 0.9 }}
+													animate={{ opacity: 1, y: 0, scale: 1 }}
+													transition={{ duration: 0.3, delay: index * 0.05 }}
+													className={`flex items-end gap-3 ${isMyMessage ? "flex-row-reverse" : ""} ${isSameSender ? "mt-[2px]" : "mt-4"}`}
+												>
+													{/* Avatar only for first message of group */}
+													<div className="size-8 flex-shrink-0">
+														{!isSameSender && (
+															<Avatar className='size-8 border border-white/10'>
+																<AvatarImage
+																	src={
+																		isMyMessage
+																			? user.imageUrl
+																			: selectedUser.imageUrl
+																	}
+																/>
+																<AvatarFallback>{isMyMessage ? "Me" : selectedUser.fullName[0]}</AvatarFallback>
+															</Avatar>
+														)}
+													</div>
+
+													<div
+														className={`rounded-2xl p-4 max-w-[70%] shadow-lg backdrop-blur-md border border-white/5
+                                                            ${isMyMessage
+																? "bg-brand-primary/20 text-white rounded-br-none ml-12"
+																: "bg-white/5 text-zinc-100 rounded-bl-none mr-12"
+															}
+                                                            ${isSameSender && isMyMessage ? "rounded-tr-md" : ""}
+                                                            ${isSameSender && !isMyMessage ? "rounded-tl-md" : ""}
+                                                        `}
+													>
+														<p className='text-sm leading-relaxed'>{message.content}</p>
+														<span className='text-[10px] text-white/50 mt-1 block text-right'>
+															{formatTime(message.createdAt)}
+														</span>
+													</div>
+												</motion.div>
 											</div>
-										</motion.div>
-									))}
-								</div>
+										);
+									})}
 							</ScrollArea>
 
 							<MessageInput />
