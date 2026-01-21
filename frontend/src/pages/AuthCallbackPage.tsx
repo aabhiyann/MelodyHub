@@ -12,11 +12,9 @@ const AuthCallbackPage = () => {
 
 	useEffect(() => {
 		const syncUser = async () => {
-			if (!isLoaded || !user || syncAttempted.current) return;
+			if (!isLoaded || !user) return;
 
 			try {
-				syncAttempted.current = true;
-
 				await axiosInstance.post("/auth/callback", {
 					id: user.id,
 					firstName: user.firstName,
@@ -24,9 +22,10 @@ const AuthCallbackPage = () => {
 					imageUrl: user.imageUrl,
 				});
 			} catch (error) {
-				console.log("Error in auth callback", error);
+				console.log("Error in auth callback:", error);
 			} finally {
-				navigate("/");
+				// Redirect to home after sync
+				navigate("/home");
 			}
 		};
 
