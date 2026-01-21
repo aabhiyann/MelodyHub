@@ -31,9 +31,9 @@ describe('UsersList Component', () => {
 
             render(<UsersList />);
 
-            // Check skeleton is rendered (by checking for specific skeleton class)
-            const skeletonElements = screen.getByTestId('users-list-skeleton');
-            expect(skeletonElements).toBeInTheDocument();
+            // Check skeletons are rendered (component renders 5 skeletons)
+            const skeletonElements = screen.getAllByTestId('users-list-skeleton');
+            expect(skeletonElements.length).toBeGreaterThan(0);
         });
     });
 
