@@ -1,0 +1,154 @@
+import { Request, Response } from "express";
+import { SharedPlaylist } from "../models/sharedPlaylist.model.js";
+import { Activity } from "../models/activity.model.js";
+import mongoose from "mongoose";
+
+/**
+ * POST /playlists
+ * Create a new playlist
+ */
+export const createPlaylist = async (req: Request, res: Response) => {
+    try {
+        const userId = (req as any).auth?.userId;
+        const { name, description, isPublic } = req.body;
+
+        if (!userId) {
+            return res.status(401).json({ success: false, message: "Authentication required" });
+        }
+
+        const playlist = new SharedPlaylist({
+            name,
+            description,
+            owner: userId,
+            isPublic: isPublic || false,
+            collaborators: [],
+            viewers: [],
+            songs: [],
+        });
+
+        await playlist.save();
+
+        // Create activity
+        await Activity.create({
+            userId,
+            type: 'playlist_create',
+            metadata: { playlistId: playlist._id, playlistName: name },
+        });
+
+        return res.status(201).json({
+            success: true,
+            data: playlist,
+            message: "Playlist created",
+        });
+    } catch (error: any) {
+        return res.status(500).json({ success: false, message: "Failed to create playlist", error: error.message });
+    }
+};
+
+/**
+ * GET /playlists
+ * Get user's playlists
+ */
+export const getPlaylists = async (req: Request, res: Response) => {
+    try {
+        const userId = (req as any).auth?.userId;
+
+        if (!userId) {
+            return res.status(401).json({ success: false, message: "Authentication required" });
+        }
+
+        const playlists = await SharedPlaylist.find({
+            $or: [
+                { owner: userId },
+                { collaborators: userId },
+                { viewers: userId },
+            ],
+        }).populate('songs');
+
+        return res.status(200).json({ success: true, data: playlists, count: playlists.length });
+    } catch (error: any) {
+        return res.status(500).json({ success: false, message: "Failed to get playlists", error: error.message });
+    }
+};
+
+/**
+ * POST /playlists/:id/songs
+ * Add song to playlist
+ */
+export const addSongToPlaylist = async (req: Request, res: Response) => {
+    try {
+        const userId = (req as any).auth?.userId;
+        const { id } = req.params;
+        const { songId } = req.body;
+
+        if (!userId) {
+            return res.status(401).json({ success: false, message: "Authentication required" });
+        }
+
+        const playlist = await SharedPlaylist.findById(id);
+
+        if (!playlist) {
+            return res.status(404).json({ success: false, message: "Playlist not found" });
+        }
+
+        // Check permission
+        if (playlist.owner !== userId && !playlist.collaborators.includes(userId)) {
+            return res.status(403).json({ success: false, message: "No permission to edit this playlist" });
+        }
+
+        // Add song
+        playlist.songs.push(new mongoose.Types.ObjectId(songId));
+        await playlist.save();
+
+        return res.status(200).json({ success: true, data: playlist });
+    } catch (error: any) {
+        return res.status(500).json({ success: false, message: "Failed to add song", error: error.message });
+    }
+};
+
+/**
+ * POST /playlists/:id/share
+ * Share playlist with users
+ */
+export const sharePlaylist = async (req: Request, res: Response) => {
+    try {
+        const userId = (req as any).auth?.userId;
+        const { id } = req.params;
+        const { userIds, role } = req.body; // role: 'collaborator' or 'viewer'
+
+        if (!userId) {
+            return res.status(401).json({ success: false, message: "Authentication required" });
+        }
+
+        const playlist = await SharedPlaylist.findById(id);
+
+        if (!playlist) {
+            return res.status(404).json({ success: false, message: "Playlist not found" });
+        }
+
+        // Only owner can share
+        if (playlist.owner !== userId) {
+            return res.status(403).json({ success: false, message: "Only owner can share playlist" });
+        }
+
+        // Add users
+        if (role === 'collaborator') {
+            playlist.collaborators.push(...userIds);
+        } else {
+            playlist.viewers.push(...userIds);
+        }
+
+        await playlist.save();
+
+        // Create activity
+        await Activity.create({
+            userId,
+            type: 'playlist_share',
+            metadata: { playlistId: playlist._id, playlistName: playlist.name },
+        });
+
+        return res.status(200).json({ success: true, data: playlist });
+    } catch (error: any) {
+        return res.status(500).json({ success: false, message: "Failed to share playlist", error: error.message });
+    }
+};
