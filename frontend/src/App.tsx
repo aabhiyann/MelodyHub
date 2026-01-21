@@ -1,25 +1,20 @@
 import { lazy, Suspense, useState, useEffect } from "react";
-import { Route, Routes, useLocation, Navigate } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { AuthenticateWithRedirectCallback } from "@clerk/clerk-react";
 import { LoadingScreen } from "./components/LoadingScreen";
-import { Toaster as HotToastToaster } from "react-hot-toast"; // Renamed to avoid conflict
+import { Toaster } from "react-hot-toast";
 import { AnimatePresence } from "framer-motion";
 import { LoadingBar } from "./components/LoadingBar";
 import { PageTransition } from "./components/PageTransition";
 import { RequireAuth } from "./guards/RequireAuth";
 import { RequireGuest } from "./guards/RequireGuest";
-import { Toaster } from '@/components/ui/sonner'; // New Toaster import
-import { initWebVitals } from './utils/webVitals'; // New import
 
-// Layout components
-import { SidebarLayout } from '@/components/navigation/SidebarLayout'; // New import
-import { MiniPlayer } from '@/components/player/MiniPlayer'; // New import
-import { FullScreenPlayer } from '@/components/player/FullScreenPlayer'; // New import
-import { Mascot } from '@/components/mascot/Mascot'; // New import
-import { InstallPrompt } from '@/components/mobile/InstallPrompt'; // New import
-
-// Loading skeletons
-import { PageLoadingSkeleton, MinimalLoadingSkeleton } from '@/components/LoadingSkeletons'; // New import
+// New UI components
+import { SidebarLayout } from '@/components/navigation/SidebarLayout';
+import { MiniPlayer } from '@/components/player/MiniPlayer';
+import { FullScreenPlayer } from '@/components/player/FullScreenPlayer';
+import { Mascot } from '@/components/mascot/Mascot';
+import { InstallPrompt } from '@/components/mobile/InstallPrompt';
 
 // Lazy load all pages for better code splitting
 const AuthCallbackPage = lazy(() => import("./pages/AuthCallbackPage"));
@@ -29,7 +24,6 @@ const AlbumPage = lazy(() => import("./pages/AlbumPage"));
 const AdminPage = lazy(() => import("./pages/AdminPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
-const MainLayout = lazy(() => import("./layout/MainLayout"));
 const AIGenPage = lazy(() => import("./pages/ai/AIGenPage"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
 const LibraryPage = lazy(() => import("./pages/LibraryPage"));
