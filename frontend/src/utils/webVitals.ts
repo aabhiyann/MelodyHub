@@ -1,13 +1,13 @@
 /**
  * Web Vitals monitoring and reporting
- * Tracks Core Web Vitals: LCP, FID, CLS, FCP, TTFB
+ * Tracks Core Web Vitals: LCP, INP, CLS, FCP, TTFB
  */
 
-import { onCLS, onFCP, onFID, onLCP, onTTFB, Metric } from 'web-vitals';
+import { onCLS, onFCP, onINP, onLCP, onTTFB, Metric } from 'web-vitals';
 
 interface WebVitalsMetrics {
     lcp?: number;
-    fid?: number;
+    inp?: number; // Updated from FID to INP
     cls?: number;
     fcp?: number;
     ttfb?: number;
@@ -71,7 +71,7 @@ function sendToAnalytics(metric: Metric) {
 export function initWebVitals() {
     onCLS(sendToAnalytics);
     onFCP(sendToAnalytics);
-    onFID(sendToAnalytics);
+    onINP(sendToAnalytics); // Updated from FID to INP (Interaction to Next Paint)
     onLCP(sendToAnalytics);
     onTTFB(sendToAnalytics);
 }
@@ -130,9 +130,9 @@ export function checkPerformanceThresholds(): {
         failures.push(`LCP too high: ${metrics.lcp}ms (target: <2500ms)`);
     }
 
-    // FID should be < 100ms
-    if (metrics.fid && metrics.fid > 100) {
-        failures.push(`FID too high: ${metrics.fid}ms (target: <100ms)`);
+    // INP should be < 200ms (replaces FID in web-vitals v3)
+    if (metrics.inp && metrics.inp > 200) {
+        failures.push(`INP too high: ${metrics.inp}ms (target: <200ms)`);
     }
 
     // CLS should be < 0.1
