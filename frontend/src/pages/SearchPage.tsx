@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { Search as SearchIcon, Clock, Loader, Music, Disc3, User2 } from 'lucide-react';
+import { Search as SearchIcon, Loader, Music, Disc3, User2 } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Topbar from '@/components/Topbar';
 import { useMusicStore } from '@/stores/MusicStore';
@@ -26,9 +26,7 @@ const GENRES = [
     { name: 'Folk', color: 'from-green-600 to-emerald-600', emoji: '🌲' },
 ];
 
-const Search
-
-Page = () => {
+const SearchPage = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [searching, setSearching] = useState(false);
     const [searchResults, setSearchResults] = useState<Song[]>([]);
