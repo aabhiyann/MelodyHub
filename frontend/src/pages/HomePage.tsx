@@ -32,13 +32,6 @@ const HomePage = () => {
 		fetchTrendingSongs();
 	}, [fetchFeaturedSongs, fetchMadeForYouSongs, fetchTrendingSongs]);
 
-	useEffect(() => {
-		if (madeForYouSongs.length > 0 && featuredSongs.length > 0 && trendingSongs.length > 0) {
-			const allSongs = [...featuredSongs, ...madeForYouSongs, ...trendingSongs];
-			initializeQueue(allSongs);
-		}
-	}, [initializeQueue, madeForYouSongs, trendingSongs, featuredSongs]);
-
 	// Calculate greeting
 	const getGreeting = () => {
 		const hour = new Date().getHours();
