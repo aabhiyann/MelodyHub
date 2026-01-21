@@ -69,7 +69,7 @@ export async function getUserDashboard(userId: string, period: 'week' | 'month' 
             artistCounts[song.artist] = (artistCounts[song.artist] || 0) + 1;
         }
     }
-    const topArtists: = Object.entries(artistCounts)
+    const topArtists: Array<{ artist: string; playCount: number }> = Object.entries(artistCounts)
         .map(([artist, playCount]) => ({ artist, playCount }))
         .sort((a, b) => b.playCount - a.playCount)
         .slice(0, 5);
