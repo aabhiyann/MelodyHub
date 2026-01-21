@@ -8,7 +8,8 @@
     "start": "node dist/index.js",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "seed:songs": "node src/DataInjection/songs.js",
-    "seed:albums": "node src/DataInjection/albums.js"
+    "seed:albums": "node src/DataInjection/albums.js",
+    "populate-db": "tsx src/scripts/populateDatabase.ts"
   },
   "keywords": [],
   "author": "",
