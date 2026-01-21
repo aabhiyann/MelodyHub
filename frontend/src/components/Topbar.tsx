@@ -1,17 +1,13 @@
 import { SignedOut, UserButton } from "@clerk/clerk-react";
 import SigninAuth from "./SigninAuth";
-import { useAuthStore } from "@/stores/AuthStore";
+
 
 const Topbar = () => {
-	const isAdmin = useAuthStore();
-	console.log({ isAdmin });
+
 
 	return (
 		<div
-			className='flex items-center justify-between p-4 sticky top-0 z-10
-        glass border-b border-[var(--color-border-primary)]
-        backdrop-blur-xl bg-[var(--color-bg-primary)]/80
-      '
+			className='flex items-center justify-between p-4 sticky top-0 z-50 bg-[#09090b]/40 backdrop-blur-md border-b border-white/5 supports-[backdrop-filter]:bg-[#09090b]/20'
 		>
 			{/* Logo with Melody Icon */}
 			<div className='flex gap-3 items-center'>
@@ -21,8 +17,8 @@ const Topbar = () => {
 						alt='Melody mascot'
 						className='size-8 drop-shadow-lg'
 					/>
-					<span className='text-white font-display font-bold text-xl tracking-tight
-            bg-gradient-to-r from-[var(--melody-purple-400)] to-[var(--melody-blue-400)]
+					<span className='font-display font-bold text-xl tracking-tight
+            bg-gradient-to-r from-brand-primary to-brand-secondary
             bg-clip-text text-transparent
           '>
 						MelodyHub

@@ -23,7 +23,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 				const token = await getToken();
 				updateApiToken(token);
 				if (token) {
-					await checkAdminStatus();
+					// Check admin status in background - don't block rendering
+					checkAdminStatus().catch((err) => console.log("Not an admin:", err.message));
 					// init socket
 					if (userId) initSocket(userId);
 				}

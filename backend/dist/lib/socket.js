@@ -3,7 +3,13 @@ import { Message } from "../models/message.model.js";
 export const initializeSocket = (server) => {
     const io = new Server(server, {
         cors: {
-            origin: "https://udaymelodyhhub.vercel.app",
+            origin: [
+                "http://localhost:3000",
+                "http://localhost:5173",
+                "http://localhost:5174",
+                "http://localhost:5175",
+                "https://udaymelodyhhub.vercel.app"
+            ],
             credentials: true,
         },
     });
@@ -41,6 +47,12 @@ export const initializeSocket = (server) => {
             catch (error) {
                 console.error("Message error:", error);
                 socket.emit("message_error", error.message);
+            }
+        });
+        socket.on("typing", ({ senderId, receiverId }) => {
+            const receiverSocketId = userSockets.get(receiverId);
+            if (receiverSocketId) {
+                io.to(receiverSocketId).emit("user_typing", { senderId });
             }
         });
         socket.on("disconnect", () => {

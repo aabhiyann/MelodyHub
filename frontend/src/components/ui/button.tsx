@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
-
+import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
@@ -11,7 +11,7 @@ const buttonVariants = cva(
       variant: {
         // Modern Purple Primary (Melody Brand)
         default:
-          "bg-[var(--melody-purple-600)] text-white shadow-md hover:bg-[var(--melody-purple-700)] hover:shadow-[var(--shadow-glow)] hover:scale-105 active:scale-100",
+          "bg-[var(--melody-purple-600)] text-white shadow-md hover:bg-[var(--melody-purple-700)] hover:shadow-[var(--shadow-raised)] hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
 
         // Blue Secondary (Social/Info)
         secondary:
@@ -69,20 +69,61 @@ function Button({
   size,
   shape,
   asChild = false,
+  disabled,
   ...props
 }: React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean
   }) {
-  const Comp = asChild ? Slot : "button"
 
+  // Animation variants for the button
+  const animationVariants = {
+    initial: { scale: 1 },
+    hover: disabled ? {} : {
+      scale: variant === 'link' ? 1 : 1.02,
+      y: variant === 'link' ? 0 : -1,
+    },
+    tap: disabled ? {} : {
+      scale: 0.98,
+      y: 0,
+    },
+  };
+
+  const buttonClassName = cn(
+    buttonVariants({ variant, size, shape, className }),
+    "will-change-transform"
+  );
+
+  // If asChild, use Slot without Framer Motion
+  if (asChild) {
+    return (
+      <Slot
+        data-slot="button"
+        className={buttonClassName}
+        {...props}
+      />
+    );
+  }
+
+  // Otherwise use motion.button with animations
   return (
-    <Comp
+    <motion.button
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, shape, className }))}
-      {...props}
+      className={buttonClassName}
+      variants={animationVariants}
+      initial="initial"
+      whileHover="hover"
+      whileTap="tap"
+      transition={{
+        type: "tween",
+        duration: 0.2,
+        ease: "easeOut",
+      }}
+      disabled={disabled}
+      {...(props as any)}
     />
   )
 }
 
 export { Button, buttonVariants }
+

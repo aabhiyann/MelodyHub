@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { usePlayerStore } from "@/stores/PlayerStore";
-import { Pause, Play, Repeat, Shuffle, SkipBack, SkipForward, Volume2 } from "lucide-react";
+import { Pause, Play, Repeat, Shuffle, SkipBack, SkipForward, Volume2, ListMusic, Laptop2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 
@@ -68,127 +68,175 @@ export const PlaybackControls = () => {
 
     return (
         <footer
-            className='h-30 sm:h-34 bg-slate-800 border-t border-slate-950 px bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]'
+            className='h-20 sm:h-24 glass-toolbar border-t border-white/5 px-4 fixed bottom-0 left-0 right-0 z-50 bg-[#09090b]/80 backdrop-blur-xl'
             role="contentinfo"
             aria-label="Media player controls"
         >
-            <div className='flex justify-between items-center h-full max-w-[1800px] mx-auto'>
-                {/* currently playing song */}
-                <div className='hidden sm:flex items-center gap-4 min-w-[180px] w-[30%] font-sans'>
+            <div className='flex justify-between items-center h-full max-w-[1800px] mx-auto py-2 sm:py-0'>
+                {/* 1. Left Section: Now Playing */}
+                <div className='flex items-center gap-4 w-[30%] min-w-[180px]'>
                     {currentSong && (
                         <>
-                            <img
-                                src={currentSong.imageUrl}
-                                alt={currentSong.title}
-                                className={`w-24 h-24 object-cover rounded-full ${isPlaying ? 'animate-[spin_3s_linear_infinite]' : ''}`}
-                            />
-                            <div className='flex-1 min-w-0'>
-                                <div className='font-mono text-xl truncate hover:underline cursor-pointer'>
+                            <div className="relative group flex-shrink-0">
+                                <img
+                                    src={currentSong.imageUrl}
+                                    alt={currentSong.title}
+                                    className={`size-14 object-cover rounded-md shadow-lg border border-white/5 ${isPlaying ? 'animate-spin-slow' : ''}`}
+                                />
+                                <div className="absolute inset-0 bg-black/10 rounded-md group-hover:bg-black/0 transition-colors" />
+                            </div>
+                            <div className='flex-1 min-w-0 flex flex-col justify-center'>
+                                <div className='font-semibold text-white text-base truncate cursor-pointer hover:underline tracking-tight'>
                                     {currentSong.title}
                                 </div>
-                                <div className='text-l text-zinc-400 truncate hover:underline cursor-pointer'>
+                                <div className='text-xs text-text-secondary truncate hover:text-white cursor-pointer transition-colors font-medium'>
                                     {currentSong.artist}
                                 </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Button
+                                    size='icon'
+                                    variant='ghost'
+                                    className={`text-text-secondary hover:text-white hidden lg:flex ${usePlayerStore(state => state.isLyricsOpen) ? 'text-brand-primary' : ''}`}
+                                    onClick={usePlayerStore(state => state.toggleLyrics)}
+                                >
+                                    {/* Lyrics Icon using Mic2 or similar if available, creating a simple SVG here for now or assuming Mic2 import later (keeping existing imports for now, using MessageSquare as placeholder for lyrics or just a custom icon) */}
+                                    {/* Using generic Heart for now as requested in requirements, will add Lyrics icon if imported */}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-mic-2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><line x1="12" x2="12" y1="19" y2="22" /></svg>
+                                </Button>
                             </div>
                         </>
                     )}
                 </div>
 
-                {/* player controls */}
-                <div className='flex flex-col items-center gap-2 flex-1 max-w-full sm:max-w-[45%]'>
-                    <div className='flex items-center gap-4 sm:gap-6'>
+                {/* 2. Center Section: Controls */}
+                <div className='flex flex-col items-center gap-2 flex-1 max-w-[40%]'>
+                    <div className='flex items-center gap-6'>
                         <Button
                             size='icon'
                             variant='ghost'
-                            className='button-3d player-control-button'
+                            className='text-text-secondary hover:text-white hover:bg-transparent transition-colors'
                             onClick={handleShuffle}
-                            aria-label={shuffled ? 'Disable shuffle' : 'Enable shuffle'}
-                            aria-pressed={shuffled}
                         >
-                            <Shuffle className={`h-8 w-9 ${shuffled ? 'text-white' : 'text-zinc-400'}`} />
+                            <Shuffle className={`h-4 w-4 ${shuffled ? 'text-brand-primary' : ''}`} />
                         </Button>
 
                         <Button
                             size='icon'
                             variant='ghost'
-                            className='button-3d player-control-button'
+                            className='text-white hover:text-white/80 hover:bg-transparent transition-colors'
                             onClick={playPrevious}
                             disabled={!currentSong}
-                            aria-label='Previous song'
                         >
-                            <SkipBack className='h-4 w-4' />
+                            <SkipBack className='h-5 w-5 fill-current' />
                         </Button>
 
-                        <Button
-                            size='icon'
-                            className=" button-3d hover:text-gray-900 play-pause-button"
-                            // className='bg-cyan-950 hover:bg-white/80 text-black rounded-full h-8 w-8'
-                            onClick={handlePlayPause} // Use the new play/pause handler
-                            disabled={!currentSong}
-                            aria-label={isPlaying ? 'Pause' : 'Play'}
-                            aria-pressed={isPlaying}
-                        >
-                            {isPlaying ? <Pause className='h-5 w-5' /> : <Play className='h-5 w-5' />}
-                        </Button>
+                        <div className="relative flex items-center justify-center p-2">
+                            {/* Play/Pause Button with Morph/Scale Animation */}
+                            <Button
+                                size='icon'
+                                className="h-12 w-12 rounded-full bg-white text-black hover:scale-105 active:scale-95 transition-transform shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] flex items-center justify-center p-0 z-10"
+                                onClick={handlePlayPause}
+                                disabled={!currentSong}
+                            >
+                                {isPlaying ? (
+                                    <Pause className='h-6 w-6 fill-current' />
+                                ) : (
+                                    <Play className='h-6 w-6 fill-current ml-0.5' />
+                                )}
+                            </Button>
+                        </div>
 
                         <Button
                             size='icon'
                             variant='ghost'
-                            className='button-3d '
+                            className='text-white hover:text-white/80 hover:bg-transparent transition-colors'
                             onClick={playNext}
                             disabled={!currentSong}
                         >
-                            <SkipForward className='h-6 w-6' />
+                            <SkipForward className='h-5 w-5 fill-current' />
                         </Button>
 
                         <Button
                             size='icon'
                             variant='ghost'
-                            className='button-3d '
-                            onClick={handleRepeat} // Set the onClick to call handleRepeat when clicked
+                            className={`hover:bg-transparent transition-colors ${usePlayerStore(state => state.isRepeating) ? 'text-brand-primary' : 'text-text-secondary hover:text-white'}`}
+                            onClick={handleRepeat}
                         >
                             <Repeat className='h-4 w-4' />
                         </Button>
                     </div>
 
-                    <div className='hidden sm:flex items-center gap-2 w-full '>
-                        <div className='text-s text-zinc-400'>{formatTime(currentTime)}</div>
-                        <Slider
-                            value={[currentTime]}
-                            max={duration || 100}
-                            step={1}
-                            className='w-full hover:cursor- active:cursor-grabbing '
-                            style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
-                            onValueChange={handleSeek}
-                        />
-                        <div className='text-s text-zinc-400'>{formatTime(duration)}</div>
+                    {/* Progress Bar */}
+                    <div className='hidden sm:flex items-center gap-2 w-full max-w-lg group/progress'>
+                        <div className='text-xs text-text-tertiary tabular-nums w-10 text-right font-medium group-hover/progress:text-white transition-colors'>{formatTime(currentTime)}</div>
+                        <div className="flex-1 h-3 group flex items-center cursor-pointer relative">
+                            {/* Hover Ghost Track */}
+                            <Slider
+                                value={[currentTime]}
+                                max={duration || 100}
+                                step={0.1}
+                                className='w-full [&>span:first-child]:h-1 [&>span:first-child]:group-hover:h-1.5 [&>span:first-child]:transition-all [&>span:first-child]:bg-white/20 [&_span[data-orientation=horizontal]]:bg-white [&_span[data-orientation=horizontal]]:border-none'
+                                onValueChange={handleSeek}
+                            />
+                        </div>
+                        <div className='text-xs text-text-tertiary tabular-nums w-10 font-medium group-hover/progress:text-white transition-colors'>{formatTime(duration)}</div>
                     </div>
                 </div>
-                {/* volume controls */}
+
+                {/* 3. Right Section: Volume & Extras */}
                 <div className='hidden sm:flex items-center gap-4 min-w-[180px] w-[30%] justify-end'>
+                    <Button
+                        size='icon'
+                        variant='ghost'
+                        className='text-text-secondary hover:text-white hover:bg-transparent hidden lg:flex'
+                        onClick={() => { /* Placeholder for lyrics view if separate from left toggle, or remove if redundant */ }}
+                    >
+                        {/* Mic icon again if needed, or maybe lyrics view toggle */}
+                        {/* <Mic2 className='h-4 w-4' /> */}
+                    </Button>
 
+                    <Button
+                        size='icon'
+                        variant='ghost'
+                        className={`text-text-secondary hover:text-white hover:bg-transparent ${usePlayerStore(state => state.isQueueOpen) ? 'text-brand-primary' : ''}`}
+                        onClick={usePlayerStore(state => state.toggleQueue)}
+                    >
+                        <ListMusic className='h-4 w-4' />
+                    </Button>
 
-                    <div className='flex items-center gap-2'>
-                        <Button size='icon' variant='ghost' className='hover:text-white text-zinc-400'>
+                    <Button
+                        size='icon'
+                        variant='ghost'
+                        className='text-text-secondary hover:text-white hover:bg-transparent'
+                    >
+                        <Laptop2 className='h-4 w-4' />
+                    </Button>
 
-                            <Volume2 className='h-4 w-4'
-                            />
-
+                    <div className='flex items-center gap-2 group/volume'>
+                        <Button
+                            size='icon'
+                            variant='ghost'
+                            className='text-text-secondary hover:text-white hover:bg-transparent p-0 h-8 w-8'
+                        >
+                            <Volume2 className='h-4 w-4' />
                         </Button>
 
-                        <Slider
-                            value={[volume]}
-                            max={100}
-                            step={1}
-                            className='w-24 hover:cursor-grab active:cursor-grabbing slider-track'
-
-                            onValueChange={(value) => {
-                                setVolume(value[0]);
-                                if (audioRef.current) {
-                                    audioRef.current.volume = value[0] / 100;
-                                }
-                            }}
-                        />
+                        <div className="w-24 h-1.5 bg-white/10 rounded-full relative overflow-hidden group-hover/volume:bg-white/20 transition-colors cursor-pointer">
+                            {/* Volume styling to match progress bar but smaller */}
+                            <Slider
+                                value={[volume]}
+                                max={100}
+                                step={1}
+                                className='w-full [&>span:first-child]:h-1.5 [&>span:first-child]:bg-white [&_span[data-orientation=horizontal]]:bg-transparent [&_span[data-orientation=horizontal]]:border-none'
+                                onValueChange={(value) => {
+                                    setVolume(value[0]);
+                                    if (audioRef.current) {
+                                        audioRef.current.volume = value[0] / 100;
+                                    }
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

@@ -15,11 +15,11 @@ const FriendsActivity = () => {
 	}, [fetchUsers, user]);
 
 	return (
-		<div className='h-full bg-purple-950 rounded-lg flex flex-col'>
-			<div className='p-4 flex justify-between items-center border-b border-black'>
+		<div className='h-full bg-background-elevated border-l border-border-subtle flex flex-col'>
+			<div className='p-4 flex justify-between items-center border-b border-border-subtle'>
 				<div className='flex items-center gap-3'>
-					<CircleUserRound className='size-8' />
-					<h2 className='font-semibold text-amber-100 text-2xl'>Friends</h2>
+					<CircleUserRound className='size-8 text-text-primary' />
+					<h2 className='font-semibold text-text-primary text-xl'>Friend Activity</h2>
 				</div>
 			</div>
 
@@ -34,17 +34,17 @@ const FriendsActivity = () => {
 						return (
 							<div
 								key={user._id}
-								className='cursor-pointer hover:bg-gray-500 p-3 rounded-md transition-colors group'
+								className='cursor-pointer hover:bg-background-highlight p-3 rounded-md transition-all group'
 							>
 								<div className='flex items-start gap-3'>
 									<div className='relative'>
-										<Avatar className='size-10 border border-zinc-100'>
+										<Avatar className='size-10 border border-border-subtle'>
 											<AvatarImage src={user.imageUrl} alt={user.fullName} />
 											<AvatarFallback>{user.fullName[0]}</AvatarFallback>
 										</Avatar>
 										<div
-											className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-zinc-900 
-												${onlineUsers.has(user.clerkId) ? "bg-green-500" : "bg-red-500"}
+											className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-background-elevated 
+												${onlineUsers.has(user.clerkId) ? "bg-green-500" : "bg-zinc-500"}
 												`}
 											aria-hidden='true'
 										/>
@@ -52,21 +52,21 @@ const FriendsActivity = () => {
 
 									<div className='flex-1 min-w-0'>
 										<div className='flex items-center gap-2'>
-											<span className='font-medium text-sm text-white'>{user.fullName}</span>
-											{isPlaying && <Headphones className='size-3.5 text-purple-400 shrink-0' />}
+											<span className='font-medium text-sm text-text-primary'>{user.fullName}</span>
+											{isPlaying && <Headphones className='size-3.5 text-brand-secondary shrink-0' />}
 										</div>
 
 										{isPlaying ? (
 											<div className='mt-1'>
-												<div className='mt-1 text-sm text-amber-100 font-medium truncate'>
+												<div className='mt-1 text-xs text-text-secondary font-medium truncate'>
 													{activity.replace("Playing ", "").split(" by ")[0]}
 												</div>
-												<div className='text-xs text-zinc-400 truncate'>
+												<div className='text-xs text-text-tertiary truncate'>
 													{activity.split(" by ")[1]}
 												</div>
 											</div>
 										) : (
-											<div className=' text-zinc-400 tex'>Idle ...</div>
+											<div className='mt-1 text-xs text-text-disabled'>Idle</div>
 										)}
 									</div>
 								</div>

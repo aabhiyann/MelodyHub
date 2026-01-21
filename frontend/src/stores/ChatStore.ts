@@ -12,10 +12,12 @@ interface ChatStore {
 	users: User[];
 	selectedUser: User | null;
 	isLoading: boolean;
+	typingUsers: Set<string>; // Set of userIds who are typing
 
 	initSocket: (userId: string) => void;
 	disconnectSocket: () => void;
 	sendMessage: (receiverId: string, content: string) => void;
+	sendTyping: (receiverId: string) => void;
 	fetchUsers: () => Promise<void>;
 	fetchMessages: (userId: string) => Promise<void>;
 	setSelectedUser: (user: User | null) => void;
@@ -31,6 +33,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 	users: [],
 	selectedUser: null,
 	isLoading: false,
+	typingUsers: new Set(),
 
 	fetchUsers: async () => {
 		set({ isLoading: true });
@@ -114,6 +117,22 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 			});
 		});
 
+		socket.on("user_typing", ({ senderId }) => {
+			set((state) => {
+				const newTypingUsers = new Set(state.typingUsers);
+				newTypingUsers.add(senderId);
+				// Auto remove typing status after 3 seconds if no new event comes
+				setTimeout(() => {
+					set((state) => {
+						const current = new Set(state.typingUsers);
+						current.delete(senderId);
+						return { typingUsers: current };
+					})
+				}, 3000);
+				return { typingUsers: newTypingUsers };
+			});
+		});
+
 		set({ socket });
 	},
 
@@ -131,5 +150,13 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 		if (!senderId) return;
 
 		socket.emit("send_message", { senderId, receiverId, content });
+	},
+
+	sendTyping: (receiverId: string) => {
+		const socket = get().socket;
+		if (!socket) return;
+		const senderId = useAuthStore.getState().authUser?.clerkId;
+		if (!senderId) return;
+		socket.emit("typing", { senderId, receiverId });
 	},
 }));

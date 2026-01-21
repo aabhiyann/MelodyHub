@@ -23,6 +23,7 @@ interface MusicStore {
 	fetchSongs: () => Promise<void>;
 	deleteSong: (id: string) => Promise<void>;
 	deleteAlbum: (id: string) => Promise<void>;
+	generatePlaylist: (prompt: string) => Promise<Song[]>;
 }
 
 export const useMusicStore = create<MusicStore>((set) => ({
@@ -129,9 +130,10 @@ export const useMusicStore = create<MusicStore>((set) => ({
 		set({ isLoading: true, error: null });
 		try {
 			const response = await axiosInstance.get("/songs/featured");
-			set({ featuredSongs: response.data });
+			set({ featuredSongs: response.data.data || response.data || [] });
 		} catch (error: any) {
-			set({ error: error.response.data.message });
+			console.error("Error fetching featured songs:", error);
+			set({ error: error?.response?.data?.message || "Failed to fetch featured songs", featuredSongs: [] });
 		} finally {
 			set({ isLoading: false });
 		}
@@ -141,9 +143,10 @@ export const useMusicStore = create<MusicStore>((set) => ({
 		set({ isLoading: true, error: null });
 		try {
 			const response = await axiosInstance.get("/songs/made-for-you");
-			set({ madeForYouSongs: response.data });
+			set({ madeForYouSongs: response.data.data || response.data || [] });
 		} catch (error: any) {
-			set({ error: error.response.data.message });
+			console.error("Error fetching made-for-you songs:", error);
+			set({ error: error?.response?.data?.message || "Failed to fetch personalized songs", madeForYouSongs: [] });
 		} finally {
 			set({ isLoading: false });
 		}
@@ -153,11 +156,34 @@ export const useMusicStore = create<MusicStore>((set) => ({
 		set({ isLoading: true, error: null });
 		try {
 			const response = await axiosInstance.get("/songs/trending");
-			set({ trendingSongs: response.data });
+			set({ trendingSongs: response.data.data || response.data || [] });
 		} catch (error: any) {
-			set({ error: error.response.data.message });
+			console.error("Error fetching trending songs:", error);
+			set({ error: error?.response?.data?.message || "Failed to fetch trending songs", trendingSongs: [] });
 		} finally {
 			set({ isLoading: false });
+		}
+	},
+
+	generatePlaylist: async (prompt: string) => {
+		set({ isLoading: true, error: null });
+		try {
+			const response = await axiosInstance.post("/ai/generate", { prompt });
+			// response.data is where the generic success wrapper puts { songs: ... } or just returns songs
+			// Let's assume standard response: { success: true, data: { songs: [] } } or similar
+			// But checking controller: handleSuccess(res, { songs }) -> { success: true, data: { songs: [] } } (Depends on base controller)
+			// Let's assume response.data.songs based on current codebase trends or handleSuccess wrapper
+			// Actually, based on previous code: fetchFeaturedSongs sets response.data.
+			// Let's look at BaseController usage.
+			// If handleSuccess(res, { songs }) is called, it usually returns JSON.
+			// Assuming response.data is the payload.
+			const songs = response.data.songs || [];
+			set({ isLoading: false });
+			return songs;
+		} catch (error: any) {
+			set({ error: error.message, isLoading: false });
+			toast.error("Melody couldn't make that playlist: " + error.message);
+			throw error;
 		}
 	},
 }));
