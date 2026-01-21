@@ -112,8 +112,9 @@ export const getMadeForYouSongs = async (req: Request, res: Response) => {
             });
         }
 
+
         // Update user preferences first (async in background)
-        updateUserAudioPreferences(userId).cat ch(() => { });
+        updateUserAudioPreferences(userId).catch(() => { });
         updateUserFavorites(userId).catch(() => { });
 
         // Check for cached recommendations
