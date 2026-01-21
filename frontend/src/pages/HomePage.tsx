@@ -1,14 +1,18 @@
 import Topbar from "@/components/Topbar";
 import { useMusicStore } from "@/stores/MusicStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { usePlayerStore } from "@/stores/PlayerStore";
 import HorizontalScrollSection from "./home/components/HorizontalScrollSection";
 import MusicCard, { MusicCardSkeleton } from "./home/components/MusicCard";
+import { EmptyState } from "./home/components/EmptyState";
 import { useUser } from "@clerk/clerk-react";
+import { AIPlaylistPage } from "./ai/AIPlaylistPage";
 
 const HomePage = () => {
 	const { user } = useUser();
+	const [showAIPlaylist, setShowAIPlaylist] = useState(false);
+
 	const {
 		fetchFeaturedSongs,
 		fetchMadeForYouSongs,
