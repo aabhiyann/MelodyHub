@@ -1,9 +1,11 @@
 import { useMusicStore } from "@/stores/MusicStore";
-import { useMemo } from "react";
-import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { useMemo, useState } from "react";
+import { StreamsChart } from "@/components/admin/StreamsChart";
+import { TopSongsChart } from "@/components/admin/TopSongsChart";
+import { DateRangePicker, DateRange } from "@/components/admin/DateRangePicker";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-const COLORS = ['#1db954', '#1e293b', '#E63946', '#457B9D', '#F4A261', '#264653', '#2A9D8F'];
+import { BarChart3, TrendingUp, Users, Music } from "lucide-react";
+import { subDays } from "date-fns";
 
 const AnalyticsTabContent = () => {
     const { songs, albums, stats } = useMusicStore();
