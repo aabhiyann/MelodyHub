@@ -92,7 +92,7 @@ All responses follow this structure:
                             properties: {
                                 tempo: { type: 'number', example: 120 },
                                 energy: { type: 'number', minimum: 0, maximum: 1, example: 0.8 },
-                                danceability: { type: 'number', minimum: 0, maximum: 1, example: 0 .6 },
+                                danceability: { type: 'number', minimum: 0, maximum: 1, example: 0.6 },
                                 valence: { type: 'number', minimum: 0, maximum: 1, example: 0.7 },
                             },
                         },
