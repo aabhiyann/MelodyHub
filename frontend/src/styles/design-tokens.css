@@ -4,6 +4,19 @@
  * Inspired by Spotify, Apple Music, and Apple.com design systems
  */
 
+/* Ripple Animation */
+@keyframes ripple-animation {
+    from {
+        transform: scale(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
 :root {
     /* Typography */
     --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
