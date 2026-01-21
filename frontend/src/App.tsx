@@ -6,6 +6,8 @@ import { Toaster } from "react-hot-toast";
 import { AnimatePresence } from "framer-motion";
 import { LoadingBar } from "./components/LoadingBar";
 import { PageTransition } from "./components/PageTransition";
+import { RequireAuth } from "./guards/RequireAuth";
+import { RequireGuest } from "./guards/RequireGuest";
 
 // Lazy load all pages for better code splitting
 const AuthCallbackPage = lazy(() => import("./pages/AuthCallbackPage"));
@@ -63,19 +65,38 @@ function App() {
 			/>
 			<AnimatePresence mode="wait">
 				<Routes location={location} key={location.pathname}>
+					{/* SSO Callback */}
 					<Route
 						path='/sso-callback'
 						element={<AuthenticateWithRedirectCallback signUpForceRedirectUrl={"/auth-callback"} />}
 					/>
-					<Route path='/auth-callback' element={<PageTransition><AuthCallbackPage /></PageTransition>} />
-					<Route path='/admin' element={<PageTransition><AdminPage /></PageTransition>} />
-					<Route path='/landing' element={<PageTransition><LandingPage /></PageTransition>} />
 
-					<Route element={<MainLayout />}>
-						<Route path='/' element={<PageTransition><HomePage /></PageTransition>} />
+					{/* Auth Callback */}
+					<Route path='/auth-callback' element={<PageTransition><AuthCallbackPage /></PageTransition>} />
+
+					{/* Landing Page - for guests only */}
+					<Route
+						path='/'
+						element={
+							<RequireGuest>
+								<PageTransition><LandingPage /></PageTransition>
+							</RequireGuest>
+						}
+					/>
+
+					{/* Authenticated Routes - wrapped in RequireAuth */}
+					<Route
+						element={
+							<RequireAuth>
+								<MainLayout />
+							</RequireAuth>
+						}
+					>
+						<Route path='/home' element={<PageTransition><HomePage /></PageTransition>} />
 						<Route path='/chat' element={<PageTransition><ChatPage /></PageTransition>} />
 						<Route path='/ai' element={<PageTransition><AIGenPage /></PageTransition>} />
 						<Route path='/albums/:albumId' element={<PageTransition><AlbumPage /></PageTransition>} />
+						<Route path='/admin' element={<PageTransition><AdminPage /></PageTransition>} />
 						<Route path='*' element={<PageTransition><NotFoundPage /></PageTransition>} />
 					</Route>
 				</Routes>

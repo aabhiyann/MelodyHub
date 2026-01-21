@@ -34,7 +34,7 @@ const LeftSidebar = () => {
         <div className='space-y-1'>
           {/* Home */}
           <Link
-            to={'/'}
+            to={'/home'}
             className={cn(
               buttonVariants({
                 variant: 'ghost',
