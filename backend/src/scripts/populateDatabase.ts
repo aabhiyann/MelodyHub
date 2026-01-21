@@ -2,6 +2,10 @@ import { itunesService } from '../services/itunes.service.js';
 import { Song } from '../models/song.model.js';
 import { connectDB } from '../lib/db.js';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+
+// Load environment variables
+dotenv.config();
 
 /**
  * Database Population Script
