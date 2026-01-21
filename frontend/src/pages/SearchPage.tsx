@@ -1,12 +1,15 @@
 /**
- * SearchPage - Spotify-inspired search interface
- * Features: Large search bar, browse genres, recent searches, search results
+ * SearchPage - Spotify-inspired search interface with working backend integration
+ * Features: Real-time search, debouncing, categorized results
  */
 
-import { useState } from 'react';
-import { Search as SearchIcon, Clock } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { Search as SearchIcon, Clock, Loader, Music, Disc3, User2 } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Topbar from '@/components/Topbar';
+import { useMusicStore } from '@/stores/MusicStore';
+import { usePlayerStore } from '@/stores/PlayerStore';
+import type { Song } from '@/types';
 
 const GENRES = [
     { name: 'Pop', color: 'from-pink-500 to-rose-500', emoji: '🎤' },
@@ -23,13 +26,53 @@ const GENRES = [
     { name: 'Folk', color: 'from-green-600 to-emerald-600', emoji: '🌲' },
 ];
 
-const SearchPage = () => {
+const Search
+
+Page = () => {
     const [searchQuery, setSearchQuery] = useState('');
-    const [recentSearches] = useState([
-        'chill vibes',
-        'workout music',
-        'jazz classics',
-    ]);
+    const [searching, setSearching] = useState(false);
+    const [searchResults, setSearchResults] = useState<Song[]>([]);
+    const { songs, albums } = useMusicStore();
+    const { playAlbum } = usePlayerStore();
+
+    // Debounced search
+    const performSearch = useCallback(() => {
+        if (!searchQuery.trim()) {
+            setSearchResults([]);
+            return;
+        }
+
+        setSearching(true);
+        const query = searchQuery.toLowerCase();
+
+        // Search through songs
+        const results = songs.filter(song =>
+            song.title.toLowerCase().includes(query) ||
+            song.artist.toLowerCase().includes(query) ||
+            song.genre?.toLowerCase().includes(query)
+        );
+
+        setSearchResults(results);
+        setSearching(false);
+    }, [searchQuery, songs]);
+
+    useEffect(() => {
+        const timer = setTimeout(performSearch, 300);
+        return () => clearTimeout(timer);
+    }, [performSearch]);
+
+    const handlePlaySong = (song: Song) => {
+        const songIndex = songs.findIndex(s => s._id === song._id);
+        playAlbum(songs, songIndex);
+    };
+
+    // Group results
+    const songsResults = searchResults;
+    const artistsResults = [...new Set(searchResults.map(s => s.artist))];
+    const albumResults = albums.filter(album =>
+        album.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        album.artist.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     return (
         <main className='rounded-md overflow-hidden h-full bg-transparent'>
@@ -46,34 +89,17 @@ const SearchPage = () => {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 className='w-full h-14 pl-12 pr-4 rounded-full bg-white/10 border-2 border-white/10 focus:border-white/30 text-white placeholder-zinc-400 text-base transition-all focus:ring-4 focus:ring-brand-primary/20 outline-none'
+                                autoFocus
                             />
+                            {searching && (
+                                <Loader className='absolute right-4 top-1/2 -translate-y-1/2 size-5 text-brand-primary animate-spin' />
+                            )}
                         </div>
                     </div>
 
                     {/* Empty State - Browse All */}
                     {!searchQuery && (
                         <>
-                            {/* Recent Searches */}
-                            {recentSearches.length > 0 && (
-                                <div>
-                                    <h2 className='text-2xl font-bold text-white mb-4'>Recent Searches</h2>
-                                    <div className='space-y-2'>
-                                        {recentSearches.map((search, i) => (
-                                            <button
-                                                key={i}
-                                                onClick={() => setSearchQuery(search)}
-                                                className='flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-colors w-full text-left group'
-                                            >
-                                                <div className='p-2 rounded-lg bg-white/5 group-hover:bg-white/10 transition-colors'>
-                                                    <Clock className='size-5 text-zinc-400' />
-                                                </div>
-                                                <span className='text-white font-medium'>{search}</span>
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-
                             {/* Browse All */}
                             <div>
                                 <h2 className='text-2xl font-bold text-white mb-4'>Browse All</h2>
@@ -81,6 +107,7 @@ const SearchPage = () => {
                                     {GENRES.map((genre) => (
                                         <button
                                             key={genre.name}
+                                            onClick={() => setSearchQuery(genre.name)}
                                             className={`relative h-32 rounded-xl overflow-hidden bg-gradient-to-br ${genre.color} hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl group`}
                                         >
                                             <div className='absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors' />
@@ -100,22 +127,125 @@ const SearchPage = () => {
                     )}
 
                     {/* Search Results */}
-                    {searchQuery && (
-                        <div>
-                            <p className='text-zinc-400 mb-6'>
-                                Showing results for "<span className='text-white font-semibold'>{searchQuery}</span>"
-                            </p>
+                    {searchQuery && !searching && (
+                        <div className='space-y-8'>
+                            {searchResults.length === 0 ? (
+                                <div className='text-center py-12'>
+                                    <SearchIcon className='size-16 text-zinc-600 mx-auto mb-4' />
+                                    <p className='text-zinc-400 text-lg'>
+                                        No results found for "<span className='text-white font-semibold'>{searchQuery}</span>"
+                                    </p>
+                                </div>
+                            ) : (
+                                <>
+                                    {/* Songs */}
+                                    {songsResults.length > 0 && (
+                                        <div>
+                                            <div className='flex items-center gap-2 mb-4'>
+                                                <Music className='size-6 text-brand-primary' />
+                                                <h2 className='text-2xl font-bold text-white'>Songs</h2>
+                                                <span className='text-zinc-400'>({songsResults.length})</span>
+                                            </div>
+                                            <div className='space-y-2'>
+                                                {songsResults.slice(0, 10).map((song) => (
+                                                    <div
+                                                        key={song._id}
+                                                        onClick={() => handlePlaySong(song)}
+                                                        className='flex items-center gap-4 p-3 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group'
+                                                    >
+                                                        <img
+                                                            src={song.imageUrl}
+                                                            alt={song.title}
+                                                            className='size-14 rounded-md object-cover'
+                                                        />
+                                                        <div className='flex-1 min-w-0'>
+                                                            <h3 className='text-white font-medium truncate group-hover:text-brand-primary transition-colors'>
+                                                                {song.title}
+                                                            </h3>
+                                                            <p className='text-zinc-400 text-sm truncate'>{song.artist}</p>
+                                                        </div>
+                                                        {song.genre && (
+                                                            <span className='px-3 py-1 rounded-full text-xs bg-white/10 text-zinc-300'>
+                                                                {song.genre}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
 
-                            {/* Placeholder for search results */}
-                            <div className='text-center py-12'>
-                                <SearchIcon className='size-16 text-zinc-600 mx-auto mb-4' />
-                                <p className='text-zinc-400 text-lg'>
-                                    Search functionality coming soon!
-                                </p>
-                                <p className='text-zinc-500 text-sm mt-2'>
-                                    This will integrate with your music backend API
-                                </p>
-                            </div>
+                                    {/* Artists */}
+                                    {artistsResults.length > 0 && (
+                                        <div>
+                                            <div className='flex items-center gap-2 mb-4'>
+                                                <User2 className='size-6 text-brand-primary' />
+                                                <h2 className='text-2xl font-bold text-white'>Artists</h2>
+                                                <span className='text-zinc-400'>({artistsResults.length})</span>
+                                            </div>
+                                            <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4'>
+                                                {artistsResults.slice(0, 12).map((artist) => {
+                                                    const artistSong = songs.find(s => s.artist === artist);
+                                                    return (
+                                                        <button
+                                                            key={artist}
+                                                            onClick={() => setSearchQuery(artist)}
+                                                            className='group text-center'
+                                                        >
+                                                            <div className='relative aspect-square mb-3 rounded-full overflow-hidden shadow-lg'>
+                                                                {artistSong && (
+                                                                    <img
+                                                                        src={artistSong.imageUrl}
+                                                                        alt={artist}
+                                                                        className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'
+                                                                    />
+                                                                )}
+                                                            </div>
+                                                            <h3 className='font-semibold truncate text-sm group-hover:text-brand-primary transition-colors'>
+                                                                {artist}
+                                                            </h3>
+                                                            <p className='text-xs text-text-secondary'>Artist</p>
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Albums */}
+                                    {albumResults.length > 0 && (
+                                        <div>
+                                            <div className='flex items-center gap-2 mb-4'>
+                                                <Disc3 className='size-6 text-brand-primary' />
+                                                <h2 className='text-2xl font-bold text-white'>Albums</h2>
+                                                <span className='text-zinc-400'>({albumResults.length})</span>
+                                            </div>
+                                            <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4'>
+                                                {albumResults.slice(0, 12).map((album) => (
+                                                    <div
+                                                        key={album._id}
+                                                        className='group cursor-pointer'
+                                                    >
+                                                        <div className='relative aspect-square mb-3 rounded-lg overflow-hidden shadow-lg'>
+                                                            <img
+                                                                src={album.imageUrl}
+                                                                alt={album.title}
+                                                                className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'
+                                                            />
+                                                        </div>
+                                                        <h3 className='font-semibold truncate text-sm'>
+                                                            {album.title}
+                                                        </h3>
+                                                        <p className='text-xs text-text-secondary truncate'>
+                                                            {album.artist}
+                                                        </p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </>
+                            )}
                         </div>
                     )}
                 </div>
