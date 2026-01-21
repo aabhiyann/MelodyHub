@@ -26,6 +26,7 @@ describe('UsersList Component', () => {
                 isLoading: true,
                 setSelectedUser: mockSetSelectedUser,
                 onlineUsers: new Set(),
+                activities: new Map(),
             } as any);
 
             render(<UsersList />);
@@ -62,6 +63,7 @@ describe('UsersList Component', () => {
                 isLoading: false,
                 setSelectedUser: mockSetSelectedUser,
                 onlineUsers: new Set(['user1']),
+                activities: new Map(),
             } as any);
 
             render(<UsersList />);
@@ -92,6 +94,7 @@ describe('UsersList Component', () => {
                 isLoading: false,
                 setSelectedUser: mockSetSelectedUser,
                 onlineUsers: new Set(),
+                activities: new Map(),
             } as any);
 
             const { container } = render(<UsersList />);
@@ -123,6 +126,7 @@ describe('UsersList Component', () => {
                 isLoading: false,
                 setSelectedUser: mockSetSelectedUser,
                 onlineUsers: new Set(),
+                activities: new Map(),
             } as any);
 
             render(<UsersList />);
@@ -164,6 +168,7 @@ describe('UsersList Component', () => {
                 isLoading: false,
                 setSelectedUser: mockSetSelectedUser,
                 onlineUsers: new Set(['user1']), // Only user1 is online
+                activities: new Map(),
             } as any);
 
             const { container } = render(<UsersList />);
@@ -172,8 +177,8 @@ describe('UsersList Component', () => {
             const onlineIndicator = container.querySelector('.bg-emerald-500');
             expect(onlineIndicator).toBeInTheDocument();
 
-            // Check for offline indicator (zinc-600)
-            const offlineIndicator = container.querySelector('.bg-zinc-600');
+            // Check for offline indicator (zinc-500)
+            const offlineIndicator = container.querySelector('.bg-zinc-500');
             expect(offlineIndicator).toBeInTheDocument();
         });
     });
@@ -189,6 +194,7 @@ describe('UsersList Component', () => {
                 isLoading: false,
                 setSelectedUser: mockSetSelectedUser,
                 onlineUsers: new Set(),
+                activities: new Map(),
             } as any);
 
             const { container } = render(<UsersList />);
