@@ -5,10 +5,29 @@ export class AlbumService extends BaseService {
         super(Album);
     }
     /**
-     * Get all albums using inherited findAll()
+     * Get all albums with pagination
      */
-    async getAllAlbums() {
-        return await this.findAll(); // no filter
+    async getAllAlbums(page = 1, limit = 20) {
+        const skip = (page - 1) * limit;
+        // Get total count for pagination metadata
+        const total = await Album.countDocuments();
+        // Get paginated albums
+        const albums = await Album.find()
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit)
+            .lean();
+        return {
+            data: albums,
+            pagination: {
+                page,
+                limit,
+                total,
+                totalPages: Math.ceil(total / limit),
+                hasNextPage: page < Math.ceil(total / limit),
+                hasPrevPage: page > 1,
+            },
+        };
     }
     /**
      * Get a specific album by ID with its songs populated

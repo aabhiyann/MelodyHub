@@ -5,11 +5,17 @@ import App from "./App.tsx";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { BrowserRouter } from "react-router-dom";
 import AuthProvider from "./providers/AuthProviders.tsx";
+import { initWebVitals } from "./utils/webVitals";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 if (!PUBLISHABLE_KEY) {
 	throw new Error("Missing Publishable Key");
+}
+
+// Initialize Web Vitals monitoring in production
+if (import.meta.env.PROD) {
+	initWebVitals();
 }
 
 createRoot(document.getElementById("root")!).render(
