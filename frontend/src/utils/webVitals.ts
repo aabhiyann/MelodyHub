@@ -71,7 +71,7 @@ function sendToAnalytics(metric: Metric) {
 export function initWebVitals() {
     onCLS(sendToAnalytics);
     onFCP(sendToAnalytics);
-    on FID(sendToAnalytics);
+    onFID(sendToAnalytics);
     onLCP(sendToAnalytics);
     onTTFB(sendToAnalytics);
 }
