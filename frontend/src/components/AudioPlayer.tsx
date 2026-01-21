@@ -72,13 +72,27 @@ const AudioPlayer = () => {
 		const audio = audioRef.current;
 		const isSongChange = prevSongRef.current !== currentSong?.audioUrl;
 
+		console.log('🎵 Song Change:', {
+			isSongChange,
+			currentSong: currentSong.title,
+			audioUrl: currentSong.audioUrl,
+			isPlaying
+		});
+
 		if (isSongChange) {
 			audio.src = currentSong?.audioUrl;
 			audio.currentTime = 0;
 			prevSongRef.current = currentSong?.audioUrl;
 
+			console.log('✅ Audio src set:', audio.src);
+
 			if (isPlaying) {
-				audio.play().catch(err => console.error('Playback error:', err));
+				audio.play()
+					.then(() => console.log('✅ Audio playing successfully'))
+					.catch(err => {
+						console.error('❌ Playback error:', err);
+						console.log('💡 Tip: Click play button to start (browser autoplay restriction)');
+					});
 			}
 		}
 	}, [currentSong, isPlaying]);
