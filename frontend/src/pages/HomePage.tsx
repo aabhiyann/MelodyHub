@@ -8,6 +8,7 @@ import MusicCard, { MusicCardSkeleton } from "./home/components/MusicCard";
 import { EmptyState } from "./home/components/EmptyState";
 import { useUser } from "@clerk/clerk-react";
 import { AIPlaylistPage } from "./ai/AIPlaylistPage";
+import { Sparkles } from "lucide-react";
 
 const HomePage = () => {
 	const { user } = useUser();
@@ -51,21 +52,30 @@ const HomePage = () => {
 			<Topbar />
 			<ScrollArea className='h-[calc(100vh-180px)]'>
 				<div className='p-6 space-y-12 min-h-full pb-24'>
-					{/* Welcome Header */}
-					<div className="flex items-center justify-between">
-						<div className="space-y-1">
+					{/* Welcome Header with AI Playlist Button */}
+					<div className="flex items-center justify-between gap-4">
+						<div className="space-y-1 flex-1">
 							<h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent tracking-tight">
 								{getGreeting()}, {user?.firstName || "Music Lover"}
 							</h1>
 							<p className="text-zinc-400 text-lg">Let's find your vibe for today</p>
 						</div>
+
+						{/* AI Playlist Button */}
+						<button
+							onClick={() => setShowAIPlaylist(true)}
+							className="group relative px-6 py-3 bg-gradient-to-r from-brand-primary to-purple-600 hover:from-brand-primary/90 hover:to-purple-600/90 text-white font-semibold rounded-full shadow-lg hover:shadow-xl hover:shadow-brand-primary/50 transition-all duration-300 hover:scale-105 flex items-center gap-2"
+						>
+							<Sparkles className="w-5 h-5" />
+							<span>AI Playlist</span>
+						</button>
 					</div>
 
 					{/* Featured / Trending Section */}
 					<HorizontalScrollSection title="Trending Now" subtitle="The hottest tracks on MelodyHub">
 						{isLoading ? (
 							Array(5).fill(0).map((_, i) => <MusicCardSkeleton key={i} />)
-						) : (
+						) : trendingSongs.length > 0 ? (
 							trendingSongs.map((song) => (
 								<MusicCard
 									key={song._id}
@@ -77,6 +87,12 @@ const HomePage = () => {
 									}}
 								/>
 							))
+						) : (
+							<EmptyState
+								message="No trending tracks yet"
+								description="Be the first to discover new music!"
+								showMascot={false}
+							/>
 						)}
 					</HorizontalScrollSection>
 
@@ -145,6 +161,9 @@ const HomePage = () => {
 					</div>
 				</div>
 			</ScrollArea>
+
+			{/* AI Playlist Modal */}
+			<AIPlaylistPage isOpen={showAIPlaylist} onClose={() => setShowAIPlaylist(false)} />
 		</main >
 	);
 };
