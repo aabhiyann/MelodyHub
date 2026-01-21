@@ -29,6 +29,8 @@ const SearchPage = lazy(() => import("./pages/SearchPage"));
 const LibraryPage = lazy(() => import("./pages/LibraryPage"));
 const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 const ArtistPage = lazy(() => import("./pages/ArtistPage"));
+const BrowsePage = lazy(() => import("./pages/BrowsePage"));
+const RadioPage = lazy(() => import("./pages/RadioPage"));
 
 function App() {
 	const location = useLocation();
@@ -109,6 +111,8 @@ function App() {
 						}
 					>
 						<Route path='/home' element={<PageTransition><HomePage /></PageTransition>} />
+						<Route path='/browse' element={<PageTransition><BrowsePage /></PageTransition>} />
+						<Route path='/radio' element={<PageTransition><RadioPage /></PageTransition>} />
 						<Route path='/search' element={<PageTransition><SearchPage /></PageTransition>} />
 						<Route path='/library' element={<PageTransition><LibraryPage /></PageTransition>} />
 						<Route path='/profile' element={<PageTransition><ProfilePage /></PageTransition>} />
