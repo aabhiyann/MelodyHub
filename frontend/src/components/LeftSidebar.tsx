@@ -42,7 +42,6 @@ const LeftSidebar = () => {
       {/* Main Navigation */}
       <div className='rounded-xl bg-black/40 backdrop-blur-md border border-white/5 flex flex-col p-3 shadow-sm'>
         <div className='space-y-1'>
-          {/* Home */}
           <Link
             to={'/home'}
             className={cn(
@@ -57,6 +56,40 @@ const LeftSidebar = () => {
           >
             <Home className='mr-3 size-5 group-hover:scale-110 transition-transform' />
             <span className='hidden md:inline'>Home</span>
+          </Link>
+
+          {/* Browse */}
+          <Link
+            to={'/browse'}
+            className={cn(
+              buttonVariants({
+                variant: 'ghost',
+              }),
+              'w-full justify-start h-10 px-4 font-medium transition-all group',
+              isActiveRoute('/browse')
+                ? 'bg-white/10 text-white border-l-4 border-brand-primary'
+                : 'text-text-secondary hover:text-white hover:bg-white/5'
+            )}
+          >
+            <Library className='mr-3 size-5 group-hover:scale-110 transition-transform' />
+            <span className='hidden md:inline'>Browse</span>
+          </Link>
+
+          {/* Radio */}
+          <Link
+            to={'/radio'}
+            className={cn(
+              buttonVariants({
+                variant: 'ghost',
+              }),
+              'w-full justify-start h-10 px-4 font-medium transition-all group',
+              isActiveRoute('/radio')
+                ? 'bg-white/10 text-white border-l-4 border-brand-primary'
+                : 'text-text-secondary hover:text-white hover:bg-white/5'
+            )}
+          >
+            <Mic2 className='mr-3 size-5 group-hover:scale-110 transition-transform' />
+            <span className='hidden md:inline'>Radio</span>
           </Link>
 
           {/* Search - Placeholder for future */}
