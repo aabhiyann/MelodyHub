@@ -1,7 +1,13 @@
+/**
+ * Update the made-for-you endpoint to use advanced AI recommendations
+ * Replace simple content-based with hybrid AI algorithm
+ */
+
 import { Request, Response } from "express";
 import { Song } from "../models/song.model.js";
 import { UserPreference } from "../models/userPreference.model.js";
 import { Recommendation } from "../models/recommendation.model.js";
+import { hybridRecommendations, updateUserAudioPreferences, updateUserFavorites } from "../services/recommendation.service.js";
 
 /**
  * GET /songs/featured
@@ -83,12 +89,12 @@ export const getTrendingSongs = async (req: Request, res: Response) => {
 
 /**
  * GET /songs/made-for-you
- * Personalized recommendations for user
+ * AI-powered personalized recommendations
  */
 export const getMadeForYouSongs = async (req: Request, res: Response) => {
     try {
         const { limit = 20 } = req.query;
-        const userId = req.auth?.userId; // From Clerk middleware
+        const userId = (req as any).auth?.userId; // From Clerk middleware
 
         if (!userId) {
             // Return popular songs for non-authenticated users
@@ -105,6 +111,10 @@ export const getMadeForYouSongs = async (req: Request, res: Response) => {
                 message: "Sign in for personalized recommendations",
             });
         }
+
+        // Update user preferences first (async in background)
+        updateUserAudioPreferences(userId).cat ch(() => { });
+        updateUserFavorites(userId).catch(() => { });
 
         // Check for cached recommendations
         const cached = await Recommendation.findOne({
@@ -123,87 +133,18 @@ export const getMadeForYouSongs = async (req: Request, res: Response) => {
             });
         }
 
-        // Get user preferences
-        const userPreference = await UserPreference.findOne({ userId });
-
-        if (!userPreference || userPreference.listeningHistory.length < 5) {
-            // Cold start: return popular songs
-            const songs = await Song.find()
-                .sort({ playCount: -1 })
-                .limit(Number(limit))
-                .select("-__v");
-
-            return res.status(200).json({
-                success: true,
-                data: songs,
-                count: songs.length,
-                algorithm: "popular",
-                message: "Listen to more songs to get better recommendations",
-            });
-        }
-
-        // Simple content-based recommendation
-        // Get user's favorite genres
-        const favoriteGenres = userPreference.favoriteGenres
-            .sort((a, b) => b.weight - a.weight)
-            .slice(0, 3)
-            .map((g) => g.genre);
-
-        // Find songs in favorite genres that user hasn't listened to
-        const recentlyPlayed = userPreference.listeningHistory
-            .slice(-50)
-            .map((h) => h.songId);
-
-        const recommendations = await Song.find({
-            _id: { $nin: [...recentlyPlayed, ...userPreference.likedSongs] },
-            genre: { $in: favoriteGenres },
-        })
-            .sort({ playCount: -1, likeCount: -1 })
-            .limit(Number(limit) * 2) // Get extra to ensure variety
-            .select("-__v");
-
-        // If not enough genre-based, fill with popular songs
-        if (recommendations.length < Number(limit)) {
-            const fillSongs = await Song.find({
-                _id: {
-                    $nin: [
-                        ...recentlyPlayed,
-                        ...userPreference.likedSongs,
-                        ...recommendations.map((s) => s._id),
-                    ],
-                },
-            })
-                .sort({ playCount: -1 })
-                .limit(Number(limit) - recommendations.length)
-                .select("-__v");
-
-            recommendations.push(...fillSongs);
-        }
-
-        // Shuffle and limit
-        const shuffled = recommendations
-            .sort(() => Math.random() - 0.5)
-            .slice(0, Number(limit));
-
-        // Cache recommendations for 6 hours
-        await Recommendation.findOneAndUpdate(
-            { userId },
-            {
-                userId,
-                songs: shuffled.map((s) => s._id),
-                algorithm: "content-based",
-                confidence: 0.7,
-                expiresAt: new Date(Date.now() + 6 * 60 * 60 * 1000), // 6 hours
-            },
-            { upsert: true, new: true }
+        // Use hybrid AI recommendations
+        const { songs, algorithm, confidence } = await hybridRecommendations(
+            userId,
+            Number(limit)
         );
 
         return res.status(200).json({
             success: true,
-            data: shuffled,
-            count: shuffled.length,
-            algorithm: "content-based",
-            confidence: 0.7,
+            data: songs,
+            count: songs.length,
+            algorithm,
+            confidence,
             cached: false,
         });
     } catch (error: any) {
