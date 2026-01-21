@@ -24,7 +24,7 @@ const HomePage = () => {
 		trendingSongs,
 	} = useMusicStore();
 
-	const { initializeQueue } = usePlayerStore();
+	const { playAlbum } = usePlayerStore();
 
 	useEffect(() => {
 		fetchFeaturedSongs();
@@ -76,14 +76,14 @@ const HomePage = () => {
 						{isLoading ? (
 							Array(5).fill(0).map((_, i) => <MusicCardSkeleton key={i} />)
 						) : trendingSongs.length > 0 ? (
-							trendingSongs.map((song) => (
+							trendingSongs.map((song, index) => (
 								<MusicCard
 									key={song._id}
 									song={song}
-									onClick={() => initializeQueue(trendingSongs)}
+									onClick={() => playAlbum(trendingSongs, index)}
 									onPlayClick={(e) => {
 										e.stopPropagation();
-										initializeQueue(trendingSongs);
+										playAlbum(trendingSongs, index);
 									}}
 								/>
 							))
@@ -103,14 +103,14 @@ const HomePage = () => {
 							{isLoading ? (
 								Array(5).fill(0).map((_, i) => <MusicCardSkeleton key={i} />)
 							) : (
-								madeForYouSongs.map((song) => (
+								madeForYouSongs.map((song, index) => (
 									<MusicCard
 										key={song._id}
 										song={song}
-										onClick={() => initializeQueue(madeForYouSongs)}
+										onClick={() => playAlbum(madeForYouSongs, index)}
 										onPlayClick={(e) => {
 											e.stopPropagation();
-											initializeQueue(madeForYouSongs);
+											playAlbum(madeForYouSongs, index);
 										}}
 									/>
 								))
@@ -145,14 +145,14 @@ const HomePage = () => {
 							{isLoading ? (
 								Array(10).fill(0).map((_, i) => <MusicCardSkeleton key={i} />)
 							) : (
-								featuredSongs.map((song) => (
+								featuredSongs.map((song, index) => (
 									<MusicCard
 										key={song._id}
 										song={song}
-										onClick={() => initializeQueue(featuredSongs)}
+										onClick={() => playAlbum(featuredSongs, index)}
 										onPlayClick={(e) => {
 											e.stopPropagation();
-											initializeQueue(featuredSongs);
+											playAlbum(featuredSongs, index);
 										}}
 									/>
 								))
