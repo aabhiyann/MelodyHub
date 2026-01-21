@@ -5,7 +5,7 @@
 
 import { useState, useEffect } from 'react';
 import { X, Download } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { usePWA } from '@/hooks/usePWA';
 import { isIOS, showIOSInstallPrompt } from '@/utils/mobile';
 
