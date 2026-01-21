@@ -22,6 +22,7 @@ import aiRoutes from './routes/ai.route.js';
 import messageRoutes from './routes/message.route.js';
 import healthRoutes from './routes/health.route.js';
 import discoveryRoutes from './routes/discovery.route.js'; // New discovery routes
+import analyticsRoutes from './routes/analytics.route.js'; // New analytics routes
 import { connectDB } from './lib/db.js';
 import { validateEnv } from './lib/env.js';
 import { requestLogger } from './middleware/logger.middleware.js';
@@ -114,6 +115,7 @@ app.use("/api/albums", albumRoutes);
 app.use("/api/stats", statRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/analytics", analyticsRoutes); // Analytics routes
 
 if (process.env.NODE_ENV === "production") {
 	app.use(express.static(path.join(__dirname, "../frontend/dist")));
