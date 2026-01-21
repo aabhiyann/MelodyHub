@@ -5,7 +5,13 @@ import { Message } from "../models/message.model.js";
 export const initializeSocket = (server: HttpServer) => {
 	const io = new Server(server, {
 		cors: {
-			origin: ["http://localhost:3000", "http://localhost:5173", "https://udaymelodyhhub.vercel.app"],
+			origin: [
+				"http://localhost:3000",
+				"http://localhost:5173",
+				"http://localhost:5174",
+				"http://localhost:5175",
+				"https://udaymelodyhhub.vercel.app"
+			],
 			credentials: true,
 		},
 	});
