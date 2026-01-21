@@ -11,6 +11,9 @@ import { createServer } from "http";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import compression from "compression";
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './config/swagger.config.js';
+import { redisService } from './services/redis.service.js';
 
 import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
@@ -102,6 +105,12 @@ cron.schedule("0 * * * *", () => {
 	}
 });
 
+// API Documentation (Swagger)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+	customCss: '.swagger-ui .topbar { display: none }',
+	customSiteTitle: 'MelodyHub API Documentation',
+}));
+
 // Health check routes (public, no auth required)
 app.use("/api/health", healthRoutes);
 
@@ -128,7 +137,18 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 	res.status(500).json({ message: process.env.NODE_ENV === "production" ? "Internal server error" : err.message });
 });
 
-httpServer.listen(PORT, () => {
-	console.log("Server is running on port " + PORT);
-	connectDB();
+httpServer.listen(PORT, async () => {
+	console.log("🚀 Server is running on port " + PORT);
+
+	// Initialize MongoDB
+	await connectDB();
+
+	// Initialize Redis (optional - app works without it)
+	if (process.env.NODE_ENV === 'production' || process.env.REDIS_URL) {
+		await redisService.connect();
+	} else {
+		console.log('ℹ️  Redis disabled in development (set REDIS_URL to enable)');
+	}
+
+	console.log('📚 API Documentation: http://localhost:' + PORT + '/api-docs');
 });
