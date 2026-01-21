@@ -1,72 +1,155 @@
-import { Button } from "@/components/ui/button";
 import { useMusicStore } from "@/stores/MusicStore";
 import { ColumnDef } from "@tanstack/react-table";
 import { Song } from "@/types";
 import { DataTable } from "@/components/admin/DataTable";
 import { BulkActions } from "@/components/admin/BulkActions";
-import { Play, MoreVertical, Trash2, Edit } from "lucide-react";
+import { Play, Trash2, Edit } from "lucide-react";
 import { format } from "date-fns";
 import { useState } from "react";
 
 const SongsTable = () => {
+	const { songs, deleteSong } = useMusicStore();
+	const [selectedSongs, setSelectedSongs] = useState<Song[]>([]);
+
+	// Define table columns
+	const columns: ColumnDef<Song>[] = [
+		{
+			id: "select",
+			header: ({ table }) => (
+				<input
+					type="checkbox"
+					checked={table.getIsAllPageRowsSelected()}
+					onChange={table.getToggleAllPageRowsSelectedHandler()}
+					className="size-4 rounded border-gray-300 text-brand-primary focus:ring-brand-primary"
+				/>
+			),
+			cell: ({ row }) => (
+				<input
+					type="checkbox"
+					checked={row.getIsSelected()}
+					onChange={row.getToggleSelectedHandler()}
+					className="size-4 rounded border-gray-300 text-brand-primary focus:ring-brand-primary"
+				/>
+			),
+			enableSorting: false,
+		},
+		{
+			accessorKey: "title",
+			header: "Song Title",
+			cell: ({ row }) => (
+				<div className="flex items-center gap-3">
+					<img
+						src={row.original.imageUrl || "/placeholder.png"}
+						alt={row.original.title}
+						className="size-10 rounded object-cover"
+					/>
+					<div>
+						<p className="font-medium">{row.original.title}</p>
+						<p className="text-body-sm text-gray-500">{row.original.artist}</p>
+					</div>
+				</div>
+			),
+		},
+		{
+			accessorKey: "artist",
+			header: "Artist",
+		},
+		{
+			accessorKey: "albumId",
+			header: "Album",
+			cell: ({ row }) => {
+				const { albums } = useMusicStore();
+				const album = albums.find((a) => a._id === row.original.albumId);
+				return <span>{album?.title || "N/A"}</span>;
+			},
+		},
+		{
+			accessorKey: "duration",
+			header: "Duration",
+			cell: ({ row }) => {
+				const duration = row.original.duration || 0;
+				const minutes = Math.floor(duration / 60);
+				const seconds = Math.floor(duration % 60);
+				return <span>{minutes}:{seconds.toString().padStart(2, "0")}</span>;
+			},
+		},
+		{
+			accessorKey: "createdAt",
+			header: "Date Added",
+			cell: ({ row }) => (
+				<span>{format(new Date(row.original.createdAt), "MMM d, yyyy")}</span>
+			),
+		},
+		{
+			id: "actions",
+			header: "Actions",
+			cell: ({ row }) => (
+				<div className="flex items-center gap-2">
+					<button
+						className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+						title="Play"
+					>
+						<Play className="size-4 text-gray-600" />
+					</button>
+					<button
+						className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+						title="Edit"
+					>
+						<Edit className="size-4 text-gray-600" />
+					</button>
+					<button
+						onClick={() => deleteSong(row.original._id)}
+						className="p-2 hover:bg-error/10 rounded-lg transition-colors"
+						title="Delete"
+					>
+						<Trash2 className="size-4 text-error" />
+					</button>
+				</div>
+			),
+			enableSorting: false,
+		},
+	];
+
+	const handleBulkDelete = async () => {
+		if (confirm(`Delete ${selectedSongs.length} songs?`)) {
+			for (const song of selectedSongs) {
+				await deleteSong(song._id);
+			}
+			setSelectedSongs([]);
+		}
+	};
+
+	const handleExport = () => {
+		// Export selected songs as CSV
+		const csv = selectedSongs.map((song) =>
+			`"${song.title}","${song.artist}","${song.duration}"`
+		).join('\n');
+
+		const blob = new Blob([`Title,Artist,Duration\n${csv}`], { type: 'text/csv' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = 'songs-export.csv';
+		a.click();
+		URL.revokeObjectURL(url);
+	};
+
 	return (
-		<div className='flex items-center justify-center py-8'>
-			<div className='text-zinc-400'>Loading songs...</div>
+		<div className="space-y-4">
+			<BulkActions
+				selectedCount={selectedSongs.length}
+				onDelete={handleBulkDelete}
+				onExport={handleExport}
+			/>
+
+			<DataTable
+				columns={columns}
+				data={songs}
+				onRowSelectionChange={setSelectedSongs}
+				searchPlaceholder="Search songs..."
+			/>
 		</div>
 	);
-}
-
-if (error) {
-	return (
-		<div className='flex items-center justify-center py-8'>
-			<div className='text-red-500'>{error}</div>
-		</div>
-	);
-}
-
-return (
-	<Table>
-		<TableHeader>
-			<TableRow className='border-b border-white/5 hover:bg-white/5'>
-				<TableHead className='w-[50px]'></TableHead>
-				<TableHead className='text-zinc-400 font-medium'>Title</TableHead>
-				<TableHead className='text-zinc-400 font-medium'>Artist</TableHead>
-				<TableHead className='text-zinc-400 font-medium'>Release Date</TableHead>
-				<TableHead className='text-right text-zinc-400 font-medium'>Actions</TableHead>
-			</TableRow>
-		</TableHeader>
-
-		<TableBody>
-			{songs.map((song) => (
-				<TableRow key={song._id} className='hover:bg-white/5 border-b border-white/5 transition-colors group'>
-					<TableCell>
-						<img src={song.imageUrl} alt={song.title} className='size-10 rounded object-cover shadow-sm' />
-					</TableCell>
-					<TableCell className='font-medium text-white group-hover:text-brand-primary transition-colors'>{song.title}</TableCell>
-					<TableCell className="text-zinc-400">{song.artist}</TableCell>
-					<TableCell>
-						<span className='inline-flex items-center gap-1 text-zinc-400'>
-							<Calendar className='h-4 w-4 mr-1' />
-							{song.createdAt.split("T")[0]}
-						</span>
-					</TableCell>
-
-					<TableCell className='text-right'>
-						<div className='flex gap-2 justify-end'>
-							<Button
-								variant={"ghost"}
-								size={"sm"}
-								className='text-zinc-400 hover:text-red-400 hover:bg-red-400/10'
-								onClick={() => deleteSong(song._id)}
-							>
-								<Trash2 className='size-4' />
-							</Button>
-						</div>
-					</TableCell>
-				</TableRow>
-			))}
-		</TableBody>
-	</Table>
-);
 };
+
 export default SongsTable;
