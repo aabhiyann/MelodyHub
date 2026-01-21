@@ -69,13 +69,14 @@ function App() {
 			/>
 			<AnimatePresence mode="wait">
 				<Routes location={location} key={location.pathname}>
-					{/* SSO Callback */}
+					{/* SSO Callback - Use full URL for redirects */}
 					<Route
 						path='/sso-callback'
 						element={
 							<AuthenticateWithRedirectCallback
-								signUpForceRedirectUrl="/home"
-								signInForceRedirectUrl="/home"
+								signUpUrl={window.location.origin + "/home"}
+								signInUrl={window.location.origin + "/home"}
+								continueSignUpUrl={window.location.origin + "/home"}
 							/>
 						}
 					/>
