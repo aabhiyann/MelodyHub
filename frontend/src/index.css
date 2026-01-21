@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "./styles/accessibility.css";
+@import './accessibility.css';
+@import './design-tokens.css';
+@import './typography.css';
 
 /* ============================================
    MELODYHUB PREMIUM DESIGN SYSTEM
