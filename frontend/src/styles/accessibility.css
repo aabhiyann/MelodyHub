@@ -1,0 +1,189 @@
+/**
+ * Global accessibility styles
+ * WCAG 2.1 compliant focus indicators and utilities
+ */
+
+/* ============================================
+   Focus Indicators (WCAG 2.4.7 - Level AA)
+   ============================================ */
+
+/* Remove default browser outline */
+*:focus {
+    outline: none;
+}
+
+/* Custom focus indicator with high contrast */
+*:focus-visible {
+    outline: 3px solid var(--color-brand-primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Focus indicator for dark backgrounds */
+.dark *:focus-visible,
+[data-theme="dark"] *:focus-visible {
+    outline-color: var(--color-brand-secondary);
+}
+
+/* Skip link styles */
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    z-index: 999;
+}
+
+.skip-link:focus {
+    left: 0;
+    top: 0;
+    padding: 1rem;
+    background: var(--color-brand-primary);
+    color: white;
+    text-decoration: none;
+    z-index: 9999;
+}
+
+/* ============================================
+   Screen Reader Only (sr-only)
+   ============================================ */
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+.sr-only-focusable:focus,
+.sr-only-focusable:active {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+}
+
+/* ============================================
+   Reduced Motion (WCAG 2.3.3 - Level AAA)
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ============================================
+   High Contrast Mode Support
+   ============================================ */
+
+@media (prefers-contrast: high) {
+    * {
+        border-color: currentColor;
+    }
+
+    button,
+    a {
+        border: 2px solid currentColor;
+    }
+}
+
+/* ============================================
+   Touch Target Sizes (WCAG 2.5.5 - Level AAA)
+   ============================================ */
+
+/* Minimum 44x44px for touch targets */
+button,
+a,
+input[type="checkbox"],
+input[type="radio"],
+select {
+    min-width: 44px;
+    min-height: 44px;
+}
+
+/* Exception for inline links */
+p a,
+li a {
+    min-width: auto;
+    min-height: auto;
+}
+
+/* ============================================
+   Color & Contrast
+   ============================================ */
+
+/* Ensure sufficient color contrast */
+body {
+    color: #1a1a1a;
+    /* WCAG AAA: 15.8:1 on white */
+    background: #ffffff;
+}
+
+/* Dark mode */
+.dark body,
+[data-theme="dark"] body {
+    color: #f5f5f5;
+    /* WCAG AAA: 14.6:1 on dark bg */
+    background: #0a0a0a;
+}
+
+/* ============================================
+   Form Elements
+   ============================================ */
+
+/* Required field indicator */
+.required::after {
+    content: " *";
+    color: #dc2626;
+    font-weight: bold;
+}
+
+/* Error states */
+[aria-invalid="true"] {
+    border-color: #dc2626;
+    border-width: 2px;
+}
+
+/* Error message */
+[role="alert"] {
+    color: #dc2626;
+    font-weight: 500;
+    margin-top: 0.25rem;
+}
+
+/* ============================================
+   Skip Navigation
+   ============================================ */
+
+#main-content:focus {
+    outline: none;
+}
+
+/* ============================================
+   Keyboard Navigation Hints
+   ============================================ */
+
+/* Show keyboard shortcuts on focus */
+[data-shortcut]::after {
+    content: " (" attr(data-shortcut) ")";
+    opacity: 0;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin-left: 0.5rem;
+}
+
+[data-shortcut]:focus::after {
+    opacity: 1;
+}

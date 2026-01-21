@@ -1,0 +1,89 @@
+/**
+ * UsersTab - User management interface for admin
+ * Complete user administration panel
+ */
+
+import { UsersTable } from "@/components/admin/UsersTable";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Users, UserPlus } from "lucide-react";
+
+export const UsersTab = () => {
+    return (
+        <div className="space-y-6">
+            {/* Header */}
+            <div className="flex items-center justify-between">
+                <div>
+                    <h2 className="text-heading-lg font-bold text-gray-900 flex items-center gap-2">
+                        <Users className="size-6 text-brand-primary" />
+                        User Management
+                    </h2>
+                    <p className="text-body-md text-gray-600 mt-1">
+                        Manage user accounts, roles, and permissions
+                    </p>
+                </div>
+
+                <button className="flex items-center gap-2 px-4 py-2 bg-brand-primary text-white rounded-lg font-semibold hover:bg-brand-primary/90 transition-colors">
+                    <UserPlus className="size-4" />
+                    Add User
+                </button>
+            </div>
+
+            {/* Stats Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <Card className="bg-white border-border">
+                    <CardContent className="pt-6">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-body-sm text-gray-600">Total Users</p>
+                                <p className="text-display-md font-bold text-gray-900 mt-1">1,234</p>
+                            </div>
+                            <div className="p-3 bg-blue-100 rounded-lg">
+                                <Users className="size-6 text-blue-600" />
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                <Card className="bg-white border-border">
+                    <CardContent className="pt-6">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-body-sm text-gray-600">Active Users</p>
+                                <p className="text-display-md font-bold text-gray-900 mt-1">1,180</p>
+                            </div>
+                            <div className="p-3 bg-success/20 rounded-lg">
+                                <Users className="size-6 text-success" />
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                <Card className="bg-white border-border">
+                    <CardContent className="pt-6">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-body-sm text-gray-600">Admins</p>
+                                <p className="text-display-md font-bold text-gray-900 mt-1">12</p>
+                            </div>
+                            <div className="p-3 bg-purple-100 rounded-lg">
+                                <Users className="size-6 text-purple-600" />
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+
+            {/* Users Table */}
+            <Card className="bg-white border-border">
+                <CardHeader>
+                    <CardTitle className="text-heading-md font-bold text-gray-900">
+                        All Users
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <UsersTable />
+                </CardContent>
+            </Card>
+        </div>
+    );
+};

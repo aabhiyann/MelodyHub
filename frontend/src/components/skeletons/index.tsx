@@ -4,7 +4,7 @@
  */
 
 export const SongCardSkeleton = () => (
-    <div className="glass p-4 rounded-lg animate-pulse">
+    <div className="glass p-4 rounded-lg skeleton-shimmer-enhanced">
         {/* Image skeleton */}
         <div className="aspect-square bg-white/5 rounded-md mb-4" />
         {/* Title skeleton */}
@@ -23,7 +23,7 @@ export const SongGridSkeleton = ({ count = 6 }: { count?: number }) => (
 );
 
 export const AlbumCardSkeleton = () => (
-    <div className="glass p-6 rounded-lg animate-pulse">
+    <div className="glass p-6 rounded-lg skeleton-shimmer-enhanced">
         {/* Album image */}
         <div className="aspect-square bg-white/5 rounded-md mb-4" />
         {/* Album title */}
@@ -44,7 +44,7 @@ export const AlbumListSkeleton = ({ count = 4 }: { count?: number }) => (
 );
 
 export const ChatMessageSkeleton = () => (
-    <div className="flex gap-3 p-3 animate-pulse">
+    <div className="flex gap-3 p-3 skeleton-pulse">
         {/* Avatar */}
         <div className="size-10 rounded-full bg-white/5 shrink-0" />
         <div className="flex-1 space-y-2">
@@ -66,7 +66,7 @@ export const ChatListSkeleton = ({ count = 5 }: { count?: number }) => (
 );
 
 export const FeaturedSectionSkeleton = () => (
-    <div className="space-y-4 mb-8 animate-pulse">
+    <div className="space-y-4 mb-8 skeleton-shimmer-enhanced">
         {/* Section header */}
         <div className="h-8 bg-white/5 rounded w-48 mb-6" />
         {/* Featured grid */}
@@ -85,7 +85,7 @@ export const FeaturedSectionSkeleton = () => (
 export const PageLoadingSkeleton = () => (
     <div className="p-6 space-y-8">
         {/* Header skeleton */}
-        <div className="animate-pulse">
+        <div className="skeleton-pulse">
             <div className="h-10 bg-white/5 rounded w-64 mb-4" />
             <div className="h-4 bg-white/5 rounded w-96" />
         </div>
@@ -94,7 +94,7 @@ export const PageLoadingSkeleton = () => (
         <div className="space-y-8">
             <FeaturedSectionSkeleton />
             <div className="space-y-4">
-                <div className="h-6 bg-white/5 rounded w-48 animate-pulse" />
+                <div className="h-6 bg-white/5 rounded w-48 skeleton-pulse" />
                 <SongGridSkeleton count={8} />
             </div>
         </div>
@@ -104,7 +104,7 @@ export const PageLoadingSkeleton = () => (
 export const UserListSkeleton = ({ count = 6 }: { count?: number }) => (
     <div className="space-y-2">
         {Array.from({ length: count }).map((_, i) => (
-            <div key={i} className="flex items-center gap-3 p-3 rounded-lg animate-pulse">
+            <div key={i} className="flex items-center gap-3 p-3 rounded-lg skeleton-pulse">
                 {/* Avatar */}
                 <div className="size-12 rounded-full bg-white/5 shrink-0" />
                 {/* User info */}
