@@ -6,6 +6,11 @@ export const connectDB = async (): Promise<void> => {
     console.log(`MongoDB connected: ${conn.connection.host}`);
   } catch (error: any) {
     console.error('Error: ' + error.message);
-    process.exit(1);
+    // Throw error instead of process.exit so tests can handle it
+    if (process.env.NODE_ENV !== 'test') {
+      process.exit(1);
+    } else {
+      throw error;
+    }
   }
 };
