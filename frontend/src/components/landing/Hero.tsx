@@ -1,10 +1,16 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
-import { Play, ArrowRight, Music, Headphones } from 'lucide-react';
+import { Play, ArrowRight, Music } from 'lucide-react';
+import { FloatingAlbums } from './FloatingAlbums';
+import WaveformVisualization from './WaveformVisualization';
+import { SignInButton, useUser } from '@clerk/clerk-react';
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollY } = useScroll();
+    const { isSignedIn } = useUser();
+    const navigate = useNavigate();
 
     // Mouse Parallax Logic for 3D Card
     const x = useMotionValue(0);
@@ -54,44 +60,58 @@ const Hero = () => {
                 <div className="absolute bottom-[-20%] left-[20%] w-[500px] h-[500px] bg-brand-secondary/15 rounded-full blur-[100px] opacity-30" />
             </motion.div>
 
+            {/* Floating Album Covers */}
+            <FloatingAlbums />
+
             <div className="container relative z-10 px-6 mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center h-full">
                 {/* Left Content */}
                 <motion.div
                     style={{ opacity: opacityHero }}
-                    className="col-span-1 lg:col-span-6 text-left flex flex-col justify-center space-y-8 lg:pr-12"
+                    className="col-span-1 lg:col-span-6 text-left flex flex-col justify-center space-y-8 lg:pr-12 relative"
                 >
+                    {/* Waveform Behind Text */}
+                    <WaveformVisualization />
+
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
-                        className="inline-flex items-center space-x-2"
+                        className="inline-flex items-center space-x-2 relative z-10"
                     >
                         <span className="relative flex h-3 w-3">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-3 w-3 bg-brand-primary"></span>
                         </span>
                         <span className="text-sm font-medium tracking-widest uppercase text-white/60">
-                            The Future of Audio
+                            AI-Powered Music Streaming
                         </span>
                     </motion.div>
 
-                    <div className="space-y-2">
-                        <h1 className="text-6xl md:text-8xl font-display font-semibold tracking-[-0.04em] leading-[0.9] text-white">
+                    <div className="space-y-4 relative z-10">
+                        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-bold tracking-[-0.04em] leading-[0.95]">
                             <motion.span
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.1 }}
-                                className="block"
+                                className="block text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-white/70"
                             >
-                                Music,
+                                Your Music,
+                            </motion.span>
+                            <motion.span
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, delay: 0.15 }}
+                                className="block text-transparent bg-clip-text bg-gradient-to-br from-brand-primary via-purple-400 to-accent-blue pb-2"
+                            >
+                                Reimagined
                             </motion.span>
                             <motion.span
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.2 }}
-                                className="block text-transparent bg-clip-text bg-gradient-to-br from-white via-white/90 to-white/50 pb-2"
+                                className="block text-transparent bg-clip-text bg-gradient-to-r from-white to-white/80"
                             >
-                                Perfected.
+                                with AI
                             </motion.span>
                         </h1>
                     </div>
@@ -100,7 +120,7 @@ const Hero = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.3 }}
-                        className="text-lg md:text-xl text-white/60 max-w-lg leading-relaxed font-light tracking-wide"
+                        className="text-lg md:text-xl text-white/70 max-w-lg leading-relaxed font-light tracking-wide relative z-10"
                     >
                         Immerse yourself in high-fidelity sound, powered by AI that understands your vibe.
                         It's not just streaming; it's a personal concert.
@@ -110,24 +130,41 @@ const Hero = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
-                        className="flex flex-col sm:flex-row gap-5 pt-4"
+                        className="flex flex-col sm:flex-row gap-5 pt-4 relative z-10"
                     >
-                        <motion.button
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            className="group h-14 px-8 bg-white text-black rounded-full font-semibold text-base flex items-center justify-center space-x-2 shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] transition-all hover:shadow-[0_0_60px_-10px_rgba(255,255,255,0.4)]"
-                        >
-                            <span>Start Listening</span>
-                            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                        </motion.button>
+                        {/* Get Started Button - Sign in or go to app */}
+                        {isSignedIn ? (
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={() => navigate('/home')}
+                                className="group h-14 px-8 bg-white text-black rounded-full font-semibold text-base flex items-center justify-center space-x-2 shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] transition-all hover:shadow-[0_0_60px_-10px_rgba(255,255,255,0.5)]"
+                            >
+                                <span>Open App</span>
+                                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                            </motion.button>
+                        ) : (
+                            <SignInButton mode="modal">
+                                <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.98 }}
+                                    className="group h-14 px-8 bg-white text-black rounded-full font-semibold text-base flex items-center justify-center space-x-2 shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] transition-all hover:shadow-[0_0_60px_-10px_rgba(255,255,255,0.5)]"
+                                >
+                                    <span>Get Started</span>
+                                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                                </motion.button>
+                            </SignInButton>
+                        )}
 
+                        {/* Watch Demo - Scroll to features */}
                         <motion.button
-                            whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.1)" }}
+                            whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.1)" }}
                             whileTap={{ scale: 0.98 }}
-                            className="h-14 px-8 rounded-full font-medium text-base text-white border border-white/10 flex items-center justify-center space-x-2 backdrop-blur-md transition-all hover:border-white/30"
+                            onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+                            className="h-14 px-8 rounded-full font-medium text-base text-white border border-white/10 flex items-center justify-center space-x-2 backdrop-blur-md transition-all hover:border-white/30 hover:shadow-[0_0_30px_-10px_rgba(255,255,255,0.3)]"
                         >
-                            <Headphones className="w-4 h-4" />
-                            <span>Experience Pro</span>
+                            <Play className="w-4 h-4" />
+                            <span>See Features</span>
                         </motion.button>
                     </motion.div>
                 </motion.div>
