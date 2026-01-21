@@ -20,6 +20,7 @@ const LandingPage = lazy(() => import("./pages/LandingPage"));
 const MainLayout = lazy(() => import("./layout/MainLayout"));
 const AIGenPage = lazy(() => import("./pages/ai/AIGenPage"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
+const LibraryPage = lazy(() => import("./pages/LibraryPage"));
 
 function App() {
 	const location = useLocation();
@@ -95,6 +96,7 @@ function App() {
 					>
 						<Route path='/home' element={<PageTransition><HomePage /></PageTransition>} />
 						<Route path='/search' element={<PageTransition><SearchPage /></PageTransition>} />
+						<Route path='/library' element={<PageTransition><LibraryPage /></PageTransition>} />
 						<Route path='/chat' element={<PageTransition><ChatPage /></PageTransition>} />
 						<Route path='/ai' element={<PageTransition><AIGenPage /></PageTransition>} />
 						<Route path='/albums/:albumId' element={<PageTransition><AlbumPage /></PageTransition>} />
