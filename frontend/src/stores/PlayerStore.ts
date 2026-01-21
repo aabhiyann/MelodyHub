@@ -11,6 +11,12 @@ interface PlayerStore {
 	isRepeating: boolean;
 	isLyricsOpen: boolean;
 	isQueueOpen: boolean;
+	// New audio state
+	volume: number;
+	isMuted: boolean;
+	currentTime: number;
+	duration: number;
+	bufferedTime: number;
 
 	initializeQueue: (songs: Song[]) => void;
 	playAlbum: (songs: Song[], startIndex?: number) => void;
@@ -22,6 +28,13 @@ interface PlayerStore {
 	toggleRepeat: () => void;
 	toggleLyrics: () => void;
 	toggleQueue: () => void;
+	// New audio actions
+	setVolume: (volume: number) => void;
+	toggleMute: () => void;
+	setCurrentTime: (time: number) => void;
+	setDuration: (duration: number) => void;
+	setBufferedTime: (time: number) => void;
+	seek: (time: number) => void;
 }
 
 export const usePlayerStore = create<PlayerStore>((set, get) => {
@@ -31,11 +44,17 @@ export const usePlayerStore = create<PlayerStore>((set, get) => {
 		currentSong: null,
 		isPlaying: false,
 		queue: [],
-		currentIndex: -1,
+		currentIndex: - 1,
 		shuffled: false,
 		isRepeating: false,
 		isLyricsOpen: false,
 		isQueueOpen: false,
+		// New audio state
+		volume: 70,
+		isMuted: false,
+		currentTime: 0,
+		duration: 0,
+		bufferedTime: 0,
 
 		initializeQueue: manager.initializeQueue.bind(manager),
 		playAlbum: manager.playAlbum.bind(manager),
@@ -47,5 +66,12 @@ export const usePlayerStore = create<PlayerStore>((set, get) => {
 		toggleRepeat: manager.toggleRepeat.bind(manager),
 		toggleLyrics: () => set(state => ({ isLyricsOpen: !state.isLyricsOpen })),
 		toggleQueue: () => set(state => ({ isQueueOpen: !state.isQueueOpen })),
+		// New audio actions
+		setVolume: (volume) => set({ volume }),
+		toggleMute: () => set(state => ({ isMuted: !state.isMuted })),
+		setCurrentTime: (time) => set({ currentTime: time }),
+		setDuration: (duration) => set({ duration }),
+		setBufferedTime: (time) => set({ bufferedTime: time }),
+		seek: (time) => set({ currentTime: time }),
 	};
 });
