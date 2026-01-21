@@ -3,7 +3,7 @@
  * Tracks Core Web Vitals: LCP, FID, CLS, FCP, TTFB
  */
 
-import { getCLS, getFCP, getFID, getLCP, getTTFB, Metric } from 'web-vitals';
+import { onCLS, onFCP, onFID, onLCP, onTTFB, Metric } from 'web-vitals';
 
 interface WebVitalsMetrics {
     lcp?: number;
@@ -69,11 +69,11 @@ function sendToAnalytics(metric: Metric) {
  * Initialize Web Vitals monitoring
  */
 export function initWebVitals() {
-    getCLS(sendToAnalytics);
-    getFCP(sendToAnalytics);
-    getFID(sendToAnalytics);
-    getLCP(sendToAnalytics);
-    getTTFB(sendToAnalytics);
+    onCLS(sendToAnalytics);
+    onFCP(sendToAnalytics);
+    on FID(sendToAnalytics);
+    onLCP(sendToAnalytics);
+    onTTFB(sendToAnalytics);
 }
 
 /**
