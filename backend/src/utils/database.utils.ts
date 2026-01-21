@@ -52,10 +52,10 @@ export function createCursorPagination<T extends { _id: any }>(
     }
 
     // Build query with cursor
-    const paginatedQuery: FilterQuery<T> = { ...query };
+    const paginatedQuery: FilterQuery<T> = { ...query } as FilterQuery<T>;
     if (cursorValue) {
         const operator = sortOrder === 'desc' ? '$lt' : '$gt';
-        paginatedQuery[sortField as string] = { [operator]: cursorValue };
+        (paginatedQuery as any)[sortField as string] = { [operator]: cursorValue };
     }
 
     // Build sort

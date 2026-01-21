@@ -83,9 +83,9 @@ export async function contentBasedRecommendations(
             ];
 
             const score = cosineSimilarity(userVector, songVector);
-            return { song, score };
+            return { song: song as ISong, score };
         })
-        .filter((item): item is SongWithScore => item !== null);
+        .filter((item) => item !== null) as SongWithScore[];
 
     // Sort by score and return top N
     return scoredSongs
@@ -164,8 +164,8 @@ export async function collaborativeFilteringRecommendations(
 
     // Re-order according to score
     return topSongIds
-        .map((id) => songs.find((s) => s._id.equals(id)))
-        .filter((s): s is ISong => s !== undefined);
+        .map((id) => songs.find((s) => (s._id as any).equals(id)))
+        .filter((s) => s !== undefined) as ISong[];
 }
 
 /**

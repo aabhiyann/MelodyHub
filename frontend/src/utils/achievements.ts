@@ -4,7 +4,6 @@
  */
 
 import { useMascot } from '@/hooks/useMascot';
-import { getRandomMessage } from '@/utils/mascotMessages';
 import { useEffect } from 'react';
 
 export interface Achievement {

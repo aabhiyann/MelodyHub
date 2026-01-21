@@ -1,9 +1,7 @@
-import { Play, MoreHorizontal, Plus, ListMusic } from "lucide-react";
+import { Play, MoreHorizontal, Plus, ListMusic, Heart } from "lucide-react";
 import { Song } from "@/types";
 import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 import { LikeButton } from "@/components/LikeButton";
-import { cardHover } from "@/lib/interactions";
 
 interface MusicCardProps {
     song: Song;

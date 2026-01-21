@@ -42,8 +42,10 @@ export const cacheMiddleware = (options: CacheOptions = {}) => {
             if (cached) {
                 // Cache hit
                 console.log(`✅ Cache HIT: ${cacheKey}`);
+                // Ensure cached value is an object before spreading
+                const cachedData = typeof cached === 'object' && cached !== null ? cached : { data: cached };
                 return res.status(200).json({
-                    ...cached,
+                    ...cachedData,
                     cached: true,
                     _meta: {
                         cached: true,

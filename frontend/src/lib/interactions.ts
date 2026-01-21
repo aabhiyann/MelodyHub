@@ -3,7 +3,7 @@
  * Reusable animation variants, timings, and utilities for micro-interactions
  */
 
-import { Variants, Transition } from 'framer-motion';
+import { Variants } from 'framer-motion';
 
 // Animation Timings (ms)
 export const TIMINGS = {

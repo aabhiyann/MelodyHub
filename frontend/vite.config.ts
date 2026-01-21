@@ -7,7 +7,14 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      babel: {
+        plugins: [
+          // Skip type checking during production build for Docker
+          process.env.NODE_ENV === 'production' && ['@babel/plugin-transform-typescript', { allowDeclareFields: true }]
+        ].filter(Boolean)
+      }
+    }),
     tailwindcss(),
     // Gzip compression
     viteCompression({
@@ -123,6 +130,7 @@ export default defineConfig({
         drop_debugger: true,
       },
     },
+    sourcemap: false,
     rollupOptions: {
       output: {
         // Manual chunking for optimal loading
@@ -156,8 +164,6 @@ export default defineConfig({
     },
     // Increase chunk size warning limit
     chunkSizeWarningLimit: 1000,
-    // Disable sourcemaps in production
-    sourcemap: false,
     // CSS code splitting
     cssCodeSplit: true,
   },

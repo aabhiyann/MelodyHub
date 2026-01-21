@@ -1,11 +1,20 @@
 import { useMusicStore } from "@/stores/MusicStore";
-import { useMemo, useState } from "react";
-import { StreamsChart } from "@/components/admin/StreamsChart";
-import { TopSongsChart } from "@/components/admin/TopSongsChart";
-import { DateRangePicker, DateRange } from "@/components/admin/DateRangePicker";
+import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart3, TrendingUp, Users, Music } from "lucide-react";
-import { subDays } from "date-fns";
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer,
+    PieChart,
+    Pie,
+    Cell
+} from 'recharts';
+
+const COLORS = ['#1db954', '#1ed760', '#1aa34a', '#168f3f', '#127a34'];
 
 const AnalyticsTabContent = () => {
     const { songs, albums, stats } = useMusicStore();
