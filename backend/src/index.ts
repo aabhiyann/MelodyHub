@@ -21,6 +21,7 @@ import statRoutes from './routes/stat.route.js';
 import aiRoutes from './routes/ai.route.js';
 import messageRoutes from './routes/message.route.js';
 import healthRoutes from './routes/health.route.js';
+import discoveryRoutes from './routes/discovery.route.js'; // New discovery routes
 import { connectDB } from './lib/db.js';
 import { validateEnv } from './lib/env.js';
 import { requestLogger } from './middleware/logger.middleware.js';
@@ -107,7 +108,8 @@ app.use("/api/health", healthRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/auth", authRoutes);
-app.use("/api/songs", songRoutes);
+app.use("/api/songs", discoveryRoutes); // Discovery routes (featured, trending, etc.)
+app.use("/api/songs", songRoutes); // Other song routes
 app.use("/api/albums", albumRoutes);
 app.use("/api/stats", statRoutes);
 app.use("/api/ai", aiRoutes);
