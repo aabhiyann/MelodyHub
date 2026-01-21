@@ -22,6 +22,7 @@ const AIGenPage = lazy(() => import("./pages/ai/AIGenPage"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
 const LibraryPage = lazy(() => import("./pages/LibraryPage"));
 const ProfilePage = lazy(() => import("./pages/ProfilePage"));
+const ArtistPage = lazy(() => import("./pages/ArtistPage"));
 
 function App() {
 	const location = useLocation();
@@ -102,6 +103,7 @@ function App() {
 						<Route path='/chat' element={<PageTransition><ChatPage /></PageTransition>} />
 						<Route path='/ai' element={<PageTransition><AIGenPage /></PageTransition>} />
 						<Route path='/albums/:albumId' element={<PageTransition><AlbumPage /></PageTransition>} />
+						<Route path='/artists/:artistId' element={<PageTransition><ArtistPage /></PageTransition>} />
 						<Route path='/admin' element={<PageTransition><AdminPage /></PageTransition>} />
 						<Route path='*' element={<PageTransition><NotFoundPage /></PageTransition>} />
 					</Route>
