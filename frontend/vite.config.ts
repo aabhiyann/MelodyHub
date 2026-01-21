@@ -1,18 +1,30 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { visualizer } from 'rollup-plugin-visualizer';
+import viteCompression from 'vite-plugin-compression';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    // Bundle analyzer - run with: npm run build
+    // Gzip compression
+    viteCompression({
+      algorithm: 'gzip',
+      ext: '.gz',
+    }),
+    // Brotli compression
+    viteCompression({
+      algorithm: 'brotliCompress',
+      ext: '.br',
+    }),
+    // Bundle analyzer - generates stats.html in dist/
     visualizer({
       filename: './dist/stats.html',
-      open: false, // Set to true to auto-open in browser
+      open: false,
       gzipSize: true,
       brotliSize: true,
+      template: 'treemap', // sunburst, treemap, network
     }),
   ],
   resolve: {
@@ -31,29 +43,66 @@ export default defineConfig({
     },
   },
   build: {
-    // Optimize bundle size and loading performance
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          // React core bundle
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          // UI library components (only include what's actually used)
-          'ui-vendor': [
-            '@radix-ui/react-dialog',
-            '@radix-ui/react-scroll-area',
-            '@radix-ui/react-avatar',
-          ],
-          // Authentication
-          'clerk': ['@clerk/clerk-react'],
-          // State management
-          'zustand': ['zustand'],
-        },
+    // Target modern browsers for smaller bundles
+    target: 'es2015',
+    // Optimize bundle size
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true, // Remove console.log in production
+        drop_debugger: true,
       },
     },
-    chunkSizeWarningLimit: 1000, // Increase limit to 1MB for vendor chunks
-    sourcemap: false, // Disable sourcemaps in production for smaller builds
+    rollupOptions: {
+      output: {
+        // Manual chunking for optimal loading
+        manualChunks: {
+          // React core (shared across all routes)
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+
+          // State management
+          'state-vendor': ['zustand'],
+
+          // UI libraries
+          'ui-vendor': ['framer-motion', 'lucide-react'],
+
+          // Charts (heavy, only for admin)
+          'chart-vendor': ['recharts'],
+
+          // Form libraries
+          'form-vendor': ['react-hook-form', '@tanstack/react-table'],
+
+          // Authentication
+          'auth-vendor': ['@clerk/clerk-react'],
+
+          // Date utilities
+          'date-vendor': ['date-fns'],
+        },
+        // Optimized file naming
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
+      },
+    },
+    // Increase chunk size warning limit
+    chunkSizeWarningLimit: 1000,
+    // Disable sourcemaps in production
+    sourcemap: false,
+    // CSS code splitting
+    cssCodeSplit: true,
   },
-  // @ts-ignore - Vitest types extend Vite config but TS complains
+  // Optimize dependencies
+  optimizeDeps: {
+    include: [
+      'react',
+      'react-dom',
+      'react-router-dom',
+      'zustand',
+      'framer-motion',
+    ],
+  },
+  // Test configuration
+  // @ts-ignore
   test: {
     globals: true,
     environment: 'jsdom',
