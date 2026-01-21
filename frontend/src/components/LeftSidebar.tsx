@@ -15,7 +15,6 @@ import {
   Heart,
   ListMusic,
   Mic2,
-  Disc3,
   LogOut,
 } from "lucide-react";
 import { useEffect } from "react";
