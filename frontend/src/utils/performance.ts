@@ -3,7 +3,7 @@
  * Debounce, throttle, and other optimization utilities
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
  * Debounce hook - delays execution until after delay ms have elapsed
@@ -32,7 +32,7 @@ export function useDebouncedCallback<T extends (...args: any[]) => any>(
     callback: T,
     delay: number = 300
 ): (...args: Parameters<T>) => void {
-    const timeoutRef = useRef<NodeJS.Timeout>();
+    const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
     return useCallback(
         (...args: Parameters<T>) => {

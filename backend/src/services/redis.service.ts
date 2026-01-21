@@ -63,7 +63,7 @@ class RedisService {
 
         try {
             const data = await this.client.get(key);
-            return data ? JSON.parse(data) : null;
+            return (data && typeof data === 'string') ? JSON.parse(data) : null;
         } catch (error) {
             console.error(`Redis GET error for key ${key}:`, error);
             return null;

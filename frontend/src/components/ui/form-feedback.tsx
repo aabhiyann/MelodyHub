@@ -4,7 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
-import { Check, AlertCircle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { checkmarkVariants, shakeAnimation } from '@/lib/interactions';
 import { cn } from '@/lib/utils';
 
@@ -19,10 +19,9 @@ export const FormFeedback = ({ type, message, className }: FormFeedbackProps) =>
         <motion.div
             className={cn('flex items-center gap-2 mt-2', className)}
             initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={type === 'error' ? 'shake' : { opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             variants={type === 'error' ? shakeAnimation : undefined}
-            animate={type === 'error' ? 'shake' : undefined}
         >
             {type === 'success' && (
                 <motion.div className='flex-shrink-0'>

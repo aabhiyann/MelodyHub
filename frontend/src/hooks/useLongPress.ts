@@ -18,7 +18,7 @@ export function useLongPress({
     threshold = 500,
     vibrate = true,
 }: UseLongPressOptions) {
-    const timeoutRef = useRef<NodeJS.Timeout>();
+    const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
     const preventClickRef = useRef(false);
 
     const handleStart = useCallback(() => {
