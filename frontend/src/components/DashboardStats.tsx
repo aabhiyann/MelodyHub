@@ -1,86 +1,95 @@
 import { useMusicStore } from "@/stores/MusicStore";
 import { Library, ListMusic, PlayCircle, Users, UserRound } from "lucide-react";
-import StatsCard from "./StatsCard";
+import { KPICard } from "@/components/admin/KPICard";
+import { ActivityFeed, generateMockActivities } from "@/components/admin/ActivityFeed";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const DashboardStats = () => {
 	const { stats } = useMusicStore();
 
-	const statsData = [
-		{
-			icon: ListMusic,
-			label: "Total Songs",
-			value: stats.totalSongs.toString(),
-			iconColor: "text-emerald-500",
-		},
-		{
-			icon: Library,
-			label: "Total Albums",
-			value: stats.totalAlbums.toString(),
-			iconColor: "text-violet-500",
-		},
-		{
-			icon: UserRound,
-			label: "Total Artists",
-			value: stats.totalArtists.toString(),
-			iconColor: "text-orange-500",
-		},
-		{
-			icon: Users,
-			label: "Total Users",
-			value: stats.totalUsers.toLocaleString(),
-			iconColor: "text-sky-500",
-		},
-	];
+	// Mock sparkline data (replace with real data from API)
+	const mockSparkline = [45, 52, 48, 65, 70, 68, 75];
 
 	// Prepare data for the chart
 	const chartData = [
-		{ name: "Songs", count: stats.totalSongs, fill: "#10b981" }, // emerald-500
-		{ name: "Albums", count: stats.totalAlbums, fill: "#8b5cf6" }, // violet-500
-		{ name: "Artists", count: stats.totalArtists, fill: "#f97316" }, // orange-500
-		{ name: "Users", count: stats.totalUsers, fill: "#0ea5e9" }, // sky-500
+		{ name: "Songs", count: stats.totalSongs, fill: "#10b981" },
+		{ name: "Albums", count: stats.totalAlbums, fill: "#8b5cf6" },
+		{ name: "Artists", count: stats.totalArtists, fill: "#f97316" },
+		{ name: "Users", count: stats.totalUsers, fill: "#0ea5e9" },
 	];
 
-	return (
-		<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-			{/* Stats Cards */}
-			{statsData.map((stat) => (
-				<StatsCard
-					key={stat.label}
-					icon={stat.icon}
-					label={stat.label}
-					value={stat.value}
-					iconColor={stat.iconColor}
-				/>
-			))}
+	const activities = generateMockActivities();
 
-			{/* Chart Section - Spans full width */}
-			<div className="col-span-1 md:col-span-2 lg:col-span-4 bg-white/5 backdrop-blur-lg p-6 rounded-xl border border-white/5 hover:bg-white/10 transition-colors">
-				<div className="flex items-center justify-between mb-6">
-					<h2 className="text-xl font-bold text-white flex items-center gap-2">
-						<PlayCircle className="text-emerald-500" size={20} />
-						Platform Overview
-					</h2>
-				</div>
-				<div className="h-[300px] w-full">
-					<ResponsiveContainer width="100%" height="100%">
-						<BarChart data={chartData}>
-							<CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-							<XAxis dataKey="name" stroke="#9ca3af" />
-							<YAxis stroke="#9ca3af" />
-							<Tooltip
-								contentStyle={{
-									backgroundColor: "rgba(32, 32, 32, 0.8)",
-									backdropFilter: "blur(4px)",
-									border: "1px solid rgba(255,255,255,0.1)",
-									borderRadius: "8px",
-								}}
-								itemStyle={{ color: "#e4e4e7" }}
-							/>
-							<Bar dataKey="count" radius={[4, 4, 0, 0]} />
-						</BarChart>
-					</ResponsiveContainer>
-				</div>
+	return (
+		<div className="space-y-6">
+			{/* KPI Cards Grid */}
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+				<KPICard
+					icon={ListMusic}
+					title="Total Songs"
+					value={stats.totalSongs}
+					trend={{ value: 12.5, isPositive: true }}
+					sparklineData={mockSparkline}
+				/>
+				<KPICard
+					icon={Library}
+					title="Total Albums"
+					value={stats.totalAlbums}
+					trend={{ value: 8.2, isPositive: true }}
+					sparklineData={mockSparkline.map((v) => v * 0.3)}
+				/>
+				<KPICard
+					icon={UserRound}
+					title="Total Artists"
+					value={stats.totalArtists}
+					trend={{ value: 3.1, isPositive: false }}
+					sparklineData={mockSparkline.map((v) => v * 0.5)}
+				/>
+				<KPICard
+					icon={Users}
+					title="Total Users"
+					value={stats.totalUsers}
+					trend={{ value: 25.3, isPositive: true }}
+					sparklineData={mockSparkline.map((v) => v * 1.5)}
+				/>
+			</div>
+
+			{/* Chart and Activity Feed */}
+			<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+				{/* Platform Overview Chart */}
+				<Card className="lg:col-span-2 bg-white border-border">
+					<CardHeader>
+						<CardTitle className="text-heading-md font-bold text-gray-900 flex items-center gap-2">
+							<PlayCircle className="text-brand-primary" size={20} />
+							Platform Overview
+						</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<div className="h-[300px] w-full">
+							<ResponsiveContainer width="100%" height="100%">
+								<BarChart data={chartData}>
+									<CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+									<XAxis dataKey="name" stroke="#6b7280" />
+									<YAxis stroke="#6b7280" />
+									<Tooltip
+										contentStyle={{
+											backgroundColor: "white",
+											border: "1px solid #e5e7eb",
+											borderRadius: "8px",
+											boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+										}}
+										itemStyle={{ color: "#374151" }}
+									/>
+									<Bar dataKey="count" radius={[8, 8, 0, 0]} />
+								</BarChart>
+							</ResponsiveContainer>
+						</div>
+					</CardContent>
+				</Card>
+
+				{/* Activity Feed */}
+				<ActivityFeed activities={activities} limit={8} />
 			</div>
 		</div>
 	);
