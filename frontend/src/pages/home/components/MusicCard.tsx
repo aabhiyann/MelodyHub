@@ -1,9 +1,9 @@
-import { Play, MoreHorizontal, Heart, Plus, ListMusic } from "lucide-react";
+import { Play, MoreHorizontal, Plus, ListMusic } from "lucide-react";
 import { Song } from "@/types";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { HeartParticles } from "@/components/HeartParticles";
-import { heartVariants } from "@/lib/animation-variants";
+import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { LikeButton } from "@/components/LikeButton";
+import { cardHover } from "@/lib/interactions";
 
 interface MusicCardProps {
     song: Song;
@@ -13,25 +13,28 @@ interface MusicCardProps {
 
 const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
     const [showMenu, setShowMenu] = useState(false);
-    const [isLiked, setIsLiked] = useState(false);
-    const [showParticles, setShowParticles] = useState(false);
+    const [isImageLoaded, setIsImageLoaded] = useState(false);
+    const [shouldLoadImage, setShouldLoadImage] = useState(false);
+    const imgContainerRef = useRef<HTMLDivElement>(null);
 
-    const handleLikeClick = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        const newLikedState = !isLiked;
-        setIsLiked(newLikedState);
+    // Lazy loading with Intersection Observer
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setShouldLoadImage(true);
+                    observer.disconnect();
+                }
+            },
+            { rootMargin: '50px' } // Start loading 50px before visible
+        );
 
-        // Show particles when liking
-        if (newLikedState) {
-            setShowParticles(true);
-            setTimeout(() => setShowParticles(false), 600);
-
-            // Haptic feedback on mobile
-            if ('vibrate' in navigator) {
-                navigator.vibrate(50);
-            }
+        if (imgContainerRef.current) {
+            observer.observe(imgContainerRef.current);
         }
-    };
+
+        return () => observer.disconnect();
+    }, []);
 
     return (
         <div
@@ -40,54 +43,31 @@ const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
             onMouseLeave={() => setShowMenu(false)}
         >
             {/* Image Container with Hover Lift */}
-            <div className="relative aspect-square overflow-hidden rounded-2xl shadow-lg transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-2xl">
-                <img
-                    src={song.imageUrl}
-                    alt={song.title}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
+            <div
+                ref={imgContainerRef}
+                className="relative aspect-square overflow-hidden rounded-2xl shadow-lg transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-2xl"
+            >
+                {shouldLoadImage ? (
+                    <img
+                        src={song.imageUrl}
+                        alt={song.title}
+                        className={`h-full w-full object-cover transition-all duration-500 group-hover:scale-105 ${isImageLoaded ? 'opacity-100' : 'opacity-0'
+                            }`}
+                        loading="lazy"
+                        onLoad={() => setIsImageLoaded(true)}
+                    />
+                ) : (
+                    <div className="h-full w-full bg-white/5 skeleton-shimmer-enhanced" />
+                )}
 
                 {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-                {/* Like Button (Top Right) */}
+                {/* Like Button (Top Right) - Using new LikeButton component */}
                 <div className="absolute top-3 right-3 z-20 opacity-0 translate-y-[-10px] group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 delay-75">
-                    <motion.button
-                        onClick={handleLikeClick}
-                        className="relative p-2 rounded-full bg-black/20 backdrop-blur-md hover:bg-black/40 text-white transition-colors border border-white/5"
-                        whileTap={{ scale: 0.8 }}
-                    >
-                        <motion.div
-                            variants={heartVariants}
-                            initial="unliked"
-                            animate={isLiked ? "liked" : "unliked"}
-                        >
-                            <Heart
-                                className={`w-5 h-5 transition-all duration-300 ${isLiked
-                                        ? "fill-red-500 text-red-500"
-                                        : "text-white"
-                                    }`}
-                            />
-                        </motion.div>
-
-                        {/* Glow Effect on Like */}
-                        <AnimatePresence>
-                            {isLiked && (
-                                <motion.div
-                                    initial={{ scale: 0.8, opacity: 1 }}
-                                    animate={{ scale: 1.5, opacity: 0 }}
-                                    exit={{ opacity: 0 }}
-                                    transition={{ duration: 0.5 }}
-                                    className="absolute inset-0 rounded-full bg-red-500/50 pointer-events-none"
-                                />
-                            )}
-                        </AnimatePresence>
-
-                        {/* Particle Burst */}
-                        <AnimatePresence>
-                            {showParticles && <HeartParticles count={8} color="#ef4444" size={8} />}
-                        </AnimatePresence>
-                    </motion.button>
+                    <div onClick={(e) => e.stopPropagation()}>
+                        <LikeButton size={20} />
+                    </div>
                 </div>
 
                 {/* Play Button Overlay */}
