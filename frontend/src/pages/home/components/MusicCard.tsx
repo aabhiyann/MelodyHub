@@ -64,7 +64,21 @@ const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
                 {/* Like Button (Top Right) - Using new LikeButton component */}
                 <div className="absolute top-3 right-3 z-20 opacity-0 translate-y-[-10px] group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 delay-75">
                     <div onClick={(e) => e.stopPropagation()}>
-                        <LikeButton size={20} />
+                        <LikeButton
+                            size={20}
+                            isLiked={!!song.likeCount && song.likeCount > 0}
+                            onLike={async (liked) => {
+                                try {
+                                    const { axiosInstance } = await import('@/lib/axios');
+                                    await axiosInstance.post('/analytics/like-song', {
+                                        songId: song._id,
+                                        liked
+                                    });
+                                } catch (error) {
+                                    console.error('Failed to like/unlike song:', error);
+                                }
+                            }}
+                        />
                     </div>
                 </div>
 
