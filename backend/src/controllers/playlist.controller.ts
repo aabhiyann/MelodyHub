@@ -152,3 +152,80 @@ export const sharePlaylist = async (req: Request, res: Response) => {
         return res.status(500).json({ success: false, message: "Failed to share playlist", error: error.message });
     }
 };
+
+/**
+ * PUT /playlists/:id
+ * Update playlist (name, description, isPublic)
+ */
+export const updatePlaylist = async (req: Request, res: Response) => {
+    try {
+        const userId = (req as any).auth?.userId;
+        const { id } = req.params;
+        const { name, description, isPublic } = req.body;
+
+        if (!userId) {
+            return res.status(401).json({ success: false, message: "Authentication required" });
+        }
+
+        const playlist = await SharedPlaylist.findById(id);
+
+        if (!playlist) {
+            return res.status(404).json({ success: false, message: "Playlist not found" });
+        }
+
+        // Only owner can update
+        if (playlist.owner !== userId) {
+            return res.status(403).json({ success: false, message: "Only owner can update playlist" });
+        }
+
+        // Update fields
+        if (name !== undefined) playlist.name = name;
+        if (description !== undefined) playlist.description = description;
+        if (isPublic !== undefined) playlist.isPublic = isPublic;
+
+        await playlist.save();
+
+        return res.status(200).json({ success: true, data: playlist, message: "Playlist updated" });
+    } catch (error: any) {
+        return res.status(500).json({ success: false, message: "Failed to update playlist", error: error.message });
+    }
+};
+
+/**
+ * DELETE /playlists/:id
+ * Delete playlist
+ */
+export const deletePlaylist = async (req: Request, res: Response) => {
+    try {
+        const userId = (req as any).auth?.userId;
+        const { id } = req.params;
+
+        if (!userId) {
+            return res.status(401).json({ success: false, message: "Authentication required" });
+        }
+
+        const playlist = await SharedPlaylist.findById(id);
+
+        if (!playlist) {
+            return res.status(404).json({ success: false, message: "Playlist not found" });
+        }
+
+        // Only owner can delete
+        if (playlist.owner !== userId) {
+            return res.status(403).json({ success: false, message: "Only owner can delete playlist" });
+        }
+
+        await SharedPlaylist.findByIdAndDelete(id);
+
+        // Create activity
+        await Activity.create({
+            userId,
+            type: 'playlist_delete',
+            metadata: { playlistName: playlist.name },
+        });
+
+        return res.status(200).json({ success: true, message: "Playlist deleted" });
+    } catch (error: any) {
+        return res.status(500).json({ success: false, message: "Failed to delete play list", error: error.message });
+    }
+};
