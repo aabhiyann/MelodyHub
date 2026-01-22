@@ -2,15 +2,18 @@ export interface Song {
 	_id: string;
 	title: string;
 	artist: string;
-	albumId: string | null;
+	albumId?: string | null;
 	imageUrl: string;
 	audioUrl: string;
 	duration: number;
-	genre?: string;
 	createdAt: string;
 	updatedAt: string;
+	isTrending?: boolean;
+	isFeatured?: boolean;
+	genre?: string;
+	playCount?: number;
+	likeCount?: number; // For like/unlike functionality
 }
-
 export interface Album {
 	_id: string;
 	title: string;
