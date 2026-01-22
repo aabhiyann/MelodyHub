@@ -1,39 +1,59 @@
 /**
  * SearchPage - Spotify-inspired search interface with working backend integration
- * Features: Real-time search, debouncing, categorized results
+ * Features: Real-time search, debouncing, categorized results, advanced filters
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { Search as SearchIcon, Loader, Music, Disc3, User2 } from 'lucide-react';
+import { Search as SearchIcon, Loader, Music, Disc3, User2, SlidersHorizontal, X } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Topbar from '@/components/Topbar';
 import { useMusicStore } from '@/stores/MusicStore';
 import { usePlayerStore } from '@/stores/PlayerStore';
 import type { Song } from '@/types';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 
 const GENRES = [
-    { name: 'Pop', color: 'from-pink-500 to-rose-500', emoji: '🎤' },
-    { name: 'Rock', color: 'from-red-500 to-orange-500', emoji: '🎸' },
-    { name: 'Hip Hop', color: 'from-purple-500 to-indigo-500', emoji: '🎵' },
-    { name: 'Electronic', color: 'from-cyan-500 to-blue-500', emoji: '⚡' },
-    { name: 'Jazz', color: 'from-amber-500 to-yellow-500', emoji: '🎷' },
-    { name: 'Classical', color: 'from-violet-500 to-purple-500', emoji: '🎻' },
-    { name: 'R&B', color: 'from-pink-600 to-purple-600', emoji: '💫' },
-    { name: 'Country', color: 'from-orange-500 to-red-500', emoji: '🤠' },
-    { name: 'Latin', color: 'from-red-500 to-pink-500', emoji: '💃' },
-    { name: 'Indie', color: 'from-teal-500 to-green-500', emoji: '🌟' },
-    { name: 'Metal', color: 'from-gray-600 to-black', emoji: '🎭' },
-    { name: 'Folk', color: 'from-green-600 to-emerald-600', emoji: '🌲' },
+    { name: 'All Genres', value: 'all' },
+    { name: 'Pop', value: 'pop', color: 'from-pink-500 to-rose-500', emoji: '🎤' },
+    { name: 'Rock', value: 'rock', color: 'from-red-500 to-orange-500', emoji: '🎸' },
+    { name: 'K-Pop', value: 'k-pop', color: 'from-purple-500 to-pink-500', emoji: '💜' },
+    { name: 'Hip Hop', value: 'hip hop', color: 'from-purple-500 to-indigo-500', emoji: '🎵' },
+    { name: 'Electronic', value: 'electronic', color: 'from-cyan-500 to-blue-500', emoji: '⚡' },
+    { name: 'Jazz', value: 'jazz', color: 'from-amber-500 to-yellow-500', emoji: '🎷' },
+    { name: 'Classical', value: 'classical', color: 'from-violet-500 to-purple-500', emoji: '🎻' },
+    { name: 'R&B', value: 'r&b', color: 'from-pink-600 to-purple-600', emoji: '💫' },
+    { name: 'Country', value: 'country', color: 'from-orange-500 to-red-500', emoji: '🤠' },
+    { name: 'Latin', value: 'latin', color: 'from-red-500 to-pink-500', emoji: '💃' },
+    { name: 'Indie', value: 'indie', color: 'from-teal-500 to-green-500', emoji: '🌟' },
+    { name: 'Metal', value: 'metal', color: 'from-gray-600 to-black', emoji: '🎭' },
+    { name: 'Folk', value: 'folk', color: 'from-green-600 to-emerald-600', emoji: '🌲' },
+];
+
+const SORT_OPTIONS = [
+    { name: 'Relevance', value: 'relevance' },
+    { name: 'Most Popular', value: 'popularity' },
+    { name: 'Recently Added', value: 'date' },
+    { name: 'Title (A-Z)', value: 'title' },
+    { name: 'Artist (A-Z)', value: 'artist' },
 ];
 
 const SearchPage = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [searching, setSearching] = useState(false);
     const [searchResults, setSearchResults] = useState<Song[]>([]);
+    const [selectedGenre, setSelectedGenre] = useState('all');
+    const [sortBy, setSortBy] = useState('relevance');
+    const [showFilters, setShowFilters] = useState(false);
     const { songs, albums } = useMusicStore();
     const { playAlbum } = usePlayerStore();
 
-    // Debounced search
+    // Debounced search with filters
     const performSearch = useCallback(() => {
         if (!searchQuery.trim()) {
             setSearchResults([]);
@@ -44,15 +64,39 @@ const SearchPage = () => {
         const query = searchQuery.toLowerCase();
 
         // Search through songs
-        const results = songs.filter(song =>
+        let results = songs.filter(song =>
             song.title.toLowerCase().includes(query) ||
             song.artist.toLowerCase().includes(query) ||
             song.genre?.toLowerCase().includes(query)
         );
 
+        // Apply genre filter
+        if (selectedGenre !== 'all') {
+            results = results.filter(song =>
+                song.genre?.toLowerCase() === selectedGenre.toLowerCase()
+            );
+        }
+
+        // Apply sorting
+        switch (sortBy) {
+            case 'popularity':
+                results.sort((a, b) => (b.playCount || 0) - (a.playCount || 0));
+                break;
+            case 'date':
+                results.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+                break;
+            case 'title':
+                results.sort((a, b) => a.title.localeCompare(b.title));
+                break;
+            case 'artist':
+                results.sort((a, b) => a.artist.localeCompare(b.artist));
+                break;
+            // 'relevance' is default order from filter
+        }
+
         setSearchResults(results);
         setSearching(false);
-    }, [searchQuery, songs]);
+    }, [searchQuery, songs, selectedGenre, sortBy]);
 
     useEffect(() => {
         const timer = setTimeout(performSearch, 300);
@@ -63,6 +107,13 @@ const SearchPage = () => {
         const songIndex = songs.findIndex(s => s._id === song._id);
         playAlbum(songs, songIndex);
     };
+
+    const handleClearFilters = () => {
+        setSelectedGenre('all');
+        setSortBy('relevance');
+    };
+
+    const hasActiveFilters = selectedGenre !== 'all' || sortBy !== 'relevance';
 
     // Group results
     const songsResults = searchResults;
@@ -102,7 +153,7 @@ const SearchPage = () => {
                             <div>
                                 <h2 className='text-2xl font-bold text-white mb-4'>Browse All</h2>
                                 <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4'>
-                                    {GENRES.map((genre) => (
+                                    {GENRES.filter(g => g.value !== 'all').map((genre) => (
                                         <button
                                             key={genre.name}
                                             onClick={() => setSearchQuery(genre.name)}
@@ -122,6 +173,62 @@ const SearchPage = () => {
                                 </div>
                             </div>
                         </>
+                    )}
+
+                    {/* Filter Bar */}
+                    {searchQuery && (
+                        <div className='flex flex-wrap items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10'>
+                            <button
+                                onClick={() => setShowFilters(!showFilters)}
+                                className='flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors'
+                            >
+                                <SlidersHorizontal className='size-4' />
+                                <span>Filters</span>
+                            </button>
+
+                            <div className='flex-1' />
+
+                            <div className='flex gap-2'>
+                                {/* Genre Filter */}
+                                <Select value={selectedGenre} onValueChange={setSelectedGenre}>
+                                    <SelectTrigger className='w-40 bg-white/10 border-white/10 text-white'>
+                                        <SelectValue placeholder='Genre' />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {GENRES.map((genre) => (
+                                            <SelectItem key={genre.value} value={genre.value}>
+                                                {genre.emoji && `${genre.emoji} `}{genre.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+
+                                {/* Sort Dropdown */}
+                                <Select value={sortBy} onValueChange={setSortBy}>
+                                    <SelectTrigger className='w-48 bg-white/10 border-white/10 text-white'>
+                                        <SelectValue placeholder='Sort by' />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {SORT_OPTIONS.map((option) => (
+                                            <SelectItem key={option.value} value={option.value}>
+                                                {option.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+
+                                {/* Clear Filters */}
+                                {hasActiveFilters && (
+                                    <button
+                                        onClick={handleClearFilters}
+                                        className='flex items-center gap-1 px-3 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-colors'
+                                    >
+                                        <X className='size-4' />
+                                        <span className='hidden md:inline'>Clear</span>
+                                    </button>
+                                )}
+                            </div>
+                        </div>
                     )}
 
                     {/* Search Results */}
