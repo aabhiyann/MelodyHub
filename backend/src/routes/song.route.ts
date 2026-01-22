@@ -7,7 +7,7 @@ import { paginationSchema } from "../lib/validators.js";
 const router = Router();
 const controller = new SongController();
 
-router.get("/", validateQuery(paginationSchema), protectRoute, requireAdmin, controller.getAllSongs.bind(controller));
+router.get("/", validateQuery(paginationSchema), protectRoute, controller.getAllSongs.bind(controller));
 router.get("/featured", controller.getFeaturedSongs.bind(controller));
 router.get("/made-for-you", controller.getMadeForYouSongs.bind(controller));
 router.get("/trending", controller.getTrendingSongs.bind(controller));
