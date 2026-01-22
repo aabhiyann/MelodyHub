@@ -37,14 +37,26 @@ validateEnv();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Rate Limiting (only in production)
+// Rate Limiting Configuration
+const generalLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	max: process.env.NODE_ENV === "production" ? 100 : 1000, // 100 in prod, 1000 in dev
+	message: "Too many requests from this IP, please try again after 15 minutes",
+	standardHeaders: true,
+	legacyHeaders: false,
+});
+
+const strictLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes  
+	max: process.env.NODE_ENV === "production" ? 10 : 100, // 10 in prod, 100 in dev
+	message: "Too many requests to this endpoint, please try again later",
+	standardHeaders: true,
+	legacyHeaders: false,
+});
+
+// Apply general rate limiting to all API routes
 if (process.env.NODE_ENV === "production") {
-	const limiter = rateLimit({
-		windowMs: 15 * 60 * 1000, // 15 minutes
-		max: 100, // limit each IP to 100 requests per windowMs
-		message: "Too many requests from this IP, please try again after 15 minutes"
-	});
-	app.use("/api", limiter);
+	app.use("/api", generalLimiter);
 }
 
 const __dirname = path.resolve();
@@ -122,13 +134,13 @@ app.use("/api/health", healthRoutes);
 
 // API routes
 app.use("/api/users", userRoutes);
-app.use("/api/admin", adminRoutes);
+app.use("/api/admin", process.env.NODE_ENV === "production" ? strictLimiter : (req, res, next) => next(), adminRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/songs", discoveryRoutes); // Discovery routes (featured, trending, etc.)
 app.use("/api/songs", songRoutes); // Other song routes
 app.use("/api/albums", albumRoutes);
 app.use("/api/stats", statRoutes);
-app.use("/api/ai", aiRoutes);
+app.use("/api/ai", process.env.NODE_ENV === "production" ? strictLimiter : (req, res, next) => next(), aiRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/analytics", analyticsRoutes); // Analytics routes
 app.use("/api/social", socialRoutes); // Social & playlist routes
