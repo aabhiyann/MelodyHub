@@ -11,7 +11,7 @@ import { RequireGuest } from "./guards/RequireGuest";
 
 // New UI components
 import { SidebarLayout } from '@/components/navigation/SidebarLayout';
-import { MiniPlayer } from '@/components/player/MiniPlayer';
+import AudioPlayer from '@/components/AudioPlayer';
 import { FullScreenPlayer } from '@/components/player/FullScreenPlayer';
 import { Mascot } from '@/components/mascot/Mascot';
 import { InstallPrompt } from '@/components/mobile/InstallPrompt';
@@ -125,7 +125,7 @@ function App() {
 					</Route>
 				</Routes>
 			</AnimatePresence>
-			<MiniPlayer />
+			<AudioPlayer />
 			<FullScreenPlayer />
 			<Mascot />
 			<InstallPrompt />

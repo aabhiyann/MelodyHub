@@ -37,7 +37,7 @@ const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
     return (
         <div
             onClick={onClick}
-            className='group relative flex-shrink-0 cursor-pointer'
+            className='group relative flex-shrink-0 cursor-pointer min-w-[160px] max-w-[220px]'
             onMouseLeave={() => setShowMenu(false)}
         >
             {/* Modern Card Container */}
@@ -143,7 +143,7 @@ const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
 };
 
 export const MusicCardSkeleton = () => (
-    <div className='flex-shrink-0'>
+    <div className='flex-shrink-0 min-w-[160px] max-w-[220px]'>
         <div className="bg-zinc-800/40 rounded-lg p-4">
             <div className="aspect-square rounded-md bg-white/5 skeleton-shimmer-enhanced mb-4" />
             <div className="space-y-2">

@@ -46,6 +46,7 @@ export const ProgressBar = ({
     };
 
     const handleMouseDown = (e: React.MouseEvent) => {
+        e.preventDefault();
         setIsDragging(true);
         handleSeek(e.clientX);
     };
@@ -59,22 +60,36 @@ export const ProgressBar = ({
 
         setHoverTime(time);
         setHoverX(e.clientX - rect.left);
-
-        if (isDragging) {
-            handleSeek(e.clientX);
-        }
     };
 
     const handleMouseLeave = () => {
-        setHoverTime(null);
+        if (!isDragging) {
+            setHoverTime(null);
+        }
     };
 
+    // Global mouse/touch event handlers for dragging
     useEffect(() => {
-        const handleMouseUp = () => setIsDragging(false);
+        const handleGlobalMouseMove = (e: MouseEvent) => {
+            if (isDragging) {
+                handleSeek(e.clientX);
+            }
+        };
+
+        const handleGlobalMouseUp = () => {
+            if (isDragging) {
+                setIsDragging(false);
+                setHoverTime(null);
+            }
+        };
 
         if (isDragging) {
-            window.addEventListener('mouseup', handleMouseUp);
-            return () => window.removeEventListener('mouseup', handleMouseUp);
+            window.addEventListener('mousemove', handleGlobalMouseMove);
+            window.addEventListener('mouseup', handleGlobalMouseUp);
+            return () => {
+                window.removeEventListener('mousemove', handleGlobalMouseMove);
+                window.removeEventListener('mouseup', handleGlobalMouseUp);
+            };
         }
     }, [isDragging]);
 
@@ -83,10 +98,26 @@ export const ProgressBar = ({
             {/* Progress Bar */}
             <div
                 ref={progressRef}
-                className="relative h-1 bg-white/10 rounded-full cursor-pointer group"
+                className="relative h-1 bg-white/10 rounded-full cursor-pointer group hover:h-1.5 transition-all"
                 onMouseDown={handleMouseDown}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
+                onTouchStart={(e) => {
+                    e.preventDefault();
+                    setIsDragging(true);
+                    const touch = e.touches[0];
+                    handleSeek(touch.clientX);
+                }}
+                onTouchMove={(e) => {
+                    if (isDragging) {
+                        const touch = e.touches[0];
+                        handleSeek(touch.clientX);
+                    }
+                }}
+                onTouchEnd={() => {
+                    setIsDragging(false);
+                    setHoverTime(null);
+                }}
                 role="slider"
                 aria-label="Seek"
                 aria-valuemin={0}
