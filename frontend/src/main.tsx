@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 import { ClerkProvider } from "@clerk/clerk-react";
+import { clerkTheme } from "./styles/clerk-theme";
 import { BrowserRouter } from "react-router-dom";
 import AuthProvider from "./providers/AuthProviders.tsx";
 import { initWebVitals } from "./utils/webVitals";
@@ -20,7 +21,11 @@ if (import.meta.env.PROD) {
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
-		<ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl='/'>
+		<ClerkProvider
+			publishableKey={PUBLISHABLE_KEY}
+			afterSignOutUrl='/'
+			appearance={clerkTheme}
+		>
 			<AuthProvider>
 				<BrowserRouter>
 					<App />
