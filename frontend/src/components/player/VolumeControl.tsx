@@ -68,7 +68,7 @@ export const VolumeControl = ({
                         transition={{ duration: 0.3 }}
                         className="overflow-hidden"
                     >
-                        <div className="relative flex items-center">
+                        <div className="relative flex items-center select-none">
                             <input
                                 type="range"
                                 min="0"
@@ -81,13 +81,24 @@ export const VolumeControl = ({
                                         onToggleMute();
                                     }
                                 }}
-                                className="w-full h-1 bg-white/10 rounded-full appearance-none cursor-pointer 
+                                onMouseDown={(e) => e.stopPropagation()}
+                                className="w-full h-1 bg-white/10 rounded-full appearance-none cursor-pointer pointer-events-auto
                   [&::-webkit-slider-thumb]:appearance-none 
                   [&::-webkit-slider-thumb]:w-3 
                   [&::-webkit-slider-thumb]:h-3 
                   [&::-webkit-slider-thumb]:rounded-full 
                   [&::-webkit-slider-thumb]:bg-white 
                   [&::-webkit-slider-thumb]:cursor-pointer
+                  [&::-webkit-slider-thumb]:shadow-lg
+                  [&::-webkit-slider-thumb]:transition-all
+                  [&::-webkit-slider-thumb]:hover:scale-110
+                  [&::-moz-range-thumb]:appearance-none
+                  [&::-moz-range-thumb]:w-3
+                  [&::-moz-range-thumb]:h-3
+                  [&::-moz-range-thumb]:rounded-full
+                  [&::-moz-range-thumb]:bg-white
+                  [&::-moz-range-thumb]:border-0
+                  [&::-moz-range-thumb]:cursor-pointer
                   [&::-webkit-slider-track]:bg-transparent"
                                 style={{
                                     background: `linear-gradient(to right, rgb(139, 92, 246) 0%, rgb(139, 92, 246) ${displayVolume}%, rgba(255,255,255,0.1) ${displayVolume}%, rgba(255,255,255,0.1) 100%)`,
