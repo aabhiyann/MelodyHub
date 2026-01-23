@@ -32,7 +32,7 @@ const HorizontalScrollSection = ({ title, subtitle, children }: HorizontalScroll
     };
 
     return (
-        <div className='relative mb-8 group/section'>
+        <div className='relative mb-8 group/section overflow-hidden'>
             {/* Header */}
             <div className="flex items-end justify-between px-6 mb-4">
                 <div>
@@ -67,7 +67,7 @@ const HorizontalScrollSection = ({ title, subtitle, children }: HorizontalScroll
             <div
                 ref={scrollRef}
                 onScroll={handleScroll}
-                className='flex overflow-x-auto gap-6 px-6 pb-6 snap-x snap-mandatory scrollbar-hide -mx-6 md:mx-0'
+                className='flex overflow-x-auto gap-4 px-6 pb-6 snap-x snap-mandatory scrollbar-hide -mx-6 md:mx-0'
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
                 {/* Add standard padding to start of list so first item isn't flush against edge */}

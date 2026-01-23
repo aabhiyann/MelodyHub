@@ -44,7 +44,7 @@ const HomePage = () => {
 		<main className='rounded-md overflow-hidden h-full bg-transparent'>
 			<Topbar />
 			<ScrollArea className='h-[calc(100vh-180px)]'>
-				<div className='p-6 space-y-12 min-h-full pb-24'>
+				<div className='p-6 space-y-12 min-h-full pb-24 max-w-full overflow-x-hidden'>
 					{/* Welcome Header with AI Playlist Button */}
 					<div className="flex items-center justify-between gap-4">
 						<div className="space-y-1 flex-1">
@@ -65,34 +65,36 @@ const HomePage = () => {
 					</div>
 
 					{/* Featured / Trending Section */}
-					<HorizontalScrollSection title="Trending Now" subtitle="The hottest tracks on MelodyHub">
-						{isLoading ? (
-							Array(5).fill(0).map((_, i) => <MusicCardSkeleton key={i} />)
-						) : trendingSongs.length > 0 ? (
-							trendingSongs.map((song, index) => (
-								<MusicCard
-									key={song._id}
-									song={song}
-									onClick={() => playAlbum(trendingSongs, index)}
-									onPlayClick={(e) => {
-										e.stopPropagation();
-										playAlbum(trendingSongs, index);
-									}}
+					<div className="w-full" style={{ maxWidth: '100vw', overflow: 'hidden' }}>
+						<HorizontalScrollSection title="Trending Now" subtitle="The hottest tracks on MelodyHub">
+							{isLoading ? (
+								Array(5).fill(0).map((_, i) => <MusicCardSkeleton key={i} />)
+							) : trendingSongs.length > 0 ? (
+								trendingSongs.map((song, index) => (
+									<MusicCard
+										key={song._id}
+										song={song}
+										onClick={() => playAlbum(trendingSongs, index)}
+										onPlayClick={(e) => {
+											e.stopPropagation();
+											playAlbum(trendingSongs, index);
+										}}
+									/>
+								))
+							) : (
+								<EmptyState
+									message="No trending tracks yet"
+									description="Be the first to discover new music!"
+									showMascot={false}
 								/>
-							))
-						) : (
-							<EmptyState
-								message="No trending tracks yet"
-								description="Be the first to discover new music!"
-								showMascot={false}
-							/>
-						)}
-					</HorizontalScrollSection>
+							)}
+						</HorizontalScrollSection>
+					</div>
 
 					{/* Made For You Section (Grid Layout as requested) */}
 					<div>
 						<h2 className="text-2xl font-bold text-white tracking-tight mb-6">Made For You</h2>
-						<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+						<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
 							{isLoading ? (
 								Array(5).fill(0).map((_, i) => <MusicCardSkeleton key={i} />)
 							) : (
@@ -134,7 +136,7 @@ const HomePage = () => {
 					{/* Featured Section (Classic Grid for Featured) */}
 					<div>
 						<h2 className="text-2xl font-bold text-white tracking-tight mb-6">Featured Hits</h2>
-						<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+						<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
 							{isLoading ? (
 								Array(10).fill(0).map((_, i) => <MusicCardSkeleton key={i} />)
 							) : (
