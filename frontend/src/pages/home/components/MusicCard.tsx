@@ -37,7 +37,7 @@ const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
     return (
         <div
             onClick={onClick}
-            className='group relative w-[160px] md:w-[200px] flex-shrink-0 cursor-pointer'
+            className='group relative flex-shrink-0 cursor-pointer'
             onMouseLeave={() => setShowMenu(false)}
         >
             {/* Modern Card Container */}
@@ -84,14 +84,14 @@ const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
                         </div>
                     </div>
 
-                    {/* Modern Play Button - Spotify Style */}
+                    {/* Modern Play Button - MelodyHub Purple Brand */}
                     <div className="absolute bottom-2 right-2 translate-y-2 opacity-0 transition-bounce group-hover:translate-y-0 group-hover:opacity-100 z-20">
                         <button
                             onClick={onPlayClick}
-                            className="flex h-12 w-12 items-center justify-center rounded-full bg-green-500 hover:bg-green-400 text-black shadow-lg hover:shadow-xl transition-bounce hover-scale-md active-scale-sm"
+                            className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-purple-600 hover:from-violet-400 hover:to-purple-500 text-white shadow-lg hover:shadow-xl hover:shadow-violet-500/50 transition-bounce hover-scale-md active-scale-sm"
                             aria-label={`Play ${song.title}`}
                         >
-                            <Play className="h-5 w-5 fill-black ml-0.5" />
+                            <Play className="h-5 w-5 fill-white ml-0.5" />
                         </button>
                     </div>
 
@@ -143,7 +143,7 @@ const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
 };
 
 export const MusicCardSkeleton = () => (
-    <div className='w-[160px] md:w-[200px] flex-shrink-0'>
+    <div className='flex-shrink-0'>
         <div className="bg-zinc-800/40 rounded-lg p-4">
             <div className="aspect-square rounded-md bg-white/5 skeleton-shimmer-enhanced mb-4" />
             <div className="space-y-2">
