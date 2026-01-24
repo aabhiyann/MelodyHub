@@ -3,32 +3,64 @@
  * Features: Avatar, listening stats, account settings, sign out
  */
 
+import { useState, useEffect } from 'react';
 import { useUser, useClerk } from '@clerk/clerk-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Topbar from '@/components/Topbar';
-import { LogOut, Mail, Music, Clock, Heart, Calendar, Settings } from 'lucide-react';
+import { LogOut, Music, Clock, Heart, Calendar, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { axiosInstance } from '@/lib/axios';
+import { User } from '@/types';
+import { ProfileHeader } from '@/components/profile/ProfileHeader';
+import { EditProfileModal } from '@/components/profile/EditProfileModal';
 
 const ProfilePage = () => {
-    const { user } = useUser();
+    const { user: clerkUser } = useUser();
     const { signOut } = useClerk();
     const navigate = useNavigate();
+
+    const [userProfile, setUserProfile] = useState<User | null>(null);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const response = await axiosInstance.get('/users/profile');
+                setUserProfile(response.data.data);
+            } catch (error) {
+                console.error('Failed to fetch profile:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        if (clerkUser) {
+            fetchProfile();
+        }
+    }, [clerkUser]);
 
     const handleSignOut = async () => {
         await signOut();
         navigate('/');
     };
 
-    if (!user) {
-        return null;
-    }
+    if (!clerkUser) return null;
+
+    // Use fetched profile if available, fallback to Clerk data for basics
+    const displayUser: User = userProfile || {
+        _id: '',
+        clerkId: clerkUser.id,
+        fullName: clerkUser.fullName || '',
+        imageUrl: clerkUser.imageUrl,
+    };
 
     // Mock stats - replace with real data from your backend
     const stats = [
         { label: 'Total Listening Time', value: '124 hours', icon: Clock, color: 'text-blue-400' },
         { label: 'Favorite Songs', value: '47 tracks', icon: Heart, color: 'text-pink-400' },
         { label: 'Playlists Created', value: '8 playlists', icon: Music, color: 'text-purple-400' },
-        { label: 'Member Since', value: 'January 2026', icon: Calendar, color: 'text-green-400' },
+        { label: 'Member Since', value: clerkUser.createdAt ? new Date(clerkUser.createdAt).toLocaleDateString() : '2026', icon: Calendar, color: 'text-green-400' },
     ];
 
     return (
@@ -37,36 +69,11 @@ const ProfilePage = () => {
             <ScrollArea className='h-[calc(100vh-180px)]'>
                 <div className='p-6 space-y-8'>
                     {/* Profile Header */}
-                    <div className='flex flex-col md:flex-row items-center gap-6 p-8 rounded-2xl bg-gradient-to-br from-brand-primary/20 via-purple-500/20 to-transparent border border-white/10'>
-                        <div className='relative'>
-                            <img
-                                src={user.imageUrl}
-                                alt={user.firstName || 'User'}
-                                className='size-32 rounded-full object-cover ring-4 ring-white/20 shadow-2xl'
-                            />
-                            <div className='absolute -bottom-2 -right-2 size-10 rounded-full bg-green-500 border-4 border-black flex items-center justify-center'>
-                                <div className='size-3 rounded-full bg-white animate-pulse' />
-                            </div>
-                        </div>
-
-                        <div className='flex-1 text-center md:text-left'>
-                            <h1 className='text-3xl md:text-4xl font-bold text-white mb-2'>
-                                {user.firstName} {user.lastName}
-                            </h1>
-                            <div className='flex items-center gap-2 text-zinc-400 justify-center md:justify-start'>
-                                <Mail className='size-4' />
-                                <span>{user.primaryEmailAddress?.emailAddress}</span>
-                            </div>
-                        </div>
-
-                        <button
-                            onClick={handleSignOut}
-                            className='flex items-center gap-2 px-6 py-3 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 border border-red-500/20 hover:border-red-500/40 transition-all font-medium'
-                        >
-                            <LogOut className='size-4' />
-                            <span>Sign Out</span>
-                        </button>
-                    </div>
+                    <ProfileHeader
+                        user={displayUser}
+                        isOwnProfile={true}
+                        onEdit={() => setIsEditModalOpen(true)}
+                    />
 
                     {/* Listening Stats */}
                     <div>
@@ -106,7 +113,16 @@ const ProfilePage = () => {
 
                     {/* Account Settings */}
                     <div>
-                        <h2 className='text-2xl font-bold text-white mb-4'>Account Settings</h2>
+                        <div className='flex items-center justify-between mb-4'>
+                            <h2 className='text-2xl font-bold text-white'>Account Settings</h2>
+                            <button
+                                onClick={handleSignOut}
+                                className='flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 border border-red-500/20 hover:border-red-500/40 transition-all font-medium text-sm'
+                            >
+                                <LogOut className='size-4' />
+                                <span>Sign Out</span>
+                            </button>
+                        </div>
                         <div className='space-y-3'>
                             <button className='w-full flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-left group'>
                                 <div className='flex items-center gap-3'>
@@ -147,6 +163,14 @@ const ProfilePage = () => {
                     </div>
                 </div>
             </ScrollArea>
+
+            {/* Edit Profile Modal */}
+            <EditProfileModal
+                user={displayUser}
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                onUpdate={(updated) => setUserProfile(updated)}
+            />
         </main>
     );
 };

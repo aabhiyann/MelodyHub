@@ -44,6 +44,10 @@ export interface User {
 	clerkId: string;
 	fullName: string;
 	imageUrl: string;
+	bio?: string;
+	location?: string;
+	website?: string;
+	isPrivate?: boolean;
 }
 
 
