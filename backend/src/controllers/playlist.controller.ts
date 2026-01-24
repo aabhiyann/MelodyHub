@@ -4,6 +4,7 @@ import { Activity } from "../models/activity.model.js";
 import mongoose from "mongoose";
 import { ActivityService } from "../services/activity.service.js";
 import { ActivityType } from "../models/activity.model.js";
+import { AuthenticatedRequest } from "../types/index.js";
 
 const activityService = new ActivityService();
 
@@ -13,7 +14,7 @@ const activityService = new ActivityService();
  */
 export const createPlaylist = async (req: Request, res: Response) => {
     try {
-        const userId = (req as any).auth?.userId;
+        const userId = (req as AuthenticatedRequest).auth?.userId;
         const { name, description, isPublic } = req.body;
 
         if (!userId) {
@@ -51,7 +52,7 @@ export const createPlaylist = async (req: Request, res: Response) => {
  */
 export const getPlaylists = async (req: Request, res: Response) => {
     try {
-        const userId = (req as any).auth?.userId;
+        const userId = (req as AuthenticatedRequest).auth?.userId;
 
         if (!userId) {
             return res.status(401).json({ success: false, message: "Authentication required" });
@@ -77,7 +78,7 @@ export const getPlaylists = async (req: Request, res: Response) => {
  */
 export const addSongToPlaylist = async (req: Request, res: Response) => {
     try {
-        const userId = (req as any).auth?.userId;
+        const userId = (req as AuthenticatedRequest).auth?.userId;
         const { id } = req.params;
         const { songId } = req.body;
 
@@ -112,7 +113,7 @@ export const addSongToPlaylist = async (req: Request, res: Response) => {
  */
 export const sharePlaylist = async (req: Request, res: Response) => {
     try {
-        const userId = (req as any).auth?.userId;
+        const userId = (req as AuthenticatedRequest).auth?.userId;
         const { id } = req.params;
         const { userIds, role } = req.body; // role: 'collaborator' or 'viewer'
 
@@ -157,7 +158,7 @@ export const sharePlaylist = async (req: Request, res: Response) => {
  */
 export const updatePlaylist = async (req: Request, res: Response) => {
     try {
-        const userId = (req as any).auth?.userId;
+        const userId = (req as AuthenticatedRequest).auth?.userId;
         const { id } = req.params;
         const { name, description, isPublic } = req.body;
 
@@ -195,7 +196,7 @@ export const updatePlaylist = async (req: Request, res: Response) => {
  */
 export const deletePlaylist = async (req: Request, res: Response) => {
     try {
-        const userId = (req as any).auth?.userId;
+        const userId = (req as AuthenticatedRequest).auth?.userId;
         const { id } = req.params;
 
         if (!userId) {
@@ -230,7 +231,7 @@ export const deletePlaylist = async (req: Request, res: Response) => {
  */
 export const getPlaylistById = async (req: Request, res: Response) => {
     try {
-        const userId = (req as any).auth?.userId;
+        const userId = (req as AuthenticatedRequest).auth?.userId;
         const { id } = req.params;
 
         const playlist = await SharedPlaylist.findById(id).populate('songs');

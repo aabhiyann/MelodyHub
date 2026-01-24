@@ -3,12 +3,7 @@ import { UserService } from "../services/user.service.js";
 import { BaseController } from "./base.controller.js";
 import { ActivityService } from "../services/activity.service.js";
 import { ActivityType } from "../models/activity.model.js";
-
-interface AuthRequest extends Request {
-  auth: {
-    userId: string;
-  };
-}
+import { AuthenticatedRequest } from "../types/index.js";
 
 export class UserController extends BaseController {
   private userService: UserService;
@@ -22,7 +17,7 @@ export class UserController extends BaseController {
 
   async getAllUsers(req: Request, res: Response, next: NextFunction) {
     try {
-      const currentUserId = (req as AuthRequest).auth.userId;
+      const currentUserId = (req as AuthenticatedRequest).auth.userId;
       const users = await this.userService.getAllExcept(currentUserId);
       this.handleSuccess(res, users);
     } catch (error) {
@@ -32,7 +27,7 @@ export class UserController extends BaseController {
 
   async getMessages(req: Request, res: Response, next: NextFunction) {
     try {
-      const myId = (req as AuthRequest).auth.userId;
+      const myId = (req as AuthenticatedRequest).auth.userId;
       const { userId } = req.params;
       const messages = await this.userService.getMessagesBetweenUsers(myId, userId as string);
       this.handleSuccess(res, messages);
@@ -43,7 +38,7 @@ export class UserController extends BaseController {
 
   async getMyProfile(req: Request, res: Response, next: NextFunction) {
     try {
-      const userId = (req as AuthRequest).auth.userId;
+      const userId = (req as AuthenticatedRequest).auth.userId;
       const user = await this.userService.getByClerkId(userId);
       if (!user) return res.status(404).json({ success: false, message: "User not found" });
 
@@ -63,7 +58,7 @@ export class UserController extends BaseController {
 
   async updateProfile(req: Request, res: Response, next: NextFunction) {
     try {
-      const userId = (req as AuthRequest).auth.userId;
+      const userId = (req as AuthenticatedRequest).auth.userId;
       const { bio, location, website, isPrivate, fullName } = req.body;
       const user = await this.userService.updateProfile(userId, { bio, location, website, isPrivate, fullName });
 
@@ -78,7 +73,7 @@ export class UserController extends BaseController {
   async getUserProfile(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id as string;
-      const currentUserId = (req as AuthRequest).auth?.userId; // Optional auth for public view
+      const currentUserId = (req as AuthenticatedRequest).auth?.userId; // Optional auth for public view
 
       // Target User
       let user = await this.userService.getByClerkId(id);
@@ -114,7 +109,7 @@ export class UserController extends BaseController {
 
   async followUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const followerId = (req as AuthRequest).auth.userId;
+      const followerId = (req as AuthenticatedRequest).auth.userId;
       const { id: followingId } = req.params;
 
       const follower = await this.userService.getByClerkId(followerId);
@@ -145,7 +140,7 @@ export class UserController extends BaseController {
 
   async unfollowUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const followerId = (req as AuthRequest).auth.userId;
+      const followerId = (req as AuthenticatedRequest).auth.userId;
       const { id: followingId } = req.params;
 
       const follower = await this.userService.getByClerkId(followerId);

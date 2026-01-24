@@ -3,6 +3,7 @@ import { UserPreference } from "../models/userPreference.model.js";
 import mongoose from "mongoose";
 import { ActivityService } from "../services/activity.service.js";
 import { ActivityType } from "../models/activity.model.js";
+import { AuthenticatedRequest } from "../types/index.js";
 
 const activityService = new ActivityService();
 
@@ -13,7 +14,7 @@ const activityService = new ActivityService();
 export const trackPlay = async (req: Request, res: Response) => {
     try {
         const { songId, completionRate, skipped } = req.body;
-        const userId = (req as any).auth?.userId;
+        const userId = (req as AuthenticatedRequest).auth?.userId;
 
         if (!userId) {
             return res.status(401).json({
@@ -73,7 +74,7 @@ export const trackPlay = async (req: Request, res: Response) => {
 export const likeSong = async (req: Request, res: Response) => {
     try {
         const { songId, liked } = req.body;
-        const userId = (req as any).auth?.userId;
+        const userId = (req as AuthenticatedRequest).auth?.userId;
 
         if (!userId) {
             return res.status(401).json({
@@ -136,7 +137,7 @@ export const likeSong = async (req: Request, res: Response) => {
  */
 export const getUserPreferences = async (req: Request, res: Response) => {
     try {
-        const userId = (req as any).auth?.userId;
+        const userId = (req as AuthenticatedRequest).auth?.userId;
 
         if (!userId) {
             return res.status(401).json({
