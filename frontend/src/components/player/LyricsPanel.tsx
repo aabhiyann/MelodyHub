@@ -1,108 +1,95 @@
-/**
- * LyricsPanel - Real-time synced lyrics display
- * Click lines to jump to timestamp
- */
-
+import { useEffect, useState } from 'react';
+import { Song } from '@/types';
+import { axiosInstance } from '@/lib/axios';
+import { Loader2, Music2 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
-import { cn } from '@/lib/utils';
-
-interface LyricLine {
-    timestamp: number; // Seconds
-    text: string;
-}
 
 interface LyricsPanelProps {
-    lyrics: LyricLine[];
-    currentTime: number;
-    onSeek: (time: number) => void;
+    song: Song;
+    currentTime?: number;
 }
 
-export const LyricsPanel = ({ lyrics, currentTime, onSeek }: LyricsPanelProps) => {
-    const [isKaraokeMode, setIsKaraokeMode] = useState(false);
+export const LyricsPanel = ({ song, currentTime }: LyricsPanelProps) => {
+    const [lyrics, setLyrics] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    // Find current line
-    const currentLineIndex = lyrics.findIndex((line, index) => {
-        const nextLine = lyrics[index + 1];
-        return currentTime >= line.timestamp && (!nextLine || currentTime < nextLine.timestamp);
-    });
+    useEffect(() => {
+        const fetchLyrics = async () => {
+            if (!song) return;
+
+            setIsLoading(true);
+            setError(null);
+
+            try {
+                const response = await axiosInstance.get(`/lyrics/${song._id}`);
+                // Assuming backend returns { success: true, data: { lyrics: "..." } }
+                // or just { lyrics: "..." } depending on BaseController
+                // BaseController usually wraps in `data`.
+                // Let's assume standard response structure.
+                setLyrics(response.data.lyrics || response.data.data?.lyrics || null);
+            } catch (err) {
+                console.error("Failed to fetch lyrics:", err);
+                setError("Could not load lyrics for this song.");
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchLyrics();
+    }, [song._id]);
+
+    if (isLoading) {
+        return (
+            <div className="h-full flex items-center justify-center text-text-secondary">
+                <Loader2 className="size-8 animate-spin" />
+            </div>
+        );
+    }
+
+    if (error || !lyrics) {
+        return (
+            <div className="h-full flex flex-col items-center justify-center text-text-secondary gap-4 p-8">
+                <Music2 className="size-16 opacity-20" />
+                <p className="text-lg font-medium">{error || "No lyrics available"}</p>
+                {!error && <p className="text-sm opacity-60">We couldn't find lyrics for this track.</p>}
+            </div>
+        );
+    }
+
+    // Simple parsing to display lines nicely (handling generic Newlines)
+    // If it is LRC (has timestamps), we might want to strip them for now for a cleaner "Text" view
+    // or keep them if we want to show it's synced data.
+    // For now, let's just create line breaks.
 
     return (
-        <div className="h-full flex flex-col">
-            {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-white/10">
-                <h3 className="font-semibold text-white">Lyrics</h3>
-                <button
-                    onClick={() => setIsKaraokeMode(!isKaraokeMode)}
-                    className={cn(
-                        'px-3 py-1 rounded-lg text-sm font-medium transition-colors',
-                        isKaraokeMode
-                            ? 'bg-brand-primary text-white'
-                            : 'bg-white/10 text-text-secondary hover:text-white'
-                    )}
-                >
-                    Karaoke Mode
-                </button>
-            </div>
+        <motion.div
+            className="h-full overflow-y-auto px-4 py-8 text-center scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+        >
+            <div className="max-w-2xl mx-auto space-y-6">
+                {lyrics.split('\n').map((line, index) => {
+                    // Primitive check for LRC timestamp to style it differently or hide it
+                    const isTimestamp = line.match(/^\[\d{2}:\d{2}\.\d{2}\]/);
+                    const text = isTimestamp ? line.replace(/^\[\d{2}:\d{2}\.\d{2}\]/, '') : line;
 
-            {/* Lyrics */}
-            <div className="flex-1 overflow-y-auto p-6">
-                <div className="space-y-4 max-w-2xl mx-auto">
-                    {lyrics.map((line, index) => {
-                        const isActive = index === currentLineIndex;
-                        const isPast = index < currentLineIndex;
-
-                        return (
-                            <motion.button
-                                key={index}
-                                onClick={() => onSeek(line.timestamp)}
-                                className={cn(
-                                    'block w-full text-left px-4 py-2 rounded-lg transition-all cursor-pointer',
-                                    isActive && 'bg-brand-primary/20',
-                                    isKaraokeMode && !isActive && 'blur-sm'
-                                )}
-                                animate={{
-                                    opacity: isPast ? 0.5 : 1,
-                                    scale: isActive ? 1.05 : 1,
-                                }}
-                                whileHover={{ scale: 1.02 }}
-                            >
-                                <p
-                                    className={cn(
-                                        'text-lg leading-relaxed transition-colors',
-                                        isActive
-                                            ? 'text-white font-semibold'
-                                            : isPast
-                                                ? 'text-text-tertiary'
-                                                : 'text-text-secondary'
-                                    )}
-                                >
-                                    {line.text}
-                                </p>
-                            </motion.button>
-                        );
-                    })}
+                    return (
+                        <p
+                            key={index}
+                            className={`text-xl md:text-2xl font-semibold transition-colors duration-300 ${
+                                // Placeholder active logic if we wanted to use currentTime
+                                'text-white/80 hover:text-white'
+                                }`}
+                        >
+                            {text || <span className="opacity-0">...</span>}
+                        </p>
+                    );
+                })}
+                <div className="pt-20 pb-4 text-xs text-text-tertiary uppercase tracking-widest">
+                    Lyrics provided by MelodyHub
                 </div>
             </div>
-
-            {/* Footer Info */}
-            <div className="p-4 border-t border-white/10 text-center">
-                <p className="text-xs text-text-tertiary">
-                    Click any line to jump to that part of the song
-                </p>
-            </div>
-        </div>
+        </motion.div>
     );
 };
-
-// Mock lyrics data generator
-export const generateMockLyrics = (): LyricLine[] => [
-    { timestamp: 0, text: "Welcome to this amazing song" },
-    { timestamp: 5, text: "With lyrics that sync in real-time" },
-    { timestamp: 10, text: "Click any line to jump around" },
-    { timestamp: 15, text: "Karaoke mode blurs inactive lines" },
-    { timestamp: 20, text: "Making it perfect for singing along" },
-    { timestamp: 25, text: "This is just a demo" },
-    { timestamp: 30, text: "In production, connect to Musixmatch or Genius API" },
-    { timestamp: 35, text: "For real synchronized lyrics" },
-];
