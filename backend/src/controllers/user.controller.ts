@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { UserService } from "../services/user.service.js";
 import { BaseController } from "./base.controller.js";
+import { ActivityService } from "../services/activity.service.js";
+import { ActivityType } from "../models/activity.model.js";
 
 interface AuthRequest extends Request {
   auth: {
@@ -10,10 +12,12 @@ interface AuthRequest extends Request {
 
 export class UserController extends BaseController {
   private userService: UserService;
+  private activityService: ActivityService;
 
   constructor() {
     super();
     this.userService = new UserService();
+    this.activityService = new ActivityService();
   }
 
   async getAllUsers(req: Request, res: Response, next: NextFunction) {
@@ -125,6 +129,14 @@ export class UserController extends BaseController {
       }
 
       await this.userService.followUser(follower._id as string, following._id as string);
+
+      // Log activity
+      await this.activityService.logActivity(
+        follower._id as string,
+        ActivityType.FOLLOW_USER,
+        following._id as string
+      );
+
       this.handleSuccess(res, { success: true, message: "Followed successfully" });
     } catch (error) {
       this.handleError(next, error);

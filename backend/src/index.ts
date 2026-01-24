@@ -28,6 +28,7 @@ import discoveryRoutes from './routes/discovery.route.js'; // New discovery rout
 import analyticsRoutes from './routes/analytics.route.js'; // New analytics routes
 import socialRoutes from './routes/social.route.js'; // Social & playlist routes
 import lyricsRoutes from './routes/lyrics.route.js'; // Lyrics routes
+import activityRoutes from './routes/activity.route.js';
 import { connectDB } from './lib/db.js';
 import { validateEnv } from './lib/env.js';
 import { requestLogger } from './middleware/logger.middleware.js';
@@ -146,6 +147,7 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/analytics", analyticsRoutes); // Analytics routes
 app.use("/api/social", socialRoutes); // Social & playlist routes
 app.use("/api/lyrics", lyricsRoutes); // Lyrics routes
+app.use("/api/activities", activityRoutes); // Activity feed routes
 
 if (process.env.NODE_ENV === "production") {
 	app.use(express.static(path.join(__dirname, "../frontend/dist")));

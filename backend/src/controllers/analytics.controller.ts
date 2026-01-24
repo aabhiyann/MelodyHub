@@ -1,6 +1,10 @@
 import { Request, Response } from "express";
 import { UserPreference } from "../models/userPreference.model.js";
 import mongoose from "mongoose";
+import { ActivityService } from "../services/activity.service.js";
+import { ActivityType } from "../models/activity.model.js";
+
+const activityService = new ActivityService();
 
 /**
  * POST /api/analytics/track-play
@@ -98,6 +102,9 @@ export const likeSong = async (req: Request, res: Response) => {
             // Add to liked songs if not already liked
             if (!userPref.likedSongs.some((id) => id.equals(songObjectId))) {
                 userPref.likedSongs.push(songObjectId);
+
+                // Log activity
+                await activityService.logActivity(userId, ActivityType.LIKE_SONG, songId);
             }
         } else {
             // Remove from liked songs
