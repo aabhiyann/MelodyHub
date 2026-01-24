@@ -48,6 +48,9 @@ export interface User {
 	location?: string;
 	website?: string;
 	isPrivate?: boolean;
+	followersCount?: number;
+	followingCount?: number;
+	isFollowing?: boolean;
 }
 
 

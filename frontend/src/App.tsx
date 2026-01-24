@@ -122,6 +122,7 @@ function App() {
 						<Route path='/search' element={<PageTransition><SearchPage /></PageTransition>} />
 						<Route path='/library' element={<PageTransition><LibraryPage /></PageTransition>} />
 						<Route path='/profile' element={<PageTransition><ProfilePage /></PageTransition>} />
+						<Route path='/user/:userId' element={<PageTransition><ProfilePage /></PageTransition>} />
 						<Route path='/chat' element={<PageTransition><ChatPage /></PageTransition>} />
 						<Route path='/ai' element={<PageTransition><AIGenPage /></PageTransition>} />
 						<Route path='/albums/:albumId' element={<PageTransition><AlbumPage /></PageTransition>} />

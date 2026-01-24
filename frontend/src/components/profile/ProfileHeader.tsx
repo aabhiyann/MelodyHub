@@ -1,15 +1,48 @@
 import { User } from '@/types';
-import { Camera, MapPin, Globe, Edit2, Lock, UserPlus } from 'lucide-react';
+import { Camera, MapPin, Globe, Edit2, Lock, UserPlus, UserCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useState, useEffect } from 'react';
+import { axiosInstance } from '@/lib/axios';
+import toast from 'react-hot-toast';
 
 interface ProfileHeaderProps {
     user: User;
     isOwnProfile: boolean;
     onEdit?: () => void;
-    // status etc for follow future
 }
 
 export const ProfileHeader = ({ user, isOwnProfile, onEdit }: ProfileHeaderProps) => {
+    const [isFollowing, setIsFollowing] = useState(user.isFollowing || false);
+    const [followersCount, setFollowersCount] = useState(user.followersCount || 0);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        setIsFollowing(user.isFollowing || false);
+        setFollowersCount(user.followersCount || 0);
+    }, [user]);
+
+    const handleFollowToggle = async () => {
+        setIsLoading(true);
+        try {
+            if (isFollowing) {
+                await axiosInstance.post(`/users/unfollow/${user._id || user.clerkId}`);
+                setIsFollowing(false);
+                setFollowersCount(prev => Math.max(0, prev - 1));
+                toast.success(`Unfollowed ${user.fullName}`);
+            } else {
+                await axiosInstance.post(`/users/follow/${user._id || user.clerkId}`);
+                setIsFollowing(true);
+                setFollowersCount(prev => prev + 1);
+                toast.success(`Following ${user.fullName}`);
+            }
+        } catch (error) {
+            toast.error('Failed to update follow status');
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <div className="relative mb-8 group">
             {/* Banner / Gradient Background */}
@@ -48,9 +81,25 @@ export const ProfileHeader = ({ user, isOwnProfile, onEdit }: ProfileHeaderProps
                             {user.isPrivate && <Lock className="size-5 text-zinc-500" />}
                         </h1>
                         {!isOwnProfile && (
-                            <Button className="h-8 rounded-full bg-white text-black hover:bg-white/90 font-semibold gap-2">
-                                <UserPlus className="size-4" />
-                                Follow
+                            <Button
+                                onClick={handleFollowToggle}
+                                disabled={isLoading}
+                                className={`h-8 rounded-full font-semibold gap-2 ${isFollowing
+                                        ? "bg-zinc-800 text-white hover:bg-zinc-700 border border-zinc-700"
+                                        : "bg-white text-black hover:bg-white/90"
+                                    }`}
+                            >
+                                {isFollowing ? (
+                                    <>
+                                        <UserCheck className="size-4" />
+                                        Following
+                                    </>
+                                ) : (
+                                    <>
+                                        <UserPlus className="size-4" />
+                                        Follow
+                                    </>
+                                )}
                             </Button>
                         )}
                         {isOwnProfile && (
@@ -89,13 +138,13 @@ export const ProfileHeader = ({ user, isOwnProfile, onEdit }: ProfileHeaderProps
                                 </a>
                             </div>
                         )}
-                        {/* Placeholder Stats */}
+                        {/* Stats */}
                         <div className="flex items-center gap-4 border-l border-white/10 pl-4 ml-2">
                             <div>
-                                <span className="text-white font-bold">0</span> Followers
+                                <span className="text-white font-bold">{followersCount}</span> Followers
                             </div>
                             <div>
-                                <span className="text-white font-bold">0</span> Following
+                                <span className="text-white font-bold">{user.followingCount || 0}</span> Following
                             </div>
                         </div>
                     </div>

@@ -8,7 +8,7 @@ import { useUser, useClerk } from '@clerk/clerk-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Topbar from '@/components/Topbar';
 import { LogOut, Music, Clock, Heart, Calendar, Settings } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '@/lib/axios';
 import { User } from '@/types';
 import { ProfileHeader } from '@/components/profile/ProfileHeader';
@@ -18,15 +18,20 @@ const ProfilePage = () => {
     const { user: clerkUser } = useUser();
     const { signOut } = useClerk();
     const navigate = useNavigate();
+    const { userId } = useParams();
 
     const [userProfile, setUserProfile] = useState<User | null>(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
+    const isOwnProfile = !userId || (clerkUser && userId === clerkUser.id);
+
     useEffect(() => {
         const fetchProfile = async () => {
+            setIsLoading(true);
             try {
-                const response = await axiosInstance.get('/users/profile');
+                const endpoint = userId ? `/users/${userId}` : '/users/profile';
+                const response = await axiosInstance.get(endpoint);
                 setUserProfile(response.data.data);
             } catch (error) {
                 console.error('Failed to fetch profile:', error);
@@ -38,7 +43,7 @@ const ProfilePage = () => {
         if (clerkUser) {
             fetchProfile();
         }
-    }, [clerkUser]);
+    }, [clerkUser, userId]);
 
     const handleSignOut = async () => {
         await signOut();
@@ -71,8 +76,8 @@ const ProfilePage = () => {
                     {/* Profile Header */}
                     <ProfileHeader
                         user={displayUser}
-                        isOwnProfile={true}
-                        onEdit={() => setIsEditModalOpen(true)}
+                        isOwnProfile={!!isOwnProfile}
+                        onEdit={isOwnProfile ? () => setIsEditModalOpen(true) : undefined}
                     />
 
                     {/* Listening Stats */}
@@ -112,55 +117,57 @@ const ProfilePage = () => {
                     </div>
 
                     {/* Account Settings */}
-                    <div>
-                        <div className='flex items-center justify-between mb-4'>
-                            <h2 className='text-2xl font-bold text-white'>Account Settings</h2>
-                            <button
-                                onClick={handleSignOut}
-                                className='flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 border border-red-500/20 hover:border-red-500/40 transition-all font-medium text-sm'
-                            >
-                                <LogOut className='size-4' />
-                                <span>Sign Out</span>
-                            </button>
-                        </div>
-                        <div className='space-y-3'>
-                            <button className='w-full flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-left group'>
-                                <div className='flex items-center gap-3'>
-                                    <div className='p-2 rounded-lg bg-white/10 group-hover:bg-white/20 transition-colors'>
-                                        <Settings className='size-5 text-zinc-400' />
+                    {isOwnProfile && (
+                        <div>
+                            <div className='flex items-center justify-between mb-4'>
+                                <h2 className='text-2xl font-bold text-white'>Account Settings</h2>
+                                <button
+                                    onClick={handleSignOut}
+                                    className='flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 border border-red-500/20 hover:border-red-500/40 transition-all font-medium text-sm'
+                                >
+                                    <LogOut className='size-4' />
+                                    <span>Sign Out</span>
+                                </button>
+                            </div>
+                            <div className='space-y-3'>
+                                <button className='w-full flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-left group'>
+                                    <div className='flex items-center gap-3'>
+                                        <div className='p-2 rounded-lg bg-white/10 group-hover:bg-white/20 transition-colors'>
+                                            <Settings className='size-5 text-zinc-400' />
+                                        </div>
+                                        <div>
+                                            <p className='font-semibold text-white'>Playback Settings</p>
+                                            <p className='text-sm text-zinc-400'>Audio quality, volume normalization</p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p className='font-semibold text-white'>Playback Settings</p>
-                                        <p className='text-sm text-zinc-400'>Audio quality, volume normalization</p>
-                                    </div>
-                                </div>
-                            </button>
+                                </button>
 
-                            <button className='w-full flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-left group'>
-                                <div className='flex items-center gap-3'>
-                                    <div className='p-2 rounded-lg bg-white/10 group-hover:bg-white/20 transition-colors'>
-                                        <Settings className='size-5 text-zinc-400' />
+                                <button className='w-full flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-left group'>
+                                    <div className='flex items-center gap-3'>
+                                        <div className='p-2 rounded-lg bg-white/10 group-hover:bg-white/20 transition-colors'>
+                                            <Settings className='size-5 text-zinc-400' />
+                                        </div>
+                                        <div>
+                                            <p className='font-semibold text-white'>Notifications</p>
+                                            <p className='text-sm text-zinc-400'>Manage your notification preferences</p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p className='font-semibold text-white'>Notifications</p>
-                                        <p className='text-sm text-zinc-400'>Manage your notification preferences</p>
-                                    </div>
-                                </div>
-                            </button>
+                                </button>
 
-                            <button className='w-full flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-left group'>
-                                <div className='flex items-center gap-3'>
-                                    <div className='p-2 rounded-lg bg-white/10 group-hover:bg-white/20 transition-colors'>
-                                        <Settings className='size-5 text-zinc-400' />
+                                <button className='w-full flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-left group'>
+                                    <div className='flex items-center gap-3'>
+                                        <div className='p-2 rounded-lg bg-white/10 group-hover:bg-white/20 transition-colors'>
+                                            <Settings className='size-5 text-zinc-400' />
+                                        </div>
+                                        <div>
+                                            <p className='font-semibold text-white'>Privacy</p>
+                                            <p className='text-sm text-zinc-400'>Control your data and visibility</p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p className='font-semibold text-white'>Privacy</p>
-                                        <p className='text-sm text-zinc-400'>Control your data and visibility</p>
-                                    </div>
-                                </div>
-                            </button>
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </ScrollArea>
 
