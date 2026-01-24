@@ -14,6 +14,7 @@ import {
     sharePlaylist,
     updatePlaylist,
     deletePlaylist,
+    getPlaylistById,
 } from "../controllers/playlist.controller.js";
 
 const router = Router();
@@ -29,6 +30,7 @@ router.delete("/friends/:id", removeFriend);
 // Playlist routes
 router.post("/playlists", createPlaylist);
 router.get("/playlists", getPlaylists);
+router.get("/playlists/:id", getPlaylistById);
 router.put("/playlists/:id", updatePlaylist);
 router.delete("/playlists/:id", deletePlaylist);
 router.post("/playlists/:id/songs", addSongToPlaylist);

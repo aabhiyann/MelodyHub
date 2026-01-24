@@ -226,6 +226,37 @@ export const deletePlaylist = async (req: Request, res: Response) => {
 
         return res.status(200).json({ success: true, message: "Playlist deleted" });
     } catch (error: any) {
-        return res.status(500).json({ success: false, message: "Failed to delete play list", error: error.message });
+        return res.status(500).json({ success: false, message: "Failed to delete playlist", error: error.message });
+    }
+};
+
+/**
+ * GET /playlists/:id
+ * Get playlist by ID (public or user access)
+ */
+export const getPlaylistById = async (req: Request, res: Response) => {
+    try {
+        const userId = (req as any).auth?.userId;
+        const { id } = req.params;
+
+        const playlist = await SharedPlaylist.findById(id).populate('songs');
+
+        if (!playlist) {
+            return res.status(404).json({ success: false, message: "Playlist not found" });
+        }
+
+        // Check access
+        const isOwner = userId && playlist.owner === userId;
+        const isCollaborator = userId && playlist.collaborators.includes(userId);
+        const isViewer = userId && playlist.viewers.includes(userId);
+        const isPublic = playlist.isPublic;
+
+        if (!isPublic && !isOwner && !isCollaborator && !isViewer) {
+            return res.status(403).json({ success: false, message: "Access denied" });
+        }
+
+        return res.status(200).json({ success: true, data: playlist });
+    } catch (error: any) {
+        return res.status(500).json({ success: false, message: "Failed to get playlist", error: error.message });
     }
 };
