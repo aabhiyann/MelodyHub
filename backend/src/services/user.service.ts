@@ -36,4 +36,22 @@ export class UserService extends BaseService<IUser> {
 			],
 		}).sort({ createdAt: 1 });
 	}
+
+	/**
+	 * Get user by Clerk ID
+	 */
+	async getByClerkId(clerkId: string) {
+		return await this.model.findOne({ clerkId });
+	}
+
+	/**
+	 * Update user profile
+	 */
+	async updateProfile(clerkId: string, updates: Partial<IUser>) {
+		return await User.findOneAndUpdate(
+			{ clerkId },
+			{ $set: updates },
+			{ new: true }
+		);
+	}
 }
