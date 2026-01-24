@@ -27,6 +27,7 @@ import healthRoutes from './routes/health.route.js';
 import discoveryRoutes from './routes/discovery.route.js'; // New discovery routes
 import analyticsRoutes from './routes/analytics.route.js'; // New analytics routes
 import socialRoutes from './routes/social.route.js'; // Social & playlist routes
+import lyricsRoutes from './routes/lyrics.route.js'; // Lyrics routes
 import { connectDB } from './lib/db.js';
 import { validateEnv } from './lib/env.js';
 import { requestLogger } from './middleware/logger.middleware.js';
@@ -144,6 +145,7 @@ app.use("/api/ai", process.env.NODE_ENV === "production" ? strictLimiter : (req,
 app.use("/api/messages", messageRoutes);
 app.use("/api/analytics", analyticsRoutes); // Analytics routes
 app.use("/api/social", socialRoutes); // Social & playlist routes
+app.use("/api/lyrics", lyricsRoutes); // Lyrics routes
 
 if (process.env.NODE_ENV === "production") {
 	app.use(express.static(path.join(__dirname, "../frontend/dist")));
