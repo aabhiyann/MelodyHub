@@ -15,6 +15,8 @@ import AudioPlayer from '@/components/AudioPlayer';
 import { FullScreenPlayer } from '@/components/player/FullScreenPlayer';
 import { Mascot } from '@/components/mascot/Mascot';
 import { InstallPrompt } from '@/components/mobile/InstallPrompt';
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
+import { KeyboardShortcutsGuide } from '@/components/KeyboardShortcutsGuide';
 
 // Lazy load all pages for better code splitting
 const AuthCallbackPage = lazy(() => import("./pages/AuthCallbackPage"));
@@ -35,6 +37,9 @@ const RadioPage = lazy(() => import("./pages/RadioPage"));
 function App() {
 	const location = useLocation();
 	const [isLoading, setIsLoading] = useState(false);
+
+	// Enable global keyboard shortcuts
+	useKeyboardShortcuts();
 
 	// Show loading bar during route transitions
 	useEffect(() => {
@@ -75,6 +80,7 @@ function App() {
 					},
 				}}
 			/>
+			<KeyboardShortcutsGuide />
 			<AnimatePresence mode="wait">
 				<Routes location={location} key={location.pathname}>
 					{/* SSO Callback - Use full URL for redirects */}
