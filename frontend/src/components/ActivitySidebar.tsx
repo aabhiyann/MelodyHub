@@ -1,24 +1,38 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useChatStore } from "@/stores/ChatStore";
-import { User } from "@/types";
+import { Activity } from "@/types";
 import { useUser } from "@clerk/clerk-react";
-import { Heart, Headphones, CircleUserRound } from "lucide-react";
-import { useEffect } from "react";
+import { Heart, Music, UserPlus, ListMusic } from "lucide-react";
+import { useEffect, useState } from "react";
+import { axiosInstance } from "@/lib/axios";
 
-const FriendsActivity = () => {
-	const { users, fetchUsers, onlineUsers, activities } = useChatStore();
+const ActivitySidebar = () => {
 	const { user } = useUser();
+	const [activities, setActivities] = useState<Activity[]>([]);
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
-		if (user) fetchUsers();
-	}, [fetchUsers, user]);
+		const fetchActivities = async () => {
+			if (!user) return;
+			setIsLoading(true);
+			try {
+				const response = await axiosInstance.get("/activities");
+				setActivities(response.data);
+			} catch (error) {
+				console.error("Failed to fetch activities:", error);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		fetchActivities();
+	}, [user]);
 
 	return (
 		<div className='h-full bg-background-elevated border-l border-border-subtle flex flex-col'>
 			<div className='p-4 flex justify-between items-center border-b border-border-subtle'>
 				<div className='flex items-center gap-3'>
-					<CircleUserRound className='size-8 text-text-primary' />
+					<ListMusic className='size-6 text-text-primary' />
 					<h2 className='font-semibold text-text-primary text-xl'>Friend Activity</h2>
 				</div>
 			</div>
@@ -27,58 +41,77 @@ const FriendsActivity = () => {
 
 			<ScrollArea className='flex-1'>
 				<div className='p-4 space-y-4'>
-					{users.map((user: User) => {
-						const activity = activities.get(user.clerkId);
-						const isPlaying = activity && activity !== "Idle";
-
-						return (
-							<div
-								key={user._id}
-								className='cursor-pointer hover:bg-background-highlight p-3 rounded-md transition-all group'
-							>
-								<div className='flex items-start gap-3'>
-									<div className='relative'>
-										<Avatar className='size-10 border border-border-subtle'>
-											<AvatarImage src={user.imageUrl} alt={user.fullName} />
-											<AvatarFallback>{user.fullName[0]}</AvatarFallback>
-										</Avatar>
-										<div
-											className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-background-elevated 
-												${onlineUsers.has(user.clerkId) ? "bg-green-500" : "bg-zinc-500"}
-												`}
-											aria-hidden='true'
-										/>
-									</div>
-
-									<div className='flex-1 min-w-0'>
-										<div className='flex items-center gap-2'>
-											<span className='font-medium text-sm text-text-primary'>{user.fullName}</span>
-											{isPlaying && <Headphones className='size-3.5 text-brand-secondary shrink-0' />}
-										</div>
-
-										{isPlaying ? (
-											<div className='mt-1'>
-												<div className='mt-1 text-xs text-text-secondary font-medium truncate'>
-													{activity.replace("Playing ", "").split(" by ")[0]}
-												</div>
-												<div className='text-xs text-text-tertiary truncate'>
-													{activity.split(" by ")[1]}
-												</div>
-											</div>
-										) : (
-											<div className='mt-1 text-xs text-text-disabled'>Idle</div>
-										)}
-									</div>
-								</div>
-							</div>
-						);
-					})}
+					{isLoading ? (
+						<div className="text-text-secondary text-center text-sm">Loading...</div>
+					) : activities.length === 0 ? (
+						<div className="text-text-secondary text-center text-sm">No recent activity</div>
+					) : (
+						activities.map((activity) => (
+							<ActivityItem key={activity._id} activity={activity} />
+						))
+					)}
 				</div>
 			</ScrollArea>
 		</div>
 	);
 };
-export default FriendsActivity;
+export default ActivitySidebar;
+
+const ActivityItem = ({ activity }: { activity: Activity }) => {
+	const { userId: actor, type, target } = activity;
+
+	let icon = null;
+	let message = "";
+
+	switch (type) {
+		case "like_song":
+			icon = <Heart className="size-3 text-red-400" fill="currentColor" />;
+			message = `liked ${target?.title}`;
+			break;
+		case "create_playlist":
+			icon = <Music className="size-3 text-blue-400" />;
+			message = `created playlist ${target?.name}`;
+			break;
+		case "follow_user":
+			icon = <UserPlus className="size-3 text-green-400" />;
+			message = `followed ${target?.fullName}`;
+			break;
+		default:
+			return null;
+	}
+
+	return (
+		<div className='cursor-pointer hover:bg-background-highlight p-3 rounded-md transition-all group'>
+			<div className='flex items-start gap-3'>
+				<div className='relative'>
+					<Avatar className='size-10 border border-border-subtle'>
+						<AvatarImage src={actor.imageUrl} alt={actor.fullName} />
+						<AvatarFallback>{actor.fullName[0]}</AvatarFallback>
+					</Avatar>
+					<div className='absolute -bottom-1 -right-1 bg-background-elevated rounded-full p-0.5'>
+						{icon}
+					</div>
+				</div>
+
+				<div className='flex-1 min-w-0'>
+					<div className='flex items-center gap-2'>
+						<span className='font-medium text-sm text-text-primary truncate block max-w-[120px]'>{actor.fullName}</span>
+					</div>
+
+					<div className='mt-1 text-xs text-text-secondary truncate'>
+						{message}
+					</div>
+
+					{type === 'like_song' && target?.artist && (
+						<div className="mt-0.5 text-[10px] text-text-tertiary truncate">
+							by {target.artist}
+						</div>
+					)}
+				</div>
+			</div>
+		</div>
+	);
+};
 
 const LoginPrompt = () => (
 	<div className='h-full flex flex-col items-center justify-center p-6 text-center space-y-4 '>

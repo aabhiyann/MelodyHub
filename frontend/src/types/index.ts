@@ -14,6 +14,23 @@ export interface Song {
 	playCount?: number;
 	likeCount?: number; // For like/unlike functionality
 }
+
+export type ActivityType = "like_song" | "create_playlist" | "follow_user";
+
+export interface Activity {
+	_id: string;
+	userId: User;
+	targetId: string;
+	target?: {
+		title?: string;
+		artist?: string;
+		name?: string;
+		fullName?: string;
+		imageUrl?: string;
+	};
+	type: ActivityType;
+	createdAt: string;
+}
 export interface Album {
 	_id: string;
 	title: string;

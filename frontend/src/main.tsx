@@ -19,6 +19,16 @@ if (import.meta.env.PROD) {
 	initWebVitals();
 }
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			refetchOnWindowFocus: false,
+		},
+	},
+});
+
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
 		<ClerkProvider
@@ -27,9 +37,11 @@ createRoot(document.getElementById("root")!).render(
 			appearance={clerkTheme}
 		>
 			<AuthProvider>
-				<BrowserRouter>
-					<App />
-				</BrowserRouter>
+				<QueryClientProvider client={queryClient}>
+					<BrowserRouter>
+						<App />
+					</BrowserRouter>
+				</QueryClientProvider>
 			</AuthProvider>
 		</ClerkProvider>
 	</StrictMode>
