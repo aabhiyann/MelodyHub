@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { Heart, ListMusic, Mic2, Disc3, Grid3x3, List, SlidersHorizontal, Plus, Pencil, Trash2 } from 'lucide-react';
+import { Heart, ListMusic, Mic2, Disc3, Grid3x3, List, SlidersHorizontal, Plus, Pencil, Trash2, Share2 } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Topbar from '@/components/Topbar';
 import { useMusicStore } from '@/stores/MusicStore';
@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils';
 import { axiosInstance } from '@/lib/axios';
 import { Song } from '@/types';
 import toast from 'react-hot-toast';
+import { PlaylistShareModal } from '@/components/PlaylistShareModal';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -44,6 +45,7 @@ interface Playlist {
     description?: string;
     songs: Song[];
     createdAt: string;
+    isPublic?: boolean;
 }
 
 const LibraryPage = () => {
@@ -53,10 +55,15 @@ const LibraryPage = () => {
     const [likedSongs, setLikedSongs] = useState<Song[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    // Edit/Delete state
+    // Edit/Delete/Share state
     const [editingPlaylist, setEditingPlaylist] = useState<Playlist | null>(null);
     const [deletingPlaylist, setDeletingPlaylist] = useState<Playlist | null>(null);
+    const [sharingPlaylist, setSharingPlaylist] = useState<Playlist | null>(null);
     const [editName, setEditName] = useState('');
+
+    // Create state
+    const [isCreating, setIsCreating] = useState(false);
+    const [newPlaylistName, setNewPlaylistName] = useState('');
 
     const { albums, songs } = useMusicStore();
     const { playAlbum } = usePlayerStore();
@@ -108,13 +115,18 @@ const LibraryPage = () => {
         }
     };
 
-    const handleCreatePlaylist = async () => {
-        const name = prompt('Enter playlist name:');
-        if (!name) return;
+    const handleCreatePlaylist = () => {
+        setIsCreating(true);
+        setNewPlaylistName('');
+    };
+
+    const confirmCreatePlaylist = async () => {
+        if (!newPlaylistName.trim()) return;
 
         try {
-            await axiosInstance.post('/social/playlists', { name });
+            await axiosInstance.post('/social/playlists', { name: newPlaylistName.trim() });
             toast.success('Playlist created!');
+            setIsCreating(false);
             fetchPlaylists();
         } catch (error) {
             toast.error('Failed to create playlist');
@@ -276,8 +288,18 @@ const LibraryPage = () => {
                                                     <div className='w-full h-full flex items-center justify-center'>
                                                         <ListMusic className='size-16 text-brand-primary' />
                                                     </div>
-                                                    {/* Edit/Delete buttons */}
+                                                    {/* Edit/Delete/Share buttons */}
                                                     <div className='absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1'>
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                setSharingPlaylist(playlist);
+                                                            }}
+                                                            className='p-2 rounded-lg bg-zinc-900/50 hover:bg-zinc-900/80 backdrop-blur-sm'
+                                                            title="Share Playlist"
+                                                        >
+                                                            <Share2 className='size-4 text-white' />
+                                                        </button>
                                                         <button
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
@@ -285,6 +307,7 @@ const LibraryPage = () => {
                                                                 setEditName(playlist.name);
                                                             }}
                                                             className='p-2 rounded-lg bg-white/10 hover:bg-white/20 backdrop-blur-sm'
+                                                            title="Edit Playlist"
                                                         >
                                                             <Pencil className='size-4 text-white' />
                                                         </button>
@@ -294,6 +317,7 @@ const LibraryPage = () => {
                                                                 setDeletingPlaylist(playlist);
                                                             }}
                                                             className='p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 backdrop-blur-sm'
+                                                            title="Delete Playlist"
                                                         >
                                                             <Trash2 className='size-4 text-red-400' />
                                                         </button>
@@ -323,20 +347,29 @@ const LibraryPage = () => {
                                                     <p className='font-semibold text-white truncate'>{playlist.name}</p>
                                                     <p className='text-sm text-zinc-400 truncate'>Playlist • {playlist.songs?.length || 0} songs</p>
                                                 </div>
-                                                {/* Edit/Delete buttons */}
+                                                {/* Edit/Delete/Share buttons */}
                                                 <div className='opacity-0 group-hover:opacity-100 transition-opacity flex gap-2'>
+                                                    <button
+                                                        onClick={() => setSharingPlaylist(playlist)}
+                                                        className='p-2 rounded-lg bg-white/10 hover:bg-white/20'
+                                                        title="Share Playlist"
+                                                    >
+                                                        <Share2 className='size-4 text-white' />
+                                                    </button>
                                                     <button
                                                         onClick={() => {
                                                             setEditingPlaylist(playlist);
                                                             setEditName(playlist.name);
                                                         }}
                                                         className='p-2 rounded-lg bg-white/10 hover:bg-white/20'
+                                                        title="Edit Playlist"
                                                     >
                                                         <Pencil className='size-4 text-white' />
                                                     </button>
                                                     <button
                                                         onClick={() => setDeletingPlaylist(playlist)}
                                                         className='p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20'
+                                                        title="Delete Playlist"
                                                     >
                                                         <Trash2 className='size-4 text-red-400' />
                                                     </button>
@@ -496,6 +529,41 @@ const LibraryPage = () => {
                     </div>
                 </div>
             </ScrollArea>
+
+            {/* Share Playlist Modal */}
+            {sharingPlaylist && (
+                <PlaylistShareModal
+                    isOpen={!!sharingPlaylist}
+                    onClose={() => setSharingPlaylist(null)}
+                    playlistId={sharingPlaylist._id}
+                    playlistName={sharingPlaylist.name}
+                    isPublicInitial={sharingPlaylist.isPublic || false}
+                />
+            )}
+
+            {/* Create Playlist Dialog */}
+            <Dialog open={isCreating} onOpenChange={setIsCreating}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Create New Playlist</DialogTitle>
+                        <DialogDescription>
+                            Enter a name for your playlist
+                        </DialogDescription>
+                    </DialogHeader>
+                    <Input
+                        value={newPlaylistName}
+                        onChange={(e) => setNewPlaylistName(e.target.value)}
+                        placeholder="Playlist name"
+                        onKeyDown={(e) => e.key === 'Enter' && confirmCreatePlaylist()}
+                    />
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setIsCreating(false)}>
+                            Cancel
+                        </Button>
+                        <Button onClick={confirmCreatePlaylist}>Create</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
 
             {/* Edit Playlist Dialog */}
             <Dialog open={!!editingPlaylist} onOpenChange={() => setEditingPlaylist(null)}>
