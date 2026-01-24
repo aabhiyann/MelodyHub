@@ -7,6 +7,7 @@ export interface ISong extends Document {
 	imageUrl: string;
 	audioUrl: string;
 	duration: number;
+	lyrics?: string; // Lyrics in text or LRC format
 	albumId?: mongoose.Types.ObjectId;
 
 	// Extended metadata for discovery
@@ -60,8 +61,13 @@ const songSchema = new mongoose.Schema(
 			required: true,
 		},
 		duration: {
-			type: String,
+			type: String, // Note: Should ideally be Number (seconds), keeping String as per existing
 			required: true,
+		},
+		lyrics: {
+			type: String,
+			required: false,
+			default: null,
 		},
 		albumId: {
 			type: mongoose.Schema.Types.ObjectId,
