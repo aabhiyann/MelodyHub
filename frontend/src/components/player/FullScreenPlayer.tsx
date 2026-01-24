@@ -10,35 +10,58 @@ import {
     Pause,
     SkipForward,
     SkipBack,
-    Repeat,
-    Shuffle,
     Heart,
     Volume2,
     List,
     Mic2,
+    VolumeX
 } from 'lucide-react';
 import { usePlayerStore } from '@/stores/PlayerStore';
+import { useMusicStore } from '@/stores/MusicStore';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import { ShuffleButton } from './ShuffleButton';
+import { RepeatButton } from './RepeatButton';
+import { LyricsPanel } from './LyricsPanel';
 
 export const FullScreenPlayer = () => {
     const {
         currentSong,
         isPlaying,
-        playerState,
-        togglePlayPause,
-        next,
-        previous,
-        toggleShuffle,
-        cycleRepeat,
-        setPlayerState,
-        isShuffle,
-        repeatMode,
+        isExpanded,
+        toggleExpanded,
+        togglePlay,
+        playNext,
+        playPrevious,
+        volume,
+        setVolume,
+        isMuted,
+        toggleMute,
+        currentTime,
+        duration,
+        seek
     } = usePlayerStore();
 
     const [activeTab, setActiveTab] = useState<'player' | 'lyrics' | 'queue'>('player');
 
-    if (playerState !== 'fullscreen' || !currentSong) return null;
+    // Handle seeking
+    const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const time = Number(e.target.value);
+        seek(time);
+    };
+
+    const { albums } = useMusicStore();
+    const albumName = currentSong ? (albums.find(a => a._id === currentSong.albumId)?.title || 'Single') : 'Single';
+
+    // Format time (mm:ss)
+    const formatTime = (time: number) => {
+        if (!time || isNaN(time)) return '0:00';
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60);
+        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    };
+
+    if (!isExpanded || !currentSong) return null;
 
     return (
         <AnimatePresence>
@@ -51,7 +74,7 @@ export const FullScreenPlayer = () => {
             >
                 {/* Background Blur */}
                 <div
-                    className="absolute inset-0 opacity-30 blur-3xl"
+                    className="absolute inset-0 opacity-30 blur-3xl opacity-20"
                     style={{
                         backgroundImage: `url(${currentSong.imageUrl})`,
                         backgroundSize: 'cover',
@@ -62,10 +85,11 @@ export const FullScreenPlayer = () => {
                 {/* Content */}
                 <div className="relative h-full flex flex-col p-6 max-w-2xl mx-auto">
                     {/* Header */}
-                    <div className="flex items-center justify-between mb-8">
+                    <div className="flex items-center justify-between mb-8 shrink-0">
                         <button
-                            onClick={() => setPlayerState('mini')}
+                            onClick={toggleExpanded}
                             className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                            aria-label="Close full screen"
                         >
                             <X className="size-6 text-white" />
                         </button>
@@ -110,109 +134,142 @@ export const FullScreenPlayer = () => {
                         </div>
                     </div>
 
-                    {/* Album Art */}
-                    <div className="flex-1 flex items-center justify-center mb-8">
-                        <motion.img
-                            src={currentSong.imageUrl}
-                            alt={currentSong.title}
-                            className="w-full max-w-md aspect-square rounded-2xl shadow-2xl object-cover"
-                            layoutId="albumArt"
-                        />
-                    </div>
+                    {/* Active Tab Content */}
+                    <div className="flex-1 min-h-0 flex flex-col">
+                        {activeTab === 'player' && (
+                            <>
+                                {/* Album Art */}
+                                <div className="flex-1 flex items-center justify-center mb-8 px-8 min-h-0">
+                                    <motion.img
+                                        src={currentSong.imageUrl}
+                                        alt={currentSong.title}
+                                        className="w-full max-w-md aspect-square rounded-2xl shadow-2xl object-cover"
+                                        layoutId="albumArt"
+                                    />
+                                </div>
 
-                    {/* Song Info */}
-                    <div className="text-center mb-6">
-                        <h1 className="text-3xl font-bold text-white mb-2">{currentSong.title}</h1>
-                        <p className="text-lg text-text-secondary mb-1">{currentSong.artist}</p>
-                        <p className="text-sm text-text-tertiary">{currentSong.album}</p>
-                    </div>
+                                {/* Song Info */}
+                                <div className="text-center mb-8 shrink-0">
+                                    <h1 className="text-3xl font-bold text-white mb-2">{currentSong.title}</h1>
+                                    <p className="text-xl text-text-secondary font-medium">{currentSong.artist}</p>
+                                    <p className="text-sm text-text-tertiary mt-1">{albumName}</p>
+                                </div>
 
-                    {/* Progress Bar */}
-                    <div className="mb-6">
-                        <div className="h-1 bg-white/20 rounded-full overflow-hidden mb-2">
-                            <motion.div
-                                className="h-full bg-white"
-                                style={{ width: '45%' }}
-                            />
-                        </div>
-                        <div className="flex justify-between text-xs text-text-secondary">
-                            <span>1:23</span>
-                            <span>3:45</span>
-                        </div>
-                    </div>
+                                {/* Progress Bar */}
+                                <div className="mb-8 shrink-0">
+                                    <div className="relative group h-2 w-full">
+                                        <input
+                                            type="range"
+                                            min={0}
+                                            max={duration || 100}
+                                            value={currentTime}
+                                            onChange={handleSeek}
+                                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
+                                        />
+                                        <div className="h-2 bg-white/20 rounded-full overflow-hidden">
+                                            <motion.div
+                                                className="h-full bg-white rounded-full relative"
+                                                style={{ width: `${(currentTime / (duration || 1)) * 100}%` }}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-between text-xs text-text-secondary mt-2 font-medium font-mono">
+                                        <span>{formatTime(currentTime)}</span>
+                                        <span>{formatTime(duration)}</span>
+                                    </div>
+                                </div>
 
-                    {/* Controls */}
-                    <div className="flex items-center justify-center gap-4 mb-6">
-                        {/* Shuffle */}
-                        <button
-                            onClick={toggleShuffle}
-                            className={cn(
-                                'p-2 rounded-lg transition-colors',
-                                isShuffle ? 'text-brand-primary' : 'text-text-secondary hover:text-white'
-                            )}
-                        >
-                            <Shuffle className="size-5" />
-                        </button>
+                                {/* Controls */}
+                                <div className="flex items-center justify-center gap-8 mb-8 shrink-0">
+                                    {/* Shuffle */}
+                                    <div className="scale-125">
+                                        <ShuffleButton />
+                                    </div>
 
-                        {/* Previous */}
-                        <button
-                            onClick={previous}
-                            className="p-3 hover:bg-white/10 rounded-lg transition-colors"
-                        >
-                            <SkipBack className="size-6 text-white fill-white" />
-                        </button>
+                                    {/* Previous */}
+                                    <button
+                                        onClick={playPrevious}
+                                        className="p-3 hover:bg-white/10 rounded-full transition-colors"
+                                    >
+                                        <SkipBack className="size-8 text-white fill-white" />
+                                    </button>
 
-                        {/* Play/Pause */}
-                        <button
-                            onClick={togglePlayPause}
-                            className="p-5 bg-white hover:bg-white/90 rounded-full transition-colors"
-                        >
-                            {isPlaying ? (
-                                <Pause className="size-8 text-black fill-black" />
-                            ) : (
-                                <Play className="size-8 text-black fill-black ml-1" />
-                            )}
-                        </button>
+                                    {/* Play/Pause */}
+                                    <button
+                                        onClick={togglePlay}
+                                        className="p-6 bg-white hover:bg-white/90 rounded-full transition-transform hover:scale-105 active:scale-95 shadow-xl"
+                                    >
+                                        {isPlaying ? (
+                                            <Pause className="size-10 text-black fill-black" />
+                                        ) : (
+                                            <Play className="size-10 text-black fill-black ml-1" />
+                                        )}
+                                    </button>
 
-                        {/* Next */}
-                        <button
-                            onClick={next}
-                            className="p-3 hover:bg-white/10 rounded-lg transition-colors"
-                        >
-                            <SkipForward className="size-6 text-white fill-white" />
-                        </button>
+                                    {/* Next */}
+                                    <button
+                                        onClick={playNext}
+                                        className="p-3 hover:bg-white/10 rounded-full transition-colors"
+                                    >
+                                        <SkipForward className="size-8 text-white fill-white" />
+                                    </button>
 
-                        {/* Repeat */}
-                        <button
-                            onClick={cycleRepeat}
-                            className={cn(
-                                'p-2 rounded-lg transition-colors',
-                                repeatMode !== 'off' ? 'text-brand-primary' : 'text-text-secondary hover:text-white'
-                            )}
-                        >
-                            <Repeat className="size-5" />
-                        </button>
-                    </div>
+                                    {/* Repeat */}
+                                    <div className="scale-125">
+                                        <RepeatButton />
+                                    </div>
+                                </div>
 
-                    {/* Volume & Actions */}
-                    <div className="flex items-center gap-4">
-                        <button className="p-2 hover:bg-white/10 rounded-lg transition-colors">
-                            <Heart className="size-5 text-text-secondary hover:text-white" />
-                        </button>
+                                {/* Volume & Actions */}
+                                <div className="flex items-center gap-4 justify-center max-w-sm mx-auto w-full shrink-0 mb-4">
+                                    <button
+                                        className="p-2 hover:bg-white/10 rounded-full transition-colors"
+                                        onClick={toggleMute}
+                                    >
+                                        {isMuted || volume === 0 ? (
+                                            <VolumeX className="size-5 text-text-secondary" />
+                                        ) : (
+                                            <Volume2 className="size-5 text-text-secondary" />
+                                        )}
+                                    </button>
 
-                        <Volume2 className="size-5 text-text-secondary shrink-0" />
-                        <input
-                            type="range"
-                            min="0"
-                            max="100"
-                            defaultValue="70"
-                            className="flex-1 h-1 bg-white/20 rounded-full appearance-none
-                [&::-webkit-slider-thumb]:appearance-none
-                [&::-webkit-slider-thumb]:size-3
-                [&::-webkit-slider-thumb]:rounded-full
-                [&::-webkit-slider-thumb]:bg-white
-                [&::-webkit-slider-thumb]:cursor-pointer"
-                        />
+                                    <div className="flex-1 group relative h-10 flex items-center">
+                                        <input
+                                            type="range"
+                                            min="0"
+                                            max="100"
+                                            value={isMuted ? 0 : volume}
+                                            onChange={(e) => setVolume(Number(e.target.value))}
+                                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                        />
+                                        <div className="h-1 bg-white/20 rounded-full overflow-hidden w-full pointer-events-none">
+                                            <motion.div
+                                                className="h-full bg-white rounded-full"
+                                                style={{ width: `${isMuted ? 0 : volume}%` }}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <button className="p-2 hover:bg-white/10 rounded-full transition-colors">
+                                        <Heart className="size-5 text-text-secondary hover:text-white" />
+                                    </button>
+                                </div>
+                            </>
+                        )}
+
+                        {activeTab === 'lyrics' && (
+                            <LyricsPanel song={currentSong} currentTime={currentTime} />
+                        )}
+
+                        {activeTab === 'queue' && (
+                            <div className="flex-1 flex items-center justify-center text-text-secondary">
+                                <div className="text-center">
+                                    <List className="size-12 mx-auto mb-4 opacity-50" />
+                                    <p className="text-lg font-medium">Queue Management</p>
+                                    <p className="text-sm opacity-60">Coming soon in the next update!</p>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </motion.div>
