@@ -17,6 +17,13 @@ interface PlayerStore {
 	currentTime: number;
 	duration: number;
 	bufferedTime: number;
+	seek: (time: number) => void;
+
+	// UI State
+	isShortcutsGuideOpen: boolean;
+	toggleShortcutsGuide: () => void;
+	isExpanded: boolean;
+	toggleExpanded: () => void;
 
 	initializeQueue: (songs: Song[]) => void;
 	playAlbum: (songs: Song[], startIndex?: number) => void;
@@ -34,7 +41,6 @@ interface PlayerStore {
 	setCurrentTime: (time: number) => void;
 	setDuration: (duration: number) => void;
 	setBufferedTime: (time: number) => void;
-	seek: (time: number) => void;
 }
 
 export const usePlayerStore = create<PlayerStore>((set, get) => {
@@ -55,6 +61,12 @@ export const usePlayerStore = create<PlayerStore>((set, get) => {
 		currentTime: 0,
 		duration: 0,
 		bufferedTime: 0,
+
+		// UI State
+		isShortcutsGuideOpen: false,
+		toggleShortcutsGuide: () => set(state => ({ isShortcutsGuideOpen: !state.isShortcutsGuideOpen })),
+		isExpanded: false,
+		toggleExpanded: () => set(state => ({ isExpanded: !state.isExpanded })),
 
 		initializeQueue: manager.initializeQueue.bind(manager),
 		playAlbum: manager.playAlbum.bind(manager),

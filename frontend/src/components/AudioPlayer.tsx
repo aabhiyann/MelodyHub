@@ -33,6 +33,8 @@ const AudioPlayer = () => {
 		seek,
 		queue,
 		toggleQueue,
+		isExpanded,
+		toggleExpanded,
 	} = usePlayerStore();
 
 	// Enable keyboard controls
@@ -197,6 +199,8 @@ const AudioPlayer = () => {
 									isMuted={isMuted}
 									onVolumeChange={setVolume}
 									onToggleMute={toggleMute}
+									isExpanded={isExpanded}
+									onToggleExpanded={toggleExpanded}
 								/>
 							</div>
 						</div>

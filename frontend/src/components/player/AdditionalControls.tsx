@@ -4,7 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
-import { ListMusic, Cast, MoreHorizontal } from 'lucide-react';
+import { ListMusic, Cast, MoreHorizontal, Maximize2, Minimize2 } from 'lucide-react';
 import { VolumeControl } from './VolumeControl';
 import { useState } from 'react';
 
@@ -15,6 +15,8 @@ interface AdditionalControlsProps {
     isMuted: boolean;
     onVolumeChange: (volume: number) => void;
     onToggleMute: () => void;
+    isExpanded: boolean;
+    onToggleExpanded: () => void;
 }
 
 export const AdditionalControls = ({
@@ -24,6 +26,8 @@ export const AdditionalControls = ({
     isMuted,
     onVolumeChange,
     onToggleMute,
+    isExpanded,
+    onToggleExpanded,
 }: AdditionalControlsProps) => {
     const [showMoreMenu, setShowMoreMenu] = useState(false);
 
@@ -42,6 +46,21 @@ export const AdditionalControls = ({
                     <span className="absolute -top-1 -right-1 w-5 h-5 bg-brand-primary text-white text-xs rounded-full flex items-center justify-center font-semibold">
                         {queueCount > 99 ? '99+' : queueCount}
                     </span>
+                )}
+            </motion.button>
+
+            {/* Expand/Collapse Button */}
+            <motion.button
+                onClick={onToggleExpanded}
+                className="p-2 rounded-full hover:bg-white/10 transition-colors hidden sm:block"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label={isExpanded ? "Collapse player" : "Expand player"}
+            >
+                {isExpanded ? (
+                    <Minimize2 className="w-5 h-5 text-white/70" />
+                ) : (
+                    <Maximize2 className="w-5 h-5 text-white/70" />
                 )}
             </motion.button>
 
