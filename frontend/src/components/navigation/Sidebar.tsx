@@ -14,6 +14,8 @@ import {
     ListMusic,
     ChevronLeft,
     ChevronRight,
+    MessageCircle,
+    User,
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -31,7 +33,9 @@ const mainNavItems: NavItem[] = [
     { id: 'listen-now', label: 'Listen Now', icon: Home, path: '/home' },
     { id: 'browse', label: 'Browse', icon: Compass, path: '/browse' },
     { id: 'radio', label: 'Radio', icon: Radio, path: '/radio' },
+    { id: 'chat', label: 'Chat', icon: MessageCircle, path: '/chat' },
     { id: 'library', label: 'Library', icon: Library, path: '/library' },
+    { id: 'profile', label: 'Profile', icon: User, path: '/profile' },
     { id: 'search', label: 'Search', icon: Search, path: '/search' },
 ];
 
