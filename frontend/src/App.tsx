@@ -88,9 +88,9 @@ function App() {
 						path='/sso-callback'
 						element={
 							<AuthenticateWithRedirectCallback
-								signUpUrl={window.location.origin + "/home"}
-								signInUrl={window.location.origin + "/home"}
-								continueSignUpUrl={window.location.origin + "/home"}
+								signUpUrl={window.location.origin + "/auth-callback"}
+								signInUrl={window.location.origin + "/auth-callback"}
+								continueSignUpUrl={window.location.origin + "/auth-callback"}
 							/>
 						}
 					/>

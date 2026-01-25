@@ -4,7 +4,6 @@ import "./index.css";
 import App from "./App.tsx";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { dark } from "@clerk/themes";
-import { clerkTheme } from "./styles/clerk-theme";
 import { BrowserRouter } from "react-router-dom";
 import AuthProvider from "./providers/AuthProviders.tsx";
 import { initWebVitals } from "./utils/webVitals";
@@ -37,7 +36,11 @@ createRoot(document.getElementById("root")!).render(
 			afterSignOutUrl='/'
 			appearance={{
 				baseTheme: dark,
-				...clerkTheme
+				variables: {
+					colorPrimary: '#8b5cf6', // violet-500
+					colorBackground: '#0a0a0a', // zinc-950
+					colorText: 'white',
+				}
 			}}
 		>
 			<AuthProvider>
