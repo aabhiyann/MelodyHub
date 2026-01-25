@@ -47,6 +47,25 @@ export const sendFriendRequest = async (req: Request, res: Response, next: NextF
             return res.status(400).json({ message: "Already friends" });
         }
 
+        if (receiverId === "melody-bot") {
+            const botUser = await User.findOne({ clerkId: "melody-bot" });
+            if (!botUser) {
+                return res.status(404).json({ message: "Bot user not found. Please contact admin." });
+            }
+
+            // Update both users' friends lists
+            await User.findByIdAndUpdate(sender._id, { $addToSet: { friends: botUser._id } });
+            await User.findByIdAndUpdate(botUser._id, { $addToSet: { friends: sender._id } });
+
+            // Create accepted request record
+            const newRequest = await FriendRequest.create({
+                senderId: sender._id,
+                receiverId: botUser._id,
+                status: "accepted",
+            });
+            return res.status(200).json({ status: "accepted", message: "Friend request accepted automatically" });
+        }
+
         const newRequest = await FriendRequest.create({
             senderId: sender._id,
             receiverId,

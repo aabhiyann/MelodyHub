@@ -40,6 +40,17 @@ export interface Album {
 	songs: Song[];
 }
 
+export interface Playlist {
+	_id: string;
+	name: string;
+	description?: string;
+	owner: string; // or User object if populated, but usually ID in simplest form or check usage
+	songs: Song[];
+	isPublic: boolean;
+	createdAt: string;
+	updatedAt: string;
+}
+
 export interface Stats {
 	totalSongs: number;
 	totalAlbums: number;
