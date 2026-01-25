@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { User } from '../models/user.model.js';
 
-dotenv.config({ path: path.join(process.cwd(), '.env') });
+dotenv.config();
 
 const createFake = async () => {
     try {

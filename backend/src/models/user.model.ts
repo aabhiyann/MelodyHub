@@ -8,6 +8,7 @@ export interface IUser extends Document {
 	location?: string;
 	website?: string;
 	isPrivate: boolean;
+	friends: mongoose.Types.ObjectId[];
 	createdAt: Date;
 	updatedAt: Date;
 }
@@ -43,6 +44,7 @@ const userSchema = new mongoose.Schema(
 			type: Boolean,
 			default: false,
 		},
+		friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 	},
 	{ timestamps: true }
 );

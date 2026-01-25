@@ -29,6 +29,7 @@ import analyticsRoutes from './routes/analytics.route.js'; // New analytics rout
 import socialRoutes from './routes/social.route.js'; // Social & playlist routes
 import lyricsRoutes from './routes/lyrics.route.js'; // Lyrics routes
 import activityRoutes from './routes/activity.route.js';
+import friendRoutes from './routes/friend.route.js';
 import { connectDB } from './lib/db.js';
 import { validateEnv } from './lib/env.js';
 import { requestLogger } from './middleware/logger.middleware.js';
@@ -74,12 +75,13 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-	origin: true,
+	origin: ["http://localhost:5173", "http://localhost:3000"],
 	credentials: true,
 }));
 
 app.use(helmet({
-	contentSecurityPolicy: false, // Disabled for now to prevent breaking Cloudinary/Clerk
+	crossOriginResourcePolicy: false,
+	contentSecurityPolicy: false,
 	crossOriginEmbedderPolicy: false,
 }));
 app.use(compression());
@@ -137,6 +139,7 @@ app.use("/api/analytics", analyticsRoutes); // Analytics routes
 app.use("/api/social", socialRoutes); // Social & playlist routes
 app.use("/api/lyrics", lyricsRoutes); // Lyrics routes
 app.use("/api/activities", activityRoutes); // Activity feed routes
+app.use("/api/friends", friendRoutes); // Friend system routes
 
 if (process.env.NODE_ENV === "production") {
 	app.use(express.static(path.join(__dirname, "../frontend/dist")));

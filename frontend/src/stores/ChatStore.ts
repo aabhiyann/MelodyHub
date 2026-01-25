@@ -14,6 +14,12 @@ interface ChatStore {
 	isLoading: boolean;
 	typingUsers: Set<string>; // Set of userIds who are typing
 
+	// Friend System
+	friends: User[];
+	friendRequests: any[];
+	searchResult: User[];
+
+	// Actions
 	initSocket: (userId: string) => void;
 	disconnectSocket: () => void;
 	sendMessage: (receiverId: string, content: string) => void;
@@ -21,9 +27,19 @@ interface ChatStore {
 	fetchUsers: () => Promise<void>;
 	fetchMessages: (userId: string) => Promise<void>;
 	setSelectedUser: (user: User | null) => void;
+
+	// Friend Actions
+	fetchFriends: () => Promise<void>;
+	fetchFriendRequests: () => Promise<void>;
+	sendFriendRequest: (receiverId: string) => Promise<void>;
+	acceptFriendRequest: (requestId: string) => Promise<void>;
+	searchUsers: (query: string) => Promise<void>;
 }
 
-const BASE_URL = import.meta.env.VITE_API_URL?.replace("/api", "") || (import.meta.env.MODE === "development" ? "http://localhost:5000" : "/");
+const BASE_URL = import.meta.env.VITE_API_URL?.replace("/api", "") || (import.meta.env.MODE === "development" ? "http://localhost:5001" : "/");
+
+// Map to store timeouts for clearing typing status
+const typingTimeouts = new Map<string, NodeJS.Timeout>();
 
 export const useChatStore = create<ChatStore>((set, get) => ({
 	messages: [],
@@ -34,6 +50,75 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 	selectedUser: null,
 	isLoading: false,
 	typingUsers: new Set(),
+	friends: [],
+	friendRequests: [],
+	searchResult: [],
+
+	// Friends Implementation
+	fetchFriends: async () => {
+		set({ isLoading: true });
+		try {
+			const response = await axiosInstance.get("/friends");
+			set({ friends: response.data, isLoading: false });
+		} catch (error) {
+			console.error("Failed to fetch friends:", error);
+			set({ isLoading: false });
+		}
+	},
+
+	fetchFriendRequests: async () => {
+		set({ isLoading: true });
+		try {
+			const response = await axiosInstance.get("/friends/requests");
+			set({ friendRequests: response.data, isLoading: false });
+		} catch (error) {
+			console.error("Failed to fetch requests:", error);
+			set({ isLoading: false });
+		}
+	},
+
+	sendFriendRequest: async (receiverId: string) => {
+		try {
+			await axiosInstance.post("/friends/request", { receiverId });
+			import("react-hot-toast").then(({ toast }) => toast.success("Friend request sent"));
+		} catch (error: any) {
+			import("react-hot-toast").then(({ toast }) => toast.error(error.response?.data?.message || "Failed to send request"));
+		}
+	},
+
+	acceptFriendRequest: async (requestId: string) => {
+		try {
+			await axiosInstance.post("/friends/accept", { requestId });
+			import("react-hot-toast").then(({ toast }) => toast.success("Friend request accepted"));
+			get().fetchFriends();
+			get().fetchFriendRequests();
+		} catch (error: any) {
+			import("react-hot-toast").then(({ toast }) => toast.error(error.response?.data?.message || "Failed to accept request"));
+		}
+	},
+
+	searchUsers: async (query: string) => {
+		if (!query) return;
+		try {
+			// We can reuse the getAllUsers but filter locally or add search endpoint
+			// For now, let's just fetch all and filter clientside for simplicity or implementation 
+			// Ideally we should have a search endpoint.
+			// Let's implement client side filtering on the 'users' list if we have it, 
+			// but 'users' list from /users endpoint was the "all users" list we are moving away from.
+			// So we actually need a dedicated search endpoint or use the ALL users payload if small.
+			// Let's assume we use the existing /users endpoint but treat it as search for now.
+			set({ isLoading: true });
+			const response = await axiosInstance.get("/users");
+			const allUsers = response.data;
+			const filtered = allUsers.filter((user: User) =>
+				user.fullName.toLowerCase().includes(query.toLowerCase())
+			);
+			set({ searchResult: filtered, isLoading: false });
+		} catch (error) {
+			console.error(error);
+			set({ isLoading: false });
+		}
+	},
 
 	fetchUsers: async () => {
 		set({ isLoading: true });
@@ -123,14 +208,24 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 			set((state) => {
 				const newTypingUsers = new Set(state.typingUsers);
 				newTypingUsers.add(senderId);
-				// Auto remove typing status after 3 seconds if no new event comes
-				setTimeout(() => {
+
+				// Clear existing timeout if any
+				if (typingTimeouts.has(senderId)) {
+					clearTimeout(typingTimeouts.get(senderId));
+				}
+
+				// Set new timeout to remove user after 3 seconds
+				const timeout = setTimeout(() => {
 					set((state) => {
 						const current = new Set(state.typingUsers);
 						current.delete(senderId);
+						typingTimeouts.delete(senderId);
 						return { typingUsers: current };
-					})
+					});
 				}, 3000);
+
+				typingTimeouts.set(senderId, timeout);
+
 				return { typingUsers: newTypingUsers };
 			});
 		});
@@ -150,6 +245,20 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
 		const senderId = useAuthStore.getState().authUser?.clerkId;
 		if (!senderId) return;
+
+		// Optimistic UI Update
+		const tempMessage: Message = {
+			_id: `temp-${Date.now()}`,
+			senderId,
+			receiverId,
+			content,
+			createdAt: new Date().toISOString(),
+			updatedAt: new Date().toISOString(),
+		};
+
+		set((state) => ({
+			messages: [...state.messages, tempMessage],
+		}));
 
 		socket.emit("send_message", { senderId, receiverId, content });
 	},

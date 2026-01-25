@@ -40,7 +40,7 @@ const LeftSidebar = () => {
   return (
     <div className='h-full flex flex-col gap-2'>
       {/* Main Navigation */}
-      <div className='rounded-xl bg-black/40 backdrop-blur-md border border-white/5 flex flex-col p-3 shadow-sm'>
+      <div className='rounded-xl bg-background-elevated/40 backdrop-blur-md border border-white/5 flex flex-col p-3 shadow-sm'>
         <div className='space-y-1'>
           <Link
             to={'/home'}
@@ -195,7 +195,7 @@ const LeftSidebar = () => {
       </div>
 
       {/* Library/Collections Section */}
-      <div className='flex-1 rounded-xl bg-black/40 backdrop-blur-md border border-white/5 flex flex-col p-4 shadow-sm'>
+      <div className='flex-1 rounded-xl bg-background-elevated/40 backdrop-blur-md border border-white/5 flex flex-col p-4 shadow-sm'>
         <div className='flex items-center justify-between mb-4 px-2'>
           <div className='flex items-center text-text-secondary group cursor-pointer hover:text-white transition-colors'>
             <Library className='size-5 mr-3 group-hover:scale-110 transition-transform' />
@@ -242,7 +242,7 @@ const LeftSidebar = () => {
             <div className="h-px bg-white/5 my-3" />
 
             {/* Albums */}
-            <p className="text-xs text-text-secondary font-semibold mb-2 px-2 hidden md:block">ALBUMS</p>
+            <p className="text-xs text-text-secondary font-semibold mb-2 px-2 hidden md:block uppercase tracking-wider">Albums</p>
             {isLoading ? (
               <PlaylistTab />
             ) : (
@@ -275,7 +275,7 @@ const LeftSidebar = () => {
 
       {/* User Profile Section */}
       {user && (
-        <div className='rounded-xl bg-black/40 backdrop-blur-md border border-white/5 p-3 shadow-sm'>
+        <div className='rounded-xl bg-background-elevated/40 backdrop-blur-md border border-white/5 p-3 shadow-sm'>
           <div className='flex items-center gap-3'>
             <img
               src={user.imageUrl}
@@ -292,7 +292,7 @@ const LeftSidebar = () => {
             </div>
             <button
               onClick={() => signOut()}
-              className='p-2 hover:bg-white/10 rounded-lg transition-colors text-text-secondary hover:text-red-400 group'
+              className='p-2 hover:bg-white/10 rounded-lg transition-colors text-text-secondary hover:text-error group'
               title="Sign Out"
             >
               <LogOut className='size-4 group-hover:scale-110 transition-transform' />

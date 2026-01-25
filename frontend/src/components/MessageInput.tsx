@@ -36,23 +36,28 @@ const MessageInput = () => {
 	};
 
 	return (
-		<div className='p-4 mt-auto border-t border-white/5 bg-white/5 backdrop-blur-md'>
-			<div className='flex items-end gap-2'>
+		<div className='p-4 mt-auto border-t border-white/5 bg-transparent relative z-20'>
+			<div className='flex items-center gap-2 bg-background-elevated/40 backdrop-blur-xl border border-white/10 rounded-3xl p-1.5 shadow-xl ring-1 ring-white/5'>
 				<Textarea
 					placeholder='Type a message...'
 					value={newMessage}
 					onChange={handleChange}
 					onKeyDown={handleKeyDown}
-					className='bg-zinc-800/50 border-white/10 text-white placeholder:text-zinc-500 focus-visible:ring-brand-primary/50 min-h-[44px] max-h-32 resize-none py-3'
+					className='bg-transparent border-none text-text-primary placeholder:text-text-secondary focus-visible:ring-0 min-h-[42px] max-h-32 resize-none py-2.5 px-4 rounded-3xl flex-1'
 				/>
 
 				<Button
 					size={'icon'}
 					onClick={handleSend}
 					disabled={!newMessage.trim()}
-					className="bg-brand-primary hover:bg-brand-primary/90 text-white rounded-lg shadow-lg hover:scale-105 transition-all disabled:opacity-50 disabled:hover:scale-100 h-11 w-11 shrink-0"
+					className={`
+                        rounded-full transition-all duration-300 h-9 w-9 mr-0.5 shrink-0
+                        ${newMessage.trim()
+							? "bg-brand-primary hover:bg-brand-primary/90 text-white shadow-lg hover:scale-105"
+							: "bg-background-base/50 text-text-secondary cursor-not-allowed"}
+                    `}
 				>
-					<Send className='size-5' />
+					<Send className='size-4' />
 				</Button>
 			</div>
 		</div>

@@ -29,8 +29,8 @@ const ActivitySidebar = () => {
 	}, [user]);
 
 	return (
-		<div className='h-full bg-background-elevated border-l border-border-subtle flex flex-col'>
-			<div className='p-4 flex justify-between items-center border-b border-border-subtle'>
+		<div className='h-full bg-background-elevated/40 border-l border-white/5 flex flex-col backdrop-blur-md'>
+			<div className='p-4 flex justify-between items-center border-b border-white/5'>
 				<div className='flex items-center gap-3'>
 					<ListMusic className='size-6 text-text-primary' />
 					<h2 className='font-semibold text-text-primary text-xl'>Friend Activity</h2>
@@ -81,14 +81,14 @@ const ActivityItem = ({ activity }: { activity: Activity }) => {
 	}
 
 	return (
-		<div className='cursor-pointer hover:bg-background-highlight p-3 rounded-md transition-all group'>
+		<div className='cursor-pointer hover:bg-white/5 p-3 rounded-md transition-all group border border-transparent hover:border-white/5'>
 			<div className='flex items-start gap-3'>
 				<div className='relative'>
-					<Avatar className='size-10 border border-border-subtle'>
+					<Avatar className='size-10 border border-white/10'>
 						<AvatarImage src={actor.imageUrl} alt={actor.fullName} />
 						<AvatarFallback>{actor.fullName[0]}</AvatarFallback>
 					</Avatar>
-					<div className='absolute -bottom-1 -right-1 bg-background-elevated rounded-full p-0.5'>
+					<div className='absolute -bottom-1 -right-1 bg-background-elevated rounded-full p-0.5 border border-white/5'>
 						{icon}
 					</div>
 				</div>
@@ -117,18 +117,17 @@ const LoginPrompt = () => (
 	<div className='h-full flex flex-col items-center justify-center p-6 text-center space-y-4 '>
 		<div className='relative'>
 			<div
-				className='absolute -inset-1 bg-gradient-to-r  rounded-full blur-lg
-       '
+				className='absolute -inset-1 bg-gradient-to-r from-brand-primary to-brand-secondary rounded-full blur-lg opacity-40 animate-pulse'
 				aria-hidden='true'
 			/>
-			<div className='relative rounded-full p-4 overflow-hidden h-full bg-gradient-to-b from-gray-100 to-gray-500'>
-				<Heart className='size-8 text-purple-900 animate-pulse animate-infinite animate-alternate-reverse animate-fill-backwards' />
+			<div className='relative rounded-full p-4 overflow-hidden bg-background-elevated/80 border border-white/10'>
+				<Heart className='size-8 text-brand-primary animate-pulse' />
 			</div>
 		</div>
 
 		<div className='space-y-2 max-w-[250px]'>
-			<h3 className='text-lg font-semibold text-white'>WELCOME TO MELODYHUB</h3>
-			<p className='text-sm text-zinc-400'>Login to join your friends</p>
+			<h3 className='text-lg font-semibold text-white'>Join the Community</h3>
+			<p className='text-sm text-text-secondary'>Login to see what your friends are listening to.</p>
 		</div>
 	</div>
 );

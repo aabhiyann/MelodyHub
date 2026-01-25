@@ -3,7 +3,7 @@ import { useChatStore } from "@/stores/ChatStore";
 import { Message } from "@/types";
 import { useUser } from "@clerk/clerk-react";
 import { useEffect } from "react";
-import UsersList from "../components/UsersList";
+import FriendsList from "../components/FriendsList";
 import ChatHeader from "../components/ChatHeader";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -43,8 +43,8 @@ const ChatPage = () => {
 		<main className='h-full rounded-lg overflow-hidden bg-transparent'>
 			<Topbar />
 
-			<div className='grid md:grid-cols-[300px_1fr] grid-cols-[80px_1fr] h-[calc(100vh-180px)] rounded-xl overflow-hidden bg-gradient-to-b from-white/5 to-black/20 backdrop-blur-lg border border-white/5'>
-				<UsersList />
+			<div className='grid md:grid-cols-[300px_1fr] grid-cols-[80px_1fr] h-[calc(100vh-180px)] rounded-xl overflow-hidden bg-gradient-to-b from-background-elevated/40 to-background-base/20 backdrop-blur-lg border border-white/5'>
+				<FriendsList />
 
 				{/* chat message */}
 				<div className='flex flex-col h-full bg-white/[0.02] backdrop-blur-md relative'>
@@ -59,6 +59,11 @@ const ChatPage = () => {
 										const isMyMessage = message.senderId === user?.id;
 										const previousMessage = messages[index - 1];
 										const isSameSender = previousMessage?.senderId === message.senderId;
+										// Group messages under same sender if < 5 mins apart
+										const isSequential = isSameSender && (
+											new Date(message.createdAt).getTime() - new Date(previousMessage.createdAt).getTime() < 5 * 60 * 1000
+										);
+
 										const showDate = !previousMessage ||
 											new Date(message.createdAt).toDateString() !== new Date(previousMessage.createdAt).toDateString();
 
@@ -66,44 +71,47 @@ const ChatPage = () => {
 											<div key={message._id}>
 												{showDate && (
 													<div className="flex justify-center my-6">
-														<span className="text-[10px] uppercase tracking-wider text-zinc-400 font-medium bg-white/5 px-3 py-1 rounded-full border border-white/5">
+														<span className="text-[10px] uppercase tracking-wider text-zinc-400 font-medium bg-white/5 px-3 py-1 rounded-full border border-white/5 backdrop-blur-sm">
 															{formatDate(message.createdAt)}
 														</span>
 													</div>
 												)}
 
 												<motion.div
-													initial={{ opacity: 0, y: 10, scale: 0.95 }}
-													animate={{ opacity: 1, y: 0, scale: 1 }}
-													transition={{ type: "spring", stiffness: 260, damping: 20, delay: index * 0.05 }}
-													className={`flex items-end gap-3 ${isMyMessage ? "flex-row-reverse" : ""} ${isSameSender ? "mt-[2px]" : "mt-4"}`}
+													initial={{ opacity: 0, scale: 0.9, y: 10 }}
+													animate={{ opacity: 1, scale: 1, y: 0 }}
+													transition={{ type: "spring", stiffness: 400, damping: 25 }}
+													className={`flex items-end gap-2 mb-1 ${isMyMessage ? "justify-end" : "justify-start"}`}
 												>
-													{/* Avatar only for first message of group */}
-													<div className="size-8 flex-shrink-0">
-														{!isSameSender && !isMyMessage && (
-															<Avatar className='size-8 border border-white/10 shadow-sm'>
+													{/* Avatar showing/hiding based on sequence */}
+													<div className={`size-7 flex-shrink-0 ${isMyMessage ? 'order-2' : 'order-1'}`}>
+														{!isMyMessage && !isSequential && (
+															<Avatar className='size-7 border border-white/10 shadow-sm ring-1 ring-white/5'>
 																<AvatarImage
 																	src={selectedUser.imageUrl}
+																	className="object-cover"
 																/>
 																<AvatarFallback>{selectedUser.fullName[0]}</AvatarFallback>
 															</Avatar>
 														)}
-														{/* Spacer for alignment if no avatar */}
-														{isSameSender && !isMyMessage && <div className="w-8" />}
 													</div>
 
-													<div
-														className={`rounded-2xl p-3.5 max-w-[70%] shadow-sm relative group
-                                                            ${isMyMessage
-																? "bg-gradient-to-br from-brand-primary to-emerald-600 text-white rounded-br-none ml-12 border border-white/10"
-																: "bg-white/10 text-zinc-100 rounded-bl-none mr-12 border border-white/5"
-															}
-                                                            ${isSameSender && isMyMessage ? "rounded-tr-md" : ""}
-                                                            ${isSameSender && !isMyMessage ? "rounded-tl-md" : ""}
-                                                        `}
-													>
-														<p className='text-[14px] leading-relaxed tracking-wide font-normal'>{message.content}</p>
-														<span className={`text-[9px] mt-1 block text-right opacity-0 group-hover:opacity-100 transition-opacity ${isMyMessage ? 'text-white/70' : 'text-zinc-400'}`}>
+													{/* Message Bubble */}
+													<div className={`relative max-w-[70%] group ${isMyMessage ? 'order-1' : 'order-2'}`}>
+														<div
+															className={`px-4 py-2 text-[15px] leading-relaxed shadow-sm
+                                                                ${isMyMessage
+																	? "bg-brand-primary text-white rounded-2xl rounded-br-sm shadow-md"
+																	: "bg-background-elevated/80 text-text-primary rounded-2xl rounded-bl-sm border border-white/5 shadow-sm"
+																}
+                                                            `}
+														>
+															<p>{message.content}</p>
+														</div>
+
+														{/* Timestamp visible on hover, outside bubble */}
+														<span className={`text-[9px] text-zinc-500 absolute bottom-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 select-none pointer-events-none w-max
+															${isMyMessage ? "right-full mr-2" : "left-full ml-2"}`}>
 															{formatTime(message.createdAt)}
 														</span>
 													</div>
