@@ -1,13 +1,13 @@
 /**
- * ProfilePage - User profile with stats and settings
- * Features: Avatar, listening stats, account settings, sign out
+ * ProfilePage - User profile with real stats
+ * Features: Avatar, real listening stats from Analytics API
  */
 
 import { useState, useEffect } from 'react';
 import { useUser, useClerk } from '@clerk/clerk-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Topbar from '@/components/Topbar';
-import { LogOut, Music, Clock, Heart, Calendar, Settings } from 'lucide-react';
+import { LogOut, Music, PlayCircle, Heart, Calendar, Settings } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '@/lib/axios';
 import { User } from '@/types';
@@ -24,26 +24,43 @@ const ProfilePage = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
+    // Real Stats State
+    const [analyticsData, setAnalyticsData] = useState<any>(null);
+    const [playlistCount, setPlaylistCount] = useState(0);
+
     const isOwnProfile = !userId || (clerkUser && userId === clerkUser.id);
 
     useEffect(() => {
-        const fetchProfile = async () => {
+        const fetchProfileData = async () => {
             setIsLoading(true);
             try {
-                const endpoint = userId ? `/users/${userId}` : '/users/profile';
-                const response = await axiosInstance.get(endpoint);
-                setUserProfile(response.data.data);
+                // 1. Fetch User Profile
+                const profileEndpoint = userId ? `/users/${userId}` : '/users/profile';
+                const profileRes = await axiosInstance.get(profileEndpoint);
+                setUserProfile(profileRes.data.data);
+
+                // 2. Fetch User Stats (Only if own profile for now, or if endpoint allows public stats)
+                // Assuming /analytics/user-preferences is private to the user
+                if (isOwnProfile) {
+                    const [analyticsRes, playlistRes] = await Promise.all([
+                        axiosInstance.get('/analytics/user-preferences'),
+                        axiosInstance.get('/social/playlists')
+                    ]);
+
+                    setAnalyticsData(analyticsRes.data.data);
+                    setPlaylistCount(playlistRes.data.data?.length || 0);
+                }
             } catch (error) {
-                console.error('Failed to fetch profile:', error);
+                console.error('Failed to fetch profile data:', error);
             } finally {
                 setIsLoading(false);
             }
         };
 
         if (clerkUser) {
-            fetchProfile();
+            fetchProfileData();
         }
-    }, [clerkUser, userId]);
+    }, [clerkUser, userId, isOwnProfile]);
 
     const handleSignOut = async () => {
         await signOut();
@@ -60,12 +77,32 @@ const ProfilePage = () => {
         imageUrl: clerkUser.imageUrl,
     };
 
-    // Mock stats - replace with real data from your backend
+    // Real Stats
     const stats = [
-        { label: 'Total Listening Time', value: '124 hours', icon: Clock, color: 'text-blue-400' },
-        { label: 'Favorite Songs', value: '47 tracks', icon: Heart, color: 'text-pink-400' },
-        { label: 'Playlists Created', value: '8 playlists', icon: Music, color: 'text-purple-400' },
-        { label: 'Member Since', value: clerkUser.createdAt ? new Date(clerkUser.createdAt).toLocaleDateString() : '2026', icon: Calendar, color: 'text-green-400' },
+        {
+            label: 'Total Plays',
+            value: analyticsData?.totalPlays?.toString() || '0',
+            icon: PlayCircle,
+            color: 'text-blue-400'
+        },
+        {
+            label: 'Liked Songs',
+            value: analyticsData?.likedSongsCount?.toString() || '0',
+            icon: Heart,
+            color: 'text-pink-400'
+        },
+        {
+            label: 'Playlists Created',
+            value: playlistCount.toString(),
+            icon: Music,
+            color: 'text-purple-400'
+        },
+        {
+            label: 'Member Since',
+            value: clerkUser.createdAt ? new Date(clerkUser.createdAt).toLocaleDateString() : '2024',
+            icon: Calendar,
+            color: 'text-green-400'
+        },
     ];
 
     return (
@@ -104,18 +141,6 @@ const ProfilePage = () => {
                         </div>
                     </div>
 
-                    {/* Top Artists (Placeholder) */}
-                    <div>
-                        <h2 className='text-2xl font-bold text-white mb-4'>Top Artists This Month</h2>
-                        <div className='text-center py-12 rounded-xl bg-white/5 border border-white/10'>
-                            <Music className='size-12 text-zinc-600 mx-auto mb-4' />
-                            <p className='text-zinc-400 text-lg'>Coming Soon!</p>
-                            <p className='text-zinc-500 text-sm mt-2'>
-                                We're working on personalized insights for you
-                            </p>
-                        </div>
-                    </div>
-
                     {/* Account Settings */}
                     {isOwnProfile && (
                         <div>
@@ -150,18 +175,6 @@ const ProfilePage = () => {
                                         <div>
                                             <p className='font-semibold text-white'>Notifications</p>
                                             <p className='text-sm text-zinc-400'>Manage your notification preferences</p>
-                                        </div>
-                                    </div>
-                                </button>
-
-                                <button className='w-full flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-left group'>
-                                    <div className='flex items-center gap-3'>
-                                        <div className='p-2 rounded-lg bg-white/10 group-hover:bg-white/20 transition-colors'>
-                                            <Settings className='size-5 text-zinc-400' />
-                                        </div>
-                                        <div>
-                                            <p className='font-semibold text-white'>Privacy</p>
-                                            <p className='text-sm text-zinc-400'>Control your data and visibility</p>
                                         </div>
                                     </div>
                                 </button>
