@@ -44,15 +44,15 @@ const FriendsList = () => {
 
     return (
         <div className="border-r border-white/5 flex flex-col h-full bg-background-elevated/40 backdrop-blur-md">
-            <div className="p-4 border-b border-white/5">
+            <div className="p-4 border-b border-white/5 flex-shrink-0">
                 <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
+                    <h2 className="text-xl font-bold bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">
                         Social
                     </h2>
                 </div>
 
-                <Tabs defaultValue="friends" className="w-full">
-                    <TabsList className="grid w-full grid-cols-2 bg-background-base/50 mb-4 h-10 p-1">
+                <Tabs defaultValue="friends" className="w-full flex flex-col h-full">
+                    <TabsList className="grid w-full grid-cols-2 bg-background-base/50 mb-4 h-10 p-1 flex-shrink-0">
                         <TabsTrigger
                             value="friends"
                             className="data-[state=active]:bg-white/10 data-[state=active]:text-white text-text-secondary rounded-md transition-all text-xs font-medium uppercase tracking-wide"
@@ -67,10 +67,10 @@ const FriendsList = () => {
                         </TabsTrigger>
                     </TabsList>
 
-                    <TabsContent value="friends" className="mt-0">
+                    <TabsContent value="friends" className="mt-0 flex-1 min-h-0 flex flex-col data-[state=inactive]:hidden">
                         {/* Friend Requests Section */}
                         {friendRequests.length > 0 && (
-                            <div className="mb-4">
+                            <div className="mb-4 flex-shrink-0">
                                 <h3 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2 px-1">Requests</h3>
                                 <div className="space-y-2">
                                     {friendRequests.map((req: any) => (
@@ -96,8 +96,8 @@ const FriendsList = () => {
                             </div>
                         )}
 
-                        <ScrollArea className="h-[calc(100vh-280px)]">
-                            <div className="space-y-2 pr-4">
+                        <ScrollArea className="flex-1 -mr-4 pr-4">
+                            <div className="space-y-2 pb-4">
                                 {friends.length === 0 ? (
                                     <div className="text-center py-8 text-text-secondary text-sm">
                                         No friends yet. <br /> Go to 'Find' to verify connecting with people.
@@ -143,25 +143,25 @@ const FriendsList = () => {
                         </ScrollArea>
                     </TabsContent>
 
-                    <TabsContent value="find" className="mt-0">
-                        <div className="flex gap-2 mb-4">
+                    <TabsContent value="find" className="mt-0 flex-1 min-h-0 flex flex-col data-[state=inactive]:hidden">
+                        <div className="flex gap-2 mb-4 flex-shrink-0">
                             <div className="relative flex-1">
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-text-secondary" />
                                 <Input
                                     placeholder="Search users..."
-                                    className="bg-background-base/50 border-white/10 pl-9 focus-visible:ring-brand-primary/50 transition-shadow h-9"
+                                    className="bg-background-base/50 border-white/10 pl-9 focus-visible:ring-brand-primary/50 transition-shadow h-9 rounded-full"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                                 />
                             </div>
-                            <Button size="sm" variant="secondary" onClick={handleSearch} className="h-9 px-3 bg-white/10 hover:bg-white/20 border border-white/5 text-text-primary">
+                            <Button size="sm" variant="secondary" onClick={handleSearch} className="h-9 px-3 bg-white/10 hover:bg-white/20 border border-white/5 text-text-primary rounded-full">
                                 Find
                             </Button>
                         </div>
 
-                        <ScrollArea className="h-[calc(100vh-320px)]">
-                            <div className="space-y-2 pr-4">
+                        <ScrollArea className="flex-1 -mr-4 pr-4">
+                            <div className="space-y-2 pb-4">
                                 {isLoading ? (
                                     <div className="text-center py-4 text-text-secondary">Loading...</div>
                                 ) : filteredSearch.map((user) => (

@@ -42,7 +42,7 @@ const HomePage = () => {
 		<main className='rounded-md overflow-hidden h-full bg-transparent flex'>
 			<div className="flex-1 flex flex-col overflow-hidden">
 				<Topbar />
-				<ScrollArea className='flex-1 h-[calc(100vh-180px)]'>
+				<ScrollArea className='flex-1 h-full'>
 					<div className='p-6 space-y-12 min-h-full pb-24 max-w-full overflow-x-hidden'>
 						{/* Welcome Header with AI Playlist Button */}
 						<div className="flex items-center justify-between gap-4">
@@ -64,7 +64,7 @@ const HomePage = () => {
 						</div>
 
 						{/* Featured / Trending Section */}
-						<div className="w-full" style={{ maxWidth: '100vw', overflow: 'hidden' }}>
+						<div className="w-full overflow-hidden">
 							<HorizontalScrollSection title="Trending Now" subtitle="The hottest tracks on MelodyHub">
 								{isLoading ? (
 									Array(5).fill(0).map((_, i) => <MusicCardSkeleton key={i} />)

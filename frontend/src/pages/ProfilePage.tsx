@@ -126,13 +126,13 @@ const ProfilePage = () => {
                                 return (
                                     <div
                                         key={stat.label}
-                                        className='p-6 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors'
+                                        className='p-6 rounded-xl bg-background-elevated/20 border border-white/10 hover:bg-white/10 transition-colors'
                                     >
                                         <div className='flex items-center gap-3 mb-3'>
                                             <div className='p-2 rounded-lg bg-white/10'>
                                                 <Icon className={`size-5 ${stat.color}`} />
                                             </div>
-                                            <p className='text-sm text-zinc-400'>{stat.label}</p>
+                                            <p className='text-sm text-text-secondary'>{stat.label}</p>
                                         </div>
                                         <p className='text-2xl font-bold text-white'>{stat.value}</p>
                                     </div>
@@ -155,7 +155,7 @@ const ProfilePage = () => {
                                 </button>
                             </div>
                             <div className='space-y-3'>
-                                <button className='w-full flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-left group'>
+                                <button className='w-full flex items-center justify-between p-4 rounded-xl bg-background-elevated/20 border border-white/10 hover:bg-white/10 transition-colors text-left group'>
                                     <div className='flex items-center gap-3'>
                                         <div className='p-2 rounded-lg bg-white/10 group-hover:bg-white/20 transition-colors'>
                                             <Settings className='size-5 text-zinc-400' />

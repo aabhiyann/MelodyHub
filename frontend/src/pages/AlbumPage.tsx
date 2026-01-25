@@ -47,7 +47,7 @@ const AlbumPage = () => {
 				<div className='relative min-h-full'>
 					{/* bg gradient - Reduced for cleaner glass look */}
 					<div
-						className='absolute inset-0 bg-gradient-to-b from-[#5038a0]/30 via-transparent to-transparent pointer-events-none'
+						className='absolute inset-0 bg-gradient-to-b from-brand-primary/20 via-transparent to-transparent pointer-events-none'
 						aria-hidden='true'
 					/>
 
@@ -60,12 +60,12 @@ const AlbumPage = () => {
 								className='w-[240px] h-[240px] shadow-2xl rounded-lg ring-1 ring-white/10'
 							/>
 							<div className='flex flex-col justify-end'>
-								<p className='text-sm font-medium text-zinc-400 uppercase tracking-wider'>Album</p>
+								<p className='text-sm font-medium text-text-secondary uppercase tracking-wider'>Album</p>
 								<h1 className='text-5xl md:text-7xl font-bold my-4 text-white tracking-tight'>{currentAlbum?.title}</h1>
-								<div className='flex items-center gap-2 text-sm text-zinc-300'>
+								<div className='flex items-center gap-2 text-sm text-text-secondary'>
 									<span className='font-medium text-white'>{currentAlbum?.artist}</span>
-									<span className="flex items-center text-zinc-500"><Disc className="w-3 h-3 mx-2" /> {currentAlbum?.songs.length} songs</span>
-									<span className="flex items-center text-zinc-500"><span className="w-1 h-1 rounded-full bg-zinc-600 mx-2" /> {currentAlbum?.releaseYear}</span>
+									<span className="flex items-center text-text-secondary"><Disc className="w-3 h-3 mx-2" /> {currentAlbum?.songs.length} songs</span>
+									<span className="flex items-center text-text-secondary"><span className="w-1 h-1 rounded-full bg-zinc-600 mx-2" /> {currentAlbum?.releaseYear}</span>
 								</div>
 							</div>
 						</div>
@@ -86,7 +86,7 @@ const AlbumPage = () => {
 						</div>
 
 						{/* Table Section */}
-						<div className='bg-black/20 backdrop-blur-sm'>
+						<div className='bg-background-elevated/20 backdrop-blur-sm'>
 							{/* table header */}
 							<div
 								className='grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-10 py-2 text-sm 

@@ -36,8 +36,8 @@ const MessageInput = () => {
 	};
 
 	return (
-		<div className='p-4 mt-auto border-t border-white/5 bg-transparent relative z-20'>
-			<div className='flex items-center gap-2 bg-background-elevated/40 backdrop-blur-xl border border-white/10 rounded-3xl p-1.5 shadow-xl ring-1 ring-white/5'>
+		<div className='p-4 border-t border-white/5 bg-background-elevated/40 backdrop-blur-md'>
+			<div className='flex items-center gap-2 bg-background-base/50 backdrop-blur-xl border border-white/10 rounded-3xl p-1.5 shadow-sm ring-1 ring-white/5 transition-all focus-within:ring-brand-primary/50 focus-within:border-brand-primary/50'>
 				<Textarea
 					placeholder='Type a message...'
 					value={newMessage}
@@ -54,7 +54,7 @@ const MessageInput = () => {
                         rounded-full transition-all duration-300 h-9 w-9 mr-0.5 shrink-0
                         ${newMessage.trim()
 							? "bg-brand-primary hover:bg-brand-primary/90 text-white shadow-lg hover:scale-105"
-							: "bg-background-base/50 text-text-secondary cursor-not-allowed"}
+							: "bg-background-elevated text-text-disabled cursor-not-allowed"}
                     `}
 				>
 					<Send className='size-4' />
