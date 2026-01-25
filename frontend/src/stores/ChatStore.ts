@@ -39,7 +39,7 @@ interface ChatStore {
 const BASE_URL = import.meta.env.VITE_API_URL?.replace("/api", "") || (import.meta.env.MODE === "development" ? "http://localhost:5001" : "/");
 
 // Map to store timeouts for clearing typing status
-const typingTimeouts = new Map<string, NodeJS.Timeout>();
+const typingTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
 
 export const useChatStore = create<ChatStore>((set, get) => ({
 	messages: [],

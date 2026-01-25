@@ -93,7 +93,7 @@ const HomePage = () => {
 						{/* Made For You Section (Grid Layout as requested) */}
 						<div>
 							<h2 className="text-2xl font-bold text-white tracking-tight mb-6">Made For You</h2>
-							<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+							<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
 								{isLoading ? (
 									Array(5).fill(0).map((_, i) => <MusicCardSkeleton key={i} />)
 								) : (

@@ -85,7 +85,7 @@ const FriendsList = () => {
                                             <Button
                                                 size="icon"
                                                 variant="ghost"
-                                                className="size-7 text-emerald-500 hover:text-emerald-400 hover:bg-emerald-500/10 rounded-full"
+                                                className="size-7 text-success hover:text-success/80 hover:bg-success/10 rounded-full"
                                                 onClick={() => acceptFriendRequest(req._id)}
                                             >
                                                 <Check className="size-4" />
@@ -122,7 +122,7 @@ const FriendsList = () => {
                                                     <AvatarFallback>{friend.fullName[0]}</AvatarFallback>
                                                 </Avatar>
                                                 {onlineUsers.has(friend.clerkId) && (
-                                                    <span className="absolute bottom-0 right-0 size-3 bg-emerald-500 rounded-full ring-2 ring-background-elevated shadow-sm" />
+                                                    <span className="absolute bottom-0 right-0 size-3 bg-success rounded-full ring-2 ring-background-elevated shadow-sm" />
                                                 )}
                                             </div>
 

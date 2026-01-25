@@ -3,12 +3,13 @@
  * Multiple variants for different contexts
  */
 
-import { motion } from 'framer-motion';
+import { motion, HTMLMotionProps } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 
-interface GlassmorphicButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface GlassmorphicButtonProps extends HTMLMotionProps<"button"> {
+    children?: React.ReactNode;
     variant?: 'primary' | 'secondary' | 'glass' | 'ghost';
     size?: 'sm' | 'md' | 'lg';
     loading?: boolean;

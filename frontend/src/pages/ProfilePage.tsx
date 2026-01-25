@@ -22,7 +22,7 @@ const ProfilePage = () => {
 
     const [userProfile, setUserProfile] = useState<User | null>(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+    // const [isLoading, setIsLoading] = useState(true); // Removed unused state
 
     // Real Stats State
     const [analyticsData, setAnalyticsData] = useState<any>(null);
@@ -32,7 +32,7 @@ const ProfilePage = () => {
 
     useEffect(() => {
         const fetchProfileData = async () => {
-            setIsLoading(true);
+            // setIsLoading(true);
             try {
                 // 1. Fetch User Profile
                 const profileEndpoint = userId ? `/users/${userId}` : '/users/profile';
@@ -53,7 +53,7 @@ const ProfilePage = () => {
             } catch (error) {
                 console.error('Failed to fetch profile data:', error);
             } finally {
-                setIsLoading(false);
+                // setIsLoading(false);
             }
         };
 

@@ -150,7 +150,7 @@ const NoConversationPlaceholder = () => (
 
 		<div className='text-center '>
 			<h3 className='text-white text-2xl font-bold mb-2 tracking-tight'>Happy Chatting</h3>
-			<p className='text-zinc-400 text-base max-w-xs'>Select a friend from the sidebar to start a conversation</p>
+			<p className='text-text-secondary text-base max-w-xs'>Select a friend from the sidebar to start a conversation</p>
 		</div>
 	</div>
 );
