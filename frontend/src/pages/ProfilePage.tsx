@@ -119,17 +119,17 @@ const ProfilePage = () => {
 
                     {/* Listening Stats */}
                     <div>
-                        <h2 className='text-2xl font-bold text-white mb-4'>Your Stats</h2>
+                        <h2 className='text-2xl font-bold text-white mb-4 tracking-tight'>Your Stats</h2>
                         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
                             {stats.map((stat) => {
                                 const Icon = stat.icon;
                                 return (
                                     <div
                                         key={stat.label}
-                                        className='p-6 rounded-xl bg-background-elevated/20 border border-white/10 hover:bg-white/10 transition-colors'
+                                        className='p-6 rounded-xl bg-background-elevated/40 border border-white/5 hover:bg-background-elevated/60 transition-colors group'
                                     >
                                         <div className='flex items-center gap-3 mb-3'>
-                                            <div className='p-2 rounded-lg bg-white/10'>
+                                            <div className='p-2 rounded-lg bg-background-base/50 group-hover:scale-105 transition-transform'>
                                                 <Icon className={`size-5 ${stat.color}`} />
                                             </div>
                                             <p className='text-sm text-text-secondary'>{stat.label}</p>
@@ -145,36 +145,36 @@ const ProfilePage = () => {
                     {isOwnProfile && (
                         <div>
                             <div className='flex items-center justify-between mb-4'>
-                                <h2 className='text-2xl font-bold text-white'>Account Settings</h2>
+                                <h2 className='text-2xl font-bold text-white tracking-tight'>Account Settings</h2>
                                 <button
                                     onClick={handleSignOut}
-                                    className='flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 border border-red-500/20 hover:border-red-500/40 transition-all font-medium text-sm'
+                                    className='flex items-center gap-2 px-4 py-2 rounded-lg bg-error/10 hover:bg-error/20 text-error hover:text-red-300 border border-error/20 hover:border-error/40 transition-all font-medium text-sm'
                                 >
                                     <LogOut className='size-4' />
                                     <span>Sign Out</span>
                                 </button>
                             </div>
                             <div className='space-y-3'>
-                                <button className='w-full flex items-center justify-between p-4 rounded-xl bg-background-elevated/20 border border-white/10 hover:bg-white/10 transition-colors text-left group'>
+                                <button className='w-full flex items-center justify-between p-4 rounded-xl bg-background-elevated/40 border border-white/5 hover:bg-white/5 transition-colors text-left group'>
                                     <div className='flex items-center gap-3'>
-                                        <div className='p-2 rounded-lg bg-white/10 group-hover:bg-white/20 transition-colors'>
-                                            <Settings className='size-5 text-zinc-400' />
+                                        <div className='p-2 rounded-lg bg-background-base/50 group-hover:bg-white/10 transition-colors'>
+                                            <Settings className='size-5 text-text-secondary group-hover:text-text-primary transition-colors' />
                                         </div>
                                         <div>
                                             <p className='font-semibold text-white'>Playback Settings</p>
-                                            <p className='text-sm text-zinc-400'>Audio quality, volume normalization</p>
+                                            <p className='text-sm text-text-secondary'>Audio quality, volume normalization</p>
                                         </div>
                                     </div>
                                 </button>
 
-                                <button className='w-full flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-left group'>
+                                <button className='w-full flex items-center justify-between p-4 rounded-xl bg-background-elevated/40 border border-white/5 hover:bg-white/5 transition-colors text-left group'>
                                     <div className='flex items-center gap-3'>
-                                        <div className='p-2 rounded-lg bg-white/10 group-hover:bg-white/20 transition-colors'>
-                                            <Settings className='size-5 text-zinc-400' />
+                                        <div className='p-2 rounded-lg bg-background-base/50 group-hover:bg-white/10 transition-colors'>
+                                            <Settings className='size-5 text-text-secondary group-hover:text-text-primary transition-colors' />
                                         </div>
                                         <div>
                                             <p className='font-semibold text-white'>Notifications</p>
-                                            <p className='text-sm text-zinc-400'>Manage your notification preferences</p>
+                                            <p className='text-sm text-text-secondary'>Manage your notification preferences</p>
                                         </div>
                                     </div>
                                 </button>

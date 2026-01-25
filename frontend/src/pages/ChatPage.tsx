@@ -43,7 +43,7 @@ const ChatPage = () => {
 		<div className='h-full flex flex-col rounded-lg overflow-hidden bg-transparent'>
 			<Topbar />
 
-			<div className='grid md:grid-cols-[300px_1fr] grid-cols-[80px_1fr] flex-1 min-h-0 rounded-xl overflow-hidden bg-gradient-to-b from-background-elevated/40 to-background-base/20 backdrop-blur-lg border border-white/5'>
+			<div className='grid md:grid-cols-[300px_1fr] grid-cols-[80px_1fr] flex-1 min-h-0 rounded-xl overflow-hidden bg-background-elevated/40 backdrop-blur-lg border border-white/5'>
 				<FriendsList />
 
 				{/* chat message */}

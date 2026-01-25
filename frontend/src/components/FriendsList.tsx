@@ -74,7 +74,7 @@ const FriendsList = () => {
                                 <h3 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2 px-1">Requests</h3>
                                 <div className="space-y-2">
                                     {friendRequests.map((req: any) => (
-                                        <div key={req._id} className="flex items-center gap-3 p-2 rounded-lg bg-background-base/40 border border-white/5 shadow-sm">
+                                        <div key={req._id} className="flex items-center gap-3 p-2 rounded-lg bg-background-base/40 border border-white/5 shadow-sm hover:bg-white/5 transition-colors">
                                             <Avatar className="size-8 ring-1 ring-white/10">
                                                 <AvatarImage src={req.senderId.imageUrl} />
                                                 <AvatarFallback>{req.senderId.fullName[0]}</AvatarFallback>
@@ -109,10 +109,10 @@ const FriendsList = () => {
                                             onClick={() => setSelectedUser(friend)}
                                             className={`
                                                 flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200
-                                                group hover:bg-white/5 border border-transparent
+                                                group border border-transparent
                                                 ${selectedUser?.clerkId === friend.clerkId
-                                                    ? "bg-white/10 border-white/10 shadow-lg ring-1 ring-white/5"
-                                                    : "hover:border-white/5"
+                                                    ? "bg-white/10 border-white/10 shadow-lg ring-1 ring-white/5 backdrop-blur-md"
+                                                    : "hover:bg-white/5 hover:border-white/5"
                                                 }
                                             `}
                                         >

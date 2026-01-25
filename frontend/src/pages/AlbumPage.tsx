@@ -90,7 +90,7 @@ const AlbumPage = () => {
 							{/* table header */}
 							<div
 								className='grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-10 py-2 text-sm 
-            text-zinc-400 border-b border-white/5 uppercase tracking-wider'
+            text-text-secondary border-b border-white/5 uppercase tracking-wider'
 							>
 								<div>#</div>
 								<div>Title</div>
@@ -113,14 +113,14 @@ const AlbumPage = () => {
 												className={`grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-4 py-2 text-sm 
                        rounded-md group cursor-pointer transition-all duration-200 ease-out
                        hover:scale-[1.01] active:scale-[0.99]
-                       ${isCurrentSong ? "bg-brand-primary/10" : "hover:bg-white/5"}
+                       ${isCurrentSong ? "bg-brand-primary/10 ring-1 ring-brand-primary/20" : "hover:bg-white/5"}
                        `}
 											>
 												<div className='flex items-center justify-center'>
 													{isCurrentSong && isPlaying ? (
 														<Music className='size-4 text-brand-primary animate-pulse' />
 													) : (
-														<span className='group-hover:hidden text-zinc-400'>{index + 1}</span>
+														<span className='group-hover:hidden text-text-secondary'>{index + 1}</span>
 													)}
 													{!isCurrentSong && (
 														<Play className='h-4 w-4 hidden group-hover:block text-white' />
@@ -131,12 +131,12 @@ const AlbumPage = () => {
 													<img src={song.imageUrl} alt={song.title} className='size-10 rounded shadow' />
 
 													<div>
-														<div className={`font-medium ${isCurrentSong ? "text-brand-primary" : "text-white"}`}>{song.title}</div>
-														<div className="text-zinc-400">{song.artist}</div>
+														<div className={`font-medium ${isCurrentSong ? "text-brand-primary" : "text-text-primary"}`}>{song.title}</div>
+														<div className="text-text-secondary">{song.artist}</div>
 													</div>
 												</div>
-												<div className='flex items-center text-zinc-400'>{song.createdAt.split("T")[0]}</div>
-												<div className='flex items-center text-zinc-400'>{formatDuration(song.duration)}</div>
+												<div className='flex items-center text-text-secondary'>{song.createdAt.split("T")[0]}</div>
+												<div className='flex items-center text-text-secondary'>{formatDuration(song.duration)}</div>
 											</div>
 										);
 									})}

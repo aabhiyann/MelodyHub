@@ -47,10 +47,10 @@ const HomePage = () => {
 						{/* Welcome Header with AI Playlist Button */}
 						<div className="flex items-center justify-between gap-4">
 							<div className="space-y-1 flex-1">
-								<h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent tracking-tight">
+								<h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white to-text-secondary bg-clip-text text-transparent tracking-tight">
 									{getGreeting()}, {user?.firstName || "Music Lover"}
 								</h1>
-								<p className="text-zinc-400 text-lg">Let's find your vibe for today</p>
+								<p className="text-text-secondary text-lg">Let's find your vibe for today</p>
 							</div>
 
 							{/* AI Playlist Button */}
@@ -119,7 +119,7 @@ const HomePage = () => {
 								{['Pop', 'Rock', 'Jazz', 'Electronic', 'Classical', 'Hip Hop', 'Indie', 'Ambient'].map((genre) => (
 									<div
 										key={genre}
-										className="group relative h-32 rounded-xl overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+										className="group relative h-32 rounded-xl overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:ring-1 hover:ring-white/10"
 									>
 										{/* Gradient Background */}
 										<div className={`absolute inset-0 bg-gradient-to-br from-brand-primary/80 to-brand-secondary/80 opacity-60 transition-opacity group-hover:opacity-80`} />
