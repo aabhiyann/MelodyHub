@@ -23,7 +23,7 @@ interface ChatStore {
 	setSelectedUser: (user: User | null) => void;
 }
 
-const BASE_URL = import.meta.env.VITE_API_URL?.replace("/api", "") || (import.meta.env.MODE === "development" ? "http://localhost:5001" : "/");
+const BASE_URL = import.meta.env.VITE_API_URL?.replace("/api", "") || (import.meta.env.MODE === "development" ? "http://localhost:5000" : "/");
 
 export const useChatStore = create<ChatStore>((set, get) => ({
 	messages: [],
@@ -42,6 +42,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 			set({ users: response.data, isLoading: false });
 		} catch (error) {
 			console.error("Failed to fetch users:", error);
+			import("react-hot-toast").then(({ toast }) => toast.error("Failed to load friends"));
 			set({ isLoading: false });
 		}
 	},
@@ -71,6 +72,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
 		socket.on("connect", () => {
 			console.log("Socket connected", socket.id);
+			socket.emit("user_connected", userId);
 		});
 
 		socket.on("receive_message", (message) => {

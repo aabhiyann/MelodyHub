@@ -24,61 +24,68 @@ const UsersList = () => {
 					{isLoading ? (
 						Array(5).fill(0).map((_, i) => <UsersListSkeleton key={i} />)
 					) : (
-						users.map((user) => {
-							const isOnline = onlineUsers.has(user.clerkId);
-							const activity = activities.get(user.clerkId);
-							const isSelected = selectedUser?.clerkId === user.clerkId;
+						users.length === 0 ? (
+							<div className="text-zinc-500 text-center p-4 text-sm mt-4">
+								<p className="font-medium text-white mb-1">No friends found</p>
+								<p className="text-xs">Sign up with another account to test chat!</p>
+							</div>
+						) : (
+							users.map((user) => {
+								const isOnline = onlineUsers.has(user.clerkId);
+								const activity = activities.get(user.clerkId);
+								const isSelected = selectedUser?.clerkId === user.clerkId;
 
-							return (
-								<div
-									key={user._id}
-									onClick={() => setSelectedUser(user)}
-									className={`
+								return (
+									<div
+										key={user._id}
+										onClick={() => setSelectedUser(user)}
+										className={`
                                         group flex items-center gap-4 p-3 rounded-2xl cursor-pointer transition-all duration-300
                                         ${isSelected
-											? "bg-white/10 border-white/10 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] backdrop-blur-md border"
-											: "hover:bg-white/5 border border-transparent"}
+												? "bg-white/10 border-white/10 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] backdrop-blur-md border"
+												: "hover:bg-white/5 border border-transparent"}
                                     `}
-								>
-									<div className="relative shrink-0">
-										<Avatar className={`size-12 border-2 transition-transform duration-300 group-hover:scale-105 ${isSelected ? 'border-brand-primary' : 'border-transparent group-hover:border-white/20'}`}>
-											<AvatarImage src={user.imageUrl} className="object-cover" />
-											<AvatarFallback className="bg-zinc-800 text-white font-medium">
-												{user.fullName[0]}
-											</AvatarFallback>
-										</Avatar>
+									>
+										<div className="relative shrink-0">
+											<Avatar className={`size-12 border-2 transition-transform duration-300 group-hover:scale-105 ${isSelected ? 'border-brand-primary' : 'border-transparent group-hover:border-white/20'}`}>
+												<AvatarImage src={user.imageUrl} className="object-cover" />
+												<AvatarFallback className="bg-zinc-800 text-white font-medium">
+													{user.fullName[0]}
+												</AvatarFallback>
+											</Avatar>
 
-										<span className={`
+											<span className={`
                                             absolute bottom-0 right-0 w-3.5 h-3.5 border-[3px] border-zinc-900 rounded-full transition-all duration-300
                                             ${isOnline
-												? "bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)] scale-100"
-												: "bg-zinc-500 scale-0 group-hover:scale-100"}
+													? "bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)] scale-100"
+													: "bg-zinc-500 scale-0 group-hover:scale-100"}
                                         `} />
-									</div>
-
-									<div className='flex-1 min-w-0 hidden md:block space-y-0.5'>
-										<div className="flex items-center justify-between">
-											<span className={`font-medium truncate text-sm transition-colors duration-200 ${isSelected ? "text-white" : "text-zinc-200 group-hover:text-white"}`}>
-												{user.fullName}
-											</span>
-											{isOnline && (
-												<span className="text-[10px] text-emerald-400 font-medium tracking-wide mx-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 uppercase">
-													Live
-												</span>
-											)}
 										</div>
-										<p className={`text-xs truncate transition-colors duration-200 font-medium ${isSelected ? "text-zinc-300" : "text-zinc-500 group-hover:text-zinc-400"}`}>
-											{activity ? (
-												<span className="flex items-center gap-1 text-brand-primary">
-													<span className="w-1 h-1 rounded-full bg-brand-primary animate-pulse" />
-													{activity}
+
+										<div className='flex-1 min-w-0 hidden md:block space-y-0.5'>
+											<div className="flex items-center justify-between">
+												<span className={`font-medium truncate text-sm transition-colors duration-200 ${isSelected ? "text-white" : "text-zinc-200 group-hover:text-white"}`}>
+													{user.fullName}
 												</span>
-											) : (isOnline ? "Idle" : "Offline")}
-										</p>
+												{isOnline && (
+													<span className="text-[10px] text-emerald-400 font-medium tracking-wide mx-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 uppercase">
+														Live
+													</span>
+												)}
+											</div>
+											<p className={`text-xs truncate transition-colors duration-200 font-medium ${isSelected ? "text-zinc-300" : "text-zinc-500 group-hover:text-zinc-400"}`}>
+												{activity ? (
+													<span className="flex items-center gap-1 text-brand-primary">
+														<span className="w-1 h-1 rounded-full bg-brand-primary animate-pulse" />
+														{activity}
+													</span>
+												) : (isOnline ? "Idle" : "Offline")}
+											</p>
+										</div>
 									</div>
-								</div>
-							);
-						})
+								);
+							})
+						)
 					)}
 				</div>
 			</ScrollArea>
