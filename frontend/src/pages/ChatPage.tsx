@@ -139,7 +139,7 @@ const ChatPage = () => {
 export default ChatPage;
 
 const NoConversationPlaceholder = () => (
-	<div className='flex flex-col items-center justify-center h-full space-y-6 rounded-md overflow-hidden bg-gradient-to-b from-gray-300 to-gray-500'>
+	<div className='flex flex-col items-center justify-center h-full space-y-6 rounded-3xl overflow-hidden bg-white/5 border border-white/5 backdrop-blur-3xl shadow-2xl'>
 		{/* Melody chatting mascot */}
 		<MascotImage
 			state='chatting'
@@ -148,8 +148,8 @@ const NoConversationPlaceholder = () => (
 		/>
 
 		<div className='text-center '>
-			<h3 className='text-zinc-900 text-lg font-medium mb-1'>Happy Chatting</h3>
-			<p className='text-zinc-900 text-sm'>Select a friend to open Chat</p>
+			<h3 className='text-white text-2xl font-bold mb-2 tracking-tight'>Happy Chatting</h3>
+			<p className='text-zinc-400 text-base max-w-xs'>Select a friend from the sidebar to start a conversation</p>
 		</div>
 	</div>
 );
