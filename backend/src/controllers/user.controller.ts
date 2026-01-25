@@ -76,9 +76,9 @@ export class UserController extends BaseController {
       const currentUserId = (req as AuthenticatedRequest).auth?.userId; // Optional auth for public view
 
       // Target User
-      let user = await this.userService.getByClerkId(id);
+      let user = await this.userService.getByClerkId(id) as any;
       if (!user && id.match(/^[0-9a-fA-F]{24}$/)) {
-        user = await this.userService.findById(id);
+        user = await this.userService.findById(id) as any;
       }
       if (!user) return res.status(404).json({ success: false, message: "User not found" });
 
@@ -111,12 +111,13 @@ export class UserController extends BaseController {
     try {
       const followerId = (req as AuthenticatedRequest).auth.userId;
       const { id: followingId } = req.params;
+      const followingIdStr = followingId as string;
 
       const follower = await this.userService.getByClerkId(followerId);
-      let following = await this.userService.getByClerkId(followingId);
+      let following = await this.userService.getByClerkId(followingIdStr) as any;
 
-      if (!following && followingId.match(/^[0-9a-fA-F]{24}$/)) {
-        following = await this.userService.findById(followingId);
+      if (!following && followingIdStr.match(/^[0-9a-fA-F]{24}$/)) {
+        following = await this.userService.findById(followingIdStr) as any;
       }
 
       if (!follower || !following) {
@@ -142,12 +143,13 @@ export class UserController extends BaseController {
     try {
       const followerId = (req as AuthenticatedRequest).auth.userId;
       const { id: followingId } = req.params;
+      const followingIdStr = followingId as string;
 
       const follower = await this.userService.getByClerkId(followerId);
-      let following = await this.userService.getByClerkId(followingId);
+      let following = await this.userService.getByClerkId(followingIdStr) as any;
 
-      if (!following && followingId.match(/^[0-9a-fA-F]{24}$/)) {
-        following = await this.userService.findById(followingId);
+      if (!following && followingIdStr.match(/^[0-9a-fA-F]{24}$/)) {
+        following = await this.userService.findById(followingIdStr) as any;
       }
 
       if (!follower || !following) {

@@ -34,7 +34,7 @@ export const createPlaylist = async (req: Request, res: Response) => {
         await playlist.save();
 
         // Create activity
-        await activityService.logActivity(userId, ActivityType.CREATE_PLAYLIST, playlist._id.toString());
+        await activityService.logActivity(userId, ActivityType.CREATE_PLAYLIST, (playlist as any)._id.toString());
 
         return res.status(201).json({
             success: true,

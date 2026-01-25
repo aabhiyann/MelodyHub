@@ -12,6 +12,23 @@ interface AuthRequest extends Request {
 
 export const protectRoute = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 	const authReq = req as AuthRequest;
+
+	// Test environment bypass
+	if (process.env.NODE_ENV === 'test') {
+		// If mocked auth is injected by test framework logic, allow it.
+		// Or if we want to simulate a user via header (easier for integration tests)
+		if (req.headers['x-test-user-id']) {
+			authReq.auth = {
+				userId: req.headers['x-test-user-id'] as string,
+				sessionId: 'test-session',
+				getToken: async () => 'test-token',
+				claims: {}
+			};
+			next();
+			return;
+		}
+	}
+
 	if (!authReq.auth.userId) {
 		res.status(401).json({ message: "Unauthorized access" });
 		return;

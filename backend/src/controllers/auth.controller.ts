@@ -14,6 +14,11 @@ export class AuthController extends BaseController {
           fullName: `${firstName || ""} ${lastName || ""}`.trim(),
           imageUrl,
         });
+      } else {
+        // Update user info if existing
+        user.fullName = `${firstName || ""} ${lastName || ""}`.trim();
+        user.imageUrl = imageUrl;
+        await user.save();
       }
 
       this.handleSuccess(res, { success: true });

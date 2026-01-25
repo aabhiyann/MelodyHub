@@ -160,18 +160,23 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 	res.status(500).json({ message: process.env.NODE_ENV === "production" ? "Internal server error" : err.message });
 });
 
-httpServer.listen(PORT, async () => {
-	console.log("🚀 Server is running on port " + PORT);
+export { app };
 
-	// Initialize MongoDB
-	await connectDB();
+// Only start server if this file is run directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+	httpServer.listen(PORT, async () => {
+		console.log("🚀 Server is running on port " + PORT);
 
-	// Initialize Redis (optional - app works without it)
-	if (process.env.NODE_ENV === 'production' || process.env.REDIS_URL) {
-		await redisService.connect();
-	} else {
-		console.log('ℹ️  Redis disabled in development (set REDIS_URL to enable)');
-	}
+		// Initialize MongoDB
+		await connectDB();
 
-	console.log('📚 API Documentation: http://localhost:' + PORT + '/api-docs');
-});
+		// Initialize Redis (optional - app works without it)
+		if (process.env.NODE_ENV === 'production' || process.env.REDIS_URL) {
+			await redisService.connect();
+		} else {
+			console.log('ℹ️  Redis disabled in development (set REDIS_URL to enable)');
+		}
+
+		console.log('📚 API Documentation: http://localhost:' + PORT + '/api-docs');
+	});
+}
