@@ -1,7 +1,8 @@
-import { Play, MoreHorizontal, Plus, ListMusic, Heart } from "lucide-react";
+import { Play, MoreHorizontal, Plus, ListMusic } from "lucide-react";
 import { Song } from "@/types";
 import { useState, useEffect, useRef } from "react";
 import { LikeButton } from "@/components/LikeButton";
+import { AddToPlaylistDialog } from "@/components/AddToPlaylistDialog";
 
 interface MusicCardProps {
     song: Song;
@@ -128,10 +129,9 @@ const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
                         <Plus className="h-4 w-4" />
                         Add to Queue
                     </button>
-                    <button className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition-snap text-left">
-                        <Heart className="h-4 w-4" />
-                        Save to Favorites
-                    </button>
+
+                    <AddToPlaylistDialog songId={song._id} onClose={() => setShowMenu(false)} />
+
                     <button className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition-snap text-left">
                         <ListMusic className="h-4 w-4" />
                         Go to Artist
