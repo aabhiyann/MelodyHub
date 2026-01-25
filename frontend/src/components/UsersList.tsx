@@ -56,7 +56,7 @@ const UsersList = () => {
                                         `} />
 									</div>
 
-									<div className='flex-1 min-w-0 hidden lg:block space-y-0.5'>
+									<div className='flex-1 min-w-0 hidden md:block space-y-0.5'>
 										<div className="flex items-center justify-between">
 											<span className={`font-medium truncate text-sm transition-colors duration-200 ${isSelected ? "text-white" : "text-zinc-200 group-hover:text-white"}`}>
 												{user.fullName}
@@ -91,7 +91,7 @@ export default UsersList;
 const UsersListSkeleton = () => (
 	<div className='flex items-center gap-4 p-3 rounded-2xl animate-pulse skeleton-shimmer bg-white/5' data-testid="users-list-skeleton">
 		<div className='size-12 bg-white/10 rounded-full' />
-		<div className='flex-1 space-y-2 hidden lg:block'>
+		<div className='flex-1 space-y-2 hidden md:block'>
 			<div className='h-3 bg-white/10 rounded w-24' />
 			<div className='h-2 bg-white/10 rounded w-32' />
 		</div>
