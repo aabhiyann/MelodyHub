@@ -1,14 +1,11 @@
-import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { useMusicStore } from "@/stores/MusicStore";
 import { ListMusic, Plus } from "lucide-react";
 import { useState, useEffect } from "react";
 import { axiosInstance } from "@/lib/axios";
@@ -18,10 +15,17 @@ interface AddToPlaylistDialogProps {
     songId: string;
     onClose?: () => void;
     children?: React.ReactNode;
+    open?: boolean;
+    onOpenChange?: (open: boolean) => void;
 }
 
-export const AddToPlaylistDialog = ({ songId, onClose, children }: AddToPlaylistDialogProps) => {
-    const [open, setOpen] = useState(false);
+export const AddToPlaylistDialog = ({ songId, onClose, children, open: controlledOpen, onOpenChange: setControlledOpen }: AddToPlaylistDialogProps) => {
+    const [internalOpen, setInternalOpen] = useState(false);
+
+    // Derived state
+    const isControlled = controlledOpen !== undefined;
+    const open = isControlled ? controlledOpen : internalOpen;
+    const setOpen = isControlled ? setControlledOpen! : setInternalOpen;
     const [playlists, setPlaylists] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -59,14 +63,16 @@ export const AddToPlaylistDialog = ({ songId, onClose, children }: AddToPlaylist
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                {children || (
-                    <button className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition-snap text-left">
-                        <ListMusic className="h-4 w-4" />
-                        Add to Playlist
-                    </button>
-                )}
-            </DialogTrigger>
+            {!isControlled && (
+                <DialogTrigger asChild>
+                    {children || (
+                        <button className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition-snap text-left">
+                            <ListMusic className="h-4 w-4" />
+                            Add to Playlist
+                        </button>
+                    )}
+                </DialogTrigger>
+            )}
             <DialogContent className="sm:max-w-md bg-zinc-900 border-zinc-800 text-white">
                 <DialogHeader>
                     <DialogTitle>Add to Playlist</DialogTitle>

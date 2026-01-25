@@ -35,6 +35,8 @@ const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
         return () => observer.disconnect();
     }, []);
 
+    const [showPlaylistDialog, setShowPlaylistDialog] = useState(false);
+
     return (
         <div
             onClick={onClick}
@@ -130,7 +132,17 @@ const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
                         Add to Queue
                     </button>
 
-                    <AddToPlaylistDialog songId={song._id} onClose={() => setShowMenu(false)} />
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setShowPlaylistDialog(true);
+                            setShowMenu(false);
+                        }}
+                        className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition-snap text-left"
+                    >
+                        <ListMusic className="h-4 w-4" />
+                        Add to Playlist
+                    </button>
 
                     <button className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition-snap text-left">
                         <ListMusic className="h-4 w-4" />
@@ -138,6 +150,12 @@ const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
                     </button>
                 </div>
             )}
+
+            <AddToPlaylistDialog
+                songId={song._id}
+                open={showPlaylistDialog}
+                onOpenChange={setShowPlaylistDialog}
+            />
         </div>
     );
 };
