@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { LikeButton } from "@/components/LikeButton";
 import { AddToPlaylistDialog } from "@/components/AddToPlaylistDialog";
 import { OptimizedImage } from "@/components/OptimizedImage";
+import { LiquidGlassCard } from "@/components/ui/LiquidGlassCard";
 
 interface MusicCardProps {
     song: Song;
@@ -41,27 +42,31 @@ const MusicCard = memo(({ song, onClick, onPlayClick }: MusicCardProps) => {
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
             onTouchMove={handleTouchEnd}
-            className='group relative flex-shrink-0 cursor-pointer min-w-[160px] max-w-[220px]'
+            className='relative flex-shrink-0 min-w-[160px] max-w-[220px]'
             onMouseLeave={() => setShowMenu(false)}
         >
-            {/* Modern Card Container */}
-            <div className="relative bg-zinc-800/40 hover:bg-zinc-800/60 rounded-lg p-4 transition-smooth hover-scale-sm active-scale-xs">
+            {/* Modern Card Container using LiquidGlassCard */}
+            <LiquidGlassCard
+                className="p-4 h-full group"
+                hover={true}
+                variant="default"
+            >
                 {/* Image Container with Hover Effects */}
                 <div
-                    className="relative aspect-square overflow-hidden rounded-md mb-4 shadow-lg group-hover:shadow-card-hover transition-smooth"
+                    className="relative aspect-square overflow-hidden rounded-md mb-4 shadow-lg group-hover:shadow-card-hover transition-all duration-500 ease-out"
                 >
                     <OptimizedImage
                         src={song.imageUrl}
                         alt={song.title}
                         size="small"
-                        className="h-full w-full object-cover transition-slow group-hover:scale-105"
+                        className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                     />
 
                     {/* Subtle Gradient Overlay on Hover */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-smooth group-hover:opacity-100" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
                     {/* Like Button (Top Right) */}
-                    <div className="absolute top-2 right-2 z-20 opacity-0 translate-y-[-8px] group-hover:translate-y-0 group-hover:opacity-100 transition-smooth delay-75">
+                    <div className="absolute top-2 right-2 z-20 opacity-0 translate-y-[-8px] group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 delay-75 ease-out">
                         <div onClick={(e) => e.stopPropagation()}>
                             <LikeButton
                                 size={18}
@@ -82,10 +87,10 @@ const MusicCard = memo(({ song, onClick, onPlayClick }: MusicCardProps) => {
                     </div>
 
                     {/* Modern Play Button - MelodyHub Purple Brand */}
-                    <div className="absolute bottom-2 right-2 translate-y-2 opacity-0 transition-bounce group-hover:translate-y-0 group-hover:opacity-100 z-20">
+                    <div className="absolute bottom-2 right-2 translate-y-2 opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100 z-20">
                         <button
                             onClick={onPlayClick}
-                            className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-primary hover:bg-brand-primary/90 text-black shadow-lg hover:shadow-xl hover:shadow-brand-primary/50 transition-bounce hover-scale-md active-scale-sm"
+                            className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-primary hover:bg-brand-primary/90 text-white shadow-lg hover:shadow-xl hover:shadow-brand-primary/50 transition-all duration-300 hover:scale-110 active:scale-95"
                             aria-label={`Play ${song.title}`}
                         >
                             <Play className="h-5 w-5 fill-white ml-0.5" />
@@ -93,13 +98,13 @@ const MusicCard = memo(({ song, onClick, onPlayClick }: MusicCardProps) => {
                     </div>
 
                     {/* More Options Button - Minimalist */}
-                    <div className="absolute bottom-2 left-2 translate-y-2 opacity-0 transition-smooth group-hover:translate-y-0 group-hover:opacity-100 z-20 delay-75">
+                    <div className="absolute bottom-2 left-2 translate-y-2 opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100 z-20 delay-75">
                         <button
                             onClick={(e) => {
                                 e.stopPropagation();
                                 setShowMenu(!showMenu);
                             }}
-                            className="flex h-8 w-8 items-center justify-center rounded-full bg-black/40 backdrop-blur-md text-white/80 hover:text-white hover:bg-black/60 transition-snap hover:scale-110"
+                            className="flex h-8 w-8 items-center justify-center rounded-full bg-black/40 backdrop-blur-md text-white/80 hover:text-white hover:bg-black/60 transition-all duration-200 hover:scale-110"
                             aria-label="More options"
                         >
                             <MoreHorizontal className="h-4 w-4" />
@@ -107,20 +112,20 @@ const MusicCard = memo(({ song, onClick, onPlayClick }: MusicCardProps) => {
                     </div>
                 </div>
 
-                {/* Text Content - Improved Typography */}
+                {/* Text Content */}
                 <div className="space-y-1">
-                    <h3 className="text-sm font-semibold text-white line-clamp-1 tracking-tight group-hover:text-white transition-colors">
+                    <h3 className="text-sm font-semibold text-text-primary line-clamp-1 tracking-tight group-hover:text-brand-primary transition-colors">
                         {song.title}
                     </h3>
-                    <p className="text-xs text-zinc-400 line-clamp-1 leading-relaxed">
+                    <p className="text-xs text-text-secondary line-clamp-1 leading-relaxed">
                         {song.artist}
                     </p>
                 </div>
-            </div>
+            </LiquidGlassCard>
 
-            {/* Context Menu - Refined Design */}
+            {/* Context Menu - Refined with Glass Panel */}
             {showMenu && (
-                <div className="absolute top-[75%] right-2 z-50 w-48 rounded-lg border border-white/10 bg-zinc-900/98 backdrop-blur-xl p-1.5 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+                <div className="absolute top-[75%] right-2 z-50 w-48 rounded-xl glass-panel bg-surface-elevated/90 p-1.5 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
                     <button
                         onClick={(e) => {
                             e.stopPropagation();
@@ -129,7 +134,7 @@ const MusicCard = memo(({ song, onClick, onPlayClick }: MusicCardProps) => {
                             toast.success("Radio link copied!");
                             setShowMenu(false);
                         }}
-                        className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition-snap text-left"
+                        className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-text-secondary hover:bg-white/10 hover:text-text-primary transition-colors text-left"
                     >
                         <Share2 className="h-4 w-4" />
                         Copy Link
@@ -141,15 +146,15 @@ const MusicCard = memo(({ song, onClick, onPlayClick }: MusicCardProps) => {
                             navigate(`/radio/${song._id}`);
                             setShowMenu(false);
                         }}
-                        className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition-snap text-left"
+                        className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-text-secondary hover:bg-white/10 hover:text-text-primary transition-colors text-left"
                     >
                         <Radio className="h-4 w-4" />
                         Start Radio
                     </button>
 
-                    <div className="h-px bg-white/10 my-1" />
+                    <div className="h-px bg-white/10 my-1 mx-2" />
 
-                    <button className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition-snap text-left">
+                    <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-text-secondary hover:bg-white/10 hover:text-text-primary transition-colors text-left">
                         <Plus className="h-4 w-4" />
                         Add to Queue
                     </button>
@@ -160,13 +165,13 @@ const MusicCard = memo(({ song, onClick, onPlayClick }: MusicCardProps) => {
                             setShowPlaylistDialog(true);
                             setShowMenu(false);
                         }}
-                        className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition-snap text-left"
+                        className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-text-secondary hover:bg-white/10 hover:text-text-primary transition-colors text-left"
                     >
                         <ListMusic className="h-4 w-4" />
                         Add to Playlist
                     </button>
 
-                    <button className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition-snap text-left">
+                    <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-text-secondary hover:bg-white/10 hover:text-text-primary transition-colors text-left">
                         <ListMusic className="h-4 w-4" />
                         Go to Artist
                     </button>
