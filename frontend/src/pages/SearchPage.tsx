@@ -137,7 +137,7 @@ const SearchPage = () => {
                                 placeholder='What do you want to listen to?'
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className='w-full h-14 pl-12 pr-4 rounded-full bg-white/10 border-2 border-white/10 focus:border-white/30 text-white placeholder-zinc-400 text-base transition-all focus:ring-4 focus:ring-brand-primary/20 outline-none'
+                                className='w-full h-14 pl-12 pr-4 rounded-full bg-surface-elevated/50 backdrop-blur-md border border-white/10 focus:border-brand-primary/50 text-white placeholder-text-secondary text-base transition-all focus:ring-4 focus:ring-brand-primary/20 outline-none shadow-lg'
                                 autoFocus
                             />
                             {searching && (
@@ -177,7 +177,7 @@ const SearchPage = () => {
 
                     {/* Filter Bar */}
                     {searchQuery && (
-                        <div className='flex flex-wrap items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10'>
+                        <div className='flex flex-wrap items-center gap-3 p-4 rounded-xl glass-panel bg-surface-card/40'>
                             <button
                                 onClick={() => setShowFilters(!showFilters)}
                                 className='flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors'
@@ -295,9 +295,9 @@ const SearchPage = () => {
                                                         <button
                                                             key={artist}
                                                             onClick={() => setSearchQuery(artist)}
-                                                            className='group text-center'
+                                                            className='group relative p-4 rounded-xl bg-surface-card/40 hover:bg-surface-elevated/60 backdrop-blur-md border border-white/5 transition-all duration-300 hover:-translate-y-1 hover:border-white/10 hover:shadow-xl text-center'
                                                         >
-                                                            <div className='relative aspect-square mb-3 rounded-full overflow-hidden shadow-lg'>
+                                                            <div className='relative aspect-square mb-3 rounded-full overflow-hidden shadow-lg border border-white/5 group-hover:border-brand-primary/30 transition-colors'>
                                                                 {artistSong && (
                                                                     <img
                                                                         src={artistSong.imageUrl}
@@ -329,7 +329,7 @@ const SearchPage = () => {
                                                 {albumResults.slice(0, 12).map((album) => (
                                                     <div
                                                         key={album._id}
-                                                        className='group cursor-pointer'
+                                                        className='group relative p-4 rounded-xl bg-surface-card/40 hover:bg-surface-elevated/60 backdrop-blur-md border border-white/5 transition-all duration-300 hover:-translate-y-1 hover:border-white/10 hover:shadow-xl cursor-pointer'
                                                     >
                                                         <div className='relative aspect-square mb-3 rounded-lg overflow-hidden shadow-lg'>
                                                             <img
@@ -338,7 +338,7 @@ const SearchPage = () => {
                                                                 className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'
                                                             />
                                                         </div>
-                                                        <h3 className='font-semibold truncate text-sm'>
+                                                        <h3 className='font-semibold truncate text-sm text-text-primary group-hover:text-brand-primary transition-colors'>
                                                             {album.title}
                                                         </h3>
                                                         <p className='text-xs text-text-secondary truncate'>
