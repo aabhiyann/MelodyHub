@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useMascot } from "@/hooks/useMascot";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, Check } from "lucide-react";
-import { playSound } from "@/utils/audio"; // Hypothetical audio util
 
 interface OnboardingStep {
     target: string;
