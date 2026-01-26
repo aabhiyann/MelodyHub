@@ -10,6 +10,9 @@ import { Outlet } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
 import { SkipLink } from '@/components/a11y/SkipLink';
+import { Mascot } from '@/components/mascot/Mascot';
+import { MascotOnboarding } from '@/components/mascot/MascotOnboarding';
+import { Toaster } from 'react-hot-toast';
 
 export const SidebarLayout = () => {
     const isMobile = useIsMobile();
@@ -37,8 +40,13 @@ export const SidebarLayout = () => {
                 <Outlet />
             </main>
 
-            {/* Mobile Bottom Tabs - Visible on Mobile only */}
+            {/* Mobile Bottom Tabs */}
             {isMobile && <BottomTabBar />}
+
+            {/* Global Components */}
+            <Mascot />
+            <MascotOnboarding />
+            <Toaster position="top-center" />
         </div>
     );
 };
