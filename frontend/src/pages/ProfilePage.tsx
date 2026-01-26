@@ -95,13 +95,13 @@ const ProfilePage = () => {
             label: 'Playlists Created',
             value: playlistCount.toString(),
             icon: Music,
-            color: 'text-emerald-400'
+            color: 'text-brand-primary'
         },
         {
             label: 'Member Since',
             value: clerkUser.createdAt ? new Date(clerkUser.createdAt).toLocaleDateString() : '2024',
             icon: Calendar,
-            color: 'text-green-400'
+            color: 'text-brand-accent'
         },
     ];
 

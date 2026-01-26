@@ -23,7 +23,7 @@ export default function NotFoundPage() {
 					<h1 className='text-7xl font-bold text-white'>404</h1>
 					<h2 className='text-2xl font-semibold text-white'>Lost in the Music?</h2>
 					<p className='text-neutral-400 max-w-md mx-auto'>
-						Looks like this page wandered off to find the perfect playlist. Let's get you back on track! <Music className="inline-block w-5 h-5 ml-1 text-emerald-500 animate-bounce" />
+						Looks like this page wandered off to find the perfect playlist. Let's get you back on track! <Music className="inline-block w-5 h-5 ml-1 text-brand-primary animate-bounce" />
 					</p>
 				</div>
 
@@ -32,13 +32,13 @@ export default function NotFoundPage() {
 					<Button
 						onClick={() => navigate(-1)}
 						variant='outline'
-						className='bg-neutral-800 hover:bg-neutral-700 text-white border-neutral-700 w-full sm:w-auto'
+						className='bg-white/5 hover:bg-white/10 text-white border-white/10 w-full sm:w-auto'
 					>
 						Go Back
 					</Button>
 					<Button
 						onClick={() => navigate("/")}
-						className='bg-emerald-500 hover:bg-emerald-600 text-white w-full sm:w-auto'
+						className='bg-brand-primary hover:bg-brand-primary/90 text-white w-full sm:w-auto shadow-glow-primary'
 					>
 						<Home className='mr-2 h-4 w-4' />
 						Back to Home

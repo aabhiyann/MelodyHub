@@ -72,7 +72,7 @@ function App() {
 					},
 					success: {
 						iconTheme: {
-							primary: '#10b981', // emerald-500
+							primary: '#8b5cf6', // brand-primary (violet)
 							secondary: '#fff',
 						},
 					},

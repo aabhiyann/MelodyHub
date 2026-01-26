@@ -52,14 +52,14 @@ export const AIPlaylistModal = ({ isOpen, onClose, children }: AIPlaylistModalPr
                     />
 
                     {/* Gradient background */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/20 via-black to-blue-900/20" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/20 via-surface-base to-brand-secondary/20" />
 
                     {/* Particle effects */}
                     <ParticleBackground />
 
                     {/* Modal content */}
                     <motion.div
-                        className="relative w-full max-w-4xl max-h-[90vh] overflow-auto bg-zinc-900/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/10"
+                        className="relative w-full max-w-4xl max-h-[90vh] overflow-auto glass-modal rounded-2xl shadow-2xl"
                         initial={{ scale: 0.9, opacity: 0, y: 20 }}
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.9, opacity: 0, y: 20 }}

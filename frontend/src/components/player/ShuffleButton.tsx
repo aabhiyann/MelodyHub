@@ -15,7 +15,7 @@ export const ShuffleButton = () => {
             aria-pressed={shuffled}
             className={cn(
                 "hover:bg-white/10 transition-colors",
-                shuffled ? "text-emerald-500 hover:text-emerald-400" : "text-zinc-400 hover:text-white"
+                shuffled ? "text-brand-primary hover:text-brand-primary/80" : "text-zinc-400 hover:text-white"
             )}
             title={shuffled ? "Disable Shuffle" : "Enable Shuffle"}
         >
