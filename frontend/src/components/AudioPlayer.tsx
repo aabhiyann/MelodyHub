@@ -11,6 +11,7 @@ import { PlaybackControls } from './player/PlaybackControls';
 import { ProgressBar } from './player/ProgressBar';
 import { AdditionalControls } from './player/AdditionalControls';
 import { useKeyboardControls } from '@/hooks/useKeyboardControls';
+import { Play, Pause, SkipForward } from 'lucide-react';
 
 const AudioPlayer = () => {
 	const audioRef = useRef<HTMLAudioElement>(null);
@@ -19,6 +20,7 @@ const AudioPlayer = () => {
 	const {
 		currentSong,
 		isPlaying,
+		togglePlay,
 		playNext,
 		volume,
 		isMuted,
@@ -161,48 +163,79 @@ const AudioPlayer = () => {
 			</div>
 
 			{/* Player UI - Fixed Bottom Bar */}
-			<div className="fixed bottom-0 left-0 right-0 z-50 h-[90px] md:h-[90px] sm:h-[80px]">
-				{/* Glassmorphism Background using Design Tokens */}
-				<div className="absolute inset-0 bg-surface-elevated/95 backdrop-blur-2xl border-t border-white/10" />
-
+			<div
+				className="fixed bottom-0 left-0 right-0 z-[1000] h-[90px] md:h-[90px] sm:h-[80px]"
+				style={{
+					background: 'rgba(18, 18, 18, 0.85)',
+					backdropFilter: 'blur(60px)',
+					WebkitBackdropFilter: 'blur(60px)',
+					borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+					boxShadow: '0 -8px 32px rgba(0, 0, 0, 0.6)'
+				}}
+			>
 				{/* Content */}
-				<div className="relative h-full px-4 md:px-6">
-					<div className="flex flex-col h-full justify-center gap-2">
-						{/* Progress Bar - Top */}
-						<div className="w-full">
-							<ProgressBar
-								currentTime={currentTime}
-								duration={duration}
-								bufferedTime={bufferedTime}
-								onSeek={handleSeek}
-							/>
+				<div className="h-full px-4 md:px-6 max-w-[1920px] mx-auto">
+					<div className="grid grid-cols-1 md:grid-cols-3 h-full items-center gap-4">
+
+						{/* Left: Now Playing */}
+						<div className="flex justify-between items-center w-full md:w-auto min-w-0 gap-4">
+							<NowPlaying />
+
+							{/* Mobile Controls */}
+							<div className="flex items-center gap-1 md:hidden shrink-0">
+								{/* Play/Pause Button */}
+								<button
+									onClick={(e) => {
+										e.stopPropagation();
+										togglePlay();
+									}}
+									className="p-2 rounded-full hover:bg-white/10 text-white transition-colors"
+								>
+									{isPlaying ? (
+										<Pause className="w-6 h-6 fill-white" />
+									) : (
+										<Play className="w-6 h-6 fill-white" />
+									)}
+								</button>
+
+								{/* Next Button */}
+								<button
+									onClick={(e) => {
+										e.stopPropagation();
+										playNext();
+									}}
+									className="p-2 rounded-full hover:bg-white/10 text-white transition-colors"
+								>
+									<SkipForward className="w-6 h-6 fill-white" />
+								</button>
+							</div>
 						</div>
 
-						{/* Main Player Controls - Three Column Grid */}
-						<div className="grid grid-cols-3 items-center gap-4">
-							{/* Left: Now Playing */}
-							<div className="flex justify-start min-w-0">
-								<NowPlaying />
-							</div>
-
-							{/* Center: Playback Controls */}
-							<div className="flex justify-center">
-								<PlaybackControls />
-							</div>
-
-							{/* Right: Additional Controls */}
-							<div className="flex justify-end">
-								<AdditionalControls
-									queueCount={queue.length}
-									onQueueClick={toggleQueue}
-									volume={volume}
-									isMuted={isMuted}
-									onVolumeChange={setVolume}
-									onToggleMute={toggleMute}
-									isExpanded={isExpanded}
-									onToggleExpanded={toggleExpanded}
+						{/* Center: Playback Controls & Progress */}
+						<div className="hidden md:flex flex-col items-center justify-center w-full max-w-[600px] mx-auto gap-2">
+							<PlaybackControls />
+							<div className="w-full px-2">
+								<ProgressBar
+									currentTime={currentTime}
+									duration={duration}
+									bufferedTime={bufferedTime}
+									onSeek={handleSeek}
 								/>
 							</div>
+						</div>
+
+						{/* Right: Additional Controls */}
+						<div className="hidden md:flex justify-end items-center min-w-0">
+							<AdditionalControls
+								queueCount={queue.length}
+								onQueueClick={toggleQueue}
+								volume={volume}
+								isMuted={isMuted}
+								onVolumeChange={setVolume}
+								onToggleMute={toggleMute}
+								isExpanded={isExpanded}
+								onToggleExpanded={toggleExpanded}
+							/>
 						</div>
 					</div>
 				</div>

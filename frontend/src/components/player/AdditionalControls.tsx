@@ -32,22 +32,37 @@ export const AdditionalControls = ({
     const [showMoreMenu, setShowMoreMenu] = useState(false);
 
     return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
             {/* Queue Button */}
             <motion.button
                 onClick={onQueueClick}
-                className="relative p-2 rounded-full hover:bg-white/10 transition-colors"
+                className={`relative p-2 rounded-full hover:bg-white/10 transition-colors ${queueCount > 0 ? 'text-brand-primary' : 'text-zinc-400'}`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="View queue"
             >
-                <ListMusic className="w-5 h-5 text-white/70" />
-                {queueCount > 0 && (
-                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-brand-primary text-white text-xs rounded-full flex items-center justify-center font-semibold">
-                        {queueCount > 99 ? '99+' : queueCount}
-                    </span>
-                )}
+                <ListMusic className="w-5 h-5" />
             </motion.button>
+
+            {/* Connect to Device */}
+            <motion.button
+                className="p-2 rounded-full hover:bg-white/10 transition-colors hidden md:block"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Connect to device"
+            >
+                <Cast className="w-5 h-5 text-zinc-400 hover:text-white transition-colors" />
+            </motion.button>
+
+            {/* Volume Control */}
+            <div className="mx-2">
+                <VolumeControl
+                    volume={volume}
+                    isMuted={isMuted}
+                    onVolumeChange={onVolumeChange}
+                    onToggleMute={onToggleMute}
+                />
+            </div>
 
             {/* Expand/Collapse Button */}
             <motion.button
@@ -58,28 +73,10 @@ export const AdditionalControls = ({
                 aria-label={isExpanded ? "Collapse player" : "Expand player"}
             >
                 {isExpanded ? (
-                    <Minimize2 className="w-5 h-5 text-white/70" />
+                    <Minimize2 className="w-5 h-5 text-zinc-400 hover:text-white transition-colors" />
                 ) : (
-                    <Maximize2 className="w-5 h-5 text-white/70" />
+                    <Maximize2 className="w-5 h-5 text-zinc-400 hover:text-white transition-colors" />
                 )}
-            </motion.button>
-
-            {/* Volume Control */}
-            <VolumeControl
-                volume={volume}
-                isMuted={isMuted}
-                onVolumeChange={onVolumeChange}
-                onToggleMute={onToggleMute}
-            />
-
-            {/* Connect to Device */}
-            <motion.button
-                className="p-2 rounded-full hover:bg-white/10 transition-colors hidden md:block"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                aria-label="Connect to device"
-            >
-                <Cast className="w-5 h-5 text-white/70" />
             </motion.button>
 
             {/* More Options */}
@@ -91,7 +88,7 @@ export const AdditionalControls = ({
                     whileTap={{ scale: 0.95 }}
                     aria-label="More options"
                 >
-                    <MoreHorizontal className="w-5 h-5 text-white/70" />
+                    <MoreHorizontal className="w-5 h-5 text-zinc-400 hover:text-white transition-colors" />
                 </motion.button>
 
                 {/* More Menu Dropdown */}

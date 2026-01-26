@@ -94,11 +94,16 @@ export const ProgressBar = ({
     }, [isDragging]);
 
     return (
-        <div className="w-full">
-            {/* Progress Bar */}
+        <div className="w-full flex items-center gap-3 group">
+            {/* Current Time */}
+            <span className="text-xs text-zinc-400 font-mono w-10 text-right">
+                {formatTime(currentTime)}
+            </span>
+
+            {/* Progress Bar Container */}
             <div
                 ref={progressRef}
-                className="relative h-1 bg-white/10 rounded-full cursor-pointer group hover:h-1.5 transition-all"
+                className="relative flex-1 h-1 bg-white/10 rounded-full cursor-pointer touch-none py-2"
                 onMouseDown={handleMouseDown}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
@@ -125,31 +130,33 @@ export const ProgressBar = ({
                 aria-valuenow={currentTime}
                 tabIndex={0}
             >
-                {/* Buffered Progress */}
-                <motion.div
-                    className="absolute top-0 left-0 h-full bg-white/20 rounded-full"
-                    style={{ width: `${buffered}%` }}
-                    transition={{ duration: 0.1 }}
-                />
+                {/* Background Track */}
+                <div className="absolute top-1/2 -translate-y-1/2 left-0 w-full h-1 bg-white/10 rounded-full overflow-hidden group-hover:h-1.5 transition-all duration-200">
+                    {/* Buffered Progress */}
+                    <motion.div
+                        className="absolute top-0 left-0 h-full bg-white/20 rounded-full"
+                        style={{ width: `${buffered}%` }}
+                        transition={{ duration: 0.1 }}
+                    />
 
-                {/* Current Progress */}
-                <motion.div
-                    className="absolute top-0 left-0 h-full bg-gradient-to-r from-brand-primary to-purple-400 rounded-full"
-                    style={{ width: `${progress}%` }}
-                    transition={{ duration: 0.1 }}
-                />
+                    {/* Current Progress */}
+                    <motion.div
+                        className="absolute top-0 left-0 h-full bg-white group-hover:bg-brand-primary rounded-full transition-colors"
+                        style={{ width: `${progress}%` }}
+                        transition={{ duration: 0.1 }}
+                    />
+                </div>
 
                 {/* Thumb */}
-                <motion.div
-                    className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
-                    style={{ left: `${progress}%`, x: '-50%' }}
-                    animate={isDragging ? { scale: 1.3 } : { scale: 1 }}
+                <div
+                    className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
+                    style={{ left: `${progress}%`, transform: `translate(-50%, -50%) scale(${isDragging ? 1.2 : 1})` }}
                 />
 
                 {/* Hover Preview Tooltip */}
                 {hoverTime !== null && (
                     <div
-                        className="absolute bottom-full mb-2 px-2 py-1 bg-black/90 text-white text-xs rounded pointer-events-none"
+                        className="absolute bottom-full mb-2 px-2 py-1 bg-zinc-900 border border-white/10 text-white text-xs rounded shadow-xl pointer-events-none whitespace-nowrap z-50"
                         style={{
                             left: hoverX,
                             transform: 'translateX(-50%)',
@@ -160,11 +167,10 @@ export const ProgressBar = ({
                 )}
             </div>
 
-            {/* Time Labels */}
-            <div className="flex justify-between mt-1 text-xs text-white/50 font-mono">
-                <span>{formatTime(currentTime)}</span>
-                <span>{formatTime(duration)}</span>
-            </div>
+            {/* Duration */}
+            <span className="text-xs text-zinc-400 font-mono w-10 text-left">
+                {formatTime(duration)}
+            </span>
         </div>
     );
 };
