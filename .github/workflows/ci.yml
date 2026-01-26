@@ -34,6 +34,13 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      - name: Lint Code
+        run: npm run lint
+        continue-on-error: false
+
+      - name: Type Check
+        run: npm run build
+
       - name: Run Tests
         # Skip integration tests that require running server
         run: npm test -- --testPathIgnorePatterns=integration.test
@@ -66,14 +73,12 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      - name: Lint Code
+        run: npm run lint
+        continue-on-error: false
+
+      - name: Type Check
+        run: npx tsc --noEmit
+
       - name: Run Unit Tests
         run: npm test
-
-      # Temporarily disable E2E tests
-      # - name: Install Playwright Browsers
-      #   run: npx playwright install --with-deps
-
-      # - name: Run E2E Tests
-      #   run: npx playwright test
-      #   env:
-      #     CI: true
