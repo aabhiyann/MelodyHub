@@ -1,6 +1,6 @@
 import { Play, MoreHorizontal, Plus, ListMusic, Share2, Radio } from "lucide-react";
 import { Song } from "@/types";
-import { useState, memo } from "react";
+import { useState, memo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { LikeButton } from "@/components/LikeButton";
@@ -16,12 +16,31 @@ interface MusicCardProps {
 const MusicCard = memo(({ song, onClick, onPlayClick }: MusicCardProps) => {
     const [showMenu, setShowMenu] = useState(false);
     const navigate = useNavigate();
+    const longPressTimer = useRef<any>(null);
+
+    const handleTouchStart = () => {
+        longPressTimer.current = setTimeout(() => {
+            setShowMenu(true);
+            // Vibrate if available
+            if (navigator.vibrate) navigator.vibrate(50);
+        }, 500);
+    };
+
+    const handleTouchEnd = () => {
+        if (longPressTimer.current) {
+            clearTimeout(longPressTimer.current);
+            longPressTimer.current = null;
+        }
+    };
 
     const [showPlaylistDialog, setShowPlaylistDialog] = useState(false);
 
     return (
         <div
             onClick={onClick}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            onTouchMove={handleTouchEnd}
             className='group relative flex-shrink-0 cursor-pointer min-w-[160px] max-w-[220px]'
             onMouseLeave={() => setShowMenu(false)}
         >
