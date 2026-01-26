@@ -23,6 +23,9 @@ export const KeyboardShortcutsGuide = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200" onClick={toggleShortcutsGuide}>
             {/* Modal Content */}
             <div
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="shortcuts-title"
                 className="w-full max-w-2xl bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
                 onClick={e => e.stopPropagation()}
             >
@@ -33,7 +36,7 @@ export const KeyboardShortcutsGuide = () => {
                             <Keyboard className="w-6 h-6 text-violet-400" />
                         </div>
                         <div>
-                            <h2 className="text-xl font-bold text-white">Keyboard Shortcuts</h2>
+                            <h2 id="shortcuts-title" className="text-xl font-bold text-white">Keyboard Shortcuts</h2>
                             <p className="text-sm text-zinc-400">Control MelodyHub like a pro</p>
                         </div>
                     </div>

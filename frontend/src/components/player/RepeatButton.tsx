@@ -21,6 +21,8 @@ export const RepeatButton = () => {
             variant="ghost"
             size="icon"
             onClick={toggleRepeat}
+            aria-label={isRepeating ? "Disable Repeat" : "Enable Repeat"}
+            aria-pressed={isRepeating}
             className={cn(
                 "hover:bg-white/10 transition-colors",
                 isRepeating ? "text-emerald-500 hover:text-emerald-400" : "text-zinc-400 hover:text-white"

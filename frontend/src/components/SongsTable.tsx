@@ -91,12 +91,14 @@ const SongsTable = () => {
 					<button
 						className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
 						title="Play"
+						aria-label={`Play ${row.original.title}`}
 					>
 						<Play className="size-4 text-gray-600" />
 					</button>
 					<button
 						className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
 						title="Edit"
+						aria-label={`Edit ${row.original.title}`}
 						onClick={() => {
 							setEditingSong(row.original);
 							setIsEditOpen(true);
@@ -108,6 +110,7 @@ const SongsTable = () => {
 						onClick={() => deleteSong(row.original._id)}
 						className="p-2 hover:bg-error/10 rounded-lg transition-colors"
 						title="Delete"
+						aria-label={`Delete ${row.original.title}`}
 					>
 						<Trash2 className="size-4 text-error" />
 					</button>
@@ -115,6 +118,7 @@ const SongsTable = () => {
 						onClick={() => window.location.href = `/radio/${row.original._id}`}
 						className="p-2 hover:bg-violet-500/10 rounded-lg transition-colors group"
 						title="Start Radio"
+						aria-label={`Start radio for ${row.original.title}`}
 					>
 						<Radio className="size-4 text-gray-600 group-hover:text-violet-500" />
 					</button>

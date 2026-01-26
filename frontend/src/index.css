@@ -101,6 +101,13 @@
       /* Primary 500 with opacity */
       color: white;
     }
+
+    /* Global Focus Ring for Keyboard Users */
+    :focus-visible {
+      outline: 3px solid var(--primary-500);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
   }
 
   /* Custom Scrollbar (Thin & Dark) */

@@ -19,13 +19,19 @@ function Avatar({
   )
 }
 
+import { getCloudinaryUrl, imageSizes } from "@/utils/imageOptimizer"
+
 function AvatarImage({
   className,
+  src,
   ...props
 }: React.ComponentProps<typeof AvatarPrimitive.Image>) {
+  const optimizedSrc = src ? getCloudinaryUrl(src, imageSizes.avatar) : src;
+
   return (
     <AvatarPrimitive.Image
       data-slot="avatar-image"
+      src={optimizedSrc}
       className={cn("aspect-square size-full", className)}
       {...props}
     />

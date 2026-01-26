@@ -2,12 +2,12 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { usePlaylistStore } from "@/stores/PlaylistStore";
 import { usePlayerStore } from "@/stores/PlayerStore";
-import { Clock, Pause, Play, Music, ListMusic } from "lucide-react";
+import { Clock, Pause, Play, ListMusic } from "lucide-react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { formatDuration } from "./AlbumPage"; // Reuse utility or move to utils
 import { useUser } from "@clerk/clerk-react";
 import { InviteCollaboratorsDialog } from "@/components/InviteCollaboratorsDialog";
+import { PlaylistSongRow } from "@/components/PlaylistSongRow";
 
 const PlaylistPage = () => {
     const { id } = useParams();
@@ -122,37 +122,14 @@ const PlaylistPage = () => {
                                     {currentPlaylist?.songs.map((song, index) => {
                                         const isCurrentSong = currentSong?._id === song._id;
                                         return (
-                                            <div
+                                            <PlaylistSongRow
                                                 key={`${song._id}-${index}`}
+                                                song={song}
+                                                index={index}
+                                                isCurrentSong={isCurrentSong}
+                                                isPlaying={isPlaying}
                                                 onClick={() => handlePlaySong(index)}
-                                                className={`grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-4 py-2 text-sm 
-                       rounded-md group cursor-pointer transition-all duration-200 ease-out
-                       hover:scale-[1.01] active:scale-[0.99]
-                       ${isCurrentSong ? "bg-brand-primary/10 ring-1 ring-brand-primary/20" : "hover:bg-white/5"}
-                       `}
-                                            >
-                                                <div className='flex items-center justify-center'>
-                                                    {isCurrentSong && isPlaying ? (
-                                                        <Music className='size-4 text-brand-primary animate-pulse' />
-                                                    ) : (
-                                                        <span className='group-hover:hidden text-text-secondary'>{index + 1}</span>
-                                                    )}
-                                                    {!isCurrentSong && (
-                                                        <Play className='h-4 w-4 hidden group-hover:block text-white' />
-                                                    )}
-                                                </div>
-
-                                                <div className='flex items-center gap-3'>
-                                                    <img src={song.imageUrl} alt={song.title} className='size-10 rounded shadow' />
-
-                                                    <div>
-                                                        <div className={`font-medium ${isCurrentSong ? "text-brand-primary" : "text-text-primary"}`}>{song.title}</div>
-
-                                                    </div>
-                                                </div>
-                                                <div className="text-text-secondary">{song.artist}</div>
-                                                <div className='flex items-center text-text-secondary'>{formatDuration(song.duration)}</div>
-                                            </div>
+                                            />
                                         );
                                     })}
                                 </div>
