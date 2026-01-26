@@ -28,6 +28,8 @@ import discoveryRoutes from './routes/discovery.route.js'; // New discovery rout
 import analyticsRoutes from './routes/analytics.route.js'; // New analytics routes
 import socialRoutes from './routes/social.route.js'; // Social & playlist routes
 import lyricsRoutes from './routes/lyrics.route.js'; // Lyrics routes
+import activityRoutes from './routes/activity.route.js';
+import friendRoutes from './routes/friend.route.js';
 import { connectDB } from './lib/db.js';
 import { validateEnv } from './lib/env.js';
 import { requestLogger } from './middleware/logger.middleware.js';
@@ -73,23 +75,13 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-	origin: function (origin, callback) {
-		// Allow requests with no origin (like mobile apps or curl requests)
-		if (!origin) return callback(null, true);
-
-		if (allowedOrigins.includes(origin)) {
-			callback(null, true);
-		} else {
-			console.log("CORS blocked origin:", origin);
-			callback(new Error("Not allowed by CORS"));
-		}
-	},
+	origin: ["http://localhost:5173", "http://localhost:3000"],
 	credentials: true,
-	exposedHeaders: ['set-cookie'],
 }));
 
 app.use(helmet({
-	contentSecurityPolicy: false, // Disabled for now to prevent breaking Cloudinary/Clerk
+	crossOriginResourcePolicy: false,
+	contentSecurityPolicy: false,
 	crossOriginEmbedderPolicy: false,
 }));
 app.use(compression());
@@ -137,7 +129,7 @@ app.use("/api/health", healthRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/admin", process.env.NODE_ENV === "production" ? strictLimiter : (req, res, next) => next(), adminRoutes);
 app.use("/api/auth", authRoutes);
-app.use("/api/songs", discoveryRoutes); // Discovery routes (featured, trending, etc.)
+app.use("/api/discovery", discoveryRoutes); // Discovery routes (featured, trending, etc.)
 app.use("/api/songs", songRoutes); // Other song routes
 app.use("/api/albums", albumRoutes);
 app.use("/api/stats", statRoutes);
@@ -146,6 +138,8 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/analytics", analyticsRoutes); // Analytics routes
 app.use("/api/social", socialRoutes); // Social & playlist routes
 app.use("/api/lyrics", lyricsRoutes); // Lyrics routes
+app.use("/api/activities", activityRoutes); // Activity feed routes
+app.use("/api/friends", friendRoutes); // Friend system routes
 
 if (process.env.NODE_ENV === "production") {
 	app.use(express.static(path.join(__dirname, "../frontend/dist")));
@@ -154,22 +148,29 @@ if (process.env.NODE_ENV === "production") {
 	});
 }
 
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-	res.status(500).json({ message: process.env.NODE_ENV === "production" ? "Internal server error" : err.message });
+app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
+	console.error("Global Error:", err);
+	const errorMessage = err instanceof Error ? err.message : "Unknown error";
+	res.status(500).json({ message: process.env.NODE_ENV === "production" ? "Internal server error" : errorMessage });
 });
 
-httpServer.listen(PORT, async () => {
-	console.log("🚀 Server is running on port " + PORT);
+export { app };
 
-	// Initialize MongoDB
-	await connectDB();
+// Only start server if this file is run directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+	httpServer.listen(PORT, async () => {
+		console.log("🚀 Server is running on port " + PORT);
 
-	// Initialize Redis (optional - app works without it)
-	if (process.env.NODE_ENV === 'production' || process.env.REDIS_URL) {
-		await redisService.connect();
-	} else {
-		console.log('ℹ️  Redis disabled in development (set REDIS_URL to enable)');
-	}
+		// Initialize MongoDB
+		await connectDB();
 
-	console.log('📚 API Documentation: http://localhost:' + PORT + '/api-docs');
-});
+		// Initialize Redis (optional - app works without it)
+		if (process.env.NODE_ENV === 'production' || process.env.REDIS_URL) {
+			await redisService.connect();
+		} else {
+			console.log('ℹ️  Redis disabled in development (set REDIS_URL to enable)');
+		}
+
+		console.log('📚 API Documentation: http://localhost:' + PORT + '/api-docs');
+	});
+}

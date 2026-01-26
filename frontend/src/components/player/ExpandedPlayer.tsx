@@ -12,14 +12,14 @@ export const ExpandedPlayer = () => {
     const {
         currentSong,
         isPlaying,
-        playerState,
-        togglePlayPause,
-        next,
-        previous,
-        setPlayerState,
+        isExpanded,
+        togglePlay,
+        playNext,
+        playPrevious,
+        toggleExpanded,
     } = usePlayerStore();
 
-    if (playerState !== 'expanded' || !currentSong) return null;
+    if (!isExpanded || !currentSong) return null;
 
     return (
         <AnimatePresence>
@@ -34,13 +34,13 @@ export const ExpandedPlayer = () => {
                     {/* Header */}
                     <div className="flex items-center justify-between mb-4">
                         <button
-                            onClick={() => setPlayerState('mini')}
+                            onClick={toggleExpanded}
                             className="p-2 hover:bg-white/10 rounded-lg transition-colors"
                         >
                             <ChevronDown className="size-5 text-text-secondary" />
                         </button>
                         <button
-                            onClick={() => setPlayerState('fullscreen')}
+                            onClick={toggleExpanded} // Fullscreen not implemented yet, just toggle
                             className="p-2 hover:bg-white/10 rounded-lg transition-colors"
                         >
                             <ChevronUp className="size-5 text-text-secondary" />
@@ -69,14 +69,14 @@ export const ExpandedPlayer = () => {
                                 </button>
 
                                 <button
-                                    onClick={previous}
+                                    onClick={playPrevious}
                                     className="p-2 hover:bg-white/10 rounded-lg transition-colors"
                                 >
                                     <SkipBack className="size-6 text-white" />
                                 </button>
 
                                 <button
-                                    onClick={togglePlayPause}
+                                    onClick={togglePlay}
                                     className="p-4 bg-brand-primary hover:bg-brand-primary-hover rounded-full transition-colors"
                                 >
                                     {isPlaying ? (
@@ -87,7 +87,7 @@ export const ExpandedPlayer = () => {
                                 </button>
 
                                 <button
-                                    onClick={next}
+                                    onClick={playNext}
                                     className="p-2 hover:bg-white/10 rounded-lg transition-colors"
                                 >
                                     <SkipForward className="size-6 text-white" />

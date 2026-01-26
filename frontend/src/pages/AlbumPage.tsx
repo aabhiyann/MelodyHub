@@ -47,7 +47,7 @@ const AlbumPage = () => {
 				<div className='relative min-h-full'>
 					{/* bg gradient - Reduced for cleaner glass look */}
 					<div
-						className='absolute inset-0 bg-gradient-to-b from-[#5038a0]/30 via-transparent to-transparent pointer-events-none'
+						className='absolute inset-0 bg-gradient-to-b from-brand-primary/20 via-transparent to-transparent pointer-events-none'
 						aria-hidden='true'
 					/>
 
@@ -60,12 +60,12 @@ const AlbumPage = () => {
 								className='w-[240px] h-[240px] shadow-2xl rounded-lg ring-1 ring-white/10'
 							/>
 							<div className='flex flex-col justify-end'>
-								<p className='text-sm font-medium text-zinc-400 uppercase tracking-wider'>Album</p>
+								<p className='text-sm font-medium text-text-secondary uppercase tracking-wider'>Album</p>
 								<h1 className='text-5xl md:text-7xl font-bold my-4 text-white tracking-tight'>{currentAlbum?.title}</h1>
-								<div className='flex items-center gap-2 text-sm text-zinc-300'>
+								<div className='flex items-center gap-2 text-sm text-text-secondary'>
 									<span className='font-medium text-white'>{currentAlbum?.artist}</span>
-									<span className="flex items-center text-zinc-500"><Disc className="w-3 h-3 mx-2" /> {currentAlbum?.songs.length} songs</span>
-									<span className="flex items-center text-zinc-500"><span className="w-1 h-1 rounded-full bg-zinc-600 mx-2" /> {currentAlbum?.releaseYear}</span>
+									<span className="flex items-center text-text-secondary"><Disc className="w-3 h-3 mx-2" /> {currentAlbum?.songs.length} songs</span>
+									<span className="flex items-center text-text-secondary"><span className="w-1 h-1 rounded-full bg-zinc-600 mx-2" /> {currentAlbum?.releaseYear}</span>
 								</div>
 							</div>
 						</div>
@@ -86,11 +86,11 @@ const AlbumPage = () => {
 						</div>
 
 						{/* Table Section */}
-						<div className='bg-black/20 backdrop-blur-sm'>
+						<div className='bg-background-elevated/20 backdrop-blur-sm'>
 							{/* table header */}
 							<div
 								className='grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-10 py-2 text-sm 
-            text-zinc-400 border-b border-white/5 uppercase tracking-wider'
+            text-text-secondary border-b border-white/5 uppercase tracking-wider'
 							>
 								<div>#</div>
 								<div>Title</div>
@@ -113,14 +113,14 @@ const AlbumPage = () => {
 												className={`grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-4 py-2 text-sm 
                        rounded-md group cursor-pointer transition-all duration-200 ease-out
                        hover:scale-[1.01] active:scale-[0.99]
-                       ${isCurrentSong ? "bg-brand-primary/10" : "hover:bg-white/5"}
+                       ${isCurrentSong ? "bg-brand-primary/10 ring-1 ring-brand-primary/20" : "hover:bg-white/5"}
                        `}
 											>
 												<div className='flex items-center justify-center'>
 													{isCurrentSong && isPlaying ? (
 														<Music className='size-4 text-brand-primary animate-pulse' />
 													) : (
-														<span className='group-hover:hidden text-zinc-400'>{index + 1}</span>
+														<span className='group-hover:hidden text-text-secondary'>{index + 1}</span>
 													)}
 													{!isCurrentSong && (
 														<Play className='h-4 w-4 hidden group-hover:block text-white' />
@@ -131,12 +131,12 @@ const AlbumPage = () => {
 													<img src={song.imageUrl} alt={song.title} className='size-10 rounded shadow' />
 
 													<div>
-														<div className={`font-medium ${isCurrentSong ? "text-brand-primary" : "text-white"}`}>{song.title}</div>
-														<div className="text-zinc-400">{song.artist}</div>
+														<div className={`font-medium ${isCurrentSong ? "text-brand-primary" : "text-text-primary"}`}>{song.title}</div>
+														<div className="text-text-secondary">{song.artist}</div>
 													</div>
 												</div>
-												<div className='flex items-center text-zinc-400'>{song.createdAt.split("T")[0]}</div>
-												<div className='flex items-center text-zinc-400'>{formatDuration(song.duration)}</div>
+												<div className='flex items-center text-text-secondary'>{song.createdAt.split("T")[0]}</div>
+												<div className='flex items-center text-text-secondary'>{formatDuration(song.duration)}</div>
 											</div>
 										);
 									})}

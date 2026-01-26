@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 import { ClerkProvider } from "@clerk/clerk-react";
-import { clerkTheme } from "./styles/clerk-theme";
+import { dark } from "@clerk/themes";
 import { BrowserRouter } from "react-router-dom";
 import AuthProvider from "./providers/AuthProviders.tsx";
 import { initWebVitals } from "./utils/webVitals";
@@ -19,17 +19,36 @@ if (import.meta.env.PROD) {
 	initWebVitals();
 }
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			refetchOnWindowFocus: false,
+		},
+	},
+});
+
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
 		<ClerkProvider
 			publishableKey={PUBLISHABLE_KEY}
 			afterSignOutUrl='/'
-			appearance={clerkTheme}
+			appearance={{
+				baseTheme: dark,
+				variables: {
+					colorPrimary: '#8b5cf6', // violet-500
+					colorBackground: '#0a0a0a', // zinc-950
+					colorText: 'white',
+				}
+			}}
 		>
 			<AuthProvider>
-				<BrowserRouter>
-					<App />
-				</BrowserRouter>
+				<QueryClientProvider client={queryClient}>
+					<BrowserRouter>
+						<App />
+					</BrowserRouter>
+				</QueryClientProvider>
 			</AuthProvider>
 		</ClerkProvider>
 	</StrictMode>

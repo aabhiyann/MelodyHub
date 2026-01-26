@@ -3,11 +3,11 @@ import cloudinary from "../lib/cloudinary.js";
 import { UploadedFile } from "express-fileupload";
 
 export class BaseController {
-	handleSuccess(res: Response, data: any, code: number = 200) {
+	handleSuccess(res: Response, data: unknown, code: number = 200) {
 		return res.status(code).json(data);
 	}
 
-	handleError(next: NextFunction, error: any) {
+	handleError(next: NextFunction, error: unknown) {
 		console.error("Controller Error:", error);
 		return next(error);
 	}

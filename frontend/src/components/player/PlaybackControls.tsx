@@ -4,7 +4,7 @@
  */
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Pause, SkipBack, SkipForward, Shuffle, Repeat, Repeat1 } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Shuffle, Repeat } from 'lucide-react';
 import { usePlayerStore } from '@/stores/PlayerStore';
 
 export const PlaybackControls = () => {
@@ -32,8 +32,8 @@ export const PlaybackControls = () => {
                 <motion.button
                     onClick={shuffleQueue}
                     className={`p-2 rounded-full transition-colors ${shuffled
-                            ? 'text-brand-primary bg-brand-primary/10'
-                            : 'text-white/70 hover:text-white hover:bg-white/10'
+                        ? 'text-brand-primary bg-brand-primary/10'
+                        : 'text-white/70 hover:text-white hover:bg-white/10'
                         }`}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -110,8 +110,8 @@ export const PlaybackControls = () => {
                 <motion.button
                     onClick={toggleRepeat}
                     className={`relative p-2 rounded-full transition-colors ${isRepeating
-                            ? 'text-brand-primary bg-brand-primary/10'
-                            : 'text-white/70 hover:text-white hover:bg-white/10'
+                        ? 'text-brand-primary bg-brand-primary/10'
+                        : 'text-white/70 hover:text-white hover:bg-white/10'
                         }`}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -119,7 +119,7 @@ export const PlaybackControls = () => {
                     aria-pressed={isRepeating}
                 >
                     {isRepeating ? (
-                        <Repeat1 className="w-4 h-4" />
+                        <Repeat className="w-4 h-4 font-bold" />
                     ) : (
                         <Repeat className="w-4 h-4" />
                     )}

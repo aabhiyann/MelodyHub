@@ -32,7 +32,7 @@ const AdminPage = () => {
             </div>
 
             <Tabs defaultValue='songs' className='space-y-6'>
-                <TabsList className='bg-white/5 backdrop-blur-lg border border-white/5 p-1 h-12 rounded-xl w-auto inline-flex'>
+                <TabsList className='bg-background-elevated/40 backdrop-blur-lg border border-white/5 p-1 h-12 rounded-xl w-auto inline-flex'>
                     <TabsTrigger
                         value='songs'
                         className='data-[state=active]:bg-brand-primary data-[state=active]:text-white text-zinc-400 hover:text-white transition-colors h-10 px-6 rounded-lg'

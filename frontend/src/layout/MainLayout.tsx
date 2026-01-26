@@ -29,7 +29,7 @@ const MainLayout = () => {
     }, []);
 
     return (
-        <div className='h-screen bg-black text-text-primary flex flex-col font-sans selection:bg-brand-primary/30'>
+        <div className='h-screen bg-background-base text-text-primary flex flex-col font-sans selection:bg-brand-primary/30'>
             {/* Skip to main content link for keyboard users */}
             <a
                 href="#main-content"
@@ -53,7 +53,7 @@ const MainLayout = () => {
 
                 {/* Main content */}
                 <ResizablePanel defaultSize={isMobile ? 80 : 60} className="bg-transparent z-10">
-                    <main id="main-content" role="main" aria-label="Main content" className="h-full rounded-2xl bg-[#121212]/50 overflow-hidden border border-white/5 relative">
+                    <main id="main-content" role="main" aria-label="Main content" className="h-full rounded-2xl bg-background-elevated/50 overflow-hidden border border-white/5 relative">
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={location.pathname}

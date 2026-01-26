@@ -1,54 +1,36 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-export type ActivityType =
-    | 'play'
-    | 'like'
-    | 'playlist_create'
-    | 'playlist_share'
-    | 'friend_add';
+export enum ActivityType {
+    LIKE_SONG = "like_song",
+    CREATE_PLAYLIST = "create_playlist",
+    FOLLOW_USER = "follow_user",
+}
 
 export interface IActivity extends Document {
-    userId: string; // Clerk user ID
+    userId: mongoose.Types.ObjectId;
     type: ActivityType;
-    metadata: {
-        songId?: mongoose.Types.ObjectId;
-        songTitle?: string;
-        artistName?: string;
-        playlistId?: mongoose.Types.ObjectId;
-        playlistName?: string;
-        friendId?: string;
-        friendName?: string;
-    };
+    targetId: mongoose.Types.ObjectId; // ID of Song, Playlist, or User
     createdAt: Date;
 }
 
 const activitySchema = new Schema<IActivity>(
     {
         userId: {
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
             required: true,
-            index: true,
         },
         type: {
             type: String,
-            enum: ['play', 'like', 'playlist_create', 'playlist_share', 'friend_add'],
+            enum: Object.values(ActivityType),
             required: true,
         },
-        metadata: {
-            type: Schema.Types.Mixed,
-            default: {},
+        targetId: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
         },
     },
-    {
-        timestamps: true,
-    }
+    { timestamps: { createdAt: true, updatedAt: false } }
 );
-
-// Indexes
-activitySchema.index({ userId: 1, createdAt: -1 });
-activitySchema.index({ createdAt: -1 }); // For activity feed
-
-// TTL index - auto-delete activities older than 30 days
-activitySchema.index({ createdAt: 1 }, { expireAfterSeconds: 30 * 24 * 60 * 60 });
 
 export const Activity = mongoose.model<IActivity>("Activity", activitySchema);

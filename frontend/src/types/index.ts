@@ -14,6 +14,23 @@ export interface Song {
 	playCount?: number;
 	likeCount?: number; // For like/unlike functionality
 }
+
+export type ActivityType = "like_song" | "create_playlist" | "follow_user";
+
+export interface Activity {
+	_id: string;
+	userId: User;
+	targetId: string;
+	target?: {
+		title?: string;
+		artist?: string;
+		name?: string;
+		fullName?: string;
+		imageUrl?: string;
+	};
+	type: ActivityType;
+	createdAt: string;
+}
 export interface Album {
 	_id: string;
 	title: string;
@@ -21,6 +38,17 @@ export interface Album {
 	imageUrl: string;
 	releaseYear: number;
 	songs: Song[];
+}
+
+export interface Playlist {
+	_id: string;
+	name: string;
+	description?: string;
+	owner: string; // or User object if populated, but usually ID in simplest form or check usage
+	songs: Song[];
+	isPublic: boolean;
+	createdAt: string;
+	updatedAt: string;
 }
 
 export interface Stats {
@@ -44,6 +72,13 @@ export interface User {
 	clerkId: string;
 	fullName: string;
 	imageUrl: string;
+	bio?: string;
+	location?: string;
+	website?: string;
+	isPrivate?: boolean;
+	followersCount?: number;
+	followingCount?: number;
+	isFollowing?: boolean;
 }
 
 

@@ -1,4 +1,4 @@
-import { Repeat, Repeat1 } from "lucide-react";
+import { Repeat } from "lucide-react";
 import { usePlayerStore } from "@/stores/PlayerStore";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";

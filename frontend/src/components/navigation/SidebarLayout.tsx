@@ -17,7 +17,7 @@ export const SidebarLayout = () => {
             {!isMobile && <Sidebar />}
 
             {/* Main Content Area */}
-            <main className="flex-1 overflow-y-auto ml-0 md:ml-[240px] pb-20 md:pb-0">
+            <main className="flex-1 overflow-y-auto ml-0 md:ml-[240px] pb-24 md:pb-24">
                 <Outlet />
             </main>
 

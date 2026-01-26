@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Friendship } from "../models/friendship.model.js";
 import { Activity } from "../models/activity.model.js";
+import { AuthenticatedRequest } from "../types/index.js";
 
 /**
  * POST /social/friend-request
@@ -8,7 +9,7 @@ import { Activity } from "../models/activity.model.js";
  */
 export const sendFriendRequest = async (req: Request, res: Response) => {
     try {
-        const userId = (req as any).auth?.userId;
+        const userId = (req as AuthenticatedRequest).auth?.userId;
         const { friendId } = req.body;
 
         if (!userId) {
@@ -65,12 +66,13 @@ export const sendFriendRequest = async (req: Request, res: Response) => {
             data: friendship,
             message: "Friend request sent",
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Error sending friend request:", error);
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
         return res.status(500).json({
             success: false,
             message: "Failed to send friend request",
-            error: error.message,
+            error: errorMessage,
         });
     }
 };
@@ -81,7 +83,7 @@ export const sendFriendRequest = async (req: Request, res: Response) => {
  */
 export const acceptFriendRequest = async (req: Request, res: Response) => {
     try {
-        const userId = (req as any).auth?.userId;
+        const userId = (req as AuthenticatedRequest).auth?.userId;
         const { id } = req.params;
 
         if (!userId) {
@@ -125,12 +127,13 @@ export const acceptFriendRequest = async (req: Request, res: Response) => {
             data: friendship,
             message: "Friend request accepted",
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Error accepting friend request:", error);
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
         return res.status(500).json({
             success: false,
             message: "Failed to accept friend request",
-            error: error.message,
+            error: errorMessage,
         });
     }
 };
@@ -141,7 +144,7 @@ export const acceptFriendRequest = async (req: Request, res: Response) => {
  */
 export const rejectFriendRequest = async (req: Request, res: Response) => {
     try {
-        const userId = (req as any).auth?.userId;
+        const userId = (req as AuthenticatedRequest).auth?.userId;
         const { id } = req.params;
 
         if (!userId) {
@@ -175,12 +178,13 @@ export const rejectFriendRequest = async (req: Request, res: Response) => {
             success: true,
             message: "Friend request rejected",
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Error rejecting friend request:", error);
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
         return res.status(500).json({
             success: false,
             message: "Failed to reject friend request",
-            error: error.message,
+            error: errorMessage,
         });
     }
 };
@@ -191,7 +195,7 @@ export const rejectFriendRequest = async (req: Request, res: Response) => {
  */
 export const getFriends = async (req: Request, res: Response) => {
     try {
-        const userId = (req as any).auth?.userId;
+        const userId = (req as AuthenticatedRequest).auth?.userId;
 
         if (!userId) {
             return res.status(401).json({
@@ -215,12 +219,13 @@ export const getFriends = async (req: Request, res: Response) => {
             data: friendIds,
             count: friendIds.length,
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Error getting friends:", error);
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
         return res.status(500).json({
             success: false,
             message: "Failed to get friends",
-            error: error.message,
+            error: errorMessage,
         });
     }
 };
@@ -231,7 +236,7 @@ export const getFriends = async (req: Request, res: Response) => {
  */
 export const getFriendRequests = async (req: Request, res: Response) => {
     try {
-        const userId = (req as any).auth?.userId;
+        const userId = (req as AuthenticatedRequest).auth?.userId;
 
         if (!userId) {
             return res.status(401).json({
@@ -250,12 +255,13 @@ export const getFriendRequests = async (req: Request, res: Response) => {
             data: requests,
             count: requests.length,
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Error getting friend requests:", error);
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
         return res.status(500).json({
             success: false,
             message: "Failed to get friend requests",
-            error: error.message,
+            error: errorMessage,
         });
     }
 };
@@ -266,7 +272,7 @@ export const getFriendRequests = async (req: Request, res: Response) => {
  */
 export const removeFriend = async (req: Request, res: Response) => {
     try {
-        const userId = (req as any).auth?.userId;
+        const userId = (req as AuthenticatedRequest).auth?.userId;
         const { id: friendId } = req.params;
 
         if (!userId) {
@@ -294,12 +300,13 @@ export const removeFriend = async (req: Request, res: Response) => {
             success: true,
             message: "Friend removed",
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Error removing friend:", error);
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
         return res.status(500).json({
             success: false,
             message: "Failed to remove friend",
-            error: error.message,
+            error: errorMessage,
         });
     }
 };

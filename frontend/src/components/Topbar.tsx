@@ -7,7 +7,7 @@ const Topbar = () => {
 
 	return (
 		<div
-			className='flex items-center justify-between p-4 sticky top-0 z-50 bg-[#09090b]/40 backdrop-blur-md border-b border-white/5 supports-[backdrop-filter]:bg-[#09090b]/20'
+			className='flex items-center justify-between p-4 sticky top-0 z-50 glass-toolbar'
 		>
 			{/* Logo with Melody Icon */}
 			<div className='flex gap-3 items-center'>
