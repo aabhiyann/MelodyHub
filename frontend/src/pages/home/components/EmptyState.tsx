@@ -4,7 +4,6 @@
  */
 
 import { motion } from 'framer-motion';
-import { Music, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Plus } from "lucide-react";
 
