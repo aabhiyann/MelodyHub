@@ -16,15 +16,27 @@ export const SidebarLayout = () => {
     return (
         <div className="h-screen flex">
             <SkipLink />
-            {/* Desktop Sidebar */}
+            {/* Desktop Sidebar - Visible on Tablet+ (sm breakpoint) */}
             {!isMobile && <Sidebar />}
 
             {/* Main Content Area */}
-            <main id="main-content" className="flex-1 overflow-y-auto ml-0 md:ml-[240px] pb-24 md:pb-24 focus:outline-none" tabIndex={-1}>
+            <main
+                id="main-content"
+                className={cn(
+                    "flex-1 overflow-y-auto pb-24 focus:outline-none",
+                    // Mobile: No margin
+                    "ml-0",
+                    // Tablet/Desktop: Sidebar width margin
+                    // Note: Sidebar is 240px by default. 
+                    // TODO: Lift isExpanded state to match collapsed width (80px)
+                    "sm:ml-[240px]"
+                )}
+                tabIndex={-1}
+            >
                 <Outlet />
             </main>
 
-            {/* Mobile Bottom Tabs */}
+            {/* Mobile Bottom Tabs - Visible on Mobile only */}
             {isMobile && <BottomTabBar />}
         </div>
     );
