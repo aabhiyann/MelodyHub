@@ -9,7 +9,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        // Primary Brand (Green)
+        // Primary Brand (Violet)
         default:
           "bg-brand-primary text-primary-foreground shadow-md hover:bg-brand-primary/90 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
 

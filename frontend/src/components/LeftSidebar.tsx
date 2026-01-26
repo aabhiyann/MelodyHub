@@ -221,7 +221,7 @@ const LeftSidebar = () => {
                 to={'/library?tab=playlists'}
                 className='p-2 hover:bg-white/10 rounded-lg flex items-center gap-3 group cursor-pointer transition-all text-text-secondary hover:text-white'
               >
-                <div className="bg-gradient-to-br from-green-600 to-emerald-600 p-2 rounded-md">
+                <div className="bg-gradient-to-br from-indigo-600 to-purple-600 p-2 rounded-md">
                   <ListMusic className='size-4 text-white' />
                 </div>
                 <span className='font-medium text-sm hidden md:inline'>Playlists</span>

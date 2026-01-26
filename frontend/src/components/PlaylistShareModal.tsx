@@ -77,7 +77,7 @@ export const PlaylistShareModal = ({
                     {/* Public Toggle (Top implementation) */}
                     <div className="flex items-center justify-between p-4 bg-zinc-950/50 rounded-lg border border-zinc-800/50">
                         <div className="flex items-center gap-3">
-                            <div className={`p-2 rounded-full ${isPublic ? 'bg-emerald-500/20 text-emerald-400' : 'bg-zinc-500/20 text-zinc-400'}`}>
+                            <div className={`p-2 rounded-full ${isPublic ? 'bg-brand-primary/20 text-brand-primary' : 'bg-zinc-500/20 text-zinc-400'}`}>
                                 {isPublic ? <Globe className="size-5" /> : <Lock className="size-5" />}
                             </div>
                             <div>

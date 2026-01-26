@@ -107,7 +107,7 @@ export const ConversationInput = ({
                     <Button
                         onClick={handleSubmit}
                         disabled={!input.trim() || disabled}
-                        className="bg-gradient-to-r from-brand-primary to-emerald-600 hover:shadow-lg hover:shadow-brand-primary/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                        className="bg-gradient-to-r from-brand-primary to-brand-secondary hover:shadow-lg hover:shadow-brand-primary/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                         size="lg"
                     >
                         <Sparkles className="w-4 h-4 mr-2" />

@@ -6,7 +6,7 @@ interface LoadingScreenProps {
 
 export const LoadingScreen = ({ message = "Finding the perfect vibe..." }: LoadingScreenProps) => {
     return (
-        <div className='flex flex-col items-center justify-center min-h-screen bg-neutral-900'>
+        <div className='flex flex-col items-center justify-center min-h-screen bg-surface-base'>
             {/* Animated Melody mascot */}
             <div className='mb-6 animate-pulse'>
                 <MascotImage
@@ -23,9 +23,9 @@ export const LoadingScreen = ({ message = "Finding the perfect vibe..." }: Loadi
 
             {/* Optional loading dots */}
             <div className='flex gap-2 mt-4'>
-                <div className='w-2 h-2 bg-emerald-500 rounded-full animate-bounce' style={{ animationDelay: '0ms' }} />
-                <div className='w-2 h-2 bg-emerald-500 rounded-full animate-bounce' style={{ animationDelay: '150ms' }} />
-                <div className='w-2 h-2 bg-emerald-500 rounded-full animate-bounce' style={{ animationDelay: '300ms' }} />
+                <div className='w-2 h-2 bg-brand-primary rounded-full animate-bounce' style={{ animationDelay: '0ms' }} />
+                <div className='w-2 h-2 bg-brand-primary rounded-full animate-bounce' style={{ animationDelay: '150ms' }} />
+                <div className='w-2 h-2 bg-brand-primary rounded-full animate-bounce' style={{ animationDelay: '300ms' }} />
             </div>
         </div>
     );

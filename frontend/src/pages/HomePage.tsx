@@ -4,7 +4,7 @@ import { usePlayerStore } from "@/stores/PlayerStore";
 import { useUser } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import { ActivityFeed } from "@/components/home/ActivityFeed";
-import { ScrollArea } from "@/components/ui/scroll-area";
+
 import { Sparkles } from "lucide-react";
 import MusicCard, { MusicCardSkeleton } from "@/pages/home/components/MusicCard";
 import HorizontalScrollSection from "@/pages/home/components/HorizontalScrollSection";
@@ -70,7 +70,7 @@ const HomePage = () => {
 								{/* AI Playlist Button */}
 								<button
 									onClick={() => setShowAIPlaylist(true)}
-									className="group relative px-6 py-3 bg-gradient-to-r from-emerald-500 to-brand-primary hover:from-emerald-400 hover:to-brand-primary/90 text-black font-semibold rounded-full shadow-lg hover:shadow-xl hover:shadow-brand-primary/50 transition-all duration-300 hover:scale-105 flex items-center gap-2"
+									className="group relative px-6 py-3 bg-gradient-to-r from-brand-secondary to-brand-primary hover:from-brand-secondary/80 hover:to-brand-primary/90 text-white font-semibold rounded-full shadow-lg hover:shadow-xl hover:shadow-brand-primary/50 transition-all duration-300 hover:scale-105 flex items-center gap-2"
 								>
 									<Sparkles className="w-5 h-5" />
 									<span>AI Playlist</span>

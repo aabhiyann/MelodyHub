@@ -75,7 +75,7 @@ const AlbumPage = () => {
 							<Button
 								onClick={handlePlayAlbum}
 								size='icon'
-								className='w-14 h-14 rounded-full bg-gradient-to-r from-emerald-500 to-brand-primary hover:from-emerald-400 hover:to-brand-primary/90 hover:scale-105 transition-all shadow-glow-primary'
+								className='w-14 h-14 rounded-full bg-gradient-to-r from-brand-secondary to-brand-primary hover:from-brand-secondary/80 hover:to-brand-primary/90 hover:scale-105 transition-all shadow-glow-primary'
 							>
 								{isPlaying && currentAlbum?.songs.some((song) => song._id === currentSong?._id) ? (
 									<Pause className='h-7 w-7 text-white' />
