@@ -59,7 +59,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
             className={cn(
                 'fixed left-0 top-0 bottom-0 z-40',
                 'flex flex-col',
-                'bg-bg-secondary border-r border-white/10',
+                'glass-panel border-r border-y-0 border-l-0 rounded-none',
                 'transition-all duration-300',
                 className
             )}
@@ -108,7 +108,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
                                     'transition-all duration-200',
                                     'group relative',
                                     isActive
-                                        ? 'bg-white/10 text-brand-primary'
+                                        ? 'bg-white/10 text-[var(--brand-primary)]'
                                         : 'text-text-secondary hover:bg-white/5 hover:text-white'
                                 )
                             }

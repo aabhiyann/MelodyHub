@@ -101,7 +101,7 @@ const Hero = () => {
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.15 }}
-                                className="block text-transparent bg-clip-text bg-gradient-to-br from-brand-primary via-purple-400 to-accent-blue pb-2"
+                                className="block text-transparent bg-clip-text bg-gradient-to-br from-brand-primary via-brand-secondary to-accent-blue pb-2"
                             >
                                 Reimagined
                             </motion.span>
@@ -223,7 +223,7 @@ const Hero = () => {
                                         }}
                                     />
                                     {/* Fallback pattern */}
-                                    <div className="absolute inset-0 bg-gradient-to-br from-brand-500 to-accent-blue opacity-100 z-0 flex items-center justify-center">
+                                    <div className="absolute inset-0 bg-gradient-to-br from-brand-primary to-accent-blue opacity-100 z-0 flex items-center justify-center">
                                         <Music className="w-24 h-24 text-white/20" />
                                     </div>
 
@@ -290,7 +290,7 @@ const Hero = () => {
                         {/* Background Floating Blurred Covers */}
                         <motion.div
                             style={{ translateZ: -50 }}
-                            className="absolute top-20 -left-20 w-48 h-48 rounded-3xl bg-purple-500/30 blur-2xl z-0"
+                            className="absolute top-20 -left-20 w-48 h-48 rounded-3xl bg-brand-primary/30 blur-2xl z-0"
                             animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
                             transition={{ duration: 8, repeat: Infinity }}
                         />

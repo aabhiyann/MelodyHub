@@ -27,6 +27,15 @@ const config: Config = {
                     glass: 'var(--surface-glass)',
                     'glass-strong': 'var(--surface-glass-strong)',
                 },
+                // Legacy compatibility for existing components
+                background: {
+                    DEFAULT: 'var(--surface-base)',
+                    base: 'var(--surface-base)',
+                    elevated: 'var(--surface-elevated)',
+                    highlight: 'var(--surface-glass)', // mapping old highlight to glass
+                    press: 'var(--surface-glass-strong)',
+                    overlay: 'rgba(0,0,0,0.8)',
+                },
                 text: {
                     primary: 'var(--text-primary)',
                     secondary: 'var(--text-secondary)',
