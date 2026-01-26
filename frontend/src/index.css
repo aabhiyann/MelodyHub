@@ -1,95 +1,19 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Inter+Display:wght@700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
 @import './styles/accessibility.css';
 @import './styles/design-tokens.css';
+@import './styles/liquid-glass.css';
 @import './styles/typography.css';
 
 /* ============================================
    MELODYHUB PREMIUM DESIGN SYSTEM
-   Inspired by: Spotify, Apple Music, Linear
+   Liquid Glass - Apple 2025 Inspired
    ============================================ */
 
 @layer base {
-  :root {
-    /* ===== Brand Core (Rich Blue/Purple) ===== */
-    --primary-50: #eff0ff;
-    --primary-100: #e0e3ff;
-    --primary-200: #c7ccfe;
-    --primary-300: #a5acfd;
-    --primary-400: #7d85fc;
-    --primary-500: #5856d6;
-    /* Primary Brand - Rich Purple/Blue */
-    --primary-600: #4b44ca;
-    --primary-700: #3d34a9;
-    --primary-800: #342e88;
-    --primary-900: #2e2a6d;
-    --primary-950: #1b183f;
-
-    /* ===== Neutral / Surface System (True Black Foundation) ===== */
-    --background-base: #000000;
-    /* True Black */
-    --background-elevated: #121212;
-    /* Elevated Surface */
-    --background-highlight: #1c1c1e;
-    /* Hover State */
-    --background-press: #2c2c2e;
-    /* Active State */
-
-    /* ===== Text System ===== */
-    --text-primary: #ffffff;
-    --text-secondary: rgba(235, 235, 245, 0.6);
-    /* Apple-like secondary */
-    --text-tertiary: rgba(235, 235, 245, 0.3);
-    --text-disabled: rgba(235, 235, 245, 0.15);
-
-    /* ===== Accent Colors ===== */
-    --accent-blue: #0a84ff;
-    /* Electric Blue */
-    --accent-orange: #ff9f0a;
-    /* Sunset Orange */
-
-    /* ===== Semantic Colors ===== */
-    --success: #30d158;
-    /* Premium Green */
-    --warning: #ffd60a;
-    /* Premium Amber */
-    --error: #ff453a;
-    /* Premium Red */
-    --info: #64d2ff;
-    /* Premium Info Blue */
-
-    /* ===== Borders & Dividers ===== */
-    --border-subtle: rgba(255, 255, 255, 0.1);
-    --border-medium: rgba(255, 255, 255, 0.15);
-    --border-strong: rgba(255, 255, 255, 0.25);
-
-    /* ===== Shadows ===== */
-    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.4);
-    --shadow-raised: 0 8px 24px rgba(0, 0, 0, 0.5);
-    --shadow-floating: 0 16px 40px rgba(0, 0, 0, 0.6);
-    --shadow-modal: 0 24px 60px rgba(0, 0, 0, 0.7);
-
-    /* ===== Design Tokens ===== */
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 16px;
-    --radius-xl: 24px;
-    --radius-full: 9999px;
-
-    /* ===== Glass Morphism Tokens ===== */
-    --glass-background: rgba(18, 18, 18, 0.8);
-    --glass-border: rgba(255, 255, 255, 0.1);
-
-    /* ===== Typography ===== */
-    --font-primary: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    --font-display: 'SF Pro Display', 'Inter', sans-serif;
-  }
-}
-
-@layer base {
   body {
-    background-color: var(--background-base);
+    background-color: var(--surface-base);
     color: var(--text-primary);
     font-family: var(--font-primary);
     -webkit-font-smoothing: antialiased;
@@ -98,19 +22,19 @@
     /* Selection Color */
     ::selection {
       background-color: rgba(139, 92, 246, 0.3);
-      /* Primary 500 with opacity */
+      /* Electric Violet */
       color: white;
     }
 
-    /* Global Focus Ring for Keyboard Users */
+    /* Global Focus Ring */
     :focus-visible {
-      outline: 3px solid var(--primary-500);
+      outline: 3px solid var(--brand-primary);
       outline-offset: 2px;
       border-radius: 4px;
     }
   }
 
-  /* Custom Scrollbar (Thin & Dark) */
+  /* Custom Scrollbar */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -121,7 +45,7 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: var(--background-press);
+    background: var(--surface-card);
     border-radius: var(--radius-full);
   }
 
@@ -136,27 +60,27 @@
 
 /* Glassmorphism Presets */
 /* Glassmorphism Presets */
+/* Glassmorphism Presets - Updated to use Liquid Glass Tokens */
 .glass-panel {
-  background: var(--glass-background);
+  background: var(--surface-glass);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
+  border: 1px solid var(--border-subtle);
 }
 
 .glass-modal {
-  background: var(--glass-background);
+  background: var(--surface-elevated);
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-modal);
+  border: 1px solid var(--border-medium);
+  box-shadow: var(--shadow-xl);
 }
 
 .glass-toolbar {
   background: rgba(18, 18, 18, 0.7);
-  /* Slightly more transparent */
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 /* Typography Utilities */
@@ -521,25 +445,7 @@ input[type=range]::-webkit-slider-runnable-track {
    ============================================ */
 
 /* Enhanced Spacing Variables for Consistency */
-@layer base {
-  :root {
-    /* Spotify-style spacing scale */
-    --spacing-xs: 4px;
-    --spacing-sm: 8px;
-    --spacing-md: 12px;
-    --spacing-lg: 16px;
-    --spacing-xl: 24px;
-    --spacing-2xl: 32px;
-    --spacing-3xl: 48px;
-    --spacing-4xl: 64px;
 
-    /* Card grid gaps */
-    --card-gap: 24px;
-    /* Perfect distance between music cards */
-    --section-gap: 48px;
-    /* Space between page sections */
-  }
-}
 
 /* Modern Cubic Bezier Transitions */
 @layer utilities {

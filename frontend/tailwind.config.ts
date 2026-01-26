@@ -1,7 +1,8 @@
 import type { Config } from "tailwindcss";
+import animate from "tailwindcss-animate";
 
 const config: Config = {
-    darkMode: ["class"],
+    darkMode: "class",
     content: [
         "./index.html",
         "./src/**/*.{js,ts,jsx,tsx}",
@@ -9,13 +10,22 @@ const config: Config = {
     theme: {
         extend: {
             colors: {
-                // Semantic color mapping to CSS variables (Premium Theme)
-                background: {
-                    base: 'var(--background-base)',
-                    elevated: 'var(--background-elevated)',
-                    highlight: 'var(--background-highlight)',
-                    press: 'var(--background-press)',
-                    overlay: 'var(--background-overlay)',
+                // Semantic color mapping to CSS variables (Liquid Glass Theme)
+                brand: {
+                    DEFAULT: 'var(--brand-primary)',
+                    primary: 'var(--brand-primary)',
+                    secondary: 'var(--brand-secondary)',
+                    tertiary: 'var(--brand-tertiary)',
+                    accent: 'var(--brand-accent)',
+                    dark: 'var(--brand-dark)',
+                },
+                surface: {
+                    DEFAULT: 'var(--surface-base)',
+                    base: 'var(--surface-base)',
+                    elevated: 'var(--surface-elevated)',
+                    card: 'var(--surface-card)',
+                    glass: 'var(--surface-glass)',
+                    'glass-strong': 'var(--surface-glass-strong)',
                 },
                 text: {
                     primary: 'var(--text-primary)',
@@ -23,32 +33,11 @@ const config: Config = {
                     tertiary: 'var(--text-tertiary)',
                     disabled: 'var(--text-disabled)',
                 },
-                brand: {
-                    primary: 'var(--primary-500)',
-                    secondary: 'var(--primary-400)',
-                    dark: 'var(--primary-900)',
-                    // Full palette for more control if needed
-                    50: 'var(--primary-50)',
-                    100: 'var(--primary-100)',
-                    200: 'var(--primary-200)',
-                    300: 'var(--primary-300)',
-                    400: 'var(--primary-400)',
-                    500: 'var(--primary-500)',
-                    600: 'var(--primary-600)',
-                    700: 'var(--primary-700)',
-                    800: 'var(--primary-800)',
-                    900: 'var(--primary-900)',
-                    950: 'var(--primary-950)',
-                },
-                accent: {
-                    blue: 'var(--accent-blue)',
-                    orange: 'var(--accent-orange)',
-                },
                 semantic: {
-                    success: 'var(--success)',
-                    warning: 'var(--warning)',
-                    error: 'var(--error)',
-                    info: 'var(--info)',
+                    success: 'var(--color-success)',
+                    warning: 'var(--color-warning)',
+                    error: 'var(--color-error)',
+                    info: 'var(--color-info)',
                 },
                 // Border colors from variables
                 border: {
@@ -60,72 +49,69 @@ const config: Config = {
             fontFamily: {
                 sans: ['var(--font-primary)', 'sans-serif'],
                 display: ['var(--font-display)', 'sans-serif'],
+                mono: ['var(--font-mono)', 'monospace'],
+            },
+            fontSize: {
+                'display-lg': ['var(--text-display-lg)', { lineHeight: 'var(--leading-tight)', letterSpacing: 'var(--tracking-tighter)' }],
+                'display-md': ['var(--text-display-md)', { lineHeight: '1.15', letterSpacing: 'var(--tracking-tighter)' }],
+                'h1': ['var(--text-h1)', { lineHeight: '1.2', letterSpacing: 'var(--tracking-tight)' }],
+                'h2': ['var(--text-h2)', { lineHeight: '1.25', letterSpacing: '-0.01em' }],
+                'h3': ['var(--text-h3)', { lineHeight: '1.3', letterSpacing: '-0.005em' }],
+                'h4': ['var(--text-h4)', { lineHeight: '1.35', letterSpacing: '0em' }],
+                'h5': ['var(--text-h5)', { lineHeight: '1.4', letterSpacing: '0em' }],
+                'body-lg': ['var(--text-body-lg)', { lineHeight: '1.6', letterSpacing: '0em' }],
+                'body': ['var(--text-body)', { lineHeight: '1.6', letterSpacing: '0em' }],
+                'body-sm': ['var(--text-body-sm)', { lineHeight: '1.5', letterSpacing: '0em' }],
+                'caption': ['var(--text-caption)', { lineHeight: '1.4', letterSpacing: '0.01em' }],
+                'overline': ['var(--text-overline)', { lineHeight: '1.3', letterSpacing: '0.08em' }],
             },
             letterSpacing: {
-                tight: '-0.02em', // Headings default
-                normal: '0em',    // Body default
-                wide: '0.02em',
+                tighter: 'var(--tracking-tighter)',
+                tight: 'var(--tracking-tight)',
+                normal: 'var(--tracking-normal)',
+                wide: 'var(--tracking-wide)',
+                wider: 'var(--tracking-wider)',
+            },
+            spacing: {
+                'xs': 'var(--space-xs)',
+                'sm': 'var(--space-sm)',
+                'md': 'var(--space-md)',
+                'lg': 'var(--space-lg)',
+                'xl': 'var(--space-xl)',
+                '2xl': 'var(--space-2xl)',
+                '3xl': 'var(--space-3xl)',
+                '4xl': 'var(--space-4xl)',
+                '5xl': 'var(--space-5xl)',
+                '6xl': 'var(--space-6xl)',
             },
             borderRadius: {
-                sm: 'var(--radius-sm)', // 8px
-                md: 'var(--radius-md)', // 12px
-                lg: 'var(--radius-lg)', // 16px
-                xl: 'var(--radius-xl)', // 24px
+                sm: 'var(--radius-sm)',
+                md: 'var(--radius-md)',
+                lg: 'var(--radius-lg)',
+                xl: 'var(--radius-xl)',
+                '2xl': 'var(--radius-2xl)',
                 full: 'var(--radius-full)',
             },
             boxShadow: {
-                card: '0 4px 12px rgba(0, 0, 0, 0.4)',
-                raised: '0 8px 24px rgba(0, 0, 0, 0.5)',
-                floating: '0 16px 40px rgba(0, 0, 0, 0.6)',
-                modal: '0 24px 60px rgba(0, 0, 0, 0.7)',
-                glow: '0 0 20px rgba(88, 86, 214, 0.5)', // Using primary brand color
-                // Preserving legacy shadows just in case
-                'legacy-sm': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+                sm: 'var(--shadow-sm)',
+                md: 'var(--shadow-md)',
+                lg: 'var(--shadow-lg)',
+                xl: 'var(--shadow-xl)',
+                'glow-primary': 'var(--glow-primary)',
+                'glow-accent': 'var(--glow-accent)',
             },
             transitionDuration: {
-                fast: '200ms',
-                DEFAULT: '300ms',
-                slow: '500ms',
+                fast: 'var(--duration-fast)',
+                DEFAULT: 'var(--duration-standard)',
+                slow: 'var(--duration-slow)',
+                glacial: 'var(--duration-glacial)',
             },
-            ringOffsetWidth: {
-                3: '3px',
-            },
-            // Preserved Animations from TypeScript config + New ones
-            keyframes: {
-                'shimmer': {
-                    '0%': { transform: 'translateX(-100%)' },
-                    '100%': { transform: 'translateX(100%)' },
-                },
-                'slide-up': {
-                    '0%': { transform: 'translateY(10px)', opacity: '0' },
-                    '100%': { transform: 'translateY(0)', opacity: '1' },
-                },
-                'slide-down': {
-                    '0%': { transform: 'translateY(-10px)', opacity: '0' },
-                    '100%': { transform: 'translateY(0)', opacity: '1' },
-                },
-                'scale-in': {
-                    '0%': { transform: 'scale(0.95)', opacity: '0' },
-                    '100%': { transform: 'scale(1)', opacity: '1' },
-                },
-                'fade-in': {
-                    '0%': { opacity: '0' },
-                    '100%': { opacity: '1' },
-                },
-                'pulse-subtle': {
-                    '0%, 100%': { opacity: '1' },
-                    '50%': { opacity: '0.8' },
-                },
-            },
-            animation: {
-                'shimmer': 'shimmer 2s infinite',
-                'slide-up': 'slide-up 0.3s ease-out',
-                'slide-down': 'slide-down 0.3s ease-out',
-                'scale-in': 'scale-in 0.2s ease-out',
-                'fade-in': 'fade-in 0.3s ease-out',
-                'pulse-subtle': 'pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                'spin-slow': 'spin 3s linear infinite',
-                'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            transitionTimingFunction: {
+                'in': 'var(--ease-in)',
+                'out': 'var(--ease-out)',
+                'in-out': 'var(--ease-in-out)',
+                'bounce': 'var(--ease-bounce)',
+                'smooth': 'var(--ease-smooth)',
             },
             zIndex: {
                 'dropdown': '1000',
@@ -136,9 +122,23 @@ const config: Config = {
                 'popover': '1500',
                 'tooltip': '1600',
             },
+            animation: {
+                'shimmer': 'shimmer 2s infinite linear',
+                'fade-in-up': 'fade-in-up 0.5s ease-out forwards',
+            },
+            keyframes: {
+                shimmer: {
+                    '0%': { transform: 'translateX(-100%)' },
+                    '100%': { transform: 'translateX(100%)' },
+                },
+                'fade-in-up': {
+                    '0%': { opacity: '0', transform: 'translateY(10px)' },
+                    '100%': { opacity: '1', transform: 'translateY(0)' },
+                },
+            },
         },
     },
-    plugins: [require("tailwindcss-animate")],
+    plugins: [animate],
 };
 
 export default config;

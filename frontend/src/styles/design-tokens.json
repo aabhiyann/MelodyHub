@@ -1,0 +1,222 @@
+{
+    "name": "MelodyHub Liquid Glass Design System",
+    "version": "1.0.0",
+    "colors": {
+        "brand": {
+            "primary": {
+                "value": "#8B5CF6",
+                "name": "Electric Violet"
+            },
+            "secondary": {
+                "value": "#3B82F6",
+                "name": "Sonic Blue"
+            },
+            "tertiary": {
+                "value": "#06B6D4",
+                "name": "Neon Cyan"
+            },
+            "accent": {
+                "value": "#F59E0B",
+                "name": "Sunset Orange"
+            },
+            "dark": {
+                "value": "#0A0A0A",
+                "name": "Deep Space Black"
+            }
+        },
+        "background": {
+            "base": {
+                "value": "#0A0A0A"
+            },
+            "elevated": {
+                "value": "rgba(18, 18, 18, 0.8)"
+            },
+            "card": {
+                "value": "rgba(30, 30, 30, 0.6)"
+            },
+            "glass": {
+                "value": "rgba(255, 255, 255, 0.05)"
+            }
+        },
+        "text": {
+            "primary": {
+                "value": "rgba(255, 255, 255, 0.95)"
+            },
+            "secondary": {
+                "value": "rgba(255, 255, 255, 0.65)"
+            },
+            "tertiary": {
+                "value": "rgba(255, 255, 255, 0.45)"
+            },
+            "disabled": {
+                "value": "rgba(255, 255, 255, 0.25)"
+            }
+        },
+        "semantic": {
+            "success": {
+                "value": "#10B981"
+            },
+            "warning": {
+                "value": "#F59E0B"
+            },
+            "error": {
+                "value": "#EF4444"
+            },
+            "info": {
+                "value": "#3B82F6"
+            }
+        }
+    },
+    "typography": {
+        "fonts": {
+            "primary": {
+                "value": [
+                    "Inter Variable",
+                    "-apple-system",
+                    "system-ui",
+                    "sans-serif"
+                ]
+            },
+            "display": {
+                "value": [
+                    "Inter Display",
+                    "sans-serif"
+                ]
+            },
+            "mono": {
+                "value": [
+                    "JetBrains Mono",
+                    "monospace"
+                ]
+            }
+        },
+        "scale": {
+            "display-lg": {
+                "size": "72px",
+                "weight": "900",
+                "tracking": "-0.02em",
+                "lineHeight": "1.1"
+            },
+            "display-md": {
+                "size": "56px",
+                "weight": "800",
+                "tracking": "-0.02em",
+                "lineHeight": "1.15"
+            },
+            "h1": {
+                "size": "48px",
+                "weight": "700",
+                "tracking": "-0.015em",
+                "lineHeight": "1.2"
+            },
+            "h2": {
+                "size": "36px",
+                "weight": "700",
+                "tracking": "-0.01em",
+                "lineHeight": "1.25"
+            },
+            "h3": {
+                "size": "28px",
+                "weight": "600",
+                "tracking": "-0.005em",
+                "lineHeight": "1.3"
+            },
+            "h4": {
+                "size": "24px",
+                "weight": "600",
+                "tracking": "0em",
+                "lineHeight": "1.35"
+            },
+            "h5": {
+                "size": "20px",
+                "weight": "600",
+                "tracking": "0em",
+                "lineHeight": "1.4"
+            },
+            "body-lg": {
+                "size": "18px",
+                "weight": "500",
+                "tracking": "0em",
+                "lineHeight": "1.6"
+            },
+            "body": {
+                "size": "16px",
+                "weight": "400",
+                "tracking": "0em",
+                "lineHeight": "1.6"
+            },
+            "body-sm": {
+                "size": "14px",
+                "weight": "400",
+                "tracking": "0em",
+                "lineHeight": "1.5"
+            },
+            "caption": {
+                "size": "12px",
+                "weight": "500",
+                "tracking": "0.01em",
+                "lineHeight": "1.4"
+            },
+            "overline": {
+                "size": "11px",
+                "weight": "600",
+                "tracking": "0.08em",
+                "lineHeight": "1.3",
+                "transform": "uppercase"
+            }
+        }
+    },
+    "spacing": {
+        "base": "8px",
+        "xs": "4px",
+        "sm": "8px",
+        "md": "12px",
+        "lg": "16px",
+        "xl": "24px",
+        "2xl": "32px",
+        "3xl": "48px",
+        "4xl": "64px",
+        "5xl": "96px",
+        "6xl": "128px"
+    },
+    "borderRadius": {
+        "sm": "8px",
+        "md": "12px",
+        "lg": "16px",
+        "xl": "24px",
+        "2xl": "32px",
+        "full": "9999px"
+    },
+    "elevation": {
+        "shadows": {
+            "sm": "0 2px 8px rgba(0, 0, 0, 0.3)",
+            "md": "0 4px 16px rgba(0, 0, 0, 0.4)",
+            "lg": "0 12px 32px rgba(0, 0, 0, 0.5)",
+            "xl": "0 24px 64px rgba(0, 0, 0, 0.6)",
+            "glow-primary": "0 0 20px rgba(139, 92, 246, 0.4)",
+            "glow-accent": "0 0 20px rgba(59, 130, 246, 0.4)"
+        }
+    },
+    "animation": {
+        "timings": {
+            "instant": "100ms",
+            "fast": "200ms",
+            "standard": "300ms",
+            "slow": "500ms",
+            "glacial": "800ms"
+        },
+        "easings": {
+            "in": "cubic-bezier(0.4, 0, 1, 1)",
+            "out": "cubic-bezier(0, 0, 0.2, 1)",
+            "in-out": "cubic-bezier(0.4, 0, 0.2, 1)",
+            "bounce": "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+            "smooth": "cubic-bezier(0.33, 1, 0.68, 1)"
+        }
+    },
+    "gradients": {
+        "primary": "linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)",
+        "sunset": "linear-gradient(135deg, #F59E0B 0%, #EF4444 100%)",
+        "ocean": "linear-gradient(135deg, #06B6D4 0%, #8B5CF6 100%)",
+        "shimmer": "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%)"
+    }
+}
