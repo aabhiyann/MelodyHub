@@ -65,7 +65,7 @@ const PlaylistPage = () => {
                                 )}
                                 <div className='flex items-center gap-2 text-sm text-text-secondary'>
                                     <span className='font-medium text-white'>Created by User (Owner ID: {currentPlaylist?.owner.slice(0, 8)}...)</span>
-                                    <span className="flex items-center text-text-secondary"><span className="w-1 h-1 rounded-full bg-zinc-600 mx-2" /> {currentPlaylist?.songs.length} songs</span>
+                                    <span className="flex items-center text-text-secondary"><span className="w-1 h-1 rounded-full bg-text-tertiary mx-2" /> {currentPlaylist?.songs.length} songs</span>
 
                                     {user?.id === currentPlaylist?.owner && currentPlaylist && (
                                         <div className="ml-4">
