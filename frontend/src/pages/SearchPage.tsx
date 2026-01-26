@@ -50,8 +50,15 @@ const SearchPage = () => {
     const [selectedGenre, setSelectedGenre] = useState('all');
     const [sortBy, setSortBy] = useState('relevance');
     const [showFilters, setShowFilters] = useState(false);
-    const { songs, albums } = useMusicStore();
+    const { songs, albums, fetchSongs, fetchAlbums, isLoading } = useMusicStore();
     const { playAlbum } = usePlayerStore();
+
+    useEffect(() => {
+        if (songs.length === 0 || albums.length === 0) {
+            fetchSongs();
+            fetchAlbums();
+        }
+    }, [fetchSongs, fetchAlbums, songs.length, albums.length]);
 
     // Debounced search with filters
     const performSearch = useCallback(() => {
