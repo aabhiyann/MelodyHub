@@ -21,6 +21,8 @@ interface MusicStore {
 	fetchTrendingSongs: () => Promise<void>;
 	fetchStats: () => Promise<void>;
 	fetchSongs: () => Promise<void>;
+	fetchRadioStation: (songId: string) => Promise<Song[]>;
+	fetchDailyMix: () => Promise<Song[]>;
 	deleteSong: (id: string) => Promise<void>;
 	deleteAlbum: (id: string) => Promise<void>;
 	generatePlaylist: (prompt: string) => Promise<Song[]>;
@@ -40,6 +42,32 @@ export const useMusicStore = create<MusicStore>((set) => ({
 		totalAlbums: 0,
 		totalUsers: 0,
 		totalArtists: 0,
+	},
+
+	fetchRadioStation: async (songId) => {
+		set({ isLoading: true, error: null });
+		try {
+			const response = await axiosInstance.get(`/discovery/radio/${songId}`);
+			return response.data.data;
+		} catch (error: any) {
+			console.error("Error fetching radio:", error);
+			return [];
+		} finally {
+			set({ isLoading: false });
+		}
+	},
+
+	fetchDailyMix: async () => {
+		set({ isLoading: true, error: null });
+		try {
+			const response = await axiosInstance.get("/discovery/daily-mix");
+			return response.data.data || [];
+		} catch (error: any) {
+			console.error("Error fetching daily mix:", error);
+			return [];
+		} finally {
+			set({ isLoading: false });
+		}
 	},
 
 	deleteSong: async (id) => {
@@ -126,10 +154,11 @@ export const useMusicStore = create<MusicStore>((set) => ({
 		}
 	},
 
+
 	fetchFeaturedSongs: async () => {
 		set({ isLoading: true, error: null });
 		try {
-			const response = await axiosInstance.get("/songs/featured");
+			const response = await axiosInstance.get("/discovery/featured");
 			set({ featuredSongs: response.data.data || response.data || [] });
 		} catch (error: any) {
 			console.error("Error fetching featured songs:", error);
@@ -142,7 +171,7 @@ export const useMusicStore = create<MusicStore>((set) => ({
 	fetchMadeForYouSongs: async () => {
 		set({ isLoading: true, error: null });
 		try {
-			const response = await axiosInstance.get("/songs/made-for-you");
+			const response = await axiosInstance.get("/discovery/made-for-you");
 			set({ madeForYouSongs: response.data.data || response.data || [] });
 		} catch (error: any) {
 			console.error("Error fetching made-for-you songs:", error);
@@ -155,7 +184,7 @@ export const useMusicStore = create<MusicStore>((set) => ({
 	fetchTrendingSongs: async () => {
 		set({ isLoading: true, error: null });
 		try {
-			const response = await axiosInstance.get("/songs/trending");
+			const response = await axiosInstance.get("/discovery/trending");
 			set({ trendingSongs: response.data.data || response.data || [] });
 		} catch (error: any) {
 			console.error("Error fetching trending songs:", error);

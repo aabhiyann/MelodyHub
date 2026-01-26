@@ -4,19 +4,13 @@
  */
 
 import { useState } from 'react';
-import { X, Upload, CheckCircle, AlertCircle } from 'lucide-react';
+import { X, Upload } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ValidatedInput } from '@/components/ui/form-feedback';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
-interface UploadFile {
-    file: File;
-    id: string;
-    progress: number;
-    status: 'pending' | 'uploading' | 'success' | 'error';
-    error?: string;
-}
+
 
 interface UploadFormProps {
     files: File[];

@@ -3,7 +3,7 @@
  * WCAG 2.1 Success Criterion 4.1.3 (Status Messages - Level AA)
  */
 
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 export type LiveRegionPoliteness = 'polite' | 'assertive' | 'off';
 

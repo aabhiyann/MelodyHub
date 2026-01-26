@@ -4,9 +4,9 @@
  */
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Play, Pause, SkipForward, SkipBack, Heart, ChevronDown, ChevronUp } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack, Heart, ChevronDown, ChevronUp } from 'lucide-react';
 import { usePlayerStore } from '@/stores/PlayerStore';
-import { cn } from '@/lib/utils';
+
 
 export const ExpandedPlayer = () => {
     const {
@@ -17,7 +17,15 @@ export const ExpandedPlayer = () => {
         playNext,
         playPrevious,
         toggleExpanded,
+        currentTime,
+        duration,
     } = usePlayerStore();
+
+    const formatTime = (seconds: number) => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = Math.floor(seconds % 60);
+        return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+    };
 
     if (!isExpanded || !currentSong) return null;
 
@@ -101,12 +109,12 @@ export const ExpandedPlayer = () => {
                         <div className="h-1 bg-white/20 rounded-full overflow-hidden">
                             <motion.div
                                 className="h-full bg-brand-primary"
-                                style={{ width: '45%' }}
+                                style={{ width: `${duration ? (currentTime / duration) * 100 : 0}%` }}
                             />
                         </div>
                         <div className="flex justify-between text-xs text-text-tertiary mt-1">
-                            <span>1:23</span>
-                            <span>3:45</span>
+                            <span>{formatTime(currentTime)}</span>
+                            <span>{formatTime(duration)}</span>
                         </div>
                     </div>
                 </div>

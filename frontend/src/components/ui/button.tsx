@@ -9,37 +9,37 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        // Modern Purple Primary (Melody Brand)
+        // Primary Brand (Green)
         default:
-          "bg-[var(--melody-purple-600)] text-white shadow-md hover:bg-[var(--melody-purple-700)] hover:shadow-[var(--shadow-raised)] hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
+          "bg-brand-primary text-primary-foreground shadow-md hover:bg-brand-primary/90 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
 
         // Blue Secondary (Social/Info)
         secondary:
-          "bg-[var(--melody-blue-500)] text-white shadow-md hover:bg-[var(--melody-blue-600)] hover:shadow-[var(--shadow-glow-blue)] hover:scale-105 active:scale-100",
+          "bg-blue-500 text-white shadow-md hover:bg-blue-600 hover:shadow-lg hover:scale-105 active:scale-100",
 
         // Success/Active (Green)
         success:
-          "bg-[var(--melody-green-500)] text-white shadow-md hover:bg-[var(--melody-green-400)] hover:scale-105 active:scale-100",
+          "bg-emerald-500 text-white shadow-md hover:bg-emerald-600 hover:scale-105 active:scale-100",
 
         // Destructive (Red)
         destructive:
-          "bg-[var(--color-error)] text-white shadow-md hover:bg-red-600 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 hover:scale-105 active:scale-100",
+          "bg-red-500 text-white shadow-md hover:bg-red-600 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 hover:scale-105 active:scale-100",
 
-        // Outline (Purple border)
+        // Outline (Brand border)
         outline:
-          "border-2 border-[var(--melody-purple-500)]/30 bg-transparent hover:bg-[var(--melody-purple-500)]/10 hover:border-[var(--melody-purple-500)] text-[var(--color-text-primary)]",
+          "border-2 border-brand-primary/30 bg-transparent hover:bg-brand-primary/10 hover:border-brand-primary text-brand-primary",
 
         // Ghost (Minimal)
         ghost:
-          "hover:bg-white/5 hover:text-[var(--melody-purple-400)] text-[var(--color-text-secondary)]",
+          "hover:bg-white/5 hover:text-brand-primary text-text-secondary",
 
         // Link Style
         link:
-          "text-[var(--melody-purple-400)] underline-offset-4 hover:underline hover:text-[var(--melody-purple-600)]",
+          "text-brand-primary underline-offset-4 hover:underline hover:text-brand-primary/80",
 
         // Glassmorphism variant
         glass:
-          "glass hover:glass-strong text-[var(--color-text-primary)] hover:border-[var(--melody-purple-500)]/50",
+          "glass hover:glass-strong text-white hover:border-brand-primary/50",
       },
       size: {
         default: "h-10 px-4 py-2 has-[>svg]:px-3",

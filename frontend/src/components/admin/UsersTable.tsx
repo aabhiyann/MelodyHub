@@ -11,66 +11,29 @@ import { format } from "date-fns";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-interface User {
-    _id: string;
-    name: string;
-    email: string;
-    imageUrl?: string;
-    role: 'admin' | 'user';
-    status: 'active' | 'suspended';
-    createdAt: string;
+import { User } from "@/types";
+
+interface AdminUser extends User {
+    role?: 'admin' | 'user';
+    status?: 'active' | 'suspended';
     lastLogin?: string;
+    email?: string; // standard user might not have email exposed yet
+    createdAt?: string;
 }
 
 interface UsersTableProps {
-    users?: User[];
+    users?: any[];
+    isLoading?: boolean;
     onRoleChange?: (userId: string, role: 'admin' | 'user') => void;
     onStatusChange?: (userId: string, status: 'active' | 'suspended') => void;
 }
 
-// Mock data generator
-const generateMockUsers = (): User[] => {
-    return [
-        {
-            _id: '1',
-            name: 'John Doe',
-            email: 'john@example.com',
-            imageUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=John',
-            role: 'admin',
-            status: 'active',
-            createdAt: new Date('2024-01-15').toISOString(),
-            lastLogin: new Date().toISOString(),
-        },
-        {
-            _id: '2',
-            name: 'Jane Smith',
-            email: 'jane@example.com',
-            imageUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jane',
-            role: 'user',
-            status: 'active',
-            createdAt: new Date('2024-02-20').toISOString(),
-            lastLogin: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-        },
-        {
-            _id: '3',
-            name: 'Bob Johnson',
-            email: 'bob@example.com',
-            imageUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Bob',
-            role: 'user',
-            status: 'suspended',
-            createdAt: new Date('2024-03-10').toISOString(),
-        },
-    ];
-};
-
 export const UsersTable = ({
-    users = generateMockUsers(),
-    onRoleChange,
-    onStatusChange,
+    users = [],
 }: UsersTableProps) => {
-    const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+    const [selectedUsers, setSelectedUsers] = useState<AdminUser[]>([]);
 
-    const columns: ColumnDef<User>[] = [
+    const columns: ColumnDef<AdminUser>[] = [
         {
             id: "select",
             header: ({ table }) => (
@@ -98,8 +61,8 @@ export const UsersTable = ({
                 <div className="flex items-center gap-3">
                     <div className="relative">
                         <img
-                            src={row.original.imageUrl || `https://api.dicebear.com/7.x/avataaars/svg?seed=${row.original.name}`}
-                            alt={row.original.name}
+                            src={row.original.imageUrl || `https://api.dicebear.com/7.x/avataaars/svg?seed=${row.original.fullName}`}
+                            alt={row.original.fullName}
                             className="size-10 rounded-full object-cover ring-2 ring-white"
                         />
                         {row.original.status === 'active' && (
@@ -107,7 +70,7 @@ export const UsersTable = ({
                         )}
                     </div>
                     <div>
-                        <p className="font-medium">{row.original.name}</p>
+                        <p className="font-medium">{row.original.fullName || "User"}</p>
                         <p className="text-body-sm text-gray-500 flex items-center gap-1">
                             <Mail className="size-3" />
                             {row.original.email}
@@ -159,7 +122,7 @@ export const UsersTable = ({
             cell: ({ row }) => (
                 <span className="text-body-sm text-gray-600 flex items-center gap-1">
                     <Calendar className="size-3" />
-                    {format(new Date(row.original.createdAt), "MMM d, yyyy")}
+                    {row.original.createdAt ? format(new Date(row.original.createdAt), "MMM d, yyyy") : "N/A"}
                 </span>
             ),
         },
@@ -177,7 +140,7 @@ export const UsersTable = ({
         {
             id: "actions",
             header: "Actions",
-            cell: ({ row }) => (
+            cell: () => (
                 <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                     <MoreVertical className="size-4 text-gray-600" />
                 </button>

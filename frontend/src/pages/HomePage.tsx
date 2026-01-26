@@ -10,6 +10,7 @@ import MusicCard, { MusicCardSkeleton } from "@/pages/home/components/MusicCard"
 import HorizontalScrollSection from "@/pages/home/components/HorizontalScrollSection";
 import { EmptyState } from "@/pages/home/components/EmptyState";
 import { AIPlaylistPage } from "@/pages/ai/AIPlaylistPage";
+import { Song } from "@/types";
 
 const HomePage = () => {
 	const { user } = useUser();
@@ -20,16 +21,19 @@ const HomePage = () => {
 		isLoading,
 		fetchTrendingSongs,
 		fetchFeaturedSongs,
-		fetchMadeForYouSongs
+		fetchMadeForYouSongs,
+		fetchDailyMix
 	} = useMusicStore();
 	const { playAlbum } = usePlayerStore();
 	const [showAIPlaylist, setShowAIPlaylist] = useState(false);
+	const [dailyMix, setDailyMix] = useState<Song[]>([]);
 
 	useEffect(() => {
 		fetchTrendingSongs();
 		fetchFeaturedSongs();
 		fetchMadeForYouSongs();
-	}, [fetchTrendingSongs, fetchFeaturedSongs, fetchMadeForYouSongs]);
+		fetchDailyMix().then(songs => setDailyMix(songs));
+	}, [fetchTrendingSongs, fetchFeaturedSongs, fetchMadeForYouSongs, fetchDailyMix]);
 
 	const getGreeting = () => {
 		const hour = new Date().getHours();
@@ -56,12 +60,13 @@ const HomePage = () => {
 							{/* AI Playlist Button */}
 							<button
 								onClick={() => setShowAIPlaylist(true)}
-								className="group relative px-6 py-3 bg-gradient-to-r from-brand-primary to-purple-600 hover:from-brand-primary/90 hover:to-purple-600/90 text-white font-semibold rounded-full shadow-lg hover:shadow-xl hover:shadow-brand-primary/50 transition-all duration-300 hover:scale-105 flex items-center gap-2"
+								className="group relative px-6 py-3 bg-gradient-to-r from-emerald-500 to-brand-primary hover:from-emerald-400 hover:to-brand-primary/90 text-black font-semibold rounded-full shadow-lg hover:shadow-xl hover:shadow-brand-primary/50 transition-all duration-300 hover:scale-105 flex items-center gap-2"
 							>
 								<Sparkles className="w-5 h-5" />
 								<span>AI Playlist</span>
 							</button>
 						</div>
+
 
 						{/* Featured / Trending Section */}
 						<div className="w-full overflow-hidden">
@@ -89,6 +94,29 @@ const HomePage = () => {
 								)}
 							</HorizontalScrollSection>
 						</div>
+
+						{/* Daily Mix Section */}
+						{dailyMix.length > 0 && (
+							<div>
+								<h2 className="text-2xl font-bold text-white tracking-tight mb-6 flex items-center gap-2">
+									<Sparkles className="size-6 text-brand-primary" />
+									Your Daily Mix
+								</h2>
+								<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+									{dailyMix.map((song, index) => (
+										<MusicCard
+											key={song._id}
+											song={song}
+											onClick={() => playAlbum(dailyMix, index)}
+											onPlayClick={(e) => {
+												e.stopPropagation();
+												playAlbum(dailyMix, index);
+											}}
+										/>
+									))}
+								</div>
+							</div>
+						)}
 
 						{/* Made For You Section (Grid Layout as requested) */}
 						<div>

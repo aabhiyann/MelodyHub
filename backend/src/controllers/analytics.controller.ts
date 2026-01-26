@@ -166,6 +166,7 @@ export const getUserPreferences = async (req: Request, res: Response) => {
                 audioPreferences: userPref.audioPreferences,
                 likedSongsCount: userPref.likedSongs.length,
                 totalPlays: userPref.listeningHistory.length,
+                listeningHistory: userPref.listeningHistory,
             },
         });
     } catch (error: any) {

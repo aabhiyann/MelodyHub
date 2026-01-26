@@ -1,7 +1,9 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ListMusic } from "lucide-react";
 import SongsTable from "./SongsTable";
-import AddSongDialog from "./AddSongDialog";
+import SongDialog from "./admin/SongDialog";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 
 const SongsTabContent = () => {
 	return (
@@ -15,7 +17,12 @@ const SongsTabContent = () => {
 						</CardTitle>
 						<CardDescription className="text-zinc-400">Manage your music tracks</CardDescription>
 					</div>
-					<AddSongDialog />
+					<SongDialog trigger={
+						<Button className="bg-brand-primary hover:bg-brand-primary/90 text-white">
+							<Plus className="mr-2 h-4 w-4" />
+							Add Songs
+						</Button>
+					} />
 				</div>
 			</CardHeader>
 			<CardContent>

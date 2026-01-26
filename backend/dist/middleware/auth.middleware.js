@@ -1,6 +1,21 @@
 import { clerkClient } from "@clerk/express";
 export const protectRoute = async (req, res, next) => {
     const authReq = req;
+    // Test environment bypass
+    if (process.env.NODE_ENV === 'test') {
+        // If mocked auth is injected by test framework logic, allow it.
+        // Or if we want to simulate a user via header (easier for integration tests)
+        if (req.headers['x-test-user-id']) {
+            authReq.auth = {
+                userId: req.headers['x-test-user-id'],
+                sessionId: 'test-session',
+                getToken: async () => 'test-token',
+                claims: {}
+            };
+            next();
+            return;
+        }
+    }
     if (!authReq.auth.userId) {
         res.status(401).json({ message: "Unauthorized access" });
         return;
@@ -23,6 +38,7 @@ export const requireAdmin = async (req, res, next) => {
         next();
     }
     catch (error) {
+        console.error("Error in requireAdmin", error);
         res.status(500).json({ message: "Authentication failed to check for admin" });
     }
 };

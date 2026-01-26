@@ -271,8 +271,8 @@ const LibraryPage = () => {
                                         <div className='inline-flex items-center justify-center size-20 rounded-full bg-white/10 mb-4'>
                                             <ListMusic className='size-10 text-zinc-400' />
                                         </div>
-                                        <h3 className='text-xl font-semibold text-white mb-2'>No Playlists Yet</h3>
-                                        <p className='text-zinc-400'>Create your first playlist to see it here</p>
+                                        <h3 className='text-xl font-semibold text-white mb-2'>No Custom Playlists</h3>
+                                        <p className='text-zinc-400'>Playlists you create will appear here</p>
                                     </div>
                                 ) : viewType === 'grid' ? (
                                     <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6'>

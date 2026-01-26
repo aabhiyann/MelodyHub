@@ -70,7 +70,7 @@ const ArtistPage = () => {
                                         className='w-full h-full object-cover'
                                     />
                                 ) : (
-                                    <div className='w-full h-full bg-gradient-to-br from-brand-primary to-purple-600 flex items-center justify-center'>
+                                    <div className='w-full h-full bg-gradient-to-br from-brand-primary to-blue-600 flex items-center justify-center'>
                                         <Music className='size-24 text-white' />
                                     </div>
                                 )}

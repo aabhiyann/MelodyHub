@@ -1,6 +1,8 @@
-import { Play, MoreHorizontal, Plus, ListMusic } from "lucide-react";
+import { Play, MoreHorizontal, Plus, ListMusic, Share2, Radio } from "lucide-react";
 import { Song } from "@/types";
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { LikeButton } from "@/components/LikeButton";
 import { AddToPlaylistDialog } from "@/components/AddToPlaylistDialog";
 
@@ -15,6 +17,8 @@ const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
     const [isImageLoaded, setIsImageLoaded] = useState(false);
     const [shouldLoadImage, setShouldLoadImage] = useState(false);
     const imgContainerRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
+
 
     // Lazy loading with Intersection Observer
     useEffect(() => {
@@ -91,7 +95,7 @@ const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
                     <div className="absolute bottom-2 right-2 translate-y-2 opacity-0 transition-bounce group-hover:translate-y-0 group-hover:opacity-100 z-20">
                         <button
                             onClick={onPlayClick}
-                            className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-purple-600 hover:from-violet-400 hover:to-purple-500 text-white shadow-lg hover:shadow-xl hover:shadow-violet-500/50 transition-bounce hover-scale-md active-scale-sm"
+                            className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-primary hover:bg-brand-primary/90 text-black shadow-lg hover:shadow-xl hover:shadow-brand-primary/50 transition-bounce hover-scale-md active-scale-sm"
                             aria-label={`Play ${song.title}`}
                         >
                             <Play className="h-5 w-5 fill-white ml-0.5" />
@@ -127,7 +131,35 @@ const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
             {/* Context Menu - Refined Design */}
             {showMenu && (
                 <div className="absolute top-[75%] right-2 z-50 w-48 rounded-lg border border-white/10 bg-zinc-900/98 backdrop-blur-xl p-1.5 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
-                    <button className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition-snap text-left">
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            const link = `${window.location.origin}/radio/${song._id}`;
+                            navigator.clipboard.writeText(link);
+                            toast.success("Radio link copied!");
+                            setShowMenu(false);
+                        }}
+                        className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition-snap text-left"
+                    >
+                        <Share2 className="h-4 w-4" />
+                        Copy Link
+                    </button>
+
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/radio/${song._id}`);
+                            setShowMenu(false);
+                        }}
+                        className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition-snap text-left"
+                    >
+                        <Radio className="h-4 w-4" />
+                        Start Radio
+                    </button>
+
+                    <div className="h-px bg-white/10 my-1" />
+
+                    <button className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition-snap text-left">
                         <Plus className="h-4 w-4" />
                         Add to Queue
                     </button>
@@ -138,13 +170,13 @@ const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
                             setShowPlaylistDialog(true);
                             setShowMenu(false);
                         }}
-                        className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition-snap text-left"
+                        className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition-snap text-left"
                     >
                         <ListMusic className="h-4 w-4" />
                         Add to Playlist
                     </button>
 
-                    <button className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition-snap text-left">
+                    <button className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition-snap text-left">
                         <ListMusic className="h-4 w-4" />
                         Go to Artist
                     </button>

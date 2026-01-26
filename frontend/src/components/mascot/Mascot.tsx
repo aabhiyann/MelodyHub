@@ -16,7 +16,7 @@ export const Mascot = () => {
     const mascot = useMascot();
     const prefersReducedMotion = useReducedMotion();
     const [showConfetti, setShowConfetti] = useState(false);
-    const [holidayTheme, setHolidayTheme] = useState(getHolidayTheme());
+    const [holidayTheme] = useState(getHolidayTheme());
 
     // Show confetti for excited/celebrating states
     useEffect(() => {

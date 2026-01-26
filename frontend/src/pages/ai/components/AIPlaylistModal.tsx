@@ -52,7 +52,7 @@ export const AIPlaylistModal = ({ isOpen, onClose, children }: AIPlaylistModalPr
                     />
 
                     {/* Gradient background */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-blue-900/20" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/20 via-black to-blue-900/20" />
 
                     {/* Particle effects */}
                     <ParticleBackground />
