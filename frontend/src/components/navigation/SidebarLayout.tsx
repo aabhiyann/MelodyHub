@@ -1,44 +1,46 @@
-/**
- * SidebarLayout - Layout wrapper with sidebar + main content
- * Responsive: sidebar on desktop, bottom tabs on mobile
- */
-
 import { Sidebar } from './Sidebar';
 import { BottomTabBar } from '@/components/mobile/BottomTabBar';
 import { useIsMobile } from '@/hooks/useMediaQuery';
 import { Outlet } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-
 import { SkipLink } from '@/components/a11y/SkipLink';
 import { Mascot } from '@/components/mascot/Mascot';
 import { MascotOnboarding } from '@/components/mascot/MascotOnboarding';
 import { Toaster } from 'react-hot-toast';
+import FriendsActivity from '../FriendsActivity';
 
 export const SidebarLayout = () => {
     const isMobile = useIsMobile();
 
     return (
-        <div className="h-screen flex">
+        <div className="h-screen flex bg-surface-base text-text-primary font-sans antialiased selection:bg-brand-primary/30">
             <SkipLink />
-            {/* Desktop Sidebar - Visible on Tablet+ (sm breakpoint) */}
-            {!isMobile && <Sidebar />}
+
+            {/* Desktop Sidebar (Left) */}
+            {!isMobile && (
+                <aside className="w-[240px] shrink-0 border-r border-white/5 bg-black/20 backdrop-blur-xl z-30">
+                    <Sidebar />
+                </aside>
+            )}
 
             {/* Main Content Area */}
             <main
                 id="main-content"
-                className={cn(
-                    "flex-1 overflow-y-auto pb-24 focus:outline-none",
-                    // Mobile: No margin
-                    "ml-0",
-                    // Tablet/Desktop: Sidebar width margin
-                    // Note: Sidebar is 240px by default. 
-                    // TODO: Lift isExpanded state to match collapsed width (80px)
-                    "sm:ml-[240px]"
-                )}
+                className="flex-1 min-w-0 overflow-y-auto focus:outline-none"
                 tabIndex={-1}
             >
                 <Outlet />
+
+                {/* Spacer for bottom tab bar on mobile */}
+                {isMobile && <div className="h-24" />}
             </main>
+
+            {/* Friends Activity Sidebar (Right) - Desktop Only */}
+            {!isMobile && (
+                <aside className="hidden xl:block w-[280px] shrink-0 border-l border-white/5 bg-black/20 backdrop-blur-xl z-30">
+                    <FriendsActivity />
+                </aside>
+            )}
 
             {/* Mobile Bottom Tabs */}
             {isMobile && <BottomTabBar />}

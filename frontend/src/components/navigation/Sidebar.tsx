@@ -17,6 +17,7 @@ import {
     MessageCircle,
     User,
     TrendingUp,
+    Users,
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -38,6 +39,7 @@ const mainNavItems: NavItem[] = [
     { id: 'library', label: 'Library', icon: Library, path: '/library' },
     { id: 'analytics', label: 'Analytics', icon: TrendingUp, path: '/analytics' },
     { id: 'profile', label: 'Profile', icon: User, path: '/profile' },
+    { id: 'community', label: 'Community', icon: Users, path: '/community' },
     { id: 'search', label: 'Search', icon: Search, path: '/search' },
 ];
 

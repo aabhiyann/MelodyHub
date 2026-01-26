@@ -6,6 +6,7 @@ import {
     getFriends,
     getFriendRequests,
     removeFriend,
+    getFriendActivity,
 } from "../controllers/social.controller.js";
 import {
     createPlaylist,
@@ -26,6 +27,7 @@ router.put("/friend-request/:id/reject", rejectFriendRequest);
 router.get("/friends", getFriends);
 router.get("/friend-requests", getFriendRequests);
 router.delete("/friends/:id", removeFriend);
+router.get("/activity", getFriendActivity);
 
 // Playlist routes
 router.post("/playlists", createPlaylist);
