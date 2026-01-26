@@ -45,6 +45,8 @@ export interface Playlist {
 	name: string;
 	description?: string;
 	owner: string; // or User object if populated, but usually ID in simplest form or check usage
+	collaborators: string[];
+	viewers: string[];
 	songs: Song[];
 	isPublic: boolean;
 	createdAt: string;

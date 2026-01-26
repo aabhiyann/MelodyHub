@@ -12,7 +12,13 @@ export class AuthController extends BaseController {
                     imageUrl,
                 });
             }
-            this.handleSuccess(res, { success: true });
+            else {
+                // Update user info if existing
+                user.fullName = `${firstName || ""} ${lastName || ""}`.trim();
+                user.imageUrl = imageUrl;
+                await user.save();
+            }
+            this.handleSuccess(res, user);
         }
         catch (error) {
             this.handleError(next, error);

@@ -21,7 +21,7 @@ export const sendFriendRequest = async (req: Request, res: Response, next: NextF
             return res.status(404).json({ message: "Sender not found" });
         }
 
-        if (sender.clerkId === req.body.receiverId || sender._id.toString() === receiverId.toString()) {
+        if (sender.clerkId === req.body.receiverId || (sender as any)._id.toString() === receiverId.toString()) {
             return res.status(400).json({ message: "You cannot request yourself" });
         }
 
@@ -96,7 +96,7 @@ export const acceptFriendRequest = async (req: Request, res: Response, next: Nex
             return;
         }
 
-        if (request.receiverId.toString() !== user._id.toString()) {
+        if (request.receiverId.toString() !== (user as any)._id.toString()) {
             res.status(403).json({ message: "Not authorized" });
             return;
         }

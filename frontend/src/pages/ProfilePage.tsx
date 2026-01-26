@@ -95,7 +95,7 @@ const ProfilePage = () => {
             label: 'Playlists Created',
             value: playlistCount.toString(),
             icon: Music,
-            color: 'text-purple-400'
+            color: 'text-emerald-400'
         },
         {
             label: 'Member Since',
@@ -148,7 +148,7 @@ const ProfilePage = () => {
                                 <h2 className='text-2xl font-bold text-white tracking-tight'>Account Settings</h2>
                                 <button
                                     onClick={handleSignOut}
-                                    className='flex items-center gap-2 px-4 py-2 rounded-lg bg-error/10 hover:bg-error/20 text-error hover:text-red-300 border border-error/20 hover:border-error/40 transition-all font-medium text-sm'
+                                    className='flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-500 hover:text-white border border-red-500/20 hover:border-red-500/40 transition-all font-medium text-sm'
                                 >
                                     <LogOut className='size-4' />
                                     <span>Sign Out</span>

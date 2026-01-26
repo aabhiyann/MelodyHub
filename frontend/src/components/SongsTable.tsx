@@ -3,15 +3,18 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Song } from "@/types";
 import { DataTable } from "@/components/admin/DataTable";
 import { BulkActions } from "@/components/admin/BulkActions";
-import { Play, Trash2, Edit } from "lucide-react";
+import { Play, Trash2, Edit, Radio } from "lucide-react";
+import SongDialog from "./admin/SongDialog";
 import { format } from "date-fns";
 import { useState } from "react";
 
 const SongsTable = () => {
 	const { songs, deleteSong } = useMusicStore();
 	const [selectedSongs, setSelectedSongs] = useState<Song[]>([]);
+	const [editingSong, setEditingSong] = useState<Song | null>(null);
+	const [isEditOpen, setIsEditOpen] = useState(false);
 
-	// Define table columns
+	// Define table columns inside component to access state and handlers
 	const columns: ColumnDef<Song>[] = [
 		{
 			id: "select",
@@ -94,6 +97,10 @@ const SongsTable = () => {
 					<button
 						className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
 						title="Edit"
+						onClick={() => {
+							setEditingSong(row.original);
+							setIsEditOpen(true);
+						}}
 					>
 						<Edit className="size-4 text-gray-600" />
 					</button>
@@ -104,7 +111,14 @@ const SongsTable = () => {
 					>
 						<Trash2 className="size-4 text-error" />
 					</button>
-				</div>
+					<button
+						onClick={() => window.location.href = `/radio/${row.original._id}`}
+						className="p-2 hover:bg-violet-500/10 rounded-lg transition-colors group"
+						title="Start Radio"
+					>
+						<Radio className="size-4 text-gray-600 group-hover:text-violet-500" />
+					</button>
+				</div >
 			),
 			enableSorting: false,
 		},
@@ -147,6 +161,13 @@ const SongsTable = () => {
 				data={songs}
 				onRowSelectionChange={setSelectedSongs}
 				searchPlaceholder="Search songs..."
+			/>
+
+			<SongDialog
+				mode="edit"
+				songToEdit={editingSong}
+				open={isEditOpen}
+				onOpenChange={setIsEditOpen}
 			/>
 		</div>
 	);

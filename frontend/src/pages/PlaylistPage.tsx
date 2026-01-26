@@ -6,11 +6,14 @@ import { Clock, Pause, Play, Music, ListMusic } from "lucide-react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { formatDuration } from "./AlbumPage"; // Reuse utility or move to utils
+import { useUser } from "@clerk/clerk-react";
+import { InviteCollaboratorsDialog } from "@/components/InviteCollaboratorsDialog";
 
 const PlaylistPage = () => {
     const { id } = useParams();
     const { fetchPlaylistById, currentPlaylist, isLoading } = usePlaylistStore();
     const { currentSong, isPlaying, playAlbum, togglePlay } = usePlayerStore();
+    const { user } = useUser();
 
     useEffect(() => {
         if (id) fetchPlaylistById(id);
@@ -63,6 +66,15 @@ const PlaylistPage = () => {
                                 <div className='flex items-center gap-2 text-sm text-text-secondary'>
                                     <span className='font-medium text-white'>Created by User (Owner ID: {currentPlaylist?.owner.slice(0, 8)}...)</span>
                                     <span className="flex items-center text-text-secondary"><span className="w-1 h-1 rounded-full bg-zinc-600 mx-2" /> {currentPlaylist?.songs.length} songs</span>
+
+                                    {user?.id === currentPlaylist?.owner && currentPlaylist && (
+                                        <div className="ml-4">
+                                            <InviteCollaboratorsDialog
+                                                playlistId={currentPlaylist._id}
+                                                currentCollaborators={currentPlaylist.collaborators}
+                                            />
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>

@@ -4,11 +4,12 @@
  */
 
 import { cn } from '@/lib/utils';
+import React from 'react';
 
 interface VisuallyHiddenProps {
     children: React.ReactNode;
     className?: string;
-    as?: keyof JSX.IntrinsicElements;
+    as?: React.ElementType;
 }
 
 export const VisuallyHidden = ({

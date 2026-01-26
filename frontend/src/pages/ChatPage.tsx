@@ -48,13 +48,13 @@ const ChatPage = () => {
 
 				{/* chat message */}
 				{/* chat message */}
-				<div className='flex flex-col h-full bg-white/[0.02] backdrop-blur-md relative'>
+				<div className='flex flex-col h-full bg-white/[0.02] backdrop-blur-md relative min-h-0 overflow-hidden'>
 					{selectedUser ? (
 						<>
 							<ChatHeader />
 
 							{/* Messages */}
-							<ScrollArea className='flex-1 w-full overflow-y-auto'>
+							<ScrollArea className='flex-1 w-full min-h-0'>
 								<div className='p-4 space-y-4 min-h-0 pb-12'>
 									{messages.map((message: Message, index) => {
 										const isMyMessage = message.senderId === user?.id;

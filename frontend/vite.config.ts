@@ -7,15 +7,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   plugins: [
-    react({
-      babel: {
-        plugins: [
-          ...(process.env.NODE_ENV === 'production'
-            ? [['@babel/plugin-transform-typescript', { allowDeclareFields: true }]]
-            : [])
-        ]
-      }
-    }),
+    react(),
     tailwindcss(),
     // Gzip compression
     viteCompression({
@@ -149,7 +141,7 @@ export default defineConfig({
           'chart-vendor': ['recharts'],
 
           // Form libraries
-          'form-vendor': ['react-hook-form', '@tanstack/react-table'],
+          'form-vendor': ['@tanstack/react-table'],
 
           // Authentication
           'auth-vendor': ['@clerk/clerk-react'],

@@ -1,20 +1,18 @@
 import { Router } from "express";
-import {
-    getFeaturedSongs,
-    getTrendingSongs,
-    getMadeForYouSongs,
-    getNewReleases,
-    getSongsByGenre,
-} from "../controllers/discovery.controller.js";
-import { CacheStrategies } from "../middleware/cache.middleware.js";
+import { DiscoveryController } from "../controllers/discovery.controller.js";
+import { protectRoute } from "../middleware/auth.middleware.js";
 
 const router = Router();
+const controller = new DiscoveryController();
 
-// Discovery endpoints with caching
-router.get("/featured", CacheStrategies.featured, getFeaturedSongs);
-router.get("/trending", CacheStrategies.trending, getTrendingSongs);
-router.get("/made-for-you", CacheStrategies.recommendations, getMadeForYouSongs);
-router.get("/new-releases", CacheStrategies.newReleases, getNewReleases);
-router.get("/genres/:genre", CacheStrategies.genre, getSongsByGenre);
+router.get("/daily-mix", protectRoute, controller.getDailyMix);
+router.get("/made-for-you", controller.getMadeForYouSongs);
+router.get("/radio/:songId", controller.getRadio);
+
+// Public/Generic discovery routes
+router.get("/trending", controller.getTrendingSongs);
+router.get("/featured", controller.getFeaturedSongs);
+router.get("/new-releases", controller.getNewReleases);
+router.get("/genres/:genre", controller.getSongsByGenre);
 
 export default router;

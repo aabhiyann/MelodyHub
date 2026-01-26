@@ -12,7 +12,7 @@ const formatTime = (seconds: number) => {
 };
 
 export const PlaybackControls = () => {
-    const { currentSong, isPlaying, togglePlay, playNext, playPrevious, shuffleQueue, shuffled } = usePlayerStore();
+    const { currentSong, isPlaying, togglePlay, playNext, playPrevious, shuffleQueue, shuffled, toggleExpanded } = usePlayerStore();
 
     const [volume, setVolume] = useState(75);
     const [currentTime, setCurrentTime] = useState(0);
@@ -77,7 +77,10 @@ export const PlaybackControls = () => {
                 <div className='flex items-center gap-4 w-[30%] min-w-[180px]'>
                     {currentSong && (
                         <>
-                            <div className="relative group flex-shrink-0">
+                            <div
+                                className="relative group flex-shrink-0 cursor-pointer"
+                                onClick={toggleExpanded}
+                            >
                                 <img
                                     src={currentSong.imageUrl}
                                     alt={currentSong.title}

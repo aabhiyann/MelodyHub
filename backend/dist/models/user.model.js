@@ -13,5 +13,22 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    bio: {
+        type: String,
+        default: "",
+    },
+    location: {
+        type: String,
+        default: "",
+    },
+    website: {
+        type: String,
+        default: "",
+    },
+    isPrivate: {
+        type: Boolean,
+        default: false,
+    },
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 }, { timestamps: true });
 export const User = mongoose.model("User", userSchema);

@@ -1,6 +1,7 @@
 import { User } from "../models/user.model.js";
 import { Message } from "../models/message.model.js";
 import { BaseService } from "./base.service.js";
+import { UserConnection } from "../models/user.connection.model.js";
 export class UserService extends BaseService {
     constructor() {
         super(User);
@@ -31,5 +32,65 @@ export class UserService extends BaseService {
                 { senderId: userId2, receiverId: userId1 },
             ],
         }).sort({ createdAt: 1 });
+    }
+    /**
+     * Get user by Clerk ID
+     */
+    async getByClerkId(clerkId) {
+        return await this.model.findOne({ clerkId });
+    }
+    /**
+     * Update user profile
+     */
+    async updateProfile(clerkId, updates) {
+        return await User.findOneAndUpdate({ clerkId }, { $set: updates }, { new: true });
+    }
+    /**
+     * Follow a user
+     */
+    async followUser(followerId, followingId) {
+        if (followerId === followingId) {
+            throw new Error("Cannot follow yourself");
+        }
+        const existingConnection = await UserConnection.findOne({
+            followerId,
+            followingId
+        });
+        if (existingConnection) {
+            return existingConnection;
+        }
+        return await UserConnection.create({
+            followerId,
+            followingId,
+        });
+    }
+    /**
+     * Unfollow a user
+     */
+    async unfollowUser(followerId, followingId) {
+        return await UserConnection.findOneAndDelete({
+            followerId,
+            followingId
+        });
+    }
+    /**
+     * Get connection status
+     */
+    async getConnectionStatus(followerId, followingId) {
+        const connection = await UserConnection.findOne({
+            followerId,
+            followingId
+        });
+        return !!connection;
+    }
+    /**
+     * Get followers and following counts
+     */
+    async getUserStats(userId) {
+        const [followersCount, followingCount] = await Promise.all([
+            UserConnection.countDocuments({ followingId: userId }),
+            UserConnection.countDocuments({ followerId: userId })
+        ]);
+        return { followersCount, followingCount };
     }
 }

@@ -5,14 +5,11 @@
 
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Upload, Music, FileAudio, X } from 'lucide-react';
+import { Upload, Music, FileAudio } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
-interface UploadedFile {
-    file: File;
-    preview?: string;
-}
+
 
 interface UploadZoneProps {
     onFilesAccepted: (files: File[]) => void;
@@ -34,7 +31,6 @@ export const UploadZone = ({
     onFilesAccepted,
     maxFiles = 10,
     maxSize = 50, // 50MB default
-    acceptedFormats = Object.keys(ACCEPTED_AUDIO_FORMATS),
     className,
 }: UploadZoneProps) => {
     const onDrop = useCallback(
@@ -61,7 +57,8 @@ export const UploadZone = ({
     return (
         <div className={cn('w-full', className)}>
             <motion.div
-                {...getRootProps()}
+                {...(getRootProps() as any)}
+                // @ts-ignore - Dropzone props are compatible but TS complains about onAnimationStart mismatch
                 className={cn(
                     'relative border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-all',
                     'hover:border-brand-primary hover:bg-brand-primary/5',

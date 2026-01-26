@@ -86,7 +86,7 @@ export const ActivityFeed = () => {
 
             <ScrollArea className="flex-1">
                 <div className="p-4 space-y-4">
-                    {activities.map((activity) => (
+                    {activities.map((activity: Activity) => (
                         <div key={activity._id} className="flex gap-3 relative group">
                             {/* Avatar */}
                             <Link to={`/user/${activity.userId.clerkId}`} className="shrink-0 mt-1">

@@ -87,7 +87,6 @@ export const TopSongsChart = ({ data = generateMockTopSongs(), limit = 10 }: Top
                                 axisLine={false}
                                 width={150}
                                 tickFormatter={(value, index) => {
-                                    const song = displayData[index];
                                     return `${index + 1}. ${value.length > 20 ? value.substring(0, 17) + '...' : value}`;
                                 }}
                             />
@@ -100,14 +99,14 @@ export const TopSongsChart = ({ data = generateMockTopSongs(), limit = 10 }: Top
                                     boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
                                 }}
                                 cursor={{ fill: 'rgba(0,0,0,0.05)' }}
-                                formatter={(value: number, name, props) => [
+                                formatter={(value: any, _name, props) => [
                                     `${value.toLocaleString()} plays`,
                                     `${props.payload.name} - ${props.payload.artist}`,
                                 ]}
                             />
 
                             <Bar dataKey='plays' radius={[0, 4, 4, 0]}>
-                                {displayData.map((entry, index) => (
+                                {displayData.map((_entry, index) => (
                                     <Cell key={`cell-${index}`} fill={COLORS[index]} />
                                 ))}
                             </Bar>

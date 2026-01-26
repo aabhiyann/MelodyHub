@@ -16,6 +16,7 @@ import {
     ChevronRight,
     MessageCircle,
     User,
+    TrendingUp,
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -35,6 +36,7 @@ const mainNavItems: NavItem[] = [
     { id: 'radio', label: 'Radio', icon: Radio, path: '/radio' },
     { id: 'chat', label: 'Chat', icon: MessageCircle, path: '/chat' },
     { id: 'library', label: 'Library', icon: Library, path: '/library' },
+    { id: 'analytics', label: 'Analytics', icon: TrendingUp, path: '/analytics' },
     { id: 'profile', label: 'Profile', icon: User, path: '/profile' },
     { id: 'search', label: 'Search', icon: Search, path: '/search' },
 ];
@@ -70,7 +72,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
                 <AnimatePresence mode="wait">
                     {isExpanded && (
                         <motion.h1
-                            className="text-xl font-bold text-brand-primary"
+                            className="text-xl font-bold text-brand-primary tracking-tight"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
@@ -82,7 +84,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
 
                 <button
                     onClick={() => setIsExpanded(!isExpanded)}
-                    className="p-2 hover:bg-white/5 rounded-lg transition-colors"
+                    className="p-1.5 h-8 w-8 min-h-0 min-w-0 flex items-center justify-center hover:bg-white/5 rounded-lg transition-colors"
                     aria-label={isExpanded ? 'Collapse sidebar' : 'Expand sidebar'}
                 >
                     {isExpanded ? (

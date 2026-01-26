@@ -3,7 +3,7 @@
  * Professional analytics visualization with Recharts
  */
 
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
+import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TrendingUp } from 'lucide-react';
 import { format, subDays } from 'date-fns';
@@ -54,8 +54,8 @@ export const StreamsChart = ({
                     {showTrend && (
                         <div
                             className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-body-sm font-semibold ${isPositive
-                                    ? 'bg-success/10 text-success'
-                                    : 'bg-error/10 text-error'
+                                ? 'bg-success/10 text-success'
+                                : 'bg-error/10 text-error'
                                 }`}
                         >
                             <TrendingUp className={`size-4 ${!isPositive && 'rotate-180'}`} />

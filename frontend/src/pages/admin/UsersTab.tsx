@@ -6,8 +6,18 @@
 import { UsersTable } from "@/components/admin/UsersTable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, UserPlus } from "lucide-react";
+import { useChatStore } from "@/stores/ChatStore";
+import { useMusicStore } from "@/stores/MusicStore";
+import { useEffect } from "react";
 
 export const UsersTab = () => {
+    const { users, fetchUsers, isLoading } = useChatStore();
+    const { stats } = useMusicStore();
+
+    useEffect(() => {
+        fetchUsers();
+    }, [fetchUsers]);
+
     return (
         <div className="space-y-6">
             {/* Header */}
@@ -35,7 +45,7 @@ export const UsersTab = () => {
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-body-sm text-gray-600">Total Users</p>
-                                <p className="text-display-md font-bold text-gray-900 mt-1">1,234</p>
+                                <p className="text-display-md font-bold text-gray-900 mt-1">{stats.totalUsers || users.length}</p>
                             </div>
                             <div className="p-3 bg-blue-100 rounded-lg">
                                 <Users className="size-6 text-blue-600" />
@@ -49,7 +59,7 @@ export const UsersTab = () => {
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-body-sm text-gray-600">Active Users</p>
-                                <p className="text-display-md font-bold text-gray-900 mt-1">1,180</p>
+                                <p className="text-display-md font-bold text-gray-900 mt-1">{users.length}</p>
                             </div>
                             <div className="p-3 bg-success/20 rounded-lg">
                                 <Users className="size-6 text-success" />
@@ -63,7 +73,7 @@ export const UsersTab = () => {
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-body-sm text-gray-600">Admins</p>
-                                <p className="text-display-md font-bold text-gray-900 mt-1">12</p>
+                                <p className="text-display-md font-bold text-gray-900 mt-1">1</p>
                             </div>
                             <div className="p-3 bg-purple-100 rounded-lg">
                                 <Users className="size-6 text-purple-600" />
@@ -81,7 +91,7 @@ export const UsersTab = () => {
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <UsersTable />
+                    <UsersTable users={users} isLoading={isLoading} />
                 </CardContent>
             </Card>
         </div>

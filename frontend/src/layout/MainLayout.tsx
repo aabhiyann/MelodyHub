@@ -38,7 +38,7 @@ const MainLayout = () => {
                 Skip to main content
             </a>
 
-            <ResizablePanelGroup direction='horizontal' className='flex-1 flex h-full overflow-hidden p-2 gap-2 relative'>
+            <ResizablePanelGroup direction='horizontal' className='flex-1 flex h-full overflow-hidden p-2 gap-2 relative min-h-0'>
                 <AudioPlayer />
 
                 {/* Lyrics Overlay */}

@@ -336,3 +336,88 @@ export async function updateUserFavorites(userId: string): Promise<void> {
 
     await userPref.save();
 }
+
+/**
+ * Get similar songs based on a seed song (Vector Similarity)
+ * Used for "Radio" feature
+ */
+export async function getSimilarSongs(songId: string, limit: number = 20): Promise<ISong[]> {
+    const seedSong = await Song.findById(songId);
+    // Explicit check for features existence
+    if (!seedSong || !seedSong.features || !seedSong.features.tempo) {
+        // Fallback: finding songs with same genre or artist
+        if (seedSong) {
+            return await Song.find({
+                $or: [{ genre: seedSong.genre }, { artist: seedSong.artist }],
+                _id: { $ne: seedSong._id }
+            }).limit(limit);
+        }
+        return [];
+    }
+
+    const { tempo, energy, danceability, valence } = seedSong.features;
+    // Ensure separate variables for vector construction to avoid undefined
+    const vTempo = tempo || 120;
+    const vEnergy = energy || 0.5;
+    const vDanceability = danceability || 0.5;
+    const vValence = valence || 0.5;
+
+    const seedVector = [vTempo, vEnergy, vDanceability, vValence];
+
+    const candidates = await Song.find({
+        _id: { $ne: seedSong._id },
+        "features.tempo": { $exists: true },
+    }).limit(500);
+
+    const scoredSongs: SongWithScore[] = candidates
+        .map((song) => {
+            if (!song.features) return null;
+            const songVector = [
+                song.features.tempo || 120,
+                song.features.energy || 0.5,
+                song.features.danceability || 0.5,
+                song.features.valence || 0.5,
+            ];
+            const score = cosineSimilarity(seedVector, songVector);
+            return { song: song as ISong, score };
+        })
+        .filter((item) => item !== null) as SongWithScore[];
+
+    return scoredSongs
+        .sort((a, b) => b.score - a.score)
+        .slice(0, limit)
+        .map((item) => item.song);
+}
+
+/**
+ * Generate a Daily Mix based on user's top genre
+ */
+export async function getDailyMix(userId: string, limit: number = 20): Promise<ISong[]> {
+    const userPref = await UserPreference.findOne({ userId });
+
+    // Default to hybrid if no preferences
+    if (!userPref || !userPref.favoriteGenres || userPref.favoriteGenres.length === 0) {
+        const { songs } = await hybridRecommendations(userId, limit);
+        return songs;
+    }
+
+    // Pick top genre
+    const topGenre = userPref.favoriteGenres[0].genre;
+
+    // 1. Get some liked songs from this genre (Familiarity)
+    const likedSongIds = userPref.likedSongs;
+    const familiarSongs = await Song.find({
+        _id: { $in: likedSongIds },
+        genre: topGenre
+    }).limit(Math.ceil(limit / 2));
+
+    // 2. Discover new songs from this genre (Discovery)
+    const discoverySongs = await Song.find({
+        genre: topGenre,
+        _id: { $nin: likedSongIds }
+    }).sort({ playCount: -1 }).limit(Math.ceil(limit / 2));
+
+    // Combine and shuffle
+    const mixed = [...familiarSongs, ...discoverySongs].sort(() => Math.random() - 0.5);
+    return mixed.slice(0, limit);
+}

@@ -10,10 +10,10 @@ import {
     hybridRecommendations,
     updateUserAudioPreferences,
     updateUserFavorites,
-} from '../services/recommendation.service';
-import { UserPreference } from '../models/userPreference.model';
-import { Song } from '../models/song.model';
-import { connectDB } from '../lib/db';
+} from '../services/recommendation.service.js';
+import { UserPreference } from '../models/userPreference.model.js';
+import { Song } from '../models/song.model.js';
+import { connectDB } from '../lib/db.js';
 import mongoose from 'mongoose';
 
 describe('Recommendation Service - Unit Tests', () => {
@@ -115,8 +115,8 @@ describe('Recommendation Service - Unit Tests', () => {
                     { userId: testUserId },
                     {
                         userId: testUserId,
-                        likedSongs: testSongs.slice(0, 3).map(s => s._id),
-                        listeningHistory: testSongs.map(s => ({
+                        likedSongs: testSongs.slice(0, 3).map((s: any) => s._id),
+                        listeningHistory: testSongs.map((s: any) => ({
                             songId: s._id,
                             playedAt: new Date(),
                             completionRate: 0.9,
@@ -166,7 +166,7 @@ describe('Recommendation Service - Unit Tests', () => {
                     { userId: testUserId },
                     {
                         userId: testUserId,
-                        listeningHistory: testSongs.map(s => ({
+                        listeningHistory: testSongs.map((s: any) => ({
                             songId: s._id,
                             playedAt: new Date(),
                             completionRate: 0.9,
@@ -197,7 +197,7 @@ describe('Recommendation Service - Unit Tests', () => {
                     { userId: testUserId },
                     {
                         userId: testUserId,
-                        listeningHistory: testSongs.map(s => ({
+                        listeningHistory: testSongs.map((s: any) => ({
                             songId: s._id,
                             playedAt: new Date(),
                             completionRate: 0.9,

@@ -35,7 +35,7 @@ export const OptimizedImage = ({
     const [error, setError] = useState(false);
     const imgRef = useRef<HTMLImageElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    const isInView = useInView(containerRef, { rootMargin: '50px' });
+    const isInView = useInView(containerRef as any, { rootMargin: '50px' });
 
     // Determine if image should load
     const shouldLoad = priority || isInView;

@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const BrowsePage = () => {
     const [activeTab, setActiveTab] = useState("all");
-    const { albums, songs, fetchAlbums, fetchSongs, isLoading } = useMusicStore();
+    const { songs, fetchAlbums, fetchSongs, isLoading } = useMusicStore();
 
     useEffect(() => {
         fetchAlbums();
@@ -55,8 +55,8 @@ const BrowsePage = () => {
                                 <TabsContent value="all">
                                     <div className="space-y-8">
                                         <div className="mb-6">
-                                            <h2 className="text-3xl font-bold mb-2">All Albums</h2>
-                                            <p className="text-text-secondary">{albums.length} albums available</p>
+                                            <h2 className="text-3xl font-bold mb-2">All Music</h2>
+                                            <p className="text-text-secondary text-lg font-medium">{songs.length} songs available</p>
                                         </div>
 
                                         {genres.map((genre) => (

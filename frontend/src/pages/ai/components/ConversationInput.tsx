@@ -88,8 +88,8 @@ export const ConversationInput = ({
                     className="w-full h-32 p-4 rounded-xl bg-white/10 border-2 border-white/20 focus:border-brand-primary text-white placeholder-zinc-400 resize-none transition-all duration-200 focus:ring-4 focus:ring-brand-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
                     animate={{
                         boxShadow: isFocused
-                            ? '0 0 0 4px rgba(88, 86, 214, 0.2)'
-                            : '0 0 0 0px rgba(88, 86, 214, 0)',
+                            ? '0 0 0 4px rgba(29, 185, 84, 0.2)'
+                            : '0 0 0 0px rgba(29, 185, 84, 0)',
                     }}
                 />
 
@@ -97,8 +97,8 @@ export const ConversationInput = ({
                 <div className="flex justify-between items-center mt-3">
                     <span
                         className={`text-xs transition-colors ${input.length >= MAX_LENGTH
-                                ? 'text-red-400 font-semibold'
-                                : 'text-zinc-500'
+                            ? 'text-red-400 font-semibold'
+                            : 'text-zinc-500'
                             }`}
                     >
                         {input.length}/{MAX_LENGTH}
@@ -107,7 +107,7 @@ export const ConversationInput = ({
                     <Button
                         onClick={handleSubmit}
                         disabled={!input.trim() || disabled}
-                        className="bg-gradient-to-r from-brand-primary to-purple-600 hover:shadow-lg hover:shadow-brand-primary/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                        className="bg-gradient-to-r from-brand-primary to-emerald-600 hover:shadow-lg hover:shadow-brand-primary/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                         size="lg"
                     >
                         <Sparkles className="w-4 h-4 mr-2" />
