@@ -1,101 +1,81 @@
-/**
- * InstallPrompt - PWA install banner
- * Prompts users to install the app
- */
-
 import { useState, useEffect } from 'react';
-import { X, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { usePWA } from '@/hooks/usePWA';
-import { isIOS, showIOSInstallPrompt } from '@/utils/mobile';
+import { X, Download } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export const InstallPrompt = () => {
-    const { canInstall, promptInstall, isInstalled } = usePWA();
+    const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
     const [showPrompt, setShowPrompt] = useState(false);
-    const [isDismissed, setIsDismissed] = useState(false);
 
     useEffect(() => {
-        // Don't show if already installed or dismissed
-        if (isInstalled || isDismissed) return;
-
-        // Show after 30 seconds
-        const timer = setTimeout(() => {
+        const handler = (e: any) => {
+            // Prevent Chrome 67 and earlier from automatically showing the prompt
+            e.preventDefault();
+            // Stash the event so it can be triggered later
+            setDeferredPrompt(e);
+            // Show the prompt
             setShowPrompt(true);
-        }, 30000);
+        };
 
-        return () => clearTimeout(timer);
-    }, [isInstalled, isDismissed]);
+        window.addEventListener('beforeinstallprompt', handler);
 
-    const handleInstall = async () => {
-        const accepted = await promptInstall();
-        if (accepted) {
-            setShowPrompt(false);
-        }
-    };
-
-    const handleDismiss = () => {
-        setShowPrompt(false);
-        setIsDismissed(true);
-        // Remember dismissal for 7 days
-        localStorage.setItem('pwa-dismissed', Date.now().toString());
-    };
-
-    // Check if dismissed recently
-    useEffect(() => {
-        const dismissed = localStorage.getItem('pwa-dismissed');
-        if (dismissed) {
-            const dismissedTime = parseInt(dismissed, 10);
-            const daysSince = (Date.now() - dismissedTime) / (1000 * 60 * 60 * 24);
-            if (daysSince < 7) {
-                setIsDismissed(true);
-            }
-        }
+        return () => {
+            window.removeEventListener('beforeinstallprompt', handler);
+        };
     }, []);
 
-    const shouldShow = showPrompt && (canInstall || isIOS()) && !isInstalled && !isDismissed;
+    const handleInstall = async () => {
+        if (!deferredPrompt) return;
+
+        // Show the install prompt
+        deferredPrompt.prompt();
+
+        // Wait for the user to respond to the prompt
+        const { outcome } = await deferredPrompt.userChoice;
+
+        if (outcome === 'accepted') {
+            console.log('User accepted the install prompt');
+        } else {
+            console.log('User dismissed the install prompt');
+        }
+
+        setDeferredPrompt(null);
+        setShowPrompt(false);
+    };
 
     return (
         <AnimatePresence>
-            {shouldShow && (
+            {showPrompt && (
                 <motion.div
                     initial={{ y: 100, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: 100, opacity: 0 }}
-                    className="fixed bottom-20 left-4 right-4 z-50 md:left-auto md:right-4 md:w-96"
+                    className="fixed bottom-20 left-4 right-4 z-50 md:left-auto md:right-4 md:bottom-4 md:w-96"
                 >
-                    <div className="bg-gradient-to-r from-brand-primary to-brand-secondary p-4 rounded-lg shadow-2xl">
-                        <button
-                            onClick={handleDismiss}
-                            className="absolute top-2 right-2 p-1 rounded-full hover:bg-white/20 transition-colors"
-                            aria-label="Dismiss"
-                        >
-                            <X className="size-4 text-white" />
-                        </button>
-
-                        <div className="flex items-start gap-3">
-                            <div className="p-2 bg-white/20 rounded-lg">
-                                <Download className="size-6 text-white" />
+                    <div className="bg-zinc-900 border border-white/10 rounded-xl p-4 shadow-2xl flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                            <div className="size-10 bg-brand-primary rounded-lg flex items-center justify-center shrink-0">
+                                <Download className="size-5 text-white" />
                             </div>
-
-                            <div className="flex-1">
-                                <h3 className="font-bold text-white mb-1">
-                                    Install MelodyHub
-                                </h3>
-                                <p className="text-sm text-white/90 mb-3">
-                                    {isIOS()
-                                        ? showIOSInstallPrompt()
-                                        : 'Install our app for a better experience with offline access.'}
-                                </p>
-
-                                {!isIOS() && (
-                                    <button
-                                        onClick={handleInstall}
-                                        className="px-4 py-2 bg-white text-brand-primary rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors"
-                                    >
-                                        Install Now
-                                    </button>
-                                )}
+                            <div>
+                                <h3 className="font-semibold text-white">Install MelodyHub</h3>
+                                <p className="text-xs text-zinc-400">Add to home screen for better experience</p>
                             </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <Button
+                                size="sm"
+                                onClick={handleInstall}
+                                className="bg-brand-primary hover:bg-brand-primary/90 text-white"
+                            >
+                                Install
+                            </Button>
+                            <button
+                                onClick={() => setShowPrompt(false)}
+                                className="p-2 hover:bg-white/10 rounded-full transition-colors"
+                            >
+                                <X className="size-4 text-zinc-400" />
+                            </button>
                         </div>
                     </div>
                 </motion.div>
