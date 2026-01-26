@@ -1,76 +1,76 @@
 /**
  * Typography System - Design tokens for text
- * Based on Apple/Spotify modern typography
+ * Based on Apple 2025 modern typography
  */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap');
 
 /* Apply design tokens */
 body {
-    font-family: var(--font-family-primary);
-    font-size: var(--font-size-base);
-    line-height: var(--line-height-normal);
+    font-family: var(--font-primary);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
     color: var(--text-primary);
-    background-color: var(--bg-primary);
+    background-color: var(--surface-base);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 /* Heading styles */
 .heading-1 {
-    font-family: var(--font-family-display);
-    font-size: var(--font-size-5xl);
-    font-weight: 700;
-    line-height: var(--line-height-tight);
-    letter-spacing: -0.02em;
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-black);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tighter);
 }
 
 .heading-2 {
-    font-family: var(--font-family-display);
-    font-size: var(--font-size-4xl);
-    font-weight: 700;
-    line-height: var(--line-height-tight);
-    letter-spacing: -0.01em;
+    font-family: var(--font-display);
+    font-size: var(--text-h1);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
 }
 
 .heading-3 {
-    font-family: var(--font-family-display);
-    font-size: var(--font-size-3xl);
-    font-weight: 600;
-    line-height: var(--line-height-tight);
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-snug);
+    letter-spacing: -0.01em;
 }
 
 .heading-4 {
-    font-size: var(--font-size-2xl);
-    font-weight: 600;
-    line-height: var(--line-height-normal);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    letter-spacing: -0.005em;
 }
 
 .heading-5 {
-    font-size: var(--font-size-xl);
-    font-weight: 600;
-    line-height: var(--line-height-normal);
+    font-size: var(--text-h4);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-normal);
 }
 
 /* Body text */
 .text-base {
-    font-size: var(--font-size-base);
-    line-height: var(--line-height-normal);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
 }
 
 .text-lg {
-    font-size: var(--font-size-lg);
-    line-height: var(--line-height-normal);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
 }
 
 .text-sm {
-    font-size: var(--font-size-sm);
-    line-height: var(--line-height-normal);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-normal);
 }
 
 .text-xs {
-    font-size: var(--font-size-xs);
-    line-height: var(--line-height-normal);
+    font-size: var(--text-caption);
+    line-height: var(--leading-normal);
 }
 
 /* Text colors */
@@ -88,17 +88,17 @@ body {
 
 /* Font weights */
 .font-normal {
-    font-weight: 400;
+    font-weight: var(--weight-regular);
 }
 
 .font-medium {
-    font-weight: 500;
+    font-weight: var(--weight-medium);
 }
 
 .font-semibold {
-    font-weight: 600;
+    font-weight: var(--weight-semibold);
 }
 
 .font-bold {
-    font-weight: 700;
+    font-weight: var(--weight-bold);
 }
