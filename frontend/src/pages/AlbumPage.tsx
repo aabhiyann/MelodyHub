@@ -65,7 +65,7 @@ const AlbumPage = () => {
 								<div className='flex items-center gap-2 text-sm text-text-secondary'>
 									<span className='font-medium text-white'>{currentAlbum?.artist}</span>
 									<span className="flex items-center text-text-secondary"><Disc className="w-3 h-3 mx-2" /> {currentAlbum?.songs.length} songs</span>
-									<span className="flex items-center text-text-secondary"><span className="w-1 h-1 rounded-full bg-zinc-600 mx-2" /> {currentAlbum?.releaseYear}</span>
+									<span className="flex items-center text-text-secondary"><span className="w-1 h-1 rounded-full bg-text-tertiary mx-2" /> {currentAlbum?.releaseYear}</span>
 								</div>
 							</div>
 						</div>
@@ -75,7 +75,7 @@ const AlbumPage = () => {
 							<Button
 								onClick={handlePlayAlbum}
 								size='icon'
-								className='w-14 h-14 rounded-full bg-brand-primary hover:bg-brand-primary/90 hover:scale-105 transition-all shadow-lg'
+								className='w-14 h-14 rounded-full bg-gradient-to-r from-emerald-500 to-brand-primary hover:from-emerald-400 hover:to-brand-primary/90 hover:scale-105 transition-all shadow-glow-primary'
 							>
 								{isPlaying && currentAlbum?.songs.some((song) => song._id === currentSong?._id) ? (
 									<Pause className='h-7 w-7 text-white' />
