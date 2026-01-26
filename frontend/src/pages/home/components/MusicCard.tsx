@@ -1,7 +1,8 @@
-import { Play, MoreHorizontal, Plus, ListMusic, Heart } from "lucide-react";
+import { Play, MoreHorizontal, Plus, ListMusic } from "lucide-react";
 import { Song } from "@/types";
 import { useState, useEffect, useRef } from "react";
 import { LikeButton } from "@/components/LikeButton";
+import { AddToPlaylistDialog } from "@/components/AddToPlaylistDialog";
 
 interface MusicCardProps {
     song: Song;
@@ -33,6 +34,8 @@ const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
 
         return () => observer.disconnect();
     }, []);
+
+    const [showPlaylistDialog, setShowPlaylistDialog] = useState(false);
 
     return (
         <div
@@ -128,16 +131,31 @@ const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
                         <Plus className="h-4 w-4" />
                         Add to Queue
                     </button>
-                    <button className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition-snap text-left">
-                        <Heart className="h-4 w-4" />
-                        Save to Favorites
+
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setShowPlaylistDialog(true);
+                            setShowMenu(false);
+                        }}
+                        className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition-snap text-left"
+                    >
+                        <ListMusic className="h-4 w-4" />
+                        Add to Playlist
                     </button>
+
                     <button className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition-snap text-left">
                         <ListMusic className="h-4 w-4" />
                         Go to Artist
                     </button>
                 </div>
             )}
+
+            <AddToPlaylistDialog
+                songId={song._id}
+                open={showPlaylistDialog}
+                onOpenChange={setShowPlaylistDialog}
+            />
         </div>
     );
 };

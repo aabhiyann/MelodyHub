@@ -10,9 +10,10 @@ export default defineConfig({
     react({
       babel: {
         plugins: [
-          // Skip type checking during production build for Docker
-          process.env.NODE_ENV === 'production' && ['@babel/plugin-transform-typescript', { allowDeclareFields: true }]
-        ].filter(Boolean)
+          ...(process.env.NODE_ENV === 'production'
+            ? [['@babel/plugin-transform-typescript', { allowDeclareFields: true }]]
+            : [])
+        ]
       }
     }),
     tailwindcss(),

@@ -9,7 +9,7 @@ interface LyricsPanelProps {
     currentTime?: number;
 }
 
-export const LyricsPanel = ({ song, currentTime }: LyricsPanelProps) => {
+export const LyricsPanel = ({ song }: LyricsPanelProps) => {
     const [lyrics, setLyrics] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);

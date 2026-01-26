@@ -16,7 +16,7 @@ export class AdminService {
     }
   }
 
-  async createSong(data: any, audioFile: UploadedFile, imageFile: UploadedFile) {
+  async createSong(data: Record<string, unknown> & { albumId?: string }, audioFile: UploadedFile, imageFile: UploadedFile) {
     const audioUrl = await this.uploadToCloudinary(audioFile);
     const imageUrl = await this.uploadToCloudinary(imageFile);
 
@@ -51,7 +51,7 @@ export class AdminService {
     return { message: "Song deleted successfully" };
   }
 
-  async createAlbum(data: any, imageFile: UploadedFile) {
+  async createAlbum(data: Record<string, unknown>, imageFile: UploadedFile) {
     const imageUrl = await this.uploadToCloudinary(imageFile);
 
     const album = new Album({

@@ -22,7 +22,7 @@ export const SleepTimer = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [activeTimer, setActiveTimer] = useState<number | null>(null);
     const [remainingTime, setRemainingTime] = useState<number>(0);
-    const { pause } = usePlayerStore();
+    // const { pause } = usePlayerStore();
 
     useEffect(() => {
         if (!activeTimer || activeTimer === -1) return;
@@ -34,14 +34,15 @@ export const SleepTimer = () => {
             setRemainingTime(Math.ceil(remaining / 1000));
 
             if (remaining <= 0) {
-                pause();
+                const { isPlaying, togglePlay } = usePlayerStore.getState();
+                if (isPlaying) togglePlay();
                 setActiveTimer(null);
                 setIsOpen(false);
             }
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [activeTimer, pause]);
+    }, [activeTimer]);
 
     const handleSetTimer = (minutes: number) => {
         setActiveTimer(minutes);

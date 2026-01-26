@@ -1,34 +1,108 @@
 /**
- * ProfilePage - User profile with stats and settings
- * Features: Avatar, listening stats, account settings, sign out
+ * ProfilePage - User profile with real stats
+ * Features: Avatar, real listening stats from Analytics API
  */
 
+import { useState, useEffect } from 'react';
 import { useUser, useClerk } from '@clerk/clerk-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Topbar from '@/components/Topbar';
-import { LogOut, Mail, Music, Clock, Heart, Calendar, Settings } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { LogOut, Music, PlayCircle, Heart, Calendar, Settings } from 'lucide-react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { axiosInstance } from '@/lib/axios';
+import { User } from '@/types';
+import { ProfileHeader } from '@/components/profile/ProfileHeader';
+import { EditProfileModal } from '@/components/profile/EditProfileModal';
 
 const ProfilePage = () => {
-    const { user } = useUser();
+    const { user: clerkUser } = useUser();
     const { signOut } = useClerk();
     const navigate = useNavigate();
+    const { userId } = useParams();
+
+    const [userProfile, setUserProfile] = useState<User | null>(null);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    // const [isLoading, setIsLoading] = useState(true); // Removed unused state
+
+    // Real Stats State
+    const [analyticsData, setAnalyticsData] = useState<any>(null);
+    const [playlistCount, setPlaylistCount] = useState(0);
+
+    const isOwnProfile = !userId || (clerkUser && userId === clerkUser.id);
+
+    useEffect(() => {
+        const fetchProfileData = async () => {
+            // setIsLoading(true);
+            try {
+                // 1. Fetch User Profile
+                const profileEndpoint = userId ? `/users/${userId}` : '/users/profile';
+                const profileRes = await axiosInstance.get(profileEndpoint);
+                setUserProfile(profileRes.data.data);
+
+                // 2. Fetch User Stats (Only if own profile for now, or if endpoint allows public stats)
+                // Assuming /analytics/user-preferences is private to the user
+                if (isOwnProfile) {
+                    const [analyticsRes, playlistRes] = await Promise.all([
+                        axiosInstance.get('/analytics/user-preferences'),
+                        axiosInstance.get('/social/playlists')
+                    ]);
+
+                    setAnalyticsData(analyticsRes.data.data);
+                    setPlaylistCount(playlistRes.data.data?.length || 0);
+                }
+            } catch (error) {
+                console.error('Failed to fetch profile data:', error);
+            } finally {
+                // setIsLoading(false);
+            }
+        };
+
+        if (clerkUser) {
+            fetchProfileData();
+        }
+    }, [clerkUser, userId, isOwnProfile]);
 
     const handleSignOut = async () => {
         await signOut();
         navigate('/');
     };
 
-    if (!user) {
-        return null;
-    }
+    if (!clerkUser) return null;
 
-    // Mock stats - replace with real data from your backend
+    // Use fetched profile if available, fallback to Clerk data for basics
+    const displayUser: User = userProfile || {
+        _id: '',
+        clerkId: clerkUser.id,
+        fullName: clerkUser.fullName || '',
+        imageUrl: clerkUser.imageUrl,
+    };
+
+    // Real Stats
     const stats = [
-        { label: 'Total Listening Time', value: '124 hours', icon: Clock, color: 'text-blue-400' },
-        { label: 'Favorite Songs', value: '47 tracks', icon: Heart, color: 'text-pink-400' },
-        { label: 'Playlists Created', value: '8 playlists', icon: Music, color: 'text-purple-400' },
-        { label: 'Member Since', value: 'January 2026', icon: Calendar, color: 'text-green-400' },
+        {
+            label: 'Total Plays',
+            value: analyticsData?.totalPlays?.toString() || '0',
+            icon: PlayCircle,
+            color: 'text-blue-400'
+        },
+        {
+            label: 'Liked Songs',
+            value: analyticsData?.likedSongsCount?.toString() || '0',
+            icon: Heart,
+            color: 'text-pink-400'
+        },
+        {
+            label: 'Playlists Created',
+            value: playlistCount.toString(),
+            icon: Music,
+            color: 'text-purple-400'
+        },
+        {
+            label: 'Member Since',
+            value: clerkUser.createdAt ? new Date(clerkUser.createdAt).toLocaleDateString() : '2024',
+            icon: Calendar,
+            color: 'text-green-400'
+        },
     ];
 
     return (
@@ -37,53 +111,28 @@ const ProfilePage = () => {
             <ScrollArea className='h-[calc(100vh-180px)]'>
                 <div className='p-6 space-y-8'>
                     {/* Profile Header */}
-                    <div className='flex flex-col md:flex-row items-center gap-6 p-8 rounded-2xl bg-gradient-to-br from-brand-primary/20 via-purple-500/20 to-transparent border border-white/10'>
-                        <div className='relative'>
-                            <img
-                                src={user.imageUrl}
-                                alt={user.firstName || 'User'}
-                                className='size-32 rounded-full object-cover ring-4 ring-white/20 shadow-2xl'
-                            />
-                            <div className='absolute -bottom-2 -right-2 size-10 rounded-full bg-green-500 border-4 border-black flex items-center justify-center'>
-                                <div className='size-3 rounded-full bg-white animate-pulse' />
-                            </div>
-                        </div>
-
-                        <div className='flex-1 text-center md:text-left'>
-                            <h1 className='text-3xl md:text-4xl font-bold text-white mb-2'>
-                                {user.firstName} {user.lastName}
-                            </h1>
-                            <div className='flex items-center gap-2 text-zinc-400 justify-center md:justify-start'>
-                                <Mail className='size-4' />
-                                <span>{user.primaryEmailAddress?.emailAddress}</span>
-                            </div>
-                        </div>
-
-                        <button
-                            onClick={handleSignOut}
-                            className='flex items-center gap-2 px-6 py-3 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 border border-red-500/20 hover:border-red-500/40 transition-all font-medium'
-                        >
-                            <LogOut className='size-4' />
-                            <span>Sign Out</span>
-                        </button>
-                    </div>
+                    <ProfileHeader
+                        user={displayUser}
+                        isOwnProfile={!!isOwnProfile}
+                        onEdit={isOwnProfile ? () => setIsEditModalOpen(true) : undefined}
+                    />
 
                     {/* Listening Stats */}
                     <div>
-                        <h2 className='text-2xl font-bold text-white mb-4'>Your Stats</h2>
+                        <h2 className='text-2xl font-bold text-white mb-4 tracking-tight'>Your Stats</h2>
                         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
                             {stats.map((stat) => {
                                 const Icon = stat.icon;
                                 return (
                                     <div
                                         key={stat.label}
-                                        className='p-6 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors'
+                                        className='p-6 rounded-xl bg-background-elevated/40 border border-white/5 hover:bg-background-elevated/60 transition-colors group'
                                     >
                                         <div className='flex items-center gap-3 mb-3'>
-                                            <div className='p-2 rounded-lg bg-white/10'>
+                                            <div className='p-2 rounded-lg bg-background-base/50 group-hover:scale-105 transition-transform'>
                                                 <Icon className={`size-5 ${stat.color}`} />
                                             </div>
-                                            <p className='text-sm text-zinc-400'>{stat.label}</p>
+                                            <p className='text-sm text-text-secondary'>{stat.label}</p>
                                         </div>
                                         <p className='text-2xl font-bold text-white'>{stat.value}</p>
                                     </div>
@@ -92,61 +141,56 @@ const ProfilePage = () => {
                         </div>
                     </div>
 
-                    {/* Top Artists (Placeholder) */}
-                    <div>
-                        <h2 className='text-2xl font-bold text-white mb-4'>Top Artists This Month</h2>
-                        <div className='text-center py-12 rounded-xl bg-white/5 border border-white/10'>
-                            <Music className='size-12 text-zinc-600 mx-auto mb-4' />
-                            <p className='text-zinc-400 text-lg'>Coming Soon!</p>
-                            <p className='text-zinc-500 text-sm mt-2'>
-                                We're working on personalized insights for you
-                            </p>
-                        </div>
-                    </div>
-
                     {/* Account Settings */}
-                    <div>
-                        <h2 className='text-2xl font-bold text-white mb-4'>Account Settings</h2>
-                        <div className='space-y-3'>
-                            <button className='w-full flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-left group'>
-                                <div className='flex items-center gap-3'>
-                                    <div className='p-2 rounded-lg bg-white/10 group-hover:bg-white/20 transition-colors'>
-                                        <Settings className='size-5 text-zinc-400' />
+                    {isOwnProfile && (
+                        <div>
+                            <div className='flex items-center justify-between mb-4'>
+                                <h2 className='text-2xl font-bold text-white tracking-tight'>Account Settings</h2>
+                                <button
+                                    onClick={handleSignOut}
+                                    className='flex items-center gap-2 px-4 py-2 rounded-lg bg-error/10 hover:bg-error/20 text-error hover:text-red-300 border border-error/20 hover:border-error/40 transition-all font-medium text-sm'
+                                >
+                                    <LogOut className='size-4' />
+                                    <span>Sign Out</span>
+                                </button>
+                            </div>
+                            <div className='space-y-3'>
+                                <button className='w-full flex items-center justify-between p-4 rounded-xl bg-background-elevated/40 border border-white/5 hover:bg-white/5 transition-colors text-left group'>
+                                    <div className='flex items-center gap-3'>
+                                        <div className='p-2 rounded-lg bg-background-base/50 group-hover:bg-white/10 transition-colors'>
+                                            <Settings className='size-5 text-text-secondary group-hover:text-text-primary transition-colors' />
+                                        </div>
+                                        <div>
+                                            <p className='font-semibold text-white'>Playback Settings</p>
+                                            <p className='text-sm text-text-secondary'>Audio quality, volume normalization</p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p className='font-semibold text-white'>Playback Settings</p>
-                                        <p className='text-sm text-zinc-400'>Audio quality, volume normalization</p>
-                                    </div>
-                                </div>
-                            </button>
+                                </button>
 
-                            <button className='w-full flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-left group'>
-                                <div className='flex items-center gap-3'>
-                                    <div className='p-2 rounded-lg bg-white/10 group-hover:bg-white/20 transition-colors'>
-                                        <Settings className='size-5 text-zinc-400' />
+                                <button className='w-full flex items-center justify-between p-4 rounded-xl bg-background-elevated/40 border border-white/5 hover:bg-white/5 transition-colors text-left group'>
+                                    <div className='flex items-center gap-3'>
+                                        <div className='p-2 rounded-lg bg-background-base/50 group-hover:bg-white/10 transition-colors'>
+                                            <Settings className='size-5 text-text-secondary group-hover:text-text-primary transition-colors' />
+                                        </div>
+                                        <div>
+                                            <p className='font-semibold text-white'>Notifications</p>
+                                            <p className='text-sm text-text-secondary'>Manage your notification preferences</p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p className='font-semibold text-white'>Notifications</p>
-                                        <p className='text-sm text-zinc-400'>Manage your notification preferences</p>
-                                    </div>
-                                </div>
-                            </button>
-
-                            <button className='w-full flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-left group'>
-                                <div className='flex items-center gap-3'>
-                                    <div className='p-2 rounded-lg bg-white/10 group-hover:bg-white/20 transition-colors'>
-                                        <Settings className='size-5 text-zinc-400' />
-                                    </div>
-                                    <div>
-                                        <p className='font-semibold text-white'>Privacy</p>
-                                        <p className='text-sm text-zinc-400'>Control your data and visibility</p>
-                                    </div>
-                                </div>
-                            </button>
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </ScrollArea>
+
+            {/* Edit Profile Modal */}
+            <EditProfileModal
+                user={displayUser}
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                onUpdate={(updated) => setUserProfile(updated)}
+            />
         </main>
     );
 };

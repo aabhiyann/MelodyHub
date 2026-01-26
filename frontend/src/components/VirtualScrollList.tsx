@@ -3,7 +3,8 @@
  * Uses react-window for performance optimization
  */
 
-import { FixedSizeList as List } from 'react-window';
+import * as ReactWindow from 'react-window';
+const List = (ReactWindow as any).FixedSizeList;
 import { Song } from '@/types';
 
 interface VirtualScrollListProps {
