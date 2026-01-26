@@ -36,6 +36,7 @@ const RadioPage = lazy(() => import("./pages/RadioPage"));
 const PlaylistPage = lazy(() => import("./pages/PlaylistPage"));
 const AnalyticsPage = lazy(() => import("./pages/AnalyticsPage"));
 const SettingsPage = lazy(() => import("./pages/SettingsPage"));
+const CommunityPage = lazy(() => import("./pages/CommunityPage"));
 
 function App() {
 	const location = useLocation();
@@ -124,6 +125,7 @@ function App() {
 						<Route path='/radio' element={<PageTransition><RadioPage /></PageTransition>} />
 						<Route path='/search' element={<PageTransition><SearchPage /></PageTransition>} />
 						<Route path='/library' element={<PageTransition><LibraryPage /></PageTransition>} />
+						<Route path='/community' element={<PageTransition><CommunityPage /></PageTransition>} />
 						<Route path='/profile' element={<PageTransition><ProfilePage /></PageTransition>} />
 						<Route path='/user/:userId' element={<PageTransition><ProfilePage /></PageTransition>} />
 						<Route path='/chat' element={<PageTransition><ChatPage /></PageTransition>} />
