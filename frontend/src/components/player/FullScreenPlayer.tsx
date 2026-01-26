@@ -66,7 +66,7 @@ export const FullScreenPlayer = () => {
     return (
         <AnimatePresence>
             <motion.div
-                className="fixed inset-0 z-[100] bg-gradient-to-b from-bg-primary to-bg-secondary"
+                className="fixed inset-0 z-[100] bg-gradient-to-b from-surface-base to-surface-elevated"
                 initial={{ opacity: 0, y: '100%' }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: '100%' }}
