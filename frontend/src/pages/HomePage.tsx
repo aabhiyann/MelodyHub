@@ -12,9 +12,11 @@ import { EmptyState } from "@/pages/home/components/EmptyState";
 import { AIPlaylistPage } from "@/pages/ai/AIPlaylistPage";
 import { Song } from "@/types";
 import { PullToRefresh } from "@/components/mobile/PullToRefresh";
+import { useUIStore } from "@/stores/UIStore";
 
 const HomePage = () => {
 	const { user } = useUser();
+	const { isActivityPanelOpen } = useUIStore();
 	const {
 		trendingSongs,
 		featuredSongs,
@@ -194,8 +196,12 @@ const HomePage = () => {
 				</div>
 			</div>
 
-			{/* Activity Feed Sidebar (Hidden on smaller screens) */}
-			<ActivityFeed />
+			{/* Activity Feed Sidebar (Hidden on smaller screens, togglable on large) */}
+			{isActivityPanelOpen && (
+				<div className="hidden lg:block animate-in slide-in-from-right-10 duration-300">
+					<ActivityFeed />
+				</div>
+			)}
 
 			{/* AI Playlist Modal */}
 			<AIPlaylistPage isOpen={showAIPlaylist} onClose={() => setShowAIPlaylist(false)} />
