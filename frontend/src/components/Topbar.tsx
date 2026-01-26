@@ -2,11 +2,14 @@ import { SignedOut, UserButton } from "@clerk/clerk-react";
 import SigninAuth from "./SigninAuth";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
+import { Menu, Users } from "lucide-react";
 import LeftSidebar from "./LeftSidebar";
+import { useUIStore } from "@/stores/UIStore";
+import { cn } from "@/lib/utils";
 
 
 const Topbar = () => {
+	const { toggleActivityPanel, isActivityPanelOpen } = useUIStore();
 
 
 	return (
@@ -49,6 +52,17 @@ const Topbar = () => {
 				<SignedOut>
 					<SigninAuth />
 				</SignedOut>
+
+				{/* Activity Feed Toggle */}
+				<Button
+					variant="ghost"
+					size="icon"
+					className="text-zinc-400 hover:text-white hidden lg:flex"
+					onClick={toggleActivityPanel}
+					title={isActivityPanelOpen ? "Hide Friend Activity" : "Show Friend Activity"}
+				>
+					<Users className={cn("size-5 transition-colors", isActivityPanelOpen && "text-brand-primary")} />
+				</Button>
 
 				<div className='hover:scale-105 transition-transform duration-200'>
 					<UserButton />
