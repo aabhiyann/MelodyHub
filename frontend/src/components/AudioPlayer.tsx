@@ -162,8 +162,8 @@ const AudioPlayer = () => {
 
 			{/* Player UI - Fixed Bottom Bar */}
 			<div className="fixed bottom-0 left-0 right-0 z-50 h-[90px] md:h-[90px] sm:h-[80px]">
-				{/* Glassmorphism Background */}
-				<div className="absolute inset-0 bg-gradient-to-t from-zinc-900/95 to-zinc-900/90 backdrop-blur-2xl border-t border-white/10" />
+				{/* Glassmorphism Background using Design Tokens */}
+				<div className="absolute inset-0 bg-surface-elevated/95 backdrop-blur-2xl border-t border-white/10" />
 
 				{/* Content */}
 				<div className="relative h-full px-4 md:px-6">
