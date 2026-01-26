@@ -193,7 +193,8 @@ const LibraryPage = () => {
                     </div>
 
                     {/* Tabs */}
-                    <div className='flex items-center gap-2 border-b border-white/10 overflow-x-auto pb-2'>
+                    {/* Tabs */}
+                    <div className='glass-toolbar flex items-center gap-2 p-1 rounded-lg overflow-x-auto mb-6 border-none bg-surface-elevated/50'>
                         {tabs.map((tab) => {
                             const Icon = tab.icon;
                             return (
@@ -201,10 +202,10 @@ const LibraryPage = () => {
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id as TabType)}
                                     className={cn(
-                                        'flex items-center gap-2 px-4 py-2 rounded-lg transition-all whitespace-nowrap',
+                                        'flex items-center gap-2 px-4 py-2 rounded-md transition-all whitespace-nowrap text-sm font-medium',
                                         activeTab === tab.id
-                                            ? 'bg-white/10 text-white font-semibold'
-                                            : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                                            ? 'bg-brand-primary text-white shadow-glow-sm'
+                                            : 'text-text-secondary hover:text-white hover:bg-white/5'
                                     )}
                                 >
                                     <Icon className='size-4' />
@@ -279,7 +280,7 @@ const LibraryPage = () => {
                                         {playlists.map((playlist) => (
                                             <div
                                                 key={playlist._id}
-                                                className='group space-y-3'
+                                                className='group relative p-4 rounded-xl bg-surface-card/40 hover:bg-surface-elevated/60 backdrop-blur-md border border-white/5 transition-all duration-300 hover:-translate-y-1 hover:border-white/10 hover:shadow-xl'
                                             >
                                                 <div
                                                     className='relative aspect-square rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow bg-gradient-to-br from-brand-primary/20 to-brand-secondary/20 cursor-pointer'
@@ -289,13 +290,13 @@ const LibraryPage = () => {
                                                         <ListMusic className='size-16 text-brand-primary' />
                                                     </div>
                                                     {/* Edit/Delete/Share buttons */}
-                                                    <div className='absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1'>
+                                                    <div className='absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1 z-20'>
                                                         <button
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
                                                                 setSharingPlaylist(playlist);
                                                             }}
-                                                            className='p-2 rounded-lg bg-zinc-900/50 hover:bg-zinc-900/80 backdrop-blur-sm'
+                                                            className='p-2 rounded-lg bg-surface-elevated/80 hover:bg-brand-primary/80 backdrop-blur-md transition-colors'
                                                             title="Share Playlist"
                                                         >
                                                             <Share2 className='size-4 text-white' />
@@ -397,7 +398,7 @@ const LibraryPage = () => {
                                         {artists.map((artist) => (
                                             <div
                                                 key={artist.name}
-                                                className='group space-y-3 cursor-pointer'
+                                                className='group relative p-4 rounded-xl bg-surface-card/40 hover:bg-surface-elevated/60 backdrop-blur-md border border-white/5 transition-all duration-300 hover:-translate-y-1 hover:border-white/10 hover:shadow-xl cursor-pointer text-center'
                                                 onClick={() => handlePlaySongs(artist.songs)}
                                             >
                                                 <div className='relative aspect-square rounded-full overflow-hidden shadow-lg hover:shadow-2xl transition-shadow'>
@@ -447,7 +448,7 @@ const LibraryPage = () => {
                                             <Link
                                                 key={album._id}
                                                 to={`/albums/${album._id}`}
-                                                className='group space-y-3'
+                                                className='group relative p-4 rounded-xl bg-surface-card/40 hover:bg-surface-elevated/60 backdrop-blur-md border border-white/5 transition-all duration-300 hover:-translate-y-1 hover:border-white/10 hover:shadow-xl'
                                             >
                                                 <div className='relative aspect-square rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow'>
                                                     <img
@@ -543,7 +544,7 @@ const LibraryPage = () => {
 
             {/* Create Playlist Dialog */}
             <Dialog open={isCreating} onOpenChange={setIsCreating}>
-                <DialogContent>
+                <DialogContent className="glass-modal bg-surface-elevated/95 border-white/10">
                     <DialogHeader>
                         <DialogTitle>Create New Playlist</DialogTitle>
                         <DialogDescription>
@@ -567,7 +568,7 @@ const LibraryPage = () => {
 
             {/* Edit Playlist Dialog */}
             <Dialog open={!!editingPlaylist} onOpenChange={() => setEditingPlaylist(null)}>
-                <DialogContent>
+                <DialogContent className="glass-modal bg-surface-elevated/95 border-white/10">
                     <DialogHeader>
                         <DialogTitle>Edit Playlist</DialogTitle>
                         <DialogDescription>
@@ -591,7 +592,7 @@ const LibraryPage = () => {
 
             {/* Delete Confirmation Dialog */}
             <AlertDialog open={!!deletingPlaylist} onOpenChange={() => setDeletingPlaylist(null)}>
-                <AlertDialogContent>
+                <AlertDialogContent className="glass-modal bg-surface-elevated/95 border-white/10">
                     <AlertDialogHeader>
                         <AlertDialogTitle>Delete Playlist?</AlertDialogTitle>
                         <AlertDialogDescription>
