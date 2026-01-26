@@ -119,22 +119,22 @@ const ProfilePage = () => {
 
                     {/* Listening Stats */}
                     <div>
-                        <h2 className='text-2xl font-bold text-white mb-4 tracking-tight'>Your Stats</h2>
+                        <h2 className='text-2xl font-bold text-text-primary mb-4 tracking-tight'>Your Stats</h2>
                         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
                             {stats.map((stat) => {
                                 const Icon = stat.icon;
                                 return (
                                     <div
                                         key={stat.label}
-                                        className='p-6 rounded-xl bg-background-elevated/40 border border-white/5 hover:bg-background-elevated/60 transition-colors group'
+                                        className='p-6 glass-panel hover:bg-surface-elevated/60 transition-colors group'
                                     >
                                         <div className='flex items-center gap-3 mb-3'>
-                                            <div className='p-2 rounded-lg bg-background-base/50 group-hover:scale-105 transition-transform'>
+                                            <div className='p-2 rounded-lg bg-surface-elevated/50 group-hover:scale-110 transition-transform'>
                                                 <Icon className={`size-5 ${stat.color}`} />
                                             </div>
                                             <p className='text-sm text-text-secondary'>{stat.label}</p>
                                         </div>
-                                        <p className='text-2xl font-bold text-white'>{stat.value}</p>
+                                        <p className='text-2xl font-bold text-text-primary'>{stat.value}</p>
                                     </div>
                                 );
                             })}
@@ -145,35 +145,35 @@ const ProfilePage = () => {
                     {isOwnProfile && (
                         <div>
                             <div className='flex items-center justify-between mb-4'>
-                                <h2 className='text-2xl font-bold text-white tracking-tight'>Account Settings</h2>
+                                <h2 className='text-2xl font-bold text-text-primary tracking-tight'>Account Settings</h2>
                                 <button
                                     onClick={handleSignOut}
-                                    className='flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-500 hover:text-white border border-red-500/20 hover:border-red-500/40 transition-all font-medium text-sm'
+                                    className='flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-500 hover:text-text-primary border border-red-500/20 hover:border-red-500/40 transition-all font-medium text-sm'
                                 >
                                     <LogOut className='size-4' />
                                     <span>Sign Out</span>
                                 </button>
                             </div>
                             <div className='space-y-3'>
-                                <button className='w-full flex items-center justify-between p-4 rounded-xl bg-background-elevated/40 border border-white/5 hover:bg-white/5 transition-colors text-left group'>
+                                <button className='w-full flex items-center justify-between p-4 glass-panel hover:bg-surface-elevated/60 transition-colors text-left group'>
                                     <div className='flex items-center gap-3'>
-                                        <div className='p-2 rounded-lg bg-background-base/50 group-hover:bg-white/10 transition-colors'>
+                                        <div className='p-2 rounded-lg bg-surface-elevated/50 group-hover:bg-white/10 transition-colors'>
                                             <Settings className='size-5 text-text-secondary group-hover:text-text-primary transition-colors' />
                                         </div>
                                         <div>
-                                            <p className='font-semibold text-white'>Playback Settings</p>
+                                            <p className='font-semibold text-text-primary'>Playback Settings</p>
                                             <p className='text-sm text-text-secondary'>Audio quality, volume normalization</p>
                                         </div>
                                     </div>
                                 </button>
 
-                                <button className='w-full flex items-center justify-between p-4 rounded-xl bg-background-elevated/40 border border-white/5 hover:bg-white/5 transition-colors text-left group'>
+                                <button className='w-full flex items-center justify-between p-4 glass-panel hover:bg-surface-elevated/60 transition-colors text-left group'>
                                     <div className='flex items-center gap-3'>
-                                        <div className='p-2 rounded-lg bg-background-base/50 group-hover:bg-white/10 transition-colors'>
+                                        <div className='p-2 rounded-lg bg-surface-elevated/50 group-hover:bg-white/10 transition-colors'>
                                             <Settings className='size-5 text-text-secondary group-hover:text-text-primary transition-colors' />
                                         </div>
                                         <div>
-                                            <p className='font-semibold text-white'>Notifications</p>
+                                            <p className='font-semibold text-text-primary'>Notifications</p>
                                             <p className='text-sm text-text-secondary'>Manage your notification preferences</p>
                                         </div>
                                     </div>

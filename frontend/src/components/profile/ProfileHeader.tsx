@@ -46,16 +46,16 @@ export const ProfileHeader = ({ user, isOwnProfile, onEdit }: ProfileHeaderProps
     return (
         <div className="relative mb-8 group">
             {/* Banner / Gradient Background */}
-            <div className="h-48 md:h-64 bg-gradient-to-br from-brand-primary/20 via-zinc-900 to-zinc-950 rounded-xl overflow-hidden">
+            <div className="h-48 md:h-64 bg-gradient-to-br from-brand-primary/20 via-surface-elevated to-surface-base rounded-xl overflow-hidden relative">
                 <div className="absolute inset-0 bg-black/20" />
             </div>
 
-            {/* Profile Content */}
-            <div className="absolute top-32 md:top-40 left-6 right-6 flex flex-col md:flex-row items-end md:items-end gap-6">
+            {/* Profile Content - using negative margin instead of absolute positioning for flow layout */}
+            <div className="px-6 -mt-16 md:-mt-24 relative z-10 flex flex-col md:flex-row items-end gap-6">
 
                 {/* Avatar */}
                 <div className="relative shrink-0">
-                    <div className="size-32 md:size-40 rounded-full border-4 border-zinc-950 overflow-hidden bg-zinc-800 shadow-2xl">
+                    <div className="size-32 md:size-48 rounded-full border-4 border-surface-base overflow-hidden bg-surface-elevated shadow-2xl">
                         <img
                             src={user.imageUrl}
                             alt={user.fullName}
@@ -74,19 +74,19 @@ export const ProfileHeader = ({ user, isOwnProfile, onEdit }: ProfileHeaderProps
                 </div>
 
                 {/* User Info */}
-                <div className="flex-1 pb-2 space-y-2 md:space-y-1 text-center md:text-left">
+                <div className="flex-1 pb-2 space-y-2 md:space-y-1 text-center md:text-left min-w-0">
                     <div className="flex flex-col md:flex-row items-center gap-3">
-                        <h1 className="text-3xl md:text-4xl font-bold text-white flex items-center gap-2">
+                        <h1 className="text-3xl md:text-4xl font-bold text-whitish truncate max-w-full flex items-center gap-2">
                             {user.fullName}
-                            {user.isPrivate && <Lock className="size-5 text-zinc-500" />}
+                            {user.isPrivate && <Lock className="size-5 text-text-secondary" />}
                         </h1>
                         {!isOwnProfile && (
                             <Button
                                 onClick={handleFollowToggle}
                                 disabled={isLoading}
-                                className={`h-8 rounded-full font-semibold gap-2 ${isFollowing
-                                        ? "bg-zinc-800 text-white hover:bg-zinc-700 border border-zinc-700"
-                                        : "bg-white text-black hover:bg-white/90"
+                                className={`h-8 rounded-full font-semibold gap-2 transition-all ${isFollowing
+                                    ? "bg-surface-elevated text-whitish hover:bg-surface-elevated/80 border border-white/10"
+                                    : "bg-brand-primary text-white hover:bg-brand-primary/90 shadow-glow-primary"
                                     }`}
                             >
                                 {isFollowing ? (
@@ -117,13 +117,13 @@ export const ProfileHeader = ({ user, isOwnProfile, onEdit }: ProfileHeaderProps
 
                     {/* Bio */}
                     {user.bio && (
-                        <p className="text-zinc-300 text-sm md:text-base max-w-2xl">
+                        <p className="text-text-secondary text-sm md:text-base max-w-2xl line-clamp-2 md:line-clamp-none">
                             {user.bio}
                         </p>
                     )}
 
                     {/* Meta Details */}
-                    <div className="flex items-center justify-center md:justify-start gap-4 md:gap-6 text-sm text-zinc-400 pt-2 flex-wrap">
+                    <div className="flex items-center justify-center md:justify-start gap-4 md:gap-6 text-sm text-text-secondary pt-2 flex-wrap">
                         {user.location && (
                             <div className="flex items-center gap-1.5">
                                 <MapPin className="size-4 text-brand-primary" />
@@ -133,7 +133,7 @@ export const ProfileHeader = ({ user, isOwnProfile, onEdit }: ProfileHeaderProps
                         {user.website && (
                             <div className="flex items-center gap-1.5">
                                 <Globe className="size-4 text-brand-primary" />
-                                <a href={user.website} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors hover:underline">
+                                <a href={user.website} target="_blank" rel="noopener noreferrer" className="hover:text-brand-accent transition-colors hover:underline truncate max-w-[200px]">
                                     {user.website.replace(/^https?:\/\//, '')}
                                 </a>
                             </div>
@@ -141,16 +141,16 @@ export const ProfileHeader = ({ user, isOwnProfile, onEdit }: ProfileHeaderProps
                         {/* Stats */}
                         <div className="flex items-center gap-4 border-l border-white/10 pl-4 ml-2">
                             <div>
-                                <span className="text-white font-bold">{followersCount}</span> Followers
+                                <span className="text-whitish font-bold">{followersCount}</span> Followers
                             </div>
                             <div>
-                                <span className="text-white font-bold">{user.followingCount || 0}</span> Following
+                                <span className="text-whitish font-bold">{user.followingCount || 0}</span> Following
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Mobile Edit Button (Visible only on mobile in normal layout) */}
+                {/* Mobile Edit Button */}
                 {isOwnProfile && (
                     <Button
                         variant="outline"

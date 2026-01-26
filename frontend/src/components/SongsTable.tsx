@@ -116,11 +116,11 @@ const SongsTable = () => {
 					</button>
 					<button
 						onClick={() => window.location.href = `/radio/${row.original._id}`}
-						className="p-2 hover:bg-violet-500/10 rounded-lg transition-colors group"
+						className="p-2 hover:bg-brand-primary/10 rounded-lg transition-colors group"
 						title="Start Radio"
 						aria-label={`Start radio for ${row.original.title}`}
 					>
-						<Radio className="size-4 text-gray-600 group-hover:text-violet-500" />
+						<Radio className="size-4 text-gray-600 group-hover:text-brand-primary" />
 					</button>
 				</div >
 			),

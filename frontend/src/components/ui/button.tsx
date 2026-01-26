@@ -39,7 +39,11 @@ const buttonVariants = cva(
 
         // Glassmorphism variant
         glass:
-          "glass hover:glass-strong text-white hover:border-brand-primary/50",
+          "glass-panel hover:glass-strong text-white hover:border-brand-primary/50",
+
+        // Liquid Premium
+        liquid:
+          "btn-liquid bg-gradient-brand text-white shadow-glow-primary border border-white/10",
       },
       size: {
         default: "h-10 px-4 py-2 has-[>svg]:px-3",
