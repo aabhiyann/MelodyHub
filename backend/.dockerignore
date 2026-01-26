@@ -1,15 +1,15 @@
-# Add to backend/.dockerignore
 node_modules
-npm-debug.log
 dist
+coverage
 .env
 .git
-.gitignore
-README.md
-.vscode
+.DS_Store
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 .idea
-coverage
-*.test.ts
-*.spec.ts
+.vscode
+tests
 __tests__
-tmp
+src/__tests__
