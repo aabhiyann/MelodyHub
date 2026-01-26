@@ -18,6 +18,21 @@ export const Mascot = () => {
     const [showConfetti, setShowConfetti] = useState(false);
     const [holidayTheme] = useState(getHolidayTheme());
 
+    const getMascotImage = (state: string) => {
+        switch (state) {
+            case 'loading': return '/mascot/melody-loading.png';
+            case 'error': return '/mascot/melody-404.png';
+            case 'happy':
+            case 'celebrating':
+            case 'excited': return '/mascot/melody-success.png';
+            case 'thinking': return '/mascot/melody-chatting.png'; // Close enough
+            case 'sleeping': return '/mascot/melody-empty.png'; // Sleeping mood
+            case 'encouraging': return '/mascot/melody-icon.png';
+            case 'idle':
+            default: return '/mascot/melody-default.png';
+        }
+    };
+
     // Show confetti for excited/celebrating states
     useEffect(() => {
         if (mascot.state === 'excited' || mascot.state === 'celebrating') {
@@ -87,6 +102,7 @@ export const Mascot = () => {
                     {showConfetti && !prefersReducedMotion && <Confetti />}
 
                     {/* Mascot image/animation */}
+                    {/* Mascot image/animation */}
                     <motion.div
                         className="w-24 h-24 md:w-32 md:h-32 relative"
                         animate={{
@@ -95,7 +111,7 @@ export const Mascot = () => {
                                 ? [1, 1.02, 1]
                                 : 1,
                             // Happy bounce
-                            y: mascot.state === 'happy' && !prefersReducedMotion
+                            y: (mascot.state === 'happy' || mascot.state === 'encouraging') && !prefersReducedMotion
                                 ? [0, -10, 0, -5, 0]
                                 : 0,
                             // Celebrating dance (wiggle)
@@ -115,10 +131,14 @@ export const Mascot = () => {
                             ...(mascot.state === 'thinking' && !prefersReducedMotion && {
                                 rotate: 15,
                             }),
+                            // Error shake
+                            ...(mascot.state === 'error' && !prefersReducedMotion && {
+                                x: [-5, 5, -5, 5, 0],
+                            }),
                         }}
                         transition={{
                             scale: { duration: 2, repeat: Infinity, ease: 'easeInOut' },
-                            y: mascot.state === 'happy'
+                            y: (mascot.state === 'happy' || mascot.state === 'encouraging')
                                 ? { duration: 0.6 }
                                 : mascot.state === 'excited'
                                     ? { duration: 0.8 }
@@ -130,20 +150,43 @@ export const Mascot = () => {
                                     : mascot.state === 'excited'
                                         ? { duration: 0.8 }
                                         : {},
+                            x: mascot.state === 'error' ? { duration: 0.4 } : {},
                         }}
                     >
                         {/* Holiday accessory */}
                         {holidayTheme && (
-                            <div className="absolute -top-2 -right-2 text-2xl">
+                            <div className="absolute -top-2 -right-2 text-2xl z-10">
                                 {holidayTheme.accessory === 'santa-hat' && '🎅'}
                                 {holidayTheme.accessory === 'party-hat' && '🎉'}
                                 {holidayTheme.accessory === 'witch-hat' && '🎃'}
                             </div>
                         )}
 
-                        {/* Using existing mascot image */}
+                        {/* Sleeping Zzz Animation */}
+                        {mascot.state === 'sleeping' && !prefersReducedMotion && (
+                            <motion.div
+                                className="absolute -top-6 right-0 text-xl font-bold text-text-secondary z-10"
+                                initial={{ opacity: 0, y: 0, scale: 0.5 }}
+                                animate={{
+                                    opacity: [0, 1, 0],
+                                    y: -20,
+                                    x: 20,
+                                    scale: [0.5, 1.2, 1]
+                                }}
+                                transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeOut",
+                                    delay: 0.5
+                                }}
+                            >
+                                Zzz...
+                            </motion.div>
+                        )}
+
+                        {/* Dynamic Image Source */}
                         <img
-                            src="/mascot/melody-icon.png"
+                            src={getMascotImage(mascot.state)}
                             alt="Melody the Turtle"
                             className="w-full h-full object-contain drop-shadow-lg"
                         />
