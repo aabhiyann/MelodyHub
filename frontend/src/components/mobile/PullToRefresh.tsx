@@ -1,122 +1,78 @@
-/**
- * PullToRefresh - Pull-down to refresh content
- * Mobile-friendly content refresh interaction
- */
-
-import { useState, useRef, useCallback } from 'react';
-import { motion } from 'framer-motion';
-import { RefreshCw } from 'lucide-react';
+import { useState, useRef, useEffect, ReactNode } from "react";
+import { motion, useAnimation } from "framer-motion";
+import { Loader2, ArrowDown } from "lucide-react";
 
 interface PullToRefreshProps {
     onRefresh: () => Promise<void>;
-    children: React.ReactNode;
-    threshold?: number;
-    disabled?: boolean;
+    children: ReactNode;
 }
 
-export const PullToRefresh = ({
-    onRefresh,
-    children,
-    threshold = 80,
-    disabled = false,
-}: PullToRefreshProps) => {
+export const PullToRefresh = ({ onRefresh, children }: PullToRefreshProps) => {
+    const [startY, setStartY] = useState(0);
     const [pullDistance, setPullDistance] = useState(0);
     const [isRefreshing, setIsRefreshing] = useState(false);
-    const [canRefresh, setCanRefresh] = useState(false);
-    const startY = useRef(0);
     const containerRef = useRef<HTMLDivElement>(null);
+    const controls = useAnimation();
 
-    const handleTouchStart = useCallback((e: React.TouchEvent) => {
-        if (disabled || isRefreshing) return;
+    const THRESHOLD = 80;
+    const MAX_PULL = 150;
 
-        const scrollTop = containerRef.current?.scrollTop || 0;
-        if (scrollTop === 0) {
-            startY.current = e.touches[0].clientY;
+    const handleTouchStart = (e: React.TouchEvent) => {
+        if (containerRef.current?.scrollTop === 0) {
+            setStartY(e.touches[0].clientY);
         }
-    }, [disabled, isRefreshing]);
+    };
 
-    const handleTouchMove = useCallback((e: React.TouchEvent) => {
-        if (disabled || isRefreshing || startY.current === 0) return;
+    const handleTouchMove = (e: React.TouchEvent) => {
+        if (startY === 0 || isRefreshing) return;
 
         const currentY = e.touches[0].clientY;
-        const distance = currentY - startY.current;
+        const diff = currentY - startY;
 
-        if (distance > 0) {
-            // Prevent default pull-to-refresh
-            e.preventDefault();
-
-            // Apply resistance
-            const resistance = 2.5;
-            const adjustedDistance = distance / resistance;
-            setPullDistance(Math.min(adjustedDistance, threshold * 1.5));
-            setCanRefresh(adjustedDistance >= threshold);
+        if (diff > 0 && containerRef.current?.scrollTop === 0) {
+            // Add resistance
+            const damped = diff * 0.5;
+            setPullDistance(Math.min(damped, MAX_PULL));
+            e.preventDefault(); // Prevent native scroll
         }
-    }, [disabled, isRefreshing, threshold]);
+    };
 
-    const handleTouchEnd = useCallback(async () => {
-        if (disabled || isRefreshing) return;
+    const handleTouchEnd = async () => {
+        if (isRefreshing) return;
 
-        if (canRefresh) {
+        if (pullDistance > THRESHOLD) {
             setIsRefreshing(true);
-            try {
-                await onRefresh();
-            } finally {
-                setIsRefreshing(false);
-                setPullDistance(0);
-                setCanRefresh(false);
-            }
-        } else {
-            setPullDistance(0);
-            setCanRefresh(false);
+            setPullDistance(THRESHOLD); // Snap to threshold
+            await onRefresh();
+            setIsRefreshing(false);
         }
 
-        startY.current = 0;
-    }, [disabled, isRefreshing, canRefresh, onRefresh]);
-
-    const rotation = (pullDistance / threshold) * 360;
-    const opacity = Math.min(pullDistance / threshold, 1);
+        setPullDistance(0);
+        setStartY(0);
+    };
 
     return (
         <div
             ref={containerRef}
-            className="h-full overflow-y-auto"
+            className="h-full overflow-y-auto overscroll-none"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
         >
-            {/* Pull indicator */}
-            <motion.div
-                className="flex items-center justify-center"
-                animate={{
-                    height: isRefreshing ? 60 : pullDistance,
-                }}
-                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            <div
+                className="flex items-center justify-center overflow-hidden transition-all duration-200"
+                style={{ height: pullDistance }}
             >
-                <motion.div
-                    style={{ opacity }}
-                    animate={{
-                        rotate: isRefreshing ? 360 : rotation,
-                    }}
-                    transition={{
-                        rotate: isRefreshing
-                            ? { repeat: Infinity, duration: 1, ease: 'linear' }
-                            : { duration: 0 },
-                    }}
-                >
-                    <RefreshCw
-                        className={`size-6 ${canRefresh ? 'text-brand-primary' : 'text-gray-400'
-                            }`}
+                {isRefreshing ? (
+                    <Loader2 className="animate-spin text-brand-primary" />
+                ) : (
+                    <ArrowDown
+                        className="text-text-secondary transition-transform"
+                        style={{ transform: `rotate(${pullDistance > THRESHOLD ? 180 : 0}deg)` }}
                     />
-                </motion.div>
-            </motion.div>
-
-            {/* Content */}
-            <motion.div
-                animate={{
-                    y: isRefreshing ? 60 : pullDistance,
-                }}
-                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            >
+                )}
+            </div>
+            <motion.div>
                 {children}
             </motion.div>
         </div>
