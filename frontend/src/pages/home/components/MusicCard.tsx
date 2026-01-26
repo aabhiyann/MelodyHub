@@ -1,10 +1,11 @@
 import { Play, MoreHorizontal, Plus, ListMusic, Share2, Radio } from "lucide-react";
 import { Song } from "@/types";
-import { useState, useEffect, useRef } from "react";
+import { useState, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { LikeButton } from "@/components/LikeButton";
 import { AddToPlaylistDialog } from "@/components/AddToPlaylistDialog";
+import { OptimizedImage } from "@/components/OptimizedImage";
 
 interface MusicCardProps {
     song: Song;
@@ -12,32 +13,9 @@ interface MusicCardProps {
     onPlayClick?: (e: React.MouseEvent) => void;
 }
 
-const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
+const MusicCard = memo(({ song, onClick, onPlayClick }: MusicCardProps) => {
     const [showMenu, setShowMenu] = useState(false);
-    const [isImageLoaded, setIsImageLoaded] = useState(false);
-    const [shouldLoadImage, setShouldLoadImage] = useState(false);
-    const imgContainerRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
-
-
-    // Lazy loading with Intersection Observer
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setShouldLoadImage(true);
-                    observer.disconnect();
-                }
-            },
-            { rootMargin: '50px' } // Start loading 50px before visible
-        );
-
-        if (imgContainerRef.current) {
-            observer.observe(imgContainerRef.current);
-        }
-
-        return () => observer.disconnect();
-    }, []);
 
     const [showPlaylistDialog, setShowPlaylistDialog] = useState(false);
 
@@ -51,21 +29,14 @@ const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
             <div className="relative bg-zinc-800/40 hover:bg-zinc-800/60 rounded-lg p-4 transition-smooth hover-scale-sm active-scale-xs">
                 {/* Image Container with Hover Effects */}
                 <div
-                    ref={imgContainerRef}
                     className="relative aspect-square overflow-hidden rounded-md mb-4 shadow-lg group-hover:shadow-card-hover transition-smooth"
                 >
-                    {shouldLoadImage ? (
-                        <img
-                            src={song.imageUrl}
-                            alt={song.title}
-                            className={`h-full w-full object-cover transition-slow group-hover:scale-105 ${isImageLoaded ? 'opacity-100' : 'opacity-0'
-                                }`}
-                            loading="lazy"
-                            onLoad={() => setIsImageLoaded(true)}
-                        />
-                    ) : (
-                        <div className="h-full w-full bg-white/5 skeleton-shimmer-enhanced" />
-                    )}
+                    <OptimizedImage
+                        src={song.imageUrl}
+                        alt={song.title}
+                        size="small"
+                        className="h-full w-full object-cover transition-slow group-hover:scale-105"
+                    />
 
                     {/* Subtle Gradient Overlay on Hover */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-smooth group-hover:opacity-100" />
@@ -190,7 +161,7 @@ const MusicCard = ({ song, onClick, onPlayClick }: MusicCardProps) => {
             />
         </div>
     );
-};
+});
 
 export const MusicCardSkeleton = () => (
     <div className='flex-shrink-0 min-w-[160px] max-w-[220px]'>

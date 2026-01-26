@@ -45,6 +45,8 @@ export const LikeButton = ({
         <div className={cn('relative inline-flex items-center gap-2', className)}>
             <motion.button
                 onClick={handleClick}
+                aria-label={isLiked ? "Unlike song" : "Like song"}
+                aria-pressed={isLiked}
                 className={cn(
                     'relative p-2 rounded-full transition-colors',
                     isLiked

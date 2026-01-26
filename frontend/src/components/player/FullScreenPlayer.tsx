@@ -164,6 +164,7 @@ export const FullScreenPlayer = () => {
                                             max={duration || 100}
                                             value={currentTime}
                                             onChange={handleSeek}
+                                            aria-label="Seek progress"
                                             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
                                         />
                                         <div className="h-2 bg-white/20 rounded-full overflow-hidden">
@@ -190,6 +191,7 @@ export const FullScreenPlayer = () => {
                                     <button
                                         onClick={playPrevious}
                                         className="p-3 hover:bg-white/10 rounded-full transition-colors"
+                                        aria-label="Previous song"
                                     >
                                         <SkipBack className="size-8 text-white fill-white" />
                                     </button>
@@ -198,6 +200,7 @@ export const FullScreenPlayer = () => {
                                     <button
                                         onClick={togglePlay}
                                         className="p-6 bg-white hover:bg-white/90 rounded-full transition-transform hover:scale-105 active:scale-95 shadow-xl"
+                                        aria-label={isPlaying ? "Pause" : "Play"}
                                     >
                                         {isPlaying ? (
                                             <Pause className="size-10 text-black fill-black" />
@@ -210,6 +213,7 @@ export const FullScreenPlayer = () => {
                                     <button
                                         onClick={playNext}
                                         className="p-3 hover:bg-white/10 rounded-full transition-colors"
+                                        aria-label="Next song"
                                     >
                                         <SkipForward className="size-8 text-white fill-white" />
                                     </button>
@@ -225,6 +229,7 @@ export const FullScreenPlayer = () => {
                                     <button
                                         className="p-2 hover:bg-white/10 rounded-full transition-colors"
                                         onClick={toggleMute}
+                                        aria-label={isMuted ? "Unmute" : "Mute"}
                                     >
                                         {isMuted || volume === 0 ? (
                                             <VolumeX className="size-5 text-text-secondary" />
@@ -240,6 +245,7 @@ export const FullScreenPlayer = () => {
                                             max="100"
                                             value={isMuted ? 0 : volume}
                                             onChange={(e) => setVolume(Number(e.target.value))}
+                                            aria-label="Volume"
                                             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                                         />
                                         <div className="h-1 bg-white/20 rounded-full overflow-hidden w-full pointer-events-none">
@@ -250,7 +256,10 @@ export const FullScreenPlayer = () => {
                                         </div>
                                     </div>
 
-                                    <button className="p-2 hover:bg-white/10 rounded-full transition-colors">
+                                    <button
+                                        className="p-2 hover:bg-white/10 rounded-full transition-colors"
+                                        aria-label="Like song"
+                                    >
                                         <Heart className="size-5 text-text-secondary hover:text-white" />
                                     </button>
                                 </div>
