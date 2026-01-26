@@ -37,9 +37,26 @@ export const ActivityFeed = () => {
         refetchInterval: 30000, // Refresh every 30s
     });
 
-    if (isLoading) return <div className="p-4 text-zinc-400 text-sm">Loading activity...</div>;
-    if (error) return <div className="p-4 text-red-400 text-sm">Failed to load activity</div>;
-    if (!activities || activities.length === 0) return <div className="p-4 text-zinc-500 text-sm">No recent activity from friends.</div>;
+    if (!activities || activities.length === 0) {
+        return (
+            <div className="w-full h-full bg-zinc-900/50 border-l border-zinc-800 hidden lg:flex lg:flex-col lg:w-72 xl:w-80 p-4">
+                <div className="border-b border-zinc-800 pb-4 mb-4">
+                    <h3 className="font-semibold text-zinc-200">Friend Activity</h3>
+                </div>
+                <div className="flex-1 flex flex-col items-center justify-center text-center space-y-3 opacity-60">
+                    <div className="bg-zinc-800 p-3 rounded-full">
+                        <User className="size-6 text-zinc-400" />
+                    </div>
+                    <div className="space-y-1">
+                        <p className="text-zinc-300 font-medium text-sm">No recent activity</p>
+                        <p className="text-xs text-zinc-500 max-w-[200px]">
+                            Follow friends and artists to see what they are listening to.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     const getActivityIcon = (type: ActivityType) => {
         switch (type) {
