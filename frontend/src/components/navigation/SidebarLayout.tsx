@@ -7,6 +7,7 @@ import { Sidebar } from './Sidebar';
 import { BottomTabBar } from '@/components/mobile/BottomTabBar';
 import { useIsMobile } from '@/hooks/useMediaQuery';
 import { Outlet } from 'react-router-dom';
+import { cn } from '@/lib/utils';
 
 import { SkipLink } from '@/components/a11y/SkipLink';
 
