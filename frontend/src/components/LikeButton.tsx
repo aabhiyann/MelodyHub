@@ -6,6 +6,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart } from 'lucide-react';
 import { useState } from 'react';
+import { useMascot } from '@/hooks/useMascot';
 import { likeAnimation, vibrate } from '@/lib/interactions';
 import { cn } from '@/lib/utils';
 
@@ -29,6 +30,8 @@ export const LikeButton = ({
     const [isLiked, setIsLiked] = useState(initialLiked);
     const [showParticles, setShowParticles] = useState(false);
 
+    const mascot = useMascot();
+
     const handleClick = () => {
         const newLiked = !isLiked;
         setIsLiked(newLiked);
@@ -37,6 +40,7 @@ export const LikeButton = ({
         if (newLiked) {
             setShowParticles(true);
             vibrate([10, 20, 10]); // Haptic feedback
+            mascot.celebrate("Loved it! ❤️");
             setTimeout(() => setShowParticles(false), 1000);
         }
     };
