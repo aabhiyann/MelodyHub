@@ -10,7 +10,7 @@ import { useState } from 'react';
 import { HeartParticles } from '../HeartParticles';
 
 export const NowPlaying = () => {
-    const { currentSong, isPlaying } = usePlayerStore();
+    const { currentSong } = usePlayerStore();
     const [isLiked, setIsLiked] = useState(false);
     const [showParticles, setShowParticles] = useState(false);
 
@@ -44,30 +44,23 @@ export const NowPlaying = () => {
         <div className="flex items-center gap-4 min-w-0">
             {/* Album Artwork */}
             <motion.div
-                className="relative flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden shadow-lg"
-                animate={{
-                    rotate: isPlaying ? 360 : 0,
-                }}
-                transition={{
-                    duration: 20,
-                    repeat: isPlaying ? Infinity : 0,
-                    ease: 'linear',
-                }}
+                className="relative flex-shrink-0 w-14 h-14 rounded-md overflow-hidden shadow-sm border border-white/5"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.2 }}
             >
                 <img
                     src={currentSong.imageUrl}
                     alt={currentSong.title}
                     className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
             </motion.div>
 
             {/* Track Info */}
-            <div className="flex-1 min-w-0">
-                <h3 className="text-base font-semibold text-white truncate hover:underline cursor-pointer">
+            <div className="flex-1 min-w-0 flex flex-col justify-center">
+                <h3 className="text-sm font-medium text-white truncate hover:underline cursor-pointer leading-tight">
                     {currentSong.title}
                 </h3>
-                <p className="text-sm text-white/60 truncate hover:underline cursor-pointer">
+                <p className="text-xs text-zinc-400 truncate hover:text-white hover:underline cursor-pointer transition-colors mt-0.5">
                     {currentSong.artist}
                 </p>
             </div>
