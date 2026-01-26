@@ -6,10 +6,11 @@
 import { motion } from 'framer-motion';
 import { Music, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Plus } from "lucide-react";
 
 interface EmptyStateProps {
     message: string;
-    description?: string;
+    description: string;
     actionLabel?: string;
     onAction?: () => void;
     showMascot?: boolean;
@@ -20,7 +21,7 @@ export const EmptyState = ({
     description,
     actionLabel,
     onAction,
-    showMascot = true,
+    showMascot = true
 }: EmptyStateProps) => {
     return (
         <motion.div
@@ -39,7 +40,7 @@ export const EmptyState = ({
                         repeat: Infinity,
                         ease: 'easeInOut',
                     }}
-                    className="mb-6"
+                    className="mb-6 relative"
                 >
                     <div className="relative">
                         {/* Glow Effect */}
@@ -47,25 +48,27 @@ export const EmptyState = ({
 
                         {/* Mascot Image */}
                         <img
-                            src="/melody.webp"
+                            src="/mascot/melody-empty.png"
                             alt="Melody mascot"
-                            className="w-32 h-32 relative z-10"
+                            className="w-32 h-32 relative z-10 object-contain drop-shadow-2xl opacity-90"
                         />
 
-                        {/* Sparkle Effect */}
+                        {/* Floating Sleepy Zs */}
                         <motion.div
+                            className="absolute -top-4 -right-2 text-2xl font-bold text-text-secondary z-20"
                             animate={{
-                                rotate: 360,
-                                scale: [1, 1.2, 1],
+                                opacity: [0, 1, 0],
+                                y: -20,
+                                x: 10,
+                                scale: [0.5, 1, 0.8]
                             }}
                             transition={{
-                                duration: 4,
+                                duration: 2.5,
                                 repeat: Infinity,
-                                ease: 'linear',
+                                ease: "easeOut"
                             }}
-                            className="absolute -top-2 -right-2 z-20"
                         >
-                            <Sparkles className="w-6 h-6 text-yellow-400 fill-yellow-400" />
+                            Zzz
                         </motion.div>
                     </div>
                 </motion.div>
@@ -86,7 +89,7 @@ export const EmptyState = ({
                     onClick={onAction}
                     className="bg-brand-primary hover:bg-brand-primary/90 text-white px-6 py-2 rounded-full font-semibold transition-all hover:scale-105"
                 >
-                    <Music className="w-4 h-4 mr-2" />
+                    <Plus className="w-4 h-4 mr-2" />
                     {actionLabel}
                 </Button>
             )}
