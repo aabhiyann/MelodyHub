@@ -52,21 +52,21 @@ export const InstallPrompt = () => {
                     exit={{ y: 100, opacity: 0 }}
                     className="fixed bottom-20 left-4 right-4 z-50 md:left-auto md:right-4 md:bottom-4 md:w-96"
                 >
-                    <div className="bg-zinc-900 border border-white/10 rounded-xl p-4 shadow-2xl flex items-center justify-between gap-4">
+                    <div className="glass-panel bg-surface-elevated/90 rounded-xl p-4 shadow-2xl flex items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
                             <div className="size-10 bg-brand-primary rounded-lg flex items-center justify-center shrink-0">
                                 <Download className="size-5 text-white" />
                             </div>
                             <div>
-                                <h3 className="font-semibold text-white">Install MelodyHub</h3>
-                                <p className="text-xs text-zinc-400">Add to home screen for better experience</p>
+                                <h3 className="font-semibold text-text-primary">Install MelodyHub</h3>
+                                <p className="text-xs text-text-secondary">Add to home screen for better experience</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-2">
                             <Button
                                 size="sm"
                                 onClick={handleInstall}
-                                className="bg-brand-primary hover:bg-brand-primary/90 text-white"
+                                className="bg-brand-primary hover:bg-brand-primary/90 text-white shadow-glow-primary"
                             >
                                 Install
                             </Button>
@@ -74,7 +74,7 @@ export const InstallPrompt = () => {
                                 onClick={() => setShowPrompt(false)}
                                 className="p-2 hover:bg-white/10 rounded-full transition-colors"
                             >
-                                <X className="size-4 text-zinc-400" />
+                                <X className="size-4 text-text-secondary" />
                             </button>
                         </div>
                     </div>
