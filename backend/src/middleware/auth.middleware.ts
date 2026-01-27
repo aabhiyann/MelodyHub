@@ -15,20 +15,18 @@ export const protectRoute = async (req: Request, res: Response, next: NextFuncti
 	// ALLOW BYPASS FOR VERIFICATION IF header is present
 	const isTestMode = process.env.NODE_ENV === 'test' || req.headers['x-test-mode'] === 'true';
 
-	if (isTestMode) {
-		// If mocked auth is injected by test framework logic, allow it.
-		// Or if we want to simulate a user via header (easier for integration tests)
-		if (req.headers['x-test-user-id']) {
-			authReq.auth = {
-				userId: req.headers['x-test-user-id'] as string,
-				sessionId: 'test-session',
-				getToken: async () => 'test-token',
-				claims: {}
-			};
-			next();
-			return;
-		}
+	if (isTestMode && req.headers['x-test-user-id']) {
+		(req as any).auth = {
+			userId: req.headers['x-test-user-id'] as string,
+			sessionId: 'test-session',
+			getToken: async () => 'test-token',
+			claims: {}
+		};
+		next();
+		return;
 	}
+
+	const authReq = req as AuthRequest;
 
 	if (!authReq.auth.userId) {
 		res.status(401).json({ message: "Unauthorized access" });
