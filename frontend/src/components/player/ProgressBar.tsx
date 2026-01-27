@@ -131,25 +131,28 @@ export const ProgressBar = ({
                 tabIndex={0}
             >
                 {/* Background Track */}
-                <div className="absolute top-1/2 -translate-y-1/2 left-0 w-full h-1 bg-white/10 rounded-full overflow-hidden group-hover:h-1.5 transition-all duration-200">
+                <div className="absolute top-1/2 -translate-y-1/2 left-0 w-full h-1 bg-white/10 rounded-full overflow-hidden group-hover:h-1.5 transition-all duration-300 ease-out">
                     {/* Buffered Progress */}
                     <motion.div
-                        className="absolute top-0 left-0 h-full bg-white/20 rounded-full"
+                        className="absolute top-0 left-0 h-full bg-white/30 rounded-full"
                         style={{ width: `${buffered}%` }}
-                        transition={{ duration: 0.1 }}
+                        transition={{ duration: 0.2 }}
                     />
 
                     {/* Current Progress */}
                     <motion.div
-                        className="absolute top-0 left-0 h-full bg-white group-hover:bg-brand-primary rounded-full transition-colors"
+                        className="absolute top-0 left-0 h-full bg-white rounded-full transition-all duration-300 relative overflow-hidden"
                         style={{ width: `${progress}%` }}
                         transition={{ duration: 0.1 }}
-                    />
+                    >
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/50" />
+                        <div className="absolute right-0 top-0 bottom-0 w-2 blur-[4px] bg-white" />
+                    </motion.div>
                 </div>
 
                 {/* Thumb */}
                 <div
-                    className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
+                    className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10"
                     style={{ left: `${progress}%`, transform: `translate(-50%, -50%) scale(${isDragging ? 1.2 : 1})` }}
                 />
 

@@ -16,6 +16,7 @@ import {
   ListMusic,
   Mic2,
   LogOut,
+  Target
 } from "lucide-react";
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -107,6 +108,22 @@ const LeftSidebar = () => {
           >
             <Search className='mr-3 size-5 group-hover:scale-110 transition-transform' />
             <span className='hidden md:inline'>Search</span>
+          </Link>
+
+          <Link
+            to={'/quests'}
+            className={cn(
+              buttonVariants({
+                variant: 'ghost',
+              }),
+              'w-full justify-start h-10 px-4 font-medium transition-all group',
+              isActiveRoute('/quests')
+                ? 'bg-white/10 text-white border-l-4 border-brand-primary'
+                : 'text-text-secondary hover:text-white hover:bg-white/5'
+            )}
+          >
+            <Target className='mr-3 size-5 group-hover:scale-110 transition-transform text-yellow-500' />
+            <span className='hidden md:inline'>Quests</span>
           </Link>
 
           {/* Library - Placeholder for future */}

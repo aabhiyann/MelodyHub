@@ -17,7 +17,7 @@ interface MusicCardProps {
 const MusicCard = memo(({ song, onClick, onPlayClick }: MusicCardProps) => {
     const [showMenu, setShowMenu] = useState(false);
     const navigate = useNavigate();
-    const longPressTimer = useRef<any>(null);
+    const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const handleTouchStart = () => {
         longPressTimer.current = setTimeout(() => {

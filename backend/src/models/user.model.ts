@@ -9,6 +9,16 @@ export interface IUser extends Document {
 	website?: string;
 	isPrivate: boolean;
 	friends: mongoose.Types.ObjectId[];
+	gamification: {
+		xp: number;
+		level: number;
+		gems: number;
+		streak: number;
+		lastListenDate?: Date;
+		streakFreezes: number;
+		lastFreezeUsed?: Date;
+		achievements: string[];
+	};
 	createdAt: Date;
 	updatedAt: Date;
 }
@@ -45,6 +55,16 @@ const userSchema = new mongoose.Schema(
 			default: false,
 		},
 		friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+		gamification: {
+			xp: { type: Number, default: 0 },
+			level: { type: Number, default: 1 },
+			gems: { type: Number, default: 0 },
+			streak: { type: Number, default: 0 },
+			lastListenDate: { type: Date, default: null },
+			streakFreezes: { type: Number, default: 0 },
+			lastFreezeUsed: { type: Date, default: null },
+			achievements: [{ type: String }], // Store achievement IDs
+		},
 	},
 	{ timestamps: true }
 );

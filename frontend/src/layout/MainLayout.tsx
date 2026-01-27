@@ -11,6 +11,7 @@ import PlaybackControls from "@/components/PlaybackControls";
 import QueueView from "@/components/QueueView";
 import LyricsView from "@/components/LyricsView";
 import { usePlayerStore } from "@/stores/PlayerStore";
+import { XPFloatingIndicator } from "@/components/gamification/XPFloatingIndicator";
 
 const MainLayout = () => {
 
@@ -39,6 +40,7 @@ const MainLayout = () => {
             </a>
 
             <ResizablePanelGroup direction='horizontal' className='flex-1 flex h-full overflow-hidden p-2 gap-2 relative min-h-0'>
+                <XPFloatingIndicator />
                 <AudioPlayer />
 
                 {/* Lyrics Overlay */}

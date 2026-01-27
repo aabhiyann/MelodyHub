@@ -15,7 +15,7 @@ const activityService = new ActivityService();
 export const createPlaylist = async (req: Request, res: Response) => {
     try {
         const userId = (req as AuthenticatedRequest).auth?.userId;
-        const { name, description, isPublic } = req.body;
+        const { name, description, isPublic, songs } = req.body;
 
         if (!userId) {
             return res.status(401).json({ success: false, message: "Authentication required" });
@@ -28,7 +28,7 @@ export const createPlaylist = async (req: Request, res: Response) => {
             isPublic: isPublic || false,
             collaborators: [],
             viewers: [],
-            songs: [],
+            songs: songs || [], // Initialize with provided songs or empty array
         });
 
         await playlist.save();

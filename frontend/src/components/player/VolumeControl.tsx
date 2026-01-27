@@ -65,10 +65,10 @@ export const VolumeControl = ({
                         initial={{ opacity: 0, width: 0 }}
                         animate={{ opacity: 1, width: 100 }}
                         exit={{ opacity: 0, width: 0 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
                         className="overflow-hidden"
                     >
-                        <div className="relative flex items-center select-none">
+                        <div className="relative flex items-center select-none pr-2">
                             <input
                                 type="range"
                                 min="0"
@@ -89,9 +89,9 @@ export const VolumeControl = ({
                   [&::-webkit-slider-thumb]:rounded-full 
                   [&::-webkit-slider-thumb]:bg-white 
                   [&::-webkit-slider-thumb]:cursor-pointer
-                  [&::-webkit-slider-thumb]:shadow-lg
+                  [&::-webkit-slider-thumb]:shadow-[0_0_10px_rgba(255,255,255,0.5)]
                   [&::-webkit-slider-thumb]:transition-all
-                  [&::-webkit-slider-thumb]:hover:scale-110
+                  [&::-webkit-slider-thumb]:hover:scale-125
                   [&::-moz-range-thumb]:appearance-none
                   [&::-moz-range-thumb]:w-3
                   [&::-moz-range-thumb]:h-3
@@ -101,7 +101,7 @@ export const VolumeControl = ({
                   [&::-moz-range-thumb]:cursor-pointer
                   [&::-webkit-slider-track]:bg-transparent"
                                 style={{
-                                    background: `linear-gradient(to right, rgb(139, 92, 246) 0%, rgb(139, 92, 246) ${displayVolume}%, rgba(255,255,255,0.1) ${displayVolume}%, rgba(255,255,255,0.1) 100%)`,
+                                    background: `linear-gradient(to right, var(--brand-primary, #8b5cf6) 0%, var(--brand-primary, #8b5cf6) ${displayVolume}%, rgba(255,255,255,0.1) ${displayVolume}%, rgba(255,255,255,0.1) 100%)`,
                                 }}
                                 aria-label="Volume"
                                 aria-valuemin={0}

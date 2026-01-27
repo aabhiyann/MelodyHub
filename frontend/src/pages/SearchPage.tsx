@@ -50,7 +50,7 @@ const SearchPage = () => {
     const [selectedGenre, setSelectedGenre] = useState('all');
     const [sortBy, setSortBy] = useState('relevance');
     const [showFilters, setShowFilters] = useState(false);
-    const { songs, albums, fetchSongs, fetchAlbums, isLoading } = useMusicStore();
+    const { songs, albums, fetchSongs, fetchAlbums } = useMusicStore();
     const { playAlbum } = usePlayerStore();
 
     useEffect(() => {
