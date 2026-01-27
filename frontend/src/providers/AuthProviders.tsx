@@ -19,6 +19,18 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 	useEffect(() => {
 		const initAuth = async () => {
+			// Check for Test Mode
+			const isTestMode = typeof window !== 'undefined' && window.localStorage.getItem('TEST_MODE') === 'true';
+
+			if (isTestMode) {
+				console.log("TEST MODE ACTIVE: Bypassing Clerk");
+				updateApiToken("test-token");
+				// Manually trigger initSocket with fake user
+				if (!userId) initSocket("test-user-123");
+				setLoading(false);
+				return;
+			}
+
 			if (!isLoaded) return;
 			try {
 				const token = await getToken();
