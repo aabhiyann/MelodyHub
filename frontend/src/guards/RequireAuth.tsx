@@ -8,6 +8,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { LoadingScreen } from '@/components/LoadingScreen';
 
 import { useAuthStore } from "@/stores/AuthStore";
+import { SocketManager } from "@/components/SocketManager";
 import { useEffect } from "react";
 import { axiosInstance } from "@/lib/axios";
 
@@ -50,5 +51,10 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
         return <Navigate to="/" state={{ from: location }} replace />;
     }
 
-    return <>{children}</>;
+    return (
+        <>
+            <SocketManager />
+            {children}
+        </>
+    );
 };
