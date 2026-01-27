@@ -421,6 +421,14 @@ input[type=range]::-webkit-slider-runnable-track {
   perspective: 1000px;
 }
 
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
 /* Reduce Motion Support */
 @media (prefers-reduced-motion: reduce) {
 
