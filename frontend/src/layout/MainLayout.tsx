@@ -12,6 +12,9 @@ import QueueView from "@/components/QueueView";
 import LyricsView from "@/components/LyricsView";
 import { usePlayerStore } from "@/stores/PlayerStore";
 import { XPFloatingIndicator } from "@/components/gamification/XPFloatingIndicator";
+import MobileNav from "@/components/mobile/MobileNav";
+import MobileHeader from "@/components/mobile/MobileHeader";
+import MobilePlayer from "@/components/mobile/MobilePlayer";
 
 const MainLayout = () => {
 
@@ -28,6 +31,35 @@ const MainLayout = () => {
         window.addEventListener("resize", checkMobile);
         return () => window.removeEventListener("resize", checkMobile);
     }, []);
+
+    const MobileLayout = () => (
+        <div className="h-screen flex flex-col bg-background-base text-text-primary font-sans overflow-hidden">
+            <MobileHeader />
+
+            <main className="flex-1 overflow-y-auto overflow-x-hidden pb-[140px] pt-[56px] scroll-smooth" id="mobile-main">
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={location.pathname}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                    >
+                        <Outlet />
+                    </motion.div>
+                </AnimatePresence>
+            </main>
+
+            {/* Background Gradients */}
+            <div className="fixed inset-0 pointer-events-none -z-10 bg-gradient-to-br from-black via-[#0a0a0a] to-[#121212]" />
+            <div className="fixed top-[-10%] left-[-10%] w-[50vh] h-[50vh] bg-brand-primary/10 rounded-full blur-[80px] pointer-events-none -z-10" />
+
+            <MobilePlayer />
+            <MobileNav />
+        </div>
+    );
+
+    if (isMobile) return <MobileLayout />;
 
     return (
         <div className='h-screen bg-background-base text-text-primary flex flex-col font-sans selection:bg-brand-primary/30'>
@@ -47,14 +79,14 @@ const MainLayout = () => {
                 <LyricsView />
 
                 {/* left sidebar */}
-                <ResizablePanel defaultSize={20} minSize={isMobile ? 0 : 10} maxSize={30} className="bg-transparent z-10 hidden md:block">
+                <ResizablePanel defaultSize={20} minSize={0} maxSize={30} className="bg-transparent z-10 hidden md:block">
                     <LeftSidebar />
                 </ResizablePanel>
 
                 <ResizableHandle className='w-1 bg-transparent hover:bg-white/10 transition-colors rounded-full z-10 hidden md:block' />
 
                 {/* Main content */}
-                <ResizablePanel defaultSize={isMobile ? 80 : 60} className="bg-transparent z-10">
+                <ResizablePanel defaultSize={60} className="bg-transparent z-10">
                     <main id="main-content" role="main" aria-label="Main content" className="h-full rounded-2xl bg-background-elevated/50 overflow-hidden border border-white/5 relative">
                         <AnimatePresence mode="wait">
                             <motion.div
@@ -71,15 +103,12 @@ const MainLayout = () => {
                     </main>
                 </ResizablePanel>
 
-                {/* {!isMobile && (
-                    <> */}
                 <ResizableHandle className='w-1 bg-transparent hover:bg-white/10 transition-colors rounded-full z-10 hidden lg:block' />
 
                 {/* right sidebar (Activity or Queue) */}
                 <ResizablePanel defaultSize={20} minSize={0} maxSize={25} collapsedSize={0} className="bg-transparent z-10 hidden lg:block">
                     {isQueueOpen ? <QueueView /> : <ActivitySidebar />}
                 </ResizablePanel>
-                {/* </> */}
 
             </ResizablePanelGroup>
 
