@@ -45,14 +45,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
     }
 
     // Redirect to landing if not signed in
-    if (!isAuthenticated && !loading) {
-        // TEMPORARY: Allow dev access for verification if needed, or strict redirect
-        // return <Navigate to="/" state={{ from: location }} replace />;
-        // For verification, we will let it pass but we need a mock user for socket to work.
-        // If we just return children, the socket might fail if userId is null.
-        // Let's just log it for now and fallback to landing if strict.
-
-        // STRICT MODE:
+    if (!isSignedIn && isLoaded) {
         return <Navigate to="/" state={{ from: location }} replace />;
     }
 
