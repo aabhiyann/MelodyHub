@@ -7,7 +7,7 @@
 import { useEffect, useRef } from 'react';
 import { usePlayerStore } from '@/stores/PlayerStore';
 import { useGamificationStore } from '@/stores/GamificationStore';
-import { useChatStore } from '@/stores/useChatStore';
+import { useChatStore } from '@/stores/ChatStore';
 import { NowPlaying } from './player/NowPlaying';
 import { PlaybackControls } from './player/PlaybackControls';
 import { ProgressBar } from './player/ProgressBar';
