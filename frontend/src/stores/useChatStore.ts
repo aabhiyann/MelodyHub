@@ -80,16 +80,14 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     },
 
     sendMessage: async (receiverId: string, content: string) => {
-        const socket = (await import("@/lib/socket")).socket;
-        const senderId = socket.auth?.userId;
+        const senderId = (socket.auth as any)?.userId;
         if (!senderId) return;
 
         socket.emit("send_message", { senderId, receiverId, content });
     },
 
     updateActivity: (activity: string) => {
-        const socket = (await import("@/lib/socket")).socket; // lazy import or just import
-        const userId = socket.auth?.userId;
+        const userId = (socket.auth as any)?.userId;
         if (userId) {
             socket.emit("update_activity", { userId, activity });
         }
