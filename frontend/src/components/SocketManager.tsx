@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-
 import { useChatStore } from "@/stores/ChatStore";
 import { useUser } from "@clerk/clerk-react";
 
