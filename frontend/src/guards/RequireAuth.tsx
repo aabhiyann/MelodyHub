@@ -6,7 +6,7 @@
 import { useUser } from '@clerk/clerk-react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { LoadingScreen } from '@/components/LoadingScreen';
-
+import { useAuthStore } from "@/stores/AuthStore";
 import { useEffect } from "react";
 import { axiosInstance } from "@/lib/axios";
 
