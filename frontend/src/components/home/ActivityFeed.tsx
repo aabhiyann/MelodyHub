@@ -1,6 +1,76 @@
-import { useQuery } from "@tanstack/react-query";
-import { axiosInstance } from "@/lib/axios";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useChatStore } from "@/stores/useChatStore";
+
+// ... existing imports
+
+export const ActivityFeed = () => {
+    const { onlineUsers, userActivities } = useChatStore();
+    const { data: activities } = useQuery({
+        // ... existing query
+    });
+
+    // ... null checks ...
+
+    return (
+        <div className="w-full h-full bg-zinc-900/50 border-l border-zinc-800 hidden lg:flex lg:flex-col lg:w-72 xl:w-80">
+            <div className="p-4 border-b border-zinc-800">
+                <h3 className="font-semibold text-zinc-200">Friend Activity</h3>
+            </div>
+
+            <ScrollArea className="flex-1">
+                <div className="p-4 space-y-4">
+                    {activities?.map((activity: Activity) => {
+                        const isOnline = onlineUsers.includes(activity.userId.clerkId);
+                        const currentActivity = userActivities.get(activity.userId.clerkId);
+                        const displayActivity = isOnline && currentActivity && currentActivity !== "Idle"
+                            ? currentActivity
+                            : null;
+
+                        return (
+                            <div key={activity._id} className="flex gap-3 relative group">
+                                {/* Avatar */}
+                                <Link to={`/user/${activity.userId.clerkId}`} className="shrink-0 mt-1 relative">
+                                    <Avatar className="size-8 border border-zinc-800">
+                                        <AvatarImage src={activity.userId.imageUrl} alt={activity.userId.fullName} />
+                                        <AvatarFallback>{activity.userId.fullName[0]}</AvatarFallback>
+                                    </Avatar>
+                                    {/* Online Indicator */}
+                                    {isOnline && (
+                                        <div className="absolute top-0 right-0 size-3 bg-green-500 rounded-full border-2 border-zinc-900" />
+                                    )}
+                                    {/* Activity Icon Badge - Only show if not displaying real-time status? Or keep it? Keep it. */}
+                                    <div className="absolute -bottom-1 -right-1 bg-zinc-900 rounded-full p-0.5 border border-zinc-800">
+                                        <div className="bg-zinc-800 rounded-full p-1">
+                                            {getActivityIcon(activity.type)}
+                                        </div>
+                                    </div>
+                                </Link>
+
+                                {/* Content */}
+                                <div className="flex-1 min-w-0">
+                                    <div className="text-sm text-zinc-400 leading-snug">
+                                        <Link to={`/user/${activity.userId.clerkId}`} className="font-medium text-zinc-200 hover:underline hover:text-white transition-colors">
+                                            {activity.userId.fullName}
+                                        </Link>{" "}
+                                        {displayActivity ? (
+                                            <span className="text-brand-primary truncate block">{displayActivity}</span>
+                                        ) : (
+                                            getActivityText(activity)
+                                        )}
+                                    </div>
+                                    {!displayActivity && (
+                                        <div className="text-xs text-zinc-500 mt-1">
+                                            {new Date(activity.createdAt).toLocaleDateString()}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </ScrollArea>
+        </div>
+    );
+};
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Music, User, Heart, ListMusic } from "lucide-react";
 import { Link } from "react-router-dom";
