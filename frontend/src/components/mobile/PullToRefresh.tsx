@@ -29,10 +29,20 @@ export const PullToRefresh = ({ onRefresh, children }: PullToRefreshProps) => {
         const diff = currentY - startY;
 
         if (diff > 0 && containerRef.current?.scrollTop === 0) {
-            // Add resistance
-            const damped = diff * 0.5;
+            // Add non-linear resistance
+            const damped = diff * 0.4; // Slightly stronger resistance
+
+            // Haptic trigger just before threshold
+            if (pullDistance < THRESHOLD && damped >= THRESHOLD) {
+                if (navigator.vibrate) navigator.vibrate(10);
+            }
+
             setPullDistance(Math.min(damped, MAX_PULL));
-            e.preventDefault(); // Prevent native scroll
+
+            // Only prevent default if we are actually pulling to refresh
+            if (e.cancelable && diff > 5) {
+                e.preventDefault();
+            }
         }
     };
 
@@ -40,10 +50,14 @@ export const PullToRefresh = ({ onRefresh, children }: PullToRefreshProps) => {
         if (isRefreshing) return;
 
         if (pullDistance > THRESHOLD) {
+            if (navigator.vibrate) navigator.vibrate(20);
             setIsRefreshing(true);
             setPullDistance(THRESHOLD); // Snap to threshold
-            await onRefresh();
-            setIsRefreshing(false);
+            try {
+                await onRefresh();
+            } finally {
+                setIsRefreshing(false);
+            }
         }
 
         setPullDistance(0);
