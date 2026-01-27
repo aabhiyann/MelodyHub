@@ -8,6 +8,15 @@ const config: Config = {
         "./src/**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
+        screens: {
+            'xs': '320px',
+            'sm': '480px',
+            'md': '640px',
+            'lg': '768px',
+            'xl': '1024px',
+            '2xl': '1280px',
+            '3xl': '1536px',
+        },
         extend: {
             colors: {
                 // Semantic color mapping to CSS variables (Liquid Glass Theme)
