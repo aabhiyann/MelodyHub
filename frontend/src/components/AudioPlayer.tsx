@@ -7,6 +7,7 @@
 import { useEffect, useRef } from 'react';
 import { usePlayerStore } from '@/stores/PlayerStore';
 import { useGamificationStore } from '@/stores/GamificationStore';
+import { useChatStore } from '@/stores/useChatStore';
 import { NowPlaying } from './player/NowPlaying';
 import { PlaybackControls } from './player/PlaybackControls';
 import { ProgressBar } from './player/ProgressBar';
@@ -138,6 +139,16 @@ const AudioPlayer = () => {
 			audio.removeEventListener('durationchange', handleDurationChange);
 		};
 	}, [setCurrentTime, setDuration, setBufferedTime]);
+
+	// Broadcast activity
+	const { updateActivity } = useChatStore();
+	useEffect(() => {
+		if (currentSong && isPlaying) {
+			updateActivity(`Listening to ${currentSong.title}`);
+		} else {
+			updateActivity("Idle");
+		}
+	}, [currentSong, isPlaying, updateActivity]);
 
 	// Handle seeking
 	const handleSeek = (time: number) => {
