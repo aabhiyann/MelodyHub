@@ -2,14 +2,18 @@ import { SignedOut, UserButton } from "@clerk/clerk-react";
 import SigninAuth from "./SigninAuth";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu, Users } from "lucide-react";
+import { Menu, Users, Sparkles } from "lucide-react";
 import LeftSidebar from "./LeftSidebar";
 import { useUIStore } from "@/stores/UIStore";
+import { useAIStore } from "@/stores/useAIStore";
 import { cn } from "@/lib/utils";
+import { StreakBadge } from "./gamification/StreakBadge";
+import { GemsIndicator } from "./gamification/GemsIndicator";
 
 
 const Topbar = () => {
 	const { toggleActivityPanel, isActivityPanelOpen } = useUIStore();
+	const { openModal } = useAIStore();
 
 
 	return (
@@ -49,9 +53,23 @@ const Topbar = () => {
 
 			{/* User Actions */}
 			<div className='flex items-center gap-4'>
+				<div className="hidden md:flex items-center gap-2 mr-2">
+					<StreakBadge />
+					<GemsIndicator />
+				</div>
+
 				<SignedOut>
 					<SigninAuth />
 				</SignedOut>
+
+				{/* AI Playlist Button (Desktop) */}
+				<Button
+					onClick={openModal}
+					className="hidden md:flex items-center gap-2 bg-gradient-to-r from-brand-primary to-brand-secondary text-white border-0 hover:opacity-90"
+				>
+					<Sparkles className="size-4" />
+					<span className="font-semibold">AI Playlist</span>
+				</Button>
 
 				{/* Activity Feed Toggle */}
 				<Button

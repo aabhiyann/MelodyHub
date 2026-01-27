@@ -30,5 +30,15 @@ const userSchema = new mongoose.Schema({
         default: false,
     },
     friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    gamification: {
+        xp: { type: Number, default: 0 },
+        level: { type: Number, default: 1 },
+        gems: { type: Number, default: 0 },
+        streak: { type: Number, default: 0 },
+        lastListenDate: { type: Date, default: null },
+        streakFreezes: { type: Number, default: 0 },
+        lastFreezeUsed: { type: Date, default: null },
+        achievements: [{ type: String }], // Store achievement IDs
+    },
 }, { timestamps: true });
 export const User = mongoose.model("User", userSchema);

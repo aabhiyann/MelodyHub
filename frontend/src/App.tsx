@@ -26,7 +26,6 @@ const AlbumPage = lazy(() => import("./pages/AlbumPage"));
 const AdminPage = lazy(() => import("./pages/AdminPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
-const AIGenPage = lazy(() => import("./pages/ai/AIGenPage"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
 const LibraryPage = lazy(() => import("./pages/LibraryPage"));
 const ProfilePage = lazy(() => import("./pages/ProfilePage"));
@@ -37,6 +36,7 @@ const PlaylistPage = lazy(() => import("./pages/PlaylistPage"));
 const AnalyticsPage = lazy(() => import("./pages/AnalyticsPage"));
 const SettingsPage = lazy(() => import("./pages/SettingsPage"));
 const CommunityPage = lazy(() => import("./pages/CommunityPage"));
+const GamificationPage = lazy(() => import("./pages/GamificationPage"));
 
 function App() {
 	const location = useLocation();
@@ -130,13 +130,13 @@ function App() {
 						<Route path='/user/:userId' element={<PageTransition><ProfilePage /></PageTransition>} />
 						<Route path='/chat' element={<PageTransition><ChatPage /></PageTransition>} />
 						<Route path='/playlists/:id' element={<PageTransition><PlaylistPage /></PageTransition>} />
-						<Route path='/ai' element={<PageTransition><AIGenPage /></PageTransition>} />
 						<Route path='/analytics' element={<PageTransition><AnalyticsPage /></PageTransition>} />
 						<Route path='/settings' element={<PageTransition><SettingsPage /></PageTransition>} />
 						<Route path='/radio/:songId' element={<PageTransition><RadioPage /></PageTransition>} />
 						<Route path='/albums/:albumId' element={<PageTransition><AlbumPage /></PageTransition>} />
 						<Route path='/artists/:artistId' element={<PageTransition><ArtistPage /></PageTransition>} />
 						<Route path='/admin' element={<PageTransition><AdminPage /></PageTransition>} />
+						<Route path='/quests' element={<PageTransition><GamificationPage /></PageTransition>} />
 						<Route path='*' element={<PageTransition><NotFoundPage /></PageTransition>} />
 					</Route>
 				</Routes>

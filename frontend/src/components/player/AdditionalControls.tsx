@@ -4,7 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
-import { ListMusic, Cast, MoreHorizontal, Maximize2, Minimize2 } from 'lucide-react';
+import { ListMusic, MonitorSpeaker, MoreHorizontal, Maximize2, Minimize2 } from 'lucide-react';
 import { VolumeControl } from './VolumeControl';
 import { useState } from 'react';
 
@@ -51,7 +51,7 @@ export const AdditionalControls = ({
                 whileTap={{ scale: 0.95 }}
                 aria-label="Connect to device"
             >
-                <Cast className="w-5 h-5 text-zinc-400 hover:text-white transition-colors" />
+                <MonitorSpeaker className="w-5 h-5 text-zinc-400 hover:text-white transition-colors" />
             </motion.button>
 
             {/* Volume Control */}

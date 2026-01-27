@@ -3,7 +3,7 @@ import { useUser } from "@clerk/clerk-react";
 import { axiosInstance } from "@/lib/axios";
 import Topbar from "@/components/Topbar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { LiquidGlassCard } from "@/components/ui/LiquidGlassCard";
+// import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { BarChart3, Clock, Disc3, Music, Play, TrendingUp, User } from "lucide-react";
 
 interface AnalyticsData {
@@ -147,7 +147,7 @@ const AnalyticsPage = () => {
                                 {topGenres.length === 0 ? (
                                     <p className="text-zinc-500 text-center py-8">Start listening to see your top genres!</p>
                                 ) : (
-                                    topGenres.map((genre, index) => (
+                                    topGenres.map((genre) => (
                                         <div key={genre.name} className="space-y-2">
                                             <div className="flex justify-between text-sm">
                                                 <span className="text-white font-medium">{genre.name}</span>

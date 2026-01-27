@@ -6,6 +6,7 @@
 
 import { useEffect, useRef } from 'react';
 import { usePlayerStore } from '@/stores/PlayerStore';
+import { useGamificationStore } from '@/stores/GamificationStore';
 import { NowPlaying } from './player/NowPlaying';
 import { PlaybackControls } from './player/PlaybackControls';
 import { ProgressBar } from './player/ProgressBar';
@@ -64,7 +65,10 @@ const AudioPlayer = () => {
 		const audio = audioRef.current;
 		if (!audio) return;
 
-		const handleEnded = () => playNext();
+		const handleEnded = () => {
+			useGamificationStore.getState().awardXP(10, 'Song Completed');
+			playNext();
+		};
 		audio.addEventListener('ended', handleEnded);
 		return () => audio.removeEventListener('ended', handleEnded);
 	}, [playNext]);

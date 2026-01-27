@@ -25,7 +25,6 @@ interface MusicStore {
 	fetchDailyMix: () => Promise<Song[]>;
 	deleteSong: (id: string) => Promise<void>;
 	deleteAlbum: (id: string) => Promise<void>;
-	generatePlaylist: (prompt: string) => Promise<Song[]>;
 }
 
 export const useMusicStore = create<MusicStore>((set) => ({
@@ -194,25 +193,5 @@ export const useMusicStore = create<MusicStore>((set) => ({
 		}
 	},
 
-	generatePlaylist: async (prompt: string) => {
-		set({ isLoading: true, error: null });
-		try {
-			const response = await axiosInstance.post("/ai/generate", { prompt });
-			// response.data is where the generic success wrapper puts { songs: ... } or just returns songs
-			// Let's assume standard response: { success: true, data: { songs: [] } } or similar
-			// But checking controller: handleSuccess(res, { songs }) -> { success: true, data: { songs: [] } } (Depends on base controller)
-			// Let's assume response.data.songs based on current codebase trends or handleSuccess wrapper
-			// Actually, based on previous code: fetchFeaturedSongs sets response.data.
-			// Let's look at BaseController usage.
-			// If handleSuccess(res, { songs }) is called, it usually returns JSON.
-			// Assuming response.data is the payload.
-			const songs = response.data.songs || [];
-			set({ isLoading: false });
-			return songs;
-		} catch (error: any) {
-			set({ error: error.message, isLoading: false });
-			toast.error("Melody couldn't make that playlist: " + error.message);
-			throw error;
-		}
-	},
+
 }));

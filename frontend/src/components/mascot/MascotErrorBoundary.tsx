@@ -84,7 +84,7 @@ export class MascotErrorBoundary extends Component<Props, State> {
                         </Button>
                     </div>
 
-                    {process.env.NODE_ENV === 'development' && this.state.error && (
+                    {import.meta.env.DEV && this.state.error && (
                         <div className="mt-12 p-4 bg-black/50 rounded-lg text-left max-w-2xl w-full overflow-auto max-h-48 border border-white/10">
                             <code className="text-red-400 font-mono text-sm">
                                 {this.state.error.toString()}

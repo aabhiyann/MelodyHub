@@ -5,19 +5,18 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-    X,
     Play,
     Pause,
     SkipForward,
     SkipBack,
     Heart,
-    Volume2,
-    List,
+    ListMusic,
     Mic2,
-    VolumeX
+    MonitorSpeaker,
+    MoreHorizontal
 } from 'lucide-react';
 import { usePlayerStore } from '@/stores/PlayerStore';
-import { useMusicStore } from '@/stores/MusicStore';
+// import { useMusicStore } from '@/stores/MusicStore';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { ShuffleButton } from './ShuffleButton';
@@ -33,10 +32,6 @@ export const FullScreenPlayer = () => {
         togglePlay,
         playNext,
         playPrevious,
-        volume,
-        setVolume,
-        isMuted,
-        toggleMute,
         currentTime,
         duration,
         seek
@@ -50,8 +45,8 @@ export const FullScreenPlayer = () => {
         seek(time);
     };
 
-    const { albums } = useMusicStore();
-    const albumName = currentSong ? (albums.find(a => a._id === currentSong.albumId)?.title || 'Single') : 'Single';
+    // const { albums } = useMusicStore();
+    // const albumName = currentSong ? (albums.find(a => a._id === currentSong.albumId)?.title || 'Single') : 'Single';
 
     // Format time (mm:ss)
     const formatTime = (time: number) => {
@@ -63,230 +58,237 @@ export const FullScreenPlayer = () => {
 
     if (!isExpanded || !currentSong) return null;
 
+    // Gestures
+    const handleDragEnd = (_: any, info: any) => {
+        // Swipe Down to Close
+        if (info.offset.y > 100 || info.velocity.y > 500) {
+            toggleExpanded();
+        }
+        // Swipe Up for Queue
+        if (info.offset.y < -100 || info.velocity.y < -500) {
+            setActiveTab('queue');
+        }
+    };
+
+    const vibrate = () => {
+        if ('vibrate' in navigator) navigator.vibrate(10);
+    };
+
     return (
         <AnimatePresence>
             <motion.div
-                className="fixed inset-0 z-[100] bg-gradient-to-b from-surface-base to-surface-elevated"
+                className="fixed inset-0 z-[100] bg-zinc-950 flex flex-col"
                 initial={{ opacity: 0, y: '100%' }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: '100%' }}
                 transition={{ type: 'spring', damping: 30, stiffness: 300 }}
                 drag="y"
                 dragConstraints={{ top: 0, bottom: 0 }}
-                dragElastic={{ top: 0, bottom: 0.2 }}
-                onDragEnd={(_, info) => {
-                    if (info.offset.y > 100 || info.velocity.y > 500) {
-                        toggleExpanded();
-                    }
-                }}
+                dragElastic={{ top: 0, bottom: 0.1 }}
+                onDragEnd={handleDragEnd}
+                style={{ height: '100dvh' }}
             >
-                {/* Background Blur */}
-                <div
-                    className="absolute inset-0 opacity-30 blur-3xl opacity-20"
-                    style={{
-                        backgroundImage: `url(${currentSong.imageUrl})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                    }}
-                />
+                {/* Background Gradient & Blur */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    <div
+                        className="absolute inset-0 opacity-40 blur-[100px] scale-150 transition-all duration-1000"
+                        style={{
+                            backgroundImage: `url(${currentSong.imageUrl})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                        }}
+                    />
+                    <div className="absolute inset-0 bg-black/40 backdrop-blur-3xl" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/80" />
+                </div>
 
-                {/* Content */}
-                <div className="relative h-full flex flex-col p-6 max-w-2xl mx-auto">
+                {/* Content Container */}
+                <div className="relative flex flex-col h-full w-full max-w-lg mx-auto px-6 py-4">
                     {/* Header */}
-                    <div className="flex items-center justify-between mb-8 shrink-0">
-                        <button
-                            onClick={toggleExpanded}
-                            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-                            aria-label="Close full screen"
+                    <div className="flex items-center justify-between mb-6 shrink-0 z-10">
+                        <motion.button
+                            onClick={() => { vibrate(); toggleExpanded(); }}
+                            className="p-2 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white/20 transition-colors"
+                            whileTap={{ scale: 0.9 }}
                         >
-                            <X className="size-6 text-white" />
-                        </button>
+                            <div className="w-12 h-1 bg-white/50 rounded-full mx-auto mb-1" />
+                        </motion.button>
 
-                        {/* Tabs */}
-                        <div className="flex gap-2">
-                            <button
-                                onClick={() => setActiveTab('player')}
-                                className={cn(
-                                    'px-4 py-2 rounded-lg font-medium transition-colors',
-                                    activeTab === 'player'
-                                        ? 'bg-white/10 text-white'
-                                        : 'text-text-secondary hover:text-white'
-                                )}
-                            >
-                                Player
-                            </button>
-                            <button
-                                onClick={() => setActiveTab('lyrics')}
-                                className={cn(
-                                    'px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2',
-                                    activeTab === 'lyrics'
-                                        ? 'bg-white/10 text-white'
-                                        : 'text-text-secondary hover:text-white'
-                                )}
-                            >
-                                <Mic2 className="size-4" />
-                                Lyrics
-                            </button>
-                            <button
-                                onClick={() => setActiveTab('queue')}
-                                className={cn(
-                                    'px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2',
-                                    activeTab === 'queue'
-                                        ? 'bg-white/10 text-white'
-                                        : 'text-text-secondary hover:text-white'
-                                )}
-                            >
-                                <List className="size-4" />
-                                Queue
-                            </button>
+                        <div className="flex gap-1 bg-black/20 backdrop-blur-md rounded-full p-1">
+                            {(['player', 'lyrics', 'queue'] as const).map((tab) => (
+                                <button
+                                    key={tab}
+                                    onClick={() => { vibrate(); setActiveTab(tab); }}
+                                    className={cn(
+                                        "px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-300",
+                                        activeTab === tab
+                                            ? "bg-white/20 text-white shadow-lg"
+                                            : "text-white/50 hover:text-white"
+                                    )}
+                                >
+                                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                                </button>
+                            ))}
                         </div>
+
+                        <button className="p-2 opacity-0 pointer-events-none">
+                            <MoreHorizontal className="size-6" />
+                        </button>
                     </div>
 
-                    {/* Active Tab Content */}
-                    <div className="flex-1 min-h-0 flex flex-col">
-                        {activeTab === 'player' && (
-                            <>
-                                {/* Album Art */}
-                                <div className="flex-1 flex items-center justify-center mb-8 px-8 min-h-0">
-                                    <motion.img
-                                        src={currentSong.imageUrl}
-                                        alt={currentSong.title}
-                                        className="w-full max-w-md aspect-square rounded-2xl shadow-2xl object-cover"
-                                        layoutId="albumArt"
-                                    />
-                                </div>
+                    {/* Main Content Area */}
+                    <div className="flex-1 min-h-0 flex flex-col justify-center relative z-10">
+                        <AnimatePresence mode="wait">
+                            {activeTab === 'player' && (
+                                <motion.div
+                                    key="player"
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.95 }}
+                                    className="flex flex-col h-full"
+                                >
+                                    {/* Album Art (Large) */}
+                                    <div className="flex-1 flex items-center justify-center py-4">
+                                        <motion.div
+                                            className="relative aspect-square w-full max-w-[340px] rounded-[32px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10"
+                                            style={{ rotate: isPlaying ? 0 : 0 }} // Could add subtle rotation here
+                                        >
+                                            <img
+                                                src={currentSong.imageUrl}
+                                                alt={currentSong.title}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </motion.div>
+                                    </div>
 
-                                {/* Song Info */}
-                                <div className="text-center mb-8 shrink-0">
-                                    <h1 className="text-3xl font-bold text-white mb-2">{currentSong.title}</h1>
-                                    <p className="text-xl text-text-secondary font-medium">{currentSong.artist}</p>
-                                    <p className="text-sm text-text-tertiary mt-1">{albumName}</p>
-                                </div>
+                                    {/* Track Info */}
+                                    <div className="flex items-end justify-between mb-8 px-1">
+                                        <div className="flex-1 min-w-0 pr-4">
+                                            <motion.h2 className="text-2xl font-bold text-white leading-tight truncate">
+                                                {currentSong.title}
+                                            </motion.h2>
+                                            <motion.p className="text-lg text-white/60 truncate mt-1">
+                                                {currentSong.artist}
+                                            </motion.p>
+                                        </div>
+                                        <motion.button
+                                            whileTap={{ scale: 0.8 }}
+                                            onClick={vibrate}
+                                            className="p-3 bg-white/5 rounded-full text-white/50 hover:text-red-500 hover:bg-white/10 transition-colors"
+                                        >
+                                            <Heart className="size-6" />
+                                        </motion.button>
+                                    </div>
 
-                                {/* Progress Bar */}
-                                <div className="mb-8 shrink-0">
-                                    <div className="relative group h-2 w-full">
-                                        <input
-                                            type="range"
-                                            min={0}
-                                            max={duration || 100}
-                                            value={currentTime}
-                                            onChange={handleSeek}
-                                            aria-label="Seek progress"
-                                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
-                                        />
-                                        <div className="h-2 bg-white/20 rounded-full overflow-hidden">
-                                            <motion.div
-                                                className="h-full bg-white rounded-full relative"
-                                                style={{ width: `${(currentTime / (duration || 1)) * 100}%` }}
+                                    {/* Progress */}
+                                    <div className="mb-8 px-1">
+                                        <div className="relative group h-1 w-full flex items-center">
+                                            <input
+                                                type="range"
+                                                min={0}
+                                                max={duration || 100}
+                                                value={currentTime}
+                                                onChange={handleSeek}
+                                                className="absolute inset-0 w-full h-4 -top-1.5 opacity-0 cursor-pointer z-20"
+                                            />
+                                            <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                                                <motion.div
+                                                    className="h-full bg-white rounded-full"
+                                                    style={{ width: `${(currentTime / (duration || 1)) * 100}%` }}
+                                                />
+                                            </div>
+                                            <div
+                                                className="absolute h-4 w-4 bg-white rounded-full shadow-lg left-0 top-1/2 -translate-y-1/2 pointer-events-none transition-transform"
+                                                style={{ left: `${(currentTime / (duration || 1)) * 100}%`, transform: 'translate(-50%, -50%)' }}
                                             />
                                         </div>
+                                        <div className="flex justify-between text-xs text-white/40 mt-3 font-medium font-mono">
+                                            <span>{formatTime(currentTime)}</span>
+                                            <span>{formatTime(duration)}</span>
+                                        </div>
                                     </div>
-                                    <div className="flex justify-between text-xs text-text-secondary mt-2 font-medium font-mono">
-                                        <span>{formatTime(currentTime)}</span>
-                                        <span>{formatTime(duration)}</span>
-                                    </div>
-                                </div>
 
-                                {/* Controls */}
-                                <div className="flex items-center justify-center gap-8 mb-8 shrink-0">
-                                    {/* Shuffle */}
-                                    <div className="scale-125">
+                                    {/* Controls */}
+                                    <div className="flex items-center justify-between px-2 pb-8">
                                         <ShuffleButton />
-                                    </div>
 
-                                    {/* Previous */}
-                                    <button
-                                        onClick={playPrevious}
-                                        className="p-3 hover:bg-white/10 rounded-full transition-colors"
-                                        aria-label="Previous song"
-                                    >
-                                        <SkipBack className="size-8 text-white fill-white" />
-                                    </button>
+                                        <motion.button
+                                            onClick={() => { vibrate(); playPrevious(); }}
+                                            whileTap={{ scale: 0.9 }}
+                                            className="p-4 text-white hover:text-white/80 transition-colors"
+                                        >
+                                            <SkipBack className="size-9 fill-current" />
+                                        </motion.button>
 
-                                    {/* Play/Pause */}
-                                    <button
-                                        onClick={togglePlay}
-                                        className="p-6 bg-white hover:bg-white/90 rounded-full transition-transform hover:scale-105 active:scale-95 shadow-xl"
-                                        aria-label={isPlaying ? "Pause" : "Play"}
-                                    >
-                                        {isPlaying ? (
-                                            <Pause className="size-10 text-black fill-black" />
-                                        ) : (
-                                            <Play className="size-10 text-black fill-black ml-1" />
-                                        )}
-                                    </button>
+                                        <motion.button
+                                            onClick={() => { vibrate(); togglePlay(); }}
+                                            whileTap={{ scale: 0.9 }}
+                                            className="relative size-20 rounded-full bg-white flex items-center justify-center shadow-[0_8px_32px_rgba(255,255,255,0.3)] hover:scale-105 transition-transform"
+                                        >
+                                            {isPlaying ? (
+                                                <Pause className="size-8 text-black fill-black" />
+                                            ) : (
+                                                <Play className="size-8 text-black fill-black ml-1" />
+                                            )}
+                                        </motion.button>
 
-                                    {/* Next */}
-                                    <button
-                                        onClick={playNext}
-                                        className="p-3 hover:bg-white/10 rounded-full transition-colors"
-                                        aria-label="Next song"
-                                    >
-                                        <SkipForward className="size-8 text-white fill-white" />
-                                    </button>
+                                        <motion.button
+                                            onClick={() => { vibrate(); playNext(); }}
+                                            whileTap={{ scale: 0.9 }}
+                                            className="p-4 text-white hover:text-white/80 transition-colors"
+                                        >
+                                            <SkipForward className="size-9 fill-current" />
+                                        </motion.button>
 
-                                    {/* Repeat */}
-                                    <div className="scale-125">
                                         <RepeatButton />
                                     </div>
-                                </div>
 
-                                {/* Volume & Actions */}
-                                <div className="flex items-center gap-4 justify-center max-w-sm mx-auto w-full shrink-0 mb-4">
-                                    <button
-                                        className="p-2 hover:bg-white/10 rounded-full transition-colors"
-                                        onClick={toggleMute}
-                                        aria-label={isMuted ? "Unmute" : "Mute"}
-                                    >
-                                        {isMuted || volume === 0 ? (
-                                            <VolumeX className="size-5 text-text-secondary" />
-                                        ) : (
-                                            <Volume2 className="size-5 text-text-secondary" />
-                                        )}
-                                    </button>
-
-                                    <div className="flex-1 group relative h-10 flex items-center">
-                                        <input
-                                            type="range"
-                                            min="0"
-                                            max="100"
-                                            value={isMuted ? 0 : volume}
-                                            onChange={(e) => setVolume(Number(e.target.value))}
-                                            aria-label="Volume"
-                                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                                        />
-                                        <div className="h-1 bg-white/20 rounded-full overflow-hidden w-full pointer-events-none">
-                                            <motion.div
-                                                className="h-full bg-white rounded-full"
-                                                style={{ width: `${isMuted ? 0 : volume}%` }}
-                                            />
-                                        </div>
+                                    {/* Bottom Actions */}
+                                    <div className="flex items-center justify-between px-4 pb-4">
+                                        <button className="p-2 text-white/40 hover:text-white transition-colors">
+                                            <MonitorSpeaker className="size-5" />
+                                        </button>
+                                        <button
+                                            onClick={() => setActiveTab('lyrics')}
+                                            className="p-2 text-white/40 hover:text-white transition-colors"
+                                        >
+                                            <Mic2 className="size-5" />
+                                        </button>
+                                        <button
+                                            onClick={() => setActiveTab('queue')}
+                                            className="p-2 text-white/40 hover:text-white transition-colors"
+                                        >
+                                            <ListMusic className="size-5" />
+                                        </button>
                                     </div>
+                                </motion.div>
+                            )}
 
-                                    <button
-                                        className="p-2 hover:bg-white/10 rounded-full transition-colors"
-                                        aria-label="Like song"
-                                    >
-                                        <Heart className="size-5 text-text-secondary hover:text-white" />
-                                    </button>
-                                </div>
-                            </>
-                        )}
+                            {activeTab === 'lyrics' && (
+                                <motion.div
+                                    key="lyrics"
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -20 }}
+                                    className="flex-1 h-full overflow-hidden"
+                                >
+                                    <LyricsPanel song={currentSong} currentTime={currentTime} />
+                                </motion.div>
+                            )}
 
-                        {activeTab === 'lyrics' && (
-                            <LyricsPanel song={currentSong} currentTime={currentTime} />
-                        )}
-
-                        {activeTab === 'queue' && (
-                            <div className="flex-1 flex items-center justify-center text-text-secondary">
-                                <div className="text-center">
-                                    <List className="size-12 mx-auto mb-4 opacity-50" />
-                                    <p className="text-lg font-medium">Queue Management</p>
-                                    <p className="text-sm opacity-60">Coming soon in the next update!</p>
-                                </div>
-                            </div>
-                        )}
+                            {activeTab === 'queue' && (
+                                <motion.div
+                                    key="queue"
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -20 }}
+                                    className="flex-1 h-full flex flex-col items-center justify-center text-white/50"
+                                >
+                                    <ListMusic className="size-16 mb-4 opacity-30" />
+                                    <p className="text-lg font-medium">Coming Soon</p>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
                 </div>
             </motion.div>

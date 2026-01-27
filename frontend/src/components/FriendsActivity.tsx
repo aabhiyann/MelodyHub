@@ -1,12 +1,13 @@
+
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSocialStore } from "@/stores/useSocialStore";
 import { useUser } from "@clerk/clerk-react";
-import { Clock, Headphones, Music, UserPlus, Users } from "lucide-react";
+import { Clock, Headphones, Music, Users } from "lucide-react";
 import { useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 const FriendsActivity = () => {
-    const { activity, users, fetchFriendActivity, fetchUsers, friends, isLoading } = useSocialStore();
+    const { activity, fetchFriendActivity, fetchUsers, isLoading } = useSocialStore();
     const { user } = useUser();
 
     useEffect(() => {

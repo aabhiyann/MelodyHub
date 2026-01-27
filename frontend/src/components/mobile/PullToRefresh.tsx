@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect, ReactNode } from "react";
-import { motion, useAnimation } from "framer-motion";
+import { useState, useRef, ReactNode } from "react";
+import { motion } from "framer-motion";
 import { Loader2, ArrowDown } from "lucide-react";
 
 interface PullToRefreshProps {
@@ -12,7 +12,6 @@ export const PullToRefresh = ({ onRefresh, children }: PullToRefreshProps) => {
     const [pullDistance, setPullDistance] = useState(0);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
-    const controls = useAnimation();
 
     const THRESHOLD = 80;
     const MAX_PULL = 150;

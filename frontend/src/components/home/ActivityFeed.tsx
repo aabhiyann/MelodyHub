@@ -21,7 +21,7 @@ interface Activity {
 }
 
 export const ActivityFeed = () => {
-    const { data: activities, isLoading, error } = useQuery({
+    const { data: activities } = useQuery({
         queryKey: ["activities"],
         queryFn: async () => {
             const response = await axiosInstance.get("/activities");
