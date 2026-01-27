@@ -1,21 +1,21 @@
 import { useEffect } from "react";
 
-import { useChatStore } from "@/stores/useChatStore";
+import { useChatStore } from "@/stores/ChatStore";
 import { useUser } from "@clerk/clerk-react";
 
 export const SocketManager = () => {
     const { user } = useUser();
-    const { connectSocket, disconnectSocket } = useChatStore();
+    const { initSocket, disconnectSocket } = useChatStore();
 
     useEffect(() => {
         if (user?.id) {
-            connectSocket(user.id);
+            initSocket(user.id);
         }
 
         return () => {
             disconnectSocket();
         };
-    }, [user, connectSocket, disconnectSocket]);
+    }, [user, initSocket, disconnectSocket]);
 
     return null;
 };
