@@ -34,6 +34,7 @@ interface ChatStore {
 	sendFriendRequest: (receiverId: string) => Promise<void>;
 	acceptFriendRequest: (requestId: string) => Promise<void>;
 	searchUsers: (query: string) => Promise<void>;
+	updateActivity: (activity: string) => void;
 }
 
 const BASE_URL = import.meta.env.VITE_API_URL?.replace("/api", "") || (import.meta.env.MODE === "development" ? "http://localhost:5001" : "/");
@@ -269,5 +270,13 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 		const senderId = useAuthStore.getState().authUser?.clerkId;
 		if (!senderId) return;
 		socket.emit("typing", { senderId, receiverId });
+	},
+
+	updateActivity: (activity: string) => {
+		const socket = get().socket;
+		if (!socket) return;
+		const userId = useAuthStore.getState().authUser?.clerkId;
+		if (!userId) return;
+		socket.emit("update_activity", { userId, activity });
 	},
 }));
