@@ -17,6 +17,13 @@
     --safe-area-inset-right: env(safe-area-inset-right);
     --safe-area-inset-bottom: env(safe-area-inset-bottom);
     --safe-area-inset-left: env(safe-area-inset-left);
+
+    /* Accessibility Variables */
+    --focus-ring-color: #8B5CF6;
+    --focus-ring-width: 3px;
+    --high-contrast-bg: #000000;
+    --high-contrast-text: #ffffff;
+    --high-contrast-border: #ffffff;
   }
 
   body {
@@ -33,12 +40,53 @@
       color: white;
     }
 
-    /* Global Focus Ring */
+    /* Global Focus Ring (Accessibility) */
     :focus-visible {
-      outline: 3px solid var(--brand-primary);
+      outline: var(--focus-ring-width) solid var(--focus-ring-color);
       outline-offset: 2px;
       border-radius: 4px;
     }
+  }
+
+  /* High Contrast Mode */
+  body.high-contrast {
+    background-color: var(--high-contrast-bg) !important;
+    color: var(--high-contrast-text) !important;
+    --brand-primary: #ffff00 !important;
+    /* Yellow for visibility */
+    --surface-glass: #000000 !important;
+    --surface-card: #000000 !important;
+    --text-tertiary: #ffffff !important;
+  }
+
+  body.high-contrast * {
+    border-color: var(--high-contrast-border) !important;
+  }
+
+  body.high-contrast .glass-panel,
+  body.high-contrast .glass-modal,
+  body.high-contrast .glass-toolbar {
+    background: black !important;
+    backdrop-filter: none !important;
+    border: 2px solid white !important;
+  }
+
+  /* Large Text Mode */
+  body.large-text {
+    font-size: 110% !important;
+    line-height: 1.6 !important;
+  }
+
+  body.large-text h1 {
+    font-size: 2.5rem !important;
+  }
+
+  body.large-text h2 {
+    font-size: 2rem !important;
+  }
+
+  body.large-text h3 {
+    font-size: 1.75rem !important;
   }
 
   /* Custom Scrollbar */
@@ -527,4 +575,21 @@ input[type=range]::-webkit-slider-runnable-track {
   .shadow-violet-glow {
     box-shadow: 0 4px 24px rgba(139, 92, 246, 0.25);
   }
+}
+
+/* Ripple Animation Component */
+@keyframes ripple-animation {
+  from {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translate(-50%, -50%) scale(20);
+    opacity: 0;
+  }
+}
+
+.animate-ripple {
+  animation: ripple-animation 0.6s ease-out forwards;
 }

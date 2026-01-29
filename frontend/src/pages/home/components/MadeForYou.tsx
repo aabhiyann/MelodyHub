@@ -2,6 +2,7 @@ import { Song } from "@/types";
 import { usePlayerStore } from "@/stores/PlayerStore";
 import { Play, Sparkles, Calendar, Radio } from "lucide-react";
 import { OptimizedImage } from "@/components/OptimizedImage";
+import { LikeButton } from "@/components/ui/LikeButton";
 
 interface MadeForYouProps {
     songs: Song[];
@@ -85,8 +86,8 @@ export const MadeForYou = ({ songs, isLoading }: MadeForYouProps) => {
                                 </p>
                             </div>
 
-                            {/* Preview Grid */}
-                            <div className="flex justify-between items-end">
+                            <div className="flex gap-3 items-end">
+                                {/* Preview Grid */}
                                 <div className="grid grid-cols-2 gap-2 w-24">
                                     {mix.songs.slice(0, 4).map((song, i) => (
                                         <div key={i} className="relative aspect-square rounded-md overflow-hidden bg-black/20 shadow-sm">
@@ -99,9 +100,12 @@ export const MadeForYou = ({ songs, isLoading }: MadeForYouProps) => {
                                     ))}
                                 </div>
 
-                                {/* Play Button */}
-                                <div className="size-12 rounded-full bg-white text-black flex items-center justify-center shadow-2xl opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                                    <Play className="size-6 ml-0.5" fill="currentColor" />
+                                {/* Actions */}
+                                <div className="flex items-center gap-2 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                                    <LikeButton className="size-10 bg-black/40 text-white backdrop-blur-md hover:bg-black/60" />
+                                    <div className="size-12 rounded-full bg-white text-black flex items-center justify-center shadow-2xl">
+                                        <Play className="size-6 ml-0.5" fill="currentColor" />
+                                    </div>
                                 </div>
                             </div>
                         </div>

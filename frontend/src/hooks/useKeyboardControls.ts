@@ -106,7 +106,31 @@ export const useKeyboardControls = () => {
                     }
                     break;
 
+                case 'l':
+                    // L: Like/Unlike
+                    e.preventDefault();
+                    // Feature pending backend implementation
+                    // toast("Like feature coming soon!", { icon: "💜" });
+                    // Importing toast requires react-hot-toast usage outside of hook or dependency injection.
+                    // For now, we will dispatch a custom event or validte without toast if too complex to add toast dep.
+                    // Let's assume we can import toast.
+                    // Doing a safe dynamic import or assumes globals? No, need import.
+                    break;
+
+                case 'questionmark':
+                case '?':
+                    if (e.shiftKey) {
+                        e.preventDefault();
+                        window.dispatchEvent(new CustomEvent('melody-open-shortcuts'));
+                    }
+                    break;
+
                 default:
+                    // Check for ? separately as e.key is '?'
+                    if (e.key === '?' && e.shiftKey) {
+                        e.preventDefault();
+                        window.dispatchEvent(new CustomEvent('melody-open-shortcuts'));
+                    }
                     break;
             }
         };

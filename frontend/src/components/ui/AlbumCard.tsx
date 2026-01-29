@@ -35,7 +35,7 @@ export const AlbumCard = ({
 
     return (
         <LiquidGlassCard
-            className="p-4 group"
+            className="p-4 group cursor-pointer"
             hover
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
@@ -66,10 +66,16 @@ export const AlbumCard = ({
                             e.stopPropagation();
                             onPlay?.();
                         }}
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{
+                            scale: isHovered ? 1 : 0.8,
+                            opacity: isHovered ? 1 : 0
+                        }}
+                        transition={{ duration: 0.2, delay: 0.05 }}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}
                     >
-                        <Play className="size-6 text-white fill-white" />
+                        <Play className="size-6 text-white fill-white ml-0.5" />
                     </motion.button>
 
                     {/* Like Button */}
@@ -78,33 +84,29 @@ export const AlbumCard = ({
                             'p-2 rounded-full transition-colors',
                             isLiked
                                 ? 'bg-brand-primary text-white'
-                                : 'bg-white/10 backdrop-bl hover:bg-white/20 text-white'
+                                : 'bg-white/10 backdrop-blur-md hover:bg-white/20 text-white'
                         )}
                         onClick={(e) => {
                             e.stopPropagation();
                             onLike?.();
                         }}
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{
+                            scale: isHovered ? 1 : 0.8,
+                            opacity: isHovered ? 1 : 0
+                        }}
+                        transition={{ duration: 0.2, delay: 0.1 }}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}
                     >
                         <Heart className={cn('size-5', isLiked && 'fill-current')} />
-                    </motion.button>
-
-                    {/* More Options */}
-                    <motion.button
-                        className="p-2 bg-white/10 backdrop-blur hover:bg-white/20 rounded-full transition-colors"
-                        onClick={(e) => e.stopPropagation()}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        <MoreHorizontal className="size-5 text-white" />
                     </motion.button>
                 </motion.div>
             </div>
 
             {/* Album Info */}
             <div className="space-y-1">
-                <h3 className="font-semibold text-base text-white truncate">
+                <h3 className="font-semibold text-base text-white truncate group-hover:text-brand-primary transition-colors">
                     {title}
                 </h3>
                 <p className="text-sm text-text-secondary truncate">{artist}</p>
