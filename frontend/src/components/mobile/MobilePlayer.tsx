@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePlayerStore } from "@/stores/PlayerStore";
-import { Play, Pause, SkipBack, SkipForward, ChevronDown, Repeat, Shuffle, List, Heart } from "lucide-react";
+import { Play, Pause, SkipBack, SkipForward, ChevronDown, Repeat, Shuffle, List } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Slider } from "@/components/ui/slider";
+import { LikeButton } from "@/components/ui/LikeButton";
+import { InteractiveSlider } from "@/components/ui/InteractiveSlider";
 
 const MobilePlayer = () => {
     const {
@@ -97,19 +98,17 @@ const MobilePlayer = () => {
                                     <h2 className="text-2xl font-bold text-white mb-1 leading-tight line-clamp-1">{currentSong.title}</h2>
                                     <p className="text-lg text-white/60 line-clamp-1">{currentSong.artist}</p>
                                 </div>
-                                <button className="p-2 text-brand-primary active:scale-90 transition-transform">
-                                    <Heart className="size-7 fill-current" />
-                                </button>
+                                <LikeButton size={28} className="text-white hover:bg-white/10" />
                             </div>
 
                             {/* Progress */}
                             <div className="mb-6 space-y-2">
-                                <Slider
-                                    value={[currentTime]}
+                                <InteractiveSlider
+                                    value={currentTime}
                                     max={duration || 100}
-                                    step={1}
-                                    onValueChange={(val) => seek(val[0])}
-                                    className="w-full"
+                                    onChange={seek}
+                                    className="w-full h-8"
+                                    showTooltip={true}
                                 />
                                 <div className="flex justify-between text-xs font-mono text-white/50">
                                     <span>{formatTime(currentTime)}</span>

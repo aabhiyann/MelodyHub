@@ -14,9 +14,13 @@ import { SidebarLayout } from '@/components/navigation/SidebarLayout';
 import AudioPlayer from '@/components/AudioPlayer';
 import { FullScreenPlayer } from '@/components/player/FullScreenPlayer';
 import { Mascot } from '@/components/mascot/Mascot';
+import { AIPlaylistModal } from '@/components/ai/AIPlaylistModal';
 import { InstallPrompt } from '@/components/mobile/InstallPrompt';
-import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
-import { KeyboardShortcutsGuide } from '@/components/KeyboardShortcutsGuide';
+import { useKeyboardControls } from '@/hooks/useKeyboardControls';
+// Accessibility
+import { SkipLinks } from "@/components/accessibility/SkipLinks";
+import { ShortcutsModal } from "@/components/accessibility/ShortcutsModal";
+import { useAccessibilityStore } from "@/stores/AccessibilityStore";
 
 // Lazy load all pages for better code splitting
 const AuthCallbackPage = lazy(() => import("./pages/AuthCallbackPage"));
@@ -41,9 +45,27 @@ const GamificationPage = lazy(() => import("./pages/GamificationPage"));
 function App() {
 	const location = useLocation();
 	const [isLoading, setIsLoading] = useState(false);
+	const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
+	const { highContrast, largeText } = useAccessibilityStore();
 
-	// Enable global keyboard shortcuts
-	useKeyboardShortcuts();
+	// Enable global keyboard controls
+	useKeyboardControls();
+
+	// Handle accessibility classes
+	useEffect(() => {
+		if (highContrast) document.body.classList.add('high-contrast');
+		else document.body.classList.remove('high-contrast');
+
+		if (largeText) document.body.classList.add('large-text');
+		else document.body.classList.remove('large-text');
+	}, [highContrast, largeText]);
+
+	// Handle shortcuts modal
+	useEffect(() => {
+		const handleOpenShortcuts = () => setIsShortcutsOpen(true);
+		window.addEventListener('melody-open-shortcuts', handleOpenShortcuts);
+		return () => window.removeEventListener('melody-open-shortcuts', handleOpenShortcuts);
+	}, []);
 
 	// Show loading bar during route transitions
 	useEffect(() => {
@@ -53,7 +75,9 @@ function App() {
 	}, [location.pathname]);
 
 	return (
+
 		<Suspense fallback={<LoadingScreen />}>
+			<SkipLinks />
 			<LoadingBar isLoading={isLoading} />
 			<Toaster
 				position="top-right"
@@ -84,7 +108,9 @@ function App() {
 					},
 				}}
 			/>
-			<KeyboardShortcutsGuide />
+
+			<ShortcutsModal isOpen={isShortcutsOpen} onClose={() => setIsShortcutsOpen(false)} />
+
 			<AnimatePresence mode="wait">
 				<Routes location={location} key={location.pathname}>
 					{/* SSO Callback - Use full URL for redirects */}
@@ -144,8 +170,10 @@ function App() {
 			<AudioPlayer />
 			<FullScreenPlayer />
 			<Mascot />
+			<AIPlaylistModal />
 			<InstallPrompt />
 		</Suspense>
+
 	);
 }
 

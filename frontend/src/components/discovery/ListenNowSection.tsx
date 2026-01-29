@@ -5,6 +5,7 @@
 
 import { AlbumCard } from '@/components/ui/AlbumCard';
 import { LiquidGlassCard } from '@/components/ui/LiquidGlassCard';
+import { LikeButton } from '@/components/ui/LikeButton';
 import { Play } from 'lucide-react';
 
 export const ListenNowSection = () => {
@@ -99,12 +100,13 @@ export const ListenNowSection = () => {
                                 <img
                                     src={playlist.imageUrl}
                                     alt={playlist.title}
-                                    className="w-full h-full object-cover"
+                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                 />
-                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                    <button className="p-3 bg-brand-primary rounded-full">
-                                        <Play className="size-6 text-white fill-white" />
+                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                                    <button className="p-3 bg-brand-primary rounded-full hover:scale-110 transition-transform shadow-lg">
+                                        <Play className="size-6 text-white fill-white ml-0.5" />
                                     </button>
+                                    <LikeButton className="bg-white/10 backdrop-blur-md text-white hover:bg-white/20" />
                                 </div>
                             </div>
                             <h4 className="font-semibold text-white mb-1">{playlist.title}</h4>

@@ -3,13 +3,14 @@ import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'fram
 import { Play, ArrowRight, Music } from 'lucide-react';
 import { FloatingAlbums } from './FloatingAlbums';
 import WaveformVisualization from './WaveformVisualization';
-import { SignInButton, useUser } from '@clerk/clerk-react';
+import { useUser, useClerk } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollY } = useScroll();
     const { isSignedIn } = useUser();
+    const { openSignIn } = useClerk();
     const navigate = useNavigate();
 
     // Mouse Parallax Logic for 3D Card
@@ -144,16 +145,15 @@ const Hero = () => {
                                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                             </motion.button>
                         ) : (
-                            <SignInButton mode="modal">
-                                <motion.button
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.98 }}
-                                    className="group h-14 px-8 bg-white text-black rounded-full font-semibold text-base flex items-center justify-center space-x-2 shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] transition-all hover:shadow-[0_0_60px_-10px_rgba(255,255,255,0.5)]"
-                                >
-                                    <span>Get Started</span>
-                                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                                </motion.button>
-                            </SignInButton>
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={() => openSignIn()}
+                                className="group relative z-50 h-14 px-8 bg-white text-black rounded-full font-semibold text-base flex items-center justify-center space-x-2 shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] transition-all hover:shadow-[0_0_60px_-10px_rgba(255,255,255,0.5)]"
+                            >
+                                <span>Get Started</span>
+                                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                            </motion.button>
                         )}
 
                         {/* Watch Demo - Scroll to features */}

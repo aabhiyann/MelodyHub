@@ -3,7 +3,7 @@ import { useMusicStore } from "@/stores/MusicStore";
 import { useEffect } from "react";
 import { ActivityFeed } from "@/components/home/ActivityFeed";
 import { Sparkles } from "lucide-react";
-import { AIPlaylistPage } from "@/pages/ai/AIPlaylistPage";
+
 import { PullToRefresh } from "@/components/mobile/PullToRefresh";
 import { useUIStore } from "@/stores/UIStore";
 import { useHomeData } from "@/hooks/useHomeData";
@@ -138,7 +138,7 @@ const HomePage = () => {
 				</div>
 			)}
 
-			<AIPlaylistPage />
+
 		</main>
 	);
 };

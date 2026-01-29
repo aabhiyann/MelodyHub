@@ -4,6 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Bell, Shield, Smartphone } from "lucide-react";
+import { AccessibilitySettings } from "./settings/AccessibilitySettings";
 
 const SettingsPage = () => {
     return (
@@ -20,6 +21,10 @@ const SettingsPage = () => {
                     {/* App Preferences */}
                     <div className="grid gap-6">
                         {/* Appearance Section Removed - App is Dark Mode only */}
+
+
+                        {/* Accessibility Settings */}
+                        <AccessibilitySettings />
 
                         <section className="space-y-4">
                             <h2 className="text-xl font-semibold text-white flex items-center gap-2">
