@@ -25,6 +25,7 @@ interface MusicStore {
 	fetchDailyMix: () => Promise<Song[]>;
 	deleteSong: (id: string) => Promise<void>;
 	deleteAlbum: (id: string) => Promise<void>;
+	addSong: (songData: FormData) => Promise<void>;
 }
 
 export const useMusicStore = create<MusicStore>((set) => ({
@@ -188,6 +189,26 @@ export const useMusicStore = create<MusicStore>((set) => ({
 		} catch (error: any) {
 			console.error("Error fetching trending songs:", error);
 			set({ error: error?.response?.data?.message || "Failed to fetch trending songs", trendingSongs: [] });
+		} finally {
+			set({ isLoading: false });
+		}
+	},
+
+	addSong: async (songData) => {
+		set({ isLoading: true, error: null });
+		try {
+			const response = await axiosInstance.post("/admin/songs", songData, {
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			});
+			set((state) => ({
+				songs: [...state.songs, response.data.data],
+			}));
+			toast.success("Song added successfully");
+		} catch (error: any) {
+			toast.error("Error adding song");
+			throw error;
 		} finally {
 			set({ isLoading: false });
 		}

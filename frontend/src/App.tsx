@@ -27,7 +27,10 @@ const AuthCallbackPage = lazy(() => import("./pages/AuthCallbackPage"));
 const HomePage = lazy(() => import("./pages/HomePage"));
 const ChatPage = lazy(() => import("./pages/ChatPage"));
 const AlbumPage = lazy(() => import("./pages/AlbumPage"));
-const AdminPage = lazy(() => import("./pages/AdminPage"));
+const AdminLayout = lazy(() => import("./layouts/AdminLayout").then(module => ({ default: module.AdminLayout })));
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
+const AdminSongsPage = lazy(() => import("./pages/admin/AdminSongsPage"));
+// const AdminPage = lazy(() => import("./pages/AdminPage")); // Deprecated
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
@@ -161,7 +164,13 @@ function App() {
 						<Route path='/radio/:songId' element={<PageTransition><RadioPage /></PageTransition>} />
 						<Route path='/albums/:albumId' element={<PageTransition><AlbumPage /></PageTransition>} />
 						<Route path='/artists/:artistId' element={<PageTransition><ArtistPage /></PageTransition>} />
-						<Route path='/admin' element={<PageTransition><AdminPage /></PageTransition>} />
+						<Route path='/admin' element={<AdminLayout />}>
+							<Route index element={<PageTransition><AdminDashboard /></PageTransition>} />
+							<Route path='songs' element={<PageTransition><AdminSongsPage /></PageTransition>} />
+							<Route path='analytics' element={<PageTransition><AnalyticsPage /></PageTransition>} />
+							{/* Fallback for other admin routes to Dashboard for now */}
+							<Route path='*' element={<PageTransition><AdminDashboard /></PageTransition>} />
+						</Route>
 						<Route path='/quests' element={<PageTransition><GamificationPage /></PageTransition>} />
 						<Route path='*' element={<PageTransition><NotFoundPage /></PageTransition>} />
 					</Route>

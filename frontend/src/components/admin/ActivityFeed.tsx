@@ -3,125 +3,88 @@
  * Shows uploads, user signups, and other events
  */
 
-import { motion } from 'framer-motion';
-import { Music, UserPlus, Album, TrendingUp } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Upload, Edit, Trash2, UserPlus, FileMusic } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
-interface Activity {
-    id: string;
-    type: 'upload' | 'signup' | 'album' | 'milestone';
-    title: string;
-    description: string;
-    timestamp: Date;
-    user?: string;
-}
-
-interface ActivityFeedProps {
-    activities?: Activity[];
-    limit?: number;
-}
-
-const ACTIVITY_ICONS = {
-    upload: Music,
-    signup: UserPlus,
-    album: Album,
-    milestone: TrendingUp,
-};
-
-const ACTIVITY_COLORS = {
-    upload: 'text-brand-primary bg-brand-primary/10',
-    signup: 'text-blue-500 bg-blue-500/10',
-    album: 'text-purple-500 bg-purple-500/10',
-    milestone: 'text-success bg-success/10',
-};
-
-export const ActivityFeed = ({ activities = [], limit = 10 }: ActivityFeedProps) => {
-    const displayActivities = activities.slice(0, limit);
+export const ActivityFeed = () => {
+    const activities = [
+        {
+            type: "upload",
+            user: "John Doe",
+            action: "uploaded new song",
+            target: "Summer Nights",
+            time: new Date(Date.now() - 2 * 60 * 1000), // 2 mins ago
+            icon: Upload,
+        },
+        {
+            type: "edit",
+            user: "Jane Smith",
+            action: "edited album",
+            target: "Greatest Hits 2025",
+            time: new Date(Date.now() - 15 * 60 * 1000),
+            icon: Edit,
+        },
+        {
+            type: "delete",
+            user: "Admin",
+            action: "deleted user",
+            target: "spammer@example.com",
+            time: new Date(Date.now() - 60 * 60 * 1000),
+            icon: Trash2,
+        },
+        {
+            type: "signup",
+            user: "New User",
+            action: "signed up",
+            target: "",
+            time: new Date(Date.now() - 120 * 60 * 1000),
+            icon: UserPlus,
+        }
+    ];
 
     return (
-        <Card className='bg-white border-border'>
-            <CardHeader>
-                <CardTitle className='text-heading-md font-bold text-gray-900'>
-                    Recent Activity
-                </CardTitle>
-            </CardHeader>
-            <CardContent>
-                <div className='space-y-4'>
-                    {displayActivities.length === 0 ? (
-                        <p className='text-body-md text-gray-500 text-center py-8'>
-                            No recent activity
-                        </p>
-                    ) : (
-                        displayActivities.map((activity, index) => {
-                            const Icon = ACTIVITY_ICONS[activity.type];
-                            const colorClass = ACTIVITY_COLORS[activity.type];
+        <div className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-white/5 rounded-xl p-6 h-full">
+            <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-6 flex items-center gap-2">
+                <FileMusic className="size-5 text-brand-primary" />
+                Recent Activity
+            </h3>
 
-                            return (
-                                <motion.div
-                                    key={activity.id}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: index * 0.05 }}
-                                    className='flex gap-4'
-                                >
-                                    {/* Icon */}
-                                    <div className={`p-2 rounded-lg ${colorClass} flex-shrink-0`}>
-                                        <Icon className='size-4' />
-                                    </div>
+            <div className="relative border-l border-zinc-100 dark:border-white/5 ml-3 space-y-8 pl-8 py-2">
+                {activities.map((activity, index) => (
+                    <div key={index} className="relative group">
+                        {/* Timeline Dot */}
+                        <div
+                            className="absolute -left-[41px] top-1 size-8 rounded-full border-4 border-white dark:border-zinc-950 flex items-center justify-center transition-transform group-hover:scale-110"
+                            style={{
+                                background: activity.type === "upload" ? "rgba(16, 185, 129, 0.1)" :
+                                    activity.type === "edit" ? "rgba(59, 130, 246, 0.1)" :
+                                        activity.type === "delete" ? "rgba(239, 68, 68, 0.1)" :
+                                            "rgba(139, 92, 246, 0.1)",
+                                color: activity.type === "upload" ? "#10B981" :
+                                    activity.type === "edit" ? "#3B82F6" :
+                                        activity.type === "delete" ? "#EF4444" :
+                                            "#8B5CF6"
+                            }}
+                        >
+                            <activity.icon size={14} />
+                        </div>
 
-                                    {/* Content */}
-                                    <div className='flex-1 min-w-0'>
-                                        <p className='text-body-md font-medium text-gray-900 truncate'>
-                                            {activity.title}
-                                        </p>
-                                        <p className='text-body-sm text-gray-600 truncate'>
-                                            {activity.description}
-                                        </p>
-                                        <p className='text-body-xs text-gray-500 mt-1'>
-                                            {formatDistanceToNow(activity.timestamp, { addSuffix: true })}
-                                        </p>
-                                    </div>
-                                </motion.div>
-                            );
-                        })
-                    )}
-                </div>
-            </CardContent>
-        </Card>
+                        <div className="flex flex-col">
+                            <p className="text-sm text-zinc-600 dark:text-zinc-300">
+                                <span className="font-semibold text-zinc-900 dark:text-white">{activity.user}</span> {activity.action}
+                                {activity.target && (
+                                    <span className="font-medium text-brand-primary ml-1 truncate block sm:inline">
+                                        {activity.target}
+                                    </span>
+                                )}
+                            </p>
+                            <span className="text-xs text-zinc-400 mt-1">
+                                {formatDistanceToNow(activity.time, { addSuffix: true })}
+                            </span>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
     );
-};
-
-// Mock data generator for demo
-export const generateMockActivities = (): Activity[] => {
-    return [
-        {
-            id: '1',
-            type: 'upload',
-            title: 'New song uploaded',
-            description: 'Midnight City by M83',
-            timestamp: new Date(Date.now() - 5 * 60 * 1000),
-        },
-        {
-            id: '2',
-            type: 'signup',
-            title: 'New user joined',
-            description: 'john@example.com signed up',
-            timestamp: new Date(Date.now() - 15 * 60 * 1000),
-        },
-        {
-            id: '3',
-            type: 'album',
-            title: 'Album created',
-            description: 'Hurry Up, We\'re Dreaming',
-            timestamp: new Date(Date.now() - 30 * 60 * 1000),
-        },
-        {
-            id: '4',
-            type: 'milestone',
-            title: 'Milestone reached',
-            description: '1,000 total songs uploaded',
-            timestamp: new Date(Date.now() - 60 * 60 * 1000),
-        },
-    ];
 };

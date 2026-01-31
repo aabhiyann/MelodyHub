@@ -38,6 +38,7 @@
     "react-countup": "^6.5.3",
     "react-dom": "^19.0.0",
     "react-dropzone": "^14.3.8",
+    "react-hook-form": "^7.71.1",
     "react-hot-toast": "^2.5.2",
     "react-resizable-panels": "^2.1.7",
     "react-router-dom": "^7.4.0",
