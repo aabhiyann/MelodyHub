@@ -1,8 +1,8 @@
-import { Moon, Sun, User, Bell, Shield, Smartphone } from 'lucide-react';
+import { Sun, User, Shield, Smartphone } from 'lucide-react';
 import { useAccessibilityStore } from '@/stores/AccessibilityStore';
 
 const AdminSettingsPage = () => {
-    const { highContrast, toggleHighContrast, largeText, toggleLargeText } = useAccessibilityStore();
+    const { highContrast, setHighContrast, largeText, setLargeText } = useAccessibilityStore();
 
     return (
         <div className="space-y-8">
@@ -34,7 +34,7 @@ const AdminSettingsPage = () => {
                                     type="checkbox"
                                     className="sr-only peer"
                                     checked={highContrast}
-                                    onChange={toggleHighContrast}
+                                    onChange={() => setHighContrast(!highContrast)}
                                 />
                                 <div className="w-11 h-6 bg-zinc-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-brand-primary/20 dark:peer-focus:ring-brand-primary/20 rounded-full peer dark:bg-zinc-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-brand-primary"></div>
                             </label>
@@ -50,7 +50,7 @@ const AdminSettingsPage = () => {
                                     type="checkbox"
                                     className="sr-only peer"
                                     checked={largeText}
-                                    onChange={toggleLargeText}
+                                    onChange={() => setLargeText(!largeText)}
                                 />
                                 <div className="w-11 h-6 bg-zinc-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-brand-primary/20 dark:peer-focus:ring-brand-primary/20 rounded-full peer dark:bg-zinc-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-brand-primary"></div>
                             </label>

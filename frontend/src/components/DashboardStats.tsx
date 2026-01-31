@@ -1,7 +1,7 @@
 import { useMusicStore } from "@/stores/MusicStore";
 import { Library, ListMusic, PlayCircle, Users, UserRound } from "lucide-react";
 import { KPICard } from "@/components/admin/KPICard";
-import { ActivityFeed, generateMockActivities } from "@/components/admin/ActivityFeed";
+import { ActivityFeed } from "@/components/admin/ActivityFeed";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -18,8 +18,6 @@ const DashboardStats = () => {
 		{ name: "Artists", count: stats.totalArtists, fill: "#f97316" },
 		{ name: "Users", count: stats.totalUsers, fill: "#0ea5e9" },
 	];
-
-	const activities = generateMockActivities();
 
 	return (
 		<div className="space-y-6">
@@ -89,7 +87,7 @@ const DashboardStats = () => {
 				</Card>
 
 				{/* Activity Feed */}
-				<ActivityFeed activities={activities} limit={8} />
+				<ActivityFeed />
 			</div>
 		</div>
 	);

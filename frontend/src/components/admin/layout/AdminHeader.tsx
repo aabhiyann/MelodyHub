@@ -6,7 +6,7 @@ interface AdminHeaderProps {
 }
 
 export const AdminHeader = ({ onOpenSidebar }: AdminHeaderProps) => {
-    const { user } = useAuthStore();
+    const { authUser } = useAuthStore();
 
     return (
         <header className="sticky top-0 z-40 h-[64px] bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-white/5 px-4 lg:px-8 flex items-center justify-between gap-4">
@@ -49,7 +49,7 @@ export const AdminHeader = ({ onOpenSidebar }: AdminHeaderProps) => {
 
                 <button className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors">
                     <img
-                        src={user?.imageUrl || "https://github.com/shadcn.png"}
+                        src={authUser?.imageUrl || "https://github.com/shadcn.png"}
                         alt="User"
                         className="size-8 rounded-full bg-zinc-100 object-cover"
                     />
