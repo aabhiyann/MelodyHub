@@ -4,8 +4,16 @@ import { SongsTable } from '@/components/admin/SongsTable';
 import { SongUploadModal } from '@/components/admin/SongUploadModal';
 import { motion } from 'framer-motion';
 
+import { useEffect } from 'react';
+import { useMusicStore } from '@/stores/MusicStore';
+
 const AdminSongsPage = () => {
     const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+    const { fetchSongs } = useMusicStore();
+
+    useEffect(() => {
+        fetchSongs();
+    }, [fetchSongs]);
 
     return (
         <div className="space-y-6">
@@ -19,7 +27,7 @@ const AdminSongsPage = () => {
                 </div>
                 <button
                     onClick={() => setIsUploadModalOpen(true)}
-                    className="flex items-center gap-2 bg-brand-primary hover:bg-brand-secondary text-white px-4 py-2.5 rounded-lg text-sm font-bold transition-all shadow-lg shadow-brand-primary/20 active:scale-95"
+                    className="flex items-center gap-2 bg-brand-primary hover:bg-brand-secondary text-white px-4 py-2.5 rounded-lg text-sm font-bold transition-all shadow-lg shadow-brand-primary/20 active:scale-95 shrink-0 self-start sm:self-center"
                 >
                     <Plus size={18} />
                     Add New Song
