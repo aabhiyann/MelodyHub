@@ -4,7 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
-import { Play, Heart, MoreHorizontal } from 'lucide-react';
+import { Play, Heart } from 'lucide-react';
 import { LiquidGlassCard } from './LiquidGlassCard';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
@@ -41,8 +41,8 @@ export const AlbumCard = ({
             onMouseLeave={() => setIsHovered(false)}
             onClick={onClick}
         >
-            {/* Album Art Container */}
-            <div className="relative aspect-square mb-4 rounded-lg overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900">
+            {/* Album Art - Spotify/Apple Music: rounded-xl, shadow, hover scale */}
+            <div className="relative aspect-square mb-4 rounded-xl overflow-hidden shadow-lg bg-surface-card group-hover:shadow-xl transition-shadow duration-300">
                 {/* Album Image */}
                 <motion.img
                     src={imageUrl}
@@ -54,7 +54,7 @@ export const AlbumCard = ({
 
                 {/* Overlay on hover */}
                 <motion.div
-                    className="absolute inset-0 bg-black/40 flex items-center justify-center gap-3"
+                    className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-center justify-center gap-3"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: isHovered ? 1 : 0 }}
                     transition={{ duration: 0.2 }}
@@ -104,9 +104,9 @@ export const AlbumCard = ({
                 </motion.div>
             </div>
 
-            {/* Album Info */}
+            {/* Album Info - design tokens */}
             <div className="space-y-1">
-                <h3 className="font-semibold text-base text-white truncate group-hover:text-brand-primary transition-colors">
+                <h3 className="font-semibold text-base text-text-primary truncate group-hover:text-brand-primary transition-colors">
                     {title}
                 </h3>
                 <p className="text-sm text-text-secondary truncate">{artist}</p>

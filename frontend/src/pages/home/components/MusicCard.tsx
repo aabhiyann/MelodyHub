@@ -3,7 +3,7 @@ import { Song } from "@/types";
 import { useState, memo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { LikeButton } from "@/components/LikeButton";
+import { LikeButton } from "@/components/ui/LikeButton";
 import { AddToPlaylistDialog } from "@/components/AddToPlaylistDialog";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { LiquidGlassCard } from "@/components/ui/LiquidGlassCard";
@@ -51,19 +51,19 @@ const MusicCard = memo(({ song, onClick, onPlayClick }: MusicCardProps) => {
                 hover={true}
                 variant="default"
             >
-                {/* Image Container with Hover Effects */}
+                {/* Image Container - Spotify/Apple Music style: rounded-xl, shadow, hover scale */}
                 <div
-                    className="relative aspect-square overflow-hidden rounded-md mb-4 shadow-lg group-hover:shadow-card-hover transition-all duration-500 ease-out"
+                    className="relative aspect-square overflow-hidden rounded-xl mb-4 shadow-lg group-hover:shadow-xl group-hover:scale-[1.02] transition-all duration-300 ease-out"
                 >
                     <OptimizedImage
                         src={song.imageUrl}
                         alt={song.title}
                         size="small"
-                        className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                        className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                     />
 
-                    {/* Subtle Gradient Overlay on Hover */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                    {/* Gradient overlay on hover - streaming-app style */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
                     {/* Like Button (Top Right) */}
                     <div className="absolute top-2 right-2 z-20 opacity-0 translate-y-[-8px] group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 delay-75 ease-out">
@@ -71,7 +71,7 @@ const MusicCard = memo(({ song, onClick, onPlayClick }: MusicCardProps) => {
                             <LikeButton
                                 size={18}
                                 isLiked={!!song.likeCount && song.likeCount > 0}
-                                onLike={async (liked) => {
+                                onToggle={async (liked) => {
                                     try {
                                         const { axiosInstance } = await import('@/lib/axios');
                                         await axiosInstance.post('/analytics/like-song', {

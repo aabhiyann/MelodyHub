@@ -1,6 +1,5 @@
-import { ChevronLeft, Bell, Settings } from "lucide-react";
+import { ChevronLeft, Bell } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { cn } from "@/lib/utils";
 import { UserButton } from "@clerk/clerk-react";
 
 const MobileHeader = () => {

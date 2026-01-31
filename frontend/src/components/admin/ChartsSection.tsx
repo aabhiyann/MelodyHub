@@ -141,7 +141,7 @@ export const ChartsSection = () => {
                                     paddingAngle={5}
                                     dataKey="value"
                                 >
-                                    {genreData.map((entry, index) => (
+                                    {genreData.map((_, index) => (
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                     ))}
                                 </Pie>

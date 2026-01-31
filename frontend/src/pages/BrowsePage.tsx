@@ -4,6 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Loader } from "lucide-react";
 import { PageTransition } from "@/components/PageTransition";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Topbar from "@/components/Topbar";
 
 const BrowsePage = () => {
     const [activeTab, setActiveTab] = useState("all");
@@ -25,9 +26,11 @@ const BrowsePage = () => {
     const genres = Object.keys(genreSongs).sort();
 
     return (
-        <PageTransition>
-            <ScrollArea className="h-full">
-                <div className="p-4 md:p-8">
+        <div className="h-full flex flex-col rounded-lg overflow-hidden bg-transparent">
+            <Topbar />
+            <PageTransition>
+                <ScrollArea className="h-full flex-1">
+                    <div className="p-4 md:p-8">
                     <div className="max-w-7xl mx-auto">
                         {/* Header */}
                         <div className="mb-8">
@@ -68,14 +71,14 @@ const BrowsePage = () => {
                                                             key={song._id}
                                                             className="group cursor-pointer"
                                                         >
-                                                            <div className="relative aspect-square mb-3 rounded-lg overflow-hidden shadow-lg">
+                                                            <div className="relative aspect-square mb-3 rounded-xl overflow-hidden shadow-lg group-hover:shadow-xl group-hover:scale-[1.02] transition-all duration-300">
                                                                 <img
                                                                     src={song.imageUrl}
                                                                     alt={song.title}
                                                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                                                 />
                                                             </div>
-                                                            <h3 className="font-semibold truncate">{song.title}</h3>
+                                                            <h3 className="font-semibold truncate text-text-primary">{song.title}</h3>
                                                             <p className="text-sm text-text-secondary truncate">
                                                                 {song.artist}
                                                             </p>
@@ -97,14 +100,14 @@ const BrowsePage = () => {
                                                         key={song._id}
                                                         className="group cursor-pointer"
                                                     >
-                                                        <div className="relative aspect-square mb-3 rounded-lg overflow-hidden shadow-lg">
+                                                        <div className="relative aspect-square mb-3 rounded-xl overflow-hidden shadow-lg group-hover:shadow-xl group-hover:scale-[1.02] transition-all duration-300">
                                                             <img
                                                                 src={song.imageUrl}
                                                                 alt={song.title}
                                                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                                             />
                                                         </div>
-                                                        <h3 className="font-semibold truncate text-sm">
+                                                        <h3 className="font-semibold truncate text-sm text-text-primary">
                                                             {song.title}
                                                         </h3>
                                                         <p className="text-xs text-text-secondary truncate">
@@ -119,9 +122,10 @@ const BrowsePage = () => {
                             </Tabs>
                         )}
                     </div>
-                </div>
-            </ScrollArea>
-        </PageTransition>
+                    </div>
+                </ScrollArea>
+            </PageTransition>
+        </div>
     );
 };
 

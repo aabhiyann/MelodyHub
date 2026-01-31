@@ -2,11 +2,8 @@ import { Sidebar } from './Sidebar';
 import { BottomTabBar } from '@/components/mobile/BottomTabBar';
 import { useIsMobile } from '@/hooks/useMediaQuery';
 import { Outlet } from 'react-router-dom';
-// import { cn } from '@/lib/utils';
-import { SkipLink } from '@/components/a11y/SkipLink';
 import { Mascot } from '@/components/mascot/Mascot';
 import { MascotOnboarding } from '@/components/mascot/MascotOnboarding';
-import { Toaster } from 'react-hot-toast';
 import FriendsActivity from '../FriendsActivity';
 
 export const SidebarLayout = () => {
@@ -14,8 +11,6 @@ export const SidebarLayout = () => {
 
     return (
         <div className="h-screen flex bg-surface-base text-text-primary font-sans antialiased selection:bg-brand-primary/30">
-            <SkipLink />
-
             {/* Desktop Sidebar (Left) */}
             {!isMobile && (
                 <aside className="w-[240px] shrink-0 border-r border-white/5 bg-black/20 backdrop-blur-xl z-30">
@@ -48,7 +43,6 @@ export const SidebarLayout = () => {
             {/* Global Components */}
             <Mascot />
             <MascotOnboarding />
-            <Toaster position="top-center" />
         </div>
     );
 };

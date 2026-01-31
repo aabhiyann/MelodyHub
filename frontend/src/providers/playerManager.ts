@@ -67,18 +67,30 @@ export class PlayerManager {
 
 	/**
 	 * Sets the current song and emits activity.
+	 * If the song is not in the current queue (or queue is empty), sets queue to [song] so next/prev work.
 	 */
 	setCurrentSong(song: Song | null): void {
 		if (!song) return;
 
 		this.emitActivity(`Playing ${song.title} by ${song.artist}`);
 
-		const index = this.get().queue.findIndex((s: Song) => s._id === song._id);
-		this.set({
-			currentSong: song,
-			isPlaying: true,
-			currentIndex: index !== -1 ? index : this.get().currentIndex,
-		});
+		const { queue } = this.get();
+		const index = queue.findIndex((s: Song) => s._id === song._id);
+
+		if (index !== -1) {
+			this.set({
+				currentSong: song,
+				currentIndex: index,
+				isPlaying: true,
+			});
+		} else {
+			this.set({
+				queue: [song],
+				currentSong: song,
+				currentIndex: 0,
+				isPlaying: true,
+			});
+		}
 	}
 
 	/**

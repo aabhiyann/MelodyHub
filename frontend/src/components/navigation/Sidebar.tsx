@@ -198,7 +198,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
                                 return (
                                     <NavLink
                                         key={playlist.id}
-                                        to={`/playlist/${playlist.id}`}
+                                        to={`/playlists/${playlist.id}`}
                                         className={({ isActive }) =>
                                             cn(
                                                 'flex items-center gap-3 px-3 py-2 rounded-lg',
