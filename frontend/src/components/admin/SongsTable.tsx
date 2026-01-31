@@ -12,7 +12,7 @@ export const SongsTable = () => {
     const { songs } = useMusicStore();
     const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
     const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10); // Keeping state for future resilience
+    const [pageSize] = useState(10); // Keeping state for future resilience
     const [sortConfig, setSortConfig] = useState<{ key: keyof Song | 'dateAdded'; direction: 'asc' | 'desc' }>({ key: 'title', direction: 'asc' });
     const [filters, setFilters] = useState({
         search: "",
