@@ -26,7 +26,7 @@ const Topbar = () => {
 				<div className="md:hidden mr-2">
 					<Sheet>
 						<SheetTrigger asChild>
-							<Button variant="ghost" size="icon" className="text-white">
+							<Button variant="ghost" size="icon" className="text-text-primary">
 								<Menu className="h-6 w-6" />
 							</Button>
 						</SheetTrigger>
@@ -75,7 +75,7 @@ const Topbar = () => {
 				<Button
 					variant="ghost"
 					size="icon"
-					className="text-zinc-400 hover:text-white hidden lg:flex"
+					className="text-text-secondary hover:text-text-primary hidden lg:flex"
 					onClick={toggleActivityPanel}
 					title={isActivityPanelOpen ? "Hide Friend Activity" : "Show Friend Activity"}
 				>
