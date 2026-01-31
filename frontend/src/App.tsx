@@ -1,5 +1,5 @@
 import { lazy, Suspense, useState, useEffect } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, Outlet } from "react-router-dom";
 import { AuthenticateWithRedirectCallback } from "@clerk/clerk-react";
 import { LoadingScreen } from "./components/LoadingScreen";
 import { Toaster } from "react-hot-toast";
@@ -164,15 +164,24 @@ function App() {
 						<Route path='/radio/:songId' element={<PageTransition><RadioPage /></PageTransition>} />
 						<Route path='/albums/:albumId' element={<PageTransition><AlbumPage /></PageTransition>} />
 						<Route path='/artists/:artistId' element={<PageTransition><ArtistPage /></PageTransition>} />
+						<Route path='/quests' element={<PageTransition><GamificationPage /></PageTransition>} />
+						<Route path='*' element={<PageTransition><NotFoundPage /></PageTransition>} />
+					</Route>
+
+					{/* Admin Routes - Separate Layout */}
+					<Route
+						element={
+							<RequireAuth>
+								<Outlet />
+							</RequireAuth>
+						}
+					>
 						<Route path='/admin' element={<AdminLayout />}>
 							<Route index element={<PageTransition><AdminDashboard /></PageTransition>} />
 							<Route path='songs' element={<PageTransition><AdminSongsPage /></PageTransition>} />
 							<Route path='analytics' element={<PageTransition><AnalyticsPage /></PageTransition>} />
-							{/* Fallback for other admin routes to Dashboard for now */}
 							<Route path='*' element={<PageTransition><AdminDashboard /></PageTransition>} />
 						</Route>
-						<Route path='/quests' element={<PageTransition><GamificationPage /></PageTransition>} />
-						<Route path='*' element={<PageTransition><NotFoundPage /></PageTransition>} />
 					</Route>
 				</Routes>
 			</AnimatePresence>
