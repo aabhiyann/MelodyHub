@@ -147,7 +147,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 	setSelectedUser: (user: User | null) => {
 		set({ selectedUser: user, messages: [] });
 		if (user) {
-			get().fetchMessages(user._id);
+			get().fetchMessages(user.clerkId);
 		}
 	},
 
