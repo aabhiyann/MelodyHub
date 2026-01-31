@@ -29,7 +29,7 @@ const formatDate = (date: string) => {
 
 const ChatPage = () => {
 	const { user } = useUser();
-	const { messages, selectedUser, fetchUsers, fetchMessages } = useChatStore();
+	const { messages, selectedUser, typingUsers, fetchUsers, fetchMessages } = useChatStore();
 
 	useEffect(() => {
 		if (user) fetchUsers();
@@ -46,8 +46,6 @@ const ChatPage = () => {
 			<div className='grid md:grid-cols-[300px_1fr] grid-cols-[80px_1fr] flex-1 min-h-0 rounded-xl overflow-hidden bg-background-elevated/40 backdrop-blur-lg border border-white/5'>
 				<FriendsList />
 
-				{/* chat message */}
-				{/* chat message */}
 				<div className='flex flex-col h-full bg-white/[0.02] backdrop-blur-md relative min-h-0 overflow-hidden'>
 					{selectedUser ? (
 						<>
@@ -116,7 +114,7 @@ const ChatPage = () => {
 							<div className="relative w-full z-10">
 								{/* Typing Indicator - Positioned absolutely above the input */}
 								<div className="absolute bottom-full left-6 mb-2 pointer-events-none">
-									{selectedUser && useChatStore.getState().typingUsers?.has(selectedUser.clerkId) && (
+									{selectedUser && typingUsers?.has(selectedUser.clerkId) && (
 										<div className="flex items-center gap-1.5 bg-background-elevated/90 backdrop-blur-xl px-4 py-2 rounded-full border border-white/10 animate-in slide-in-from-bottom-2 fade-in duration-300 w-fit shadow-lg">
 											<div className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce [animation-delay:-0.3s]" />
 											<div className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce [animation-delay:-0.15s]" />
