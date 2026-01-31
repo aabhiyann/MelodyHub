@@ -7,6 +7,8 @@ import { motion } from 'framer-motion';
 import { ListMusic, MonitorSpeaker, MoreHorizontal, Maximize2, Minimize2 } from 'lucide-react';
 import { VolumeControl } from './VolumeControl';
 import { useState } from 'react';
+import { usePlayerStore } from '@/stores/PlayerStore';
+import toast from 'react-hot-toast';
 
 interface AdditionalControlsProps {
     queueCount: number;
@@ -30,6 +32,44 @@ export const AdditionalControls = ({
     onToggleExpanded,
 }: AdditionalControlsProps) => {
     const [showMoreMenu, setShowMoreMenu] = useState(false);
+    const { currentSong, toggleLyrics } = usePlayerStore();
+
+    const handleViewLyrics = () => {
+        toggleLyrics();
+        setShowMoreMenu(false);
+    };
+
+    const handleShareTrack = async () => {
+        if (!currentSong) {
+            toast.error('No track playing');
+            setShowMoreMenu(false);
+            return;
+        }
+        const shareUrl = `${window.location.origin}/radio/${currentSong._id}`;
+        try {
+            if (typeof navigator !== 'undefined' && navigator.share) {
+                await navigator.share({
+                    title: `${currentSong.title} - ${currentSong.artist}`,
+                    url: shareUrl,
+                    text: `Listen to ${currentSong.title} by ${currentSong.artist} on MelodyHub`,
+                });
+                toast.success('Shared!');
+            } else {
+                await navigator.clipboard.writeText(shareUrl);
+                toast.success('Link copied to clipboard!');
+            }
+        } catch (err: unknown) {
+            if ((err as Error).name !== 'AbortError') {
+                try {
+                    await navigator.clipboard.writeText(shareUrl);
+                    toast.success('Link copied to clipboard!');
+                } catch {
+                    toast.error('Could not share or copy');
+                }
+            }
+        }
+        setShowMoreMenu(false);
+    };
 
     return (
         <div className="flex items-center gap-1">
@@ -94,10 +134,10 @@ export const AdditionalControls = ({
                 {/* More Menu Dropdown */}
                 {showMoreMenu && (
                     <div className="absolute right-0 bottom-full mb-2 w-48 rounded-xl border border-white/10 bg-zinc-900/95 p-1 shadow-xl backdrop-blur-xl">
-                        <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-zinc-300 hover:bg-white/10 hover:text-white transition-colors text-left">
+                        <button onClick={handleViewLyrics} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-zinc-300 hover:bg-white/10 hover:text-white transition-colors text-left">
                             View Lyrics
                         </button>
-                        <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-zinc-300 hover:bg-white/10 hover:text-white transition-colors text-left">
+                        <button onClick={handleShareTrack} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-zinc-300 hover:bg-white/10 hover:text-white transition-colors text-left">
                             Share Track
                         </button>
                         <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-zinc-300 hover:bg-white/10 hover:text-white transition-colors text-left">

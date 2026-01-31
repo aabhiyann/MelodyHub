@@ -119,7 +119,7 @@ export const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
 
                 {/* Navigation */}
                 <nav className="flex-1 overflow-y-auto py-6 px-3 space-y-6 scrollbar-thin scrollbar-thumb-zinc-200 dark:scrollbar-thumb-white/10">
-                    {navItems.map((section, idx) => (
+                    {navItems.map((section) => (
                         <div key={section.section} className="space-y-1">
                             {(collapsed ? false : true) && (
                                 <h4 className={cn(
@@ -133,7 +133,7 @@ export const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
                                 <NavLink
                                     key={item.path}
                                     to={item.path}
-                                    end={item.end}
+                                    end={'end' in item ? item.end : false}
                                     onClick={() => onClose()} // Close on navigation (mobile)
                                     className={({ isActive }) => cn(
                                         "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group relative",
@@ -146,7 +146,7 @@ export const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
 
                                     <span className={cn("flex-1 truncate", collapsed && "lg:hidden")}>{item.label}</span>
 
-                                    {item.badge && (
+                                    {'badge' in item && item.badge && (
                                         <span className={cn(
                                             "px-2 py-0.5 text-[10px] font-bold bg-brand-primary/10 text-brand-primary rounded-full",
                                             collapsed && "lg:hidden"

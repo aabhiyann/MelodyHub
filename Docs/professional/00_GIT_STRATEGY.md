@@ -58,6 +58,10 @@ We use **Conventional Commits** to make our history readable.
 -   `fix: resolve crash on mobile` (Good)
 -   `fixed bug` (Bad)
 
+## 4.1 Per-task branching and commits
+-   **One branch per task**: Create a short-lived branch from up-to-date `main` for each fix or feature (e.g. `fix/player-queue`, `feat/share-track`). Avoid long-lived branches.
+-   **One or more commits per logical change**: Commit often; each commit should represent a single logical change (one fix, one small feature). Do not leave large uncommitted dumps on `main`.
+
 ---
 
 ## 5. Current Active Branches
