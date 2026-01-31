@@ -28,7 +28,8 @@ const HomePage = lazy(() => import("./pages/HomePage"));
 const ChatPage = lazy(() => import("./pages/ChatPage"));
 const AlbumPage = lazy(() => import("./pages/AlbumPage"));
 const AdminLayout = lazy(() => import("./layouts/AdminLayout").then(module => ({ default: module.AdminLayout })));
-const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard")); // Fallback
+const AdminSettingsPage = lazy(() => import("./pages/admin/AdminSettingsPage"));
 const AdminSongsPage = lazy(() => import("./pages/admin/AdminSongsPage"));
 // const AdminPage = lazy(() => import("./pages/AdminPage")); // Deprecated
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
@@ -180,6 +181,7 @@ function App() {
 							<Route index element={<PageTransition><AdminDashboard /></PageTransition>} />
 							<Route path='songs' element={<PageTransition><AdminSongsPage /></PageTransition>} />
 							<Route path='analytics' element={<PageTransition><AnalyticsPage /></PageTransition>} />
+							<Route path='settings' element={<PageTransition><AdminSettingsPage /></PageTransition>} />
 							<Route path='*' element={<PageTransition><AdminDashboard /></PageTransition>} />
 						</Route>
 					</Route>
