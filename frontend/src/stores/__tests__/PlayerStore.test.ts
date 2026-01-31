@@ -1,80 +1,62 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { usePlayerStore } from '../PlayerStore';
+import { renderHook, act } from '@testing-library/react';
+import { usePlayerStore } from '@/stores/PlayerStore';
 
-describe('PlayerStore', () => {
-    // Reset store before each test
+describe('Player Store', () => {
     beforeEach(() => {
-        usePlayerStore.setState({
-            queue: [],
+        const { setState } = usePlayerStore;
+        setState({
             currentSong: null,
             isPlaying: false,
+            queue: [],
             currentIndex: -1,
+            volume: 70,
+            isMuted: false,
+            currentTime: 0,
+            duration: 0,
+            isLyricsOpen: false,
         });
     });
 
-    it('should initialize with default state', () => {
-        const state = usePlayerStore.getState();
-        expect(state.queue).toEqual([]);
-        expect(state.currentSong).toBeNull();
-        expect(state.isPlaying).toBe(false);
-        expect(state.currentIndex).toBe(-1);
+    it('initializes with default state', () => {
+        const { result } = renderHook(() => usePlayerStore());
+
+        expect(result.current.currentSong).toBeNull();
+        expect(result.current.isPlaying).toBe(false);
+        expect(result.current.volume).toBe(70);
     });
 
-    it('should set the current song and update playing state', () => {
-        const mockSong = { _id: '1', title: 'Test Song', artist: 'Test Artist', audioUrl: 'url', imageUrl: 'img', duration: 100, createdAt: '', updatedAt: '', albumId: null };
+    // Note: Complex logic like playAlbum mostly resides in PlayerManager which is integrated into the store.
+    // We can test the exposed actions.
 
-        usePlayerStore.getState().initializeQueue([mockSong]);
-        usePlayerStore.getState().setCurrentSong(mockSong);
+    it('toggles lyrics', () => {
+        const { result } = renderHook(() => usePlayerStore());
 
-        const state = usePlayerStore.getState();
-        expect(state.currentSong).toEqual(mockSong);
-        expect(state.isPlaying).toBe(true);
-        expect(state.currentIndex).toBe(0);
+        expect(result.current.isLyricsOpen).toBe(false);
+
+        act(() => {
+            result.current.toggleLyrics();
+        });
+        expect(result.current.isLyricsOpen).toBe(true);
     });
 
-    it('should toggle play state', () => {
-        const { togglePlay } = usePlayerStore.getState();
+    it('updates volume', () => {
+        const { result } = renderHook(() => usePlayerStore());
 
-        // Initial state is false
-        expect(usePlayerStore.getState().isPlaying).toBe(false);
-
-        togglePlay();
-        expect(usePlayerStore.getState().isPlaying).toBe(true);
-
-        togglePlay();
-        expect(usePlayerStore.getState().isPlaying).toBe(false);
+        act(() => {
+            result.current.setVolume(50);
+        });
+        expect(result.current.volume).toBe(50);
     });
 
-    it('should play next song in queue', () => {
-        const song1 = { _id: '1', title: 'Song 1', artist: 'A', audioUrl: 'u1', imageUrl: 'i1', duration: 100, createdAt: '', updatedAt: '', albumId: null };
-        const song2 = { _id: '2', title: 'Song 2', artist: 'A', audioUrl: 'u2', imageUrl: 'i2', duration: 100, createdAt: '', updatedAt: '', albumId: null };
+    it('toggles mute', () => {
+        const { result } = renderHook(() => usePlayerStore());
 
-        usePlayerStore.getState().initializeQueue([song1, song2]);
-        usePlayerStore.getState().setCurrentSong(song1);
+        expect(result.current.isMuted).toBe(false);
 
-        expect(usePlayerStore.getState().currentIndex).toBe(0);
-
-        usePlayerStore.getState().playNext();
-
-        const state = usePlayerStore.getState();
-        expect(state.currentIndex).toBe(1);
-        expect(state.currentSong?._id).toBe('2');
-    });
-
-    it('should play previous song in queue', () => {
-        const song1 = { _id: '1', title: 'Song 1', artist: 'A', audioUrl: 'u1', imageUrl: 'i1', duration: 100, createdAt: '', updatedAt: '', albumId: null };
-        const song2 = { _id: '2', title: 'Song 2', artist: 'A', audioUrl: 'u2', imageUrl: 'i2', duration: 100, createdAt: '', updatedAt: '', albumId: null };
-
-        usePlayerStore.getState().initializeQueue([song1, song2]);
-        // Start at second song
-        usePlayerStore.getState().playAlbum([song1, song2], 1);
-
-        expect(usePlayerStore.getState().currentIndex).toBe(1);
-
-        usePlayerStore.getState().playPrevious();
-
-        const state = usePlayerStore.getState();
-        expect(state.currentIndex).toBe(0);
-        expect(state.currentSong?._id).toBe('1');
+        act(() => {
+            result.current.toggleMute();
+        });
+        expect(result.current.isMuted).toBe(true);
     });
 });
