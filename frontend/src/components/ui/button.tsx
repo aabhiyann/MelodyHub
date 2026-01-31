@@ -13,17 +13,17 @@ const buttonVariants = cva(
         default:
           "bg-brand-primary text-primary-foreground shadow-md hover:bg-brand-primary/90 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
 
-        // Blue Secondary (Social/Info)
+        // Blue Secondary (Social/Info) - design token
         secondary:
-          "bg-blue-500 text-white shadow-md hover:bg-blue-600 hover:shadow-lg hover:scale-105 active:scale-100",
+          "bg-brand-secondary text-white shadow-md hover:bg-brand-secondary/90 hover:shadow-lg hover:scale-105 active:scale-100",
 
-        // Success/Active (Green)
+        // Success/Active - semantic token
         success:
-          "bg-emerald-500 text-white shadow-md hover:bg-emerald-600 hover:scale-105 active:scale-100",
+          "bg-semantic-success text-white shadow-md hover:bg-semantic-success/90 hover:scale-105 active:scale-100",
 
-        // Destructive (Red)
+        // Destructive - semantic token
         destructive:
-          "bg-red-500 text-white shadow-md hover:bg-red-600 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 hover:scale-105 active:scale-100",
+          "bg-semantic-error text-white shadow-md hover:bg-semantic-error/90 focus-visible:ring-semantic-error/20 dark:focus-visible:ring-semantic-error/40 hover:scale-105 active:scale-100",
 
         // Outline (Brand border)
         outline:
