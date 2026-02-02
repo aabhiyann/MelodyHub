@@ -16,6 +16,7 @@ import { FullScreenPlayer } from '@/components/player/FullScreenPlayer';
 import { Mascot } from '@/components/mascot/Mascot';
 import { AIPlaylistModal } from '@/components/ai/AIPlaylistModal';
 import { InstallPrompt } from '@/components/mobile/InstallPrompt';
+import { OfflineIndicator } from '@/components/OfflineIndicator';
 import { useKeyboardControls } from '@/hooks/useKeyboardControls';
 // Accessibility
 import { SkipLinks } from "@/components/accessibility/SkipLinks";
@@ -84,6 +85,7 @@ function App() {
 
 		<Suspense fallback={<LoadingScreen />}>
 			<SkipLinks />
+			<OfflineIndicator />
 			<LoadingBar isLoading={isLoading} />
 			<Toaster
 				position="top-right"
