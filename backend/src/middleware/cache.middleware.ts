@@ -174,6 +174,24 @@ export const CacheStrategies = {
         key: (req) => userCacheKey(req, 'preferences'),
         condition: (req) => !!(req as any).auth?.userId,
     }),
+
+    // Albums list - 30 minutes TTL
+    albumsList: cacheMiddleware({
+        ttl: 1800,
+        key: () => 'cache:albums:list',
+    }),
+
+    // Album by ID - 30 minutes TTL
+    albumById: cacheMiddleware({
+        ttl: 1800,
+        key: (req) => `cache:album:${req.params.albumId || 'unknown'}`,
+    }),
+
+    // Stats (admin) - 5 minutes TTL
+    stats: cacheMiddleware({
+        ttl: 300,
+        key: () => 'cache:stats',
+    }),
 };
 
 /**
