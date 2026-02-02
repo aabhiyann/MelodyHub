@@ -2,22 +2,26 @@ import { Play, MoreHorizontal, Plus, ListMusic, Share2, Radio } from "lucide-rea
 import { Song } from "@/types";
 import { useState, memo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { LikeButton } from "@/components/ui/LikeButton";
 import { AddToPlaylistDialog } from "@/components/AddToPlaylistDialog";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { LiquidGlassCard } from "@/components/ui/LiquidGlassCard";
+import { useCardReveal } from "@/hooks/useCardReveal";
 
 interface MusicCardProps {
     song: Song;
     onClick?: () => void;
     onPlayClick?: (e: React.MouseEvent) => void;
+    index?: number;
 }
 
-const MusicCard = memo(({ song, onClick, onPlayClick }: MusicCardProps) => {
+const MusicCard = memo(({ song, onClick, onPlayClick, index = 0 }: MusicCardProps) => {
     const [showMenu, setShowMenu] = useState(false);
     const navigate = useNavigate();
     const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const { ref, animate, transition } = useCardReveal({ delay: index });
 
     const handleTouchStart = () => {
         longPressTimer.current = setTimeout(() => {
@@ -37,7 +41,15 @@ const MusicCard = memo(({ song, onClick, onPlayClick }: MusicCardProps) => {
     const [showPlaylistDialog, setShowPlaylistDialog] = useState(false);
 
     return (
-        <div
+        <motion.div
+            ref={ref}
+            initial="hidden"
+            animate={animate}
+            variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0 },
+            }}
+            transition={transition}
             onClick={onClick}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
@@ -183,7 +195,7 @@ const MusicCard = memo(({ song, onClick, onPlayClick }: MusicCardProps) => {
                 open={showPlaylistDialog}
                 onOpenChange={setShowPlaylistDialog}
             />
-        </div>
+        </motion.div>
     );
 });
 

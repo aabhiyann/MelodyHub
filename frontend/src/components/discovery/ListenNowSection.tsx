@@ -84,8 +84,8 @@ export const ListenNowSection = () => {
             <section>
                 <h3 className="text-2xl font-bold text-white mb-4">Recently Played</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                    {recentlyPlayed.map((album) => (
-                        <AlbumCard key={album.id} {...album} />
+                    {recentlyPlayed.map((album, index) => (
+                        <AlbumCard key={album.id} {...album} index={index} />
                     ))}
                 </div>
             </section>

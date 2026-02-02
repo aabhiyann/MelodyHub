@@ -9,6 +9,7 @@ import { LiquidGlassCard } from './LiquidGlassCard';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useCardReveal } from '@/hooks/useCardReveal';
 
 interface AlbumCardProps {
     id: string;
@@ -19,6 +20,7 @@ interface AlbumCardProps {
     onPlay?: () => void;
     onLike?: () => void;
     isLiked?: boolean;
+    index?: number;
 }
 
 export const AlbumCard = ({
@@ -29,18 +31,30 @@ export const AlbumCard = ({
     onPlay,
     onLike,
     isLiked = false,
+    index = 0,
 }: AlbumCardProps) => {
     const [isHovered, setIsHovered] = useState(false);
     const prefersReducedMotion = useReducedMotion();
+    const { ref, animate, transition } = useCardReveal({ delay: index });
 
     return (
-        <LiquidGlassCard
-            className="p-4 group cursor-pointer"
-            hover
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            onClick={onClick}
+        <motion.div
+            ref={ref}
+            initial="hidden"
+            animate={animate}
+            variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0 },
+            }}
+            transition={transition}
         >
+            <LiquidGlassCard
+                className="p-4 group cursor-pointer"
+                hover
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                onClick={onClick}
+            >
             {/* Album Art - Spotify/Apple Music: rounded-xl, shadow, hover scale */}
             <div className="relative aspect-square mb-4 rounded-xl overflow-hidden shadow-lg bg-surface-card group-hover:shadow-xl transition-shadow duration-300">
                 {/* Album Image */}
@@ -112,5 +126,6 @@ export const AlbumCard = ({
                 <p className="text-sm text-text-secondary truncate">{artist}</p>
             </div>
         </LiquidGlassCard>
+        </motion.div>
     );
 };
