@@ -13,8 +13,6 @@ import helmet from "helmet";
 import compression from "compression";
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './config/swagger.config.js';
-import { redisService } from './services/redis.service.js';
-
 import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
 import adminRoutes from './routes/admin.route.js';
@@ -31,7 +29,7 @@ import lyricsRoutes from './routes/lyrics.route.js'; // Lyrics routes
 import activityRoutes from './routes/activity.route.js';
 import friendRoutes from './routes/friend.route.js';
 import gamificationRoutes from './routes/gamification.route.js';
-import { connectDB } from './lib/db.js';
+import { connectDB, connectRedis } from './lib/db.js';
 import { validateEnv } from './lib/env.js';
 import { requestLogger } from './middleware/logger.middleware.js';
 
@@ -176,11 +174,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 		await connectDB();
 
 		// Initialize Redis (optional - app works without it)
-		if (process.env.NODE_ENV === 'production' || process.env.REDIS_URL) {
-			await redisService.connect();
-		} else {
-			console.log('ℹ️  Redis disabled in development (set REDIS_URL to enable)');
-		}
+		await connectRedis();
 
 		console.log('📚 API Documentation: http://localhost:' + PORT + '/api-docs');
 	});
