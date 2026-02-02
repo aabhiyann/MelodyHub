@@ -45,6 +45,8 @@ const AnalyticsPage = lazy(() => import("./pages/AnalyticsPage"));
 const SettingsPage = lazy(() => import("./pages/SettingsPage"));
 const CommunityPage = lazy(() => import("./pages/CommunityPage"));
 const GamificationPage = lazy(() => import("./pages/GamificationPage"));
+const FollowersPage = lazy(() => import("./pages/FollowersPage"));
+const FollowingPage = lazy(() => import("./pages/FollowingPage"));
 
 function App() {
 	const location = useLocation();
@@ -157,7 +159,10 @@ function App() {
 						<Route path='/library' element={<PageTransition><LibraryPage /></PageTransition>} />
 						<Route path='/community' element={<PageTransition><CommunityPage /></PageTransition>} />
 						<Route path='/profile' element={<PageTransition><ProfilePage /></PageTransition>} />
+						<Route path='/profile/:userId' element={<PageTransition><ProfilePage /></PageTransition>} />
 						<Route path='/user/:userId' element={<PageTransition><ProfilePage /></PageTransition>} />
+						<Route path='/followers/:userId' element={<PageTransition><FollowersPage /></PageTransition>} />
+						<Route path='/following/:userId' element={<PageTransition><FollowingPage /></PageTransition>} />
 						<Route path='/chat' element={<PageTransition><ChatPage /></PageTransition>} />
 						<Route path='/playlists/:id' element={<PageTransition><PlaylistPage /></PageTransition>} />
 						<Route path='/analytics' element={<PageTransition><AnalyticsPage /></PageTransition>} />

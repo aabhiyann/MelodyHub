@@ -2,6 +2,7 @@ import { User } from '@/types';
 import { Camera, MapPin, Globe, Edit2, Lock, UserPlus, UserCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '@/lib/axios';
 import toast from 'react-hot-toast';
 
@@ -138,14 +139,22 @@ export const ProfileHeader = ({ user, isOwnProfile, onEdit }: ProfileHeaderProps
                                 </a>
                             </div>
                         )}
-                        {/* Stats */}
+                        {/* Stats - clickable to open followers/following pages */}
                         <div className="flex items-center gap-4 border-l border-white/10 pl-4 ml-2">
-                            <div>
+                            <button
+                                type="button"
+                                onClick={() => profileUserId && navigate(`/followers/${profileUserId}`)}
+                                className="hover:text-whitish transition-colors text-left"
+                            >
                                 <span className="text-whitish font-bold">{followersCount}</span> Followers
-                            </div>
-                            <div>
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => profileUserId && navigate(`/following/${profileUserId}`)}
+                                className="hover:text-whitish transition-colors text-left"
+                            >
                                 <span className="text-whitish font-bold">{user.followingCount || 0}</span> Following
-                            </div>
+                            </button>
                         </div>
                     </div>
                 </div>
