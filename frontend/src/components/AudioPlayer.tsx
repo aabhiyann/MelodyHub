@@ -38,6 +38,7 @@ const AudioPlayer = () => {
 		isPlaying,
 		togglePlay,
 		playNext,
+		playPrevious,
 		volume,
 		isMuted,
 		setVolume,
@@ -141,6 +142,56 @@ const AudioPlayer = () => {
 			audio.removeEventListener('durationchange', handleDurationChange);
 		};
 	}, [setCurrentTime, setDuration, setBufferedTime]);
+
+	// MediaSession API for lock screen / OS media controls
+	useEffect(() => {
+		if (typeof navigator === "undefined" || !navigator.mediaSession) return;
+		if (currentSong) {
+			navigator.mediaSession.metadata = new (window as any).MediaMetadata({
+				title: currentSong.title,
+				artist: currentSong.artist,
+				album: "",
+				artwork: [{ src: currentSong.imageUrl || "", sizes: "512x512", type: "image/png" }],
+			});
+		}
+		navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused";
+	}, [currentSong, isPlaying]);
+
+	useEffect(() => {
+		if (typeof navigator === "undefined" || !navigator.mediaSession) return;
+		const audio = audioRef.current;
+		navigator.mediaSession.setActionHandler("play", () => {
+			togglePlay();
+			audio?.play().catch(() => {});
+		});
+		navigator.mediaSession.setActionHandler("pause", () => {
+			togglePlay();
+			audio?.pause();
+		});
+		navigator.mediaSession.setActionHandler("previoustrack", () => playPrevious());
+		navigator.mediaSession.setActionHandler("nexttrack", () => playNext(true));
+		return () => {
+			navigator.mediaSession.setActionHandler("play", null);
+			navigator.mediaSession.setActionHandler("pause", null);
+			navigator.mediaSession.setActionHandler("previoustrack", null);
+			navigator.mediaSession.setActionHandler("nexttrack", null);
+		};
+	}, [togglePlay, playNext, playPrevious]);
+
+	// Update MediaSession position for lock screen progress
+	useEffect(() => {
+		if (typeof navigator === "undefined" || !navigator.mediaSession?.setPositionState || !currentSong) return;
+		const audio = audioRef.current;
+		if (audio && !isNaN(audio.duration)) {
+			try {
+				navigator.mediaSession.setPositionState({
+					duration: audio.duration,
+					playbackRate: audio.playbackRate,
+					position: audio.currentTime,
+				});
+			} catch (_) {}
+		}
+	}, [currentTime, duration, currentSong]);
 
 	// Broadcast activity
 	const { updateActivity } = useChatStore();
