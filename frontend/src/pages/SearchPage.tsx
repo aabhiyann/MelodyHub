@@ -61,7 +61,7 @@ const SearchPage = () => {
   const [sortBy, setSortBy] = useState('relevance');
   const [showFilters, setShowFilters] = useState(false);
   const { songs, albums, fetchSongs, fetchAlbums } = useMusicStore();
-  const { playAlbum } = usePlayerStore();
+  const { setCurrentSong } = usePlayerStore();
 
   useEffect(() => {
     if (songs.length === 0 || albums.length === 0) {
@@ -121,7 +121,7 @@ const SearchPage = () => {
 
   const handleGenreClick = async (genreName: string) => {
     setSearchQuery(genreName);
-    
+
     // Track genre click event
     try {
       await axiosInstance.post('/analytics/track-event', {
@@ -138,8 +138,7 @@ const SearchPage = () => {
   };
 
   const handlePlaySong = (song: Song) => {
-    const songIndex = songs.findIndex((s) => s._id === song._id);
-    playAlbum(songs, songIndex);
+    setCurrentSong(song);
   };
 
   const handleClearFilters = () => {
