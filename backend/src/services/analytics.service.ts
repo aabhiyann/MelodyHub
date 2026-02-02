@@ -16,6 +16,7 @@ export interface UserDashboard {
     topGenres: Array<{ genre: string; percentage: number }>;
     discoveryRate: number; // percentage of new vs. repeated songs
     skipRate: number; // percentage
+    listeningByDay: Array<{ date: string; plays: number }>; // last 30 days for chart
 }
 
 export interface ListeningPatterns {
@@ -40,6 +41,7 @@ export async function getUserDashboard(userId: string, period: 'week' | 'month' 
             topGenres: [],
             discoveryRate: 0,
             skipRate: 0,
+            listeningByDay: [],
         };
     }
 
@@ -105,6 +107,24 @@ export async function getUserDashboard(userId: string, period: 'week' | 'month' 
     const skipped = filteredHistory.filter(h => h.skipped).length;
     const skipRate = totalPlays > 0 ? (skipped / totalPlays) * 100 : 0;
 
+    // Listening by day (last 30 days) for chart
+    const now = new Date();
+    const listeningByDay: Array<{ date: string; plays: number }> = [];
+    for (let d = 29; d >= 0; d--) {
+        const day = new Date(now);
+        day.setDate(day.getDate() - d);
+        day.setHours(0, 0, 0, 0);
+        const nextDay = new Date(day);
+        nextDay.setDate(nextDay.getDate() + 1);
+        const plays = userPref.listeningHistory.filter(
+            h => h.playedAt >= day && h.playedAt < nextDay
+        ).length;
+        listeningByDay.push({
+            date: day.toISOString().slice(0, 10),
+            plays,
+        });
+    }
+
     return {
         totalListeningTime: Math.round(totalListeningTime),
         totalPlays,
@@ -114,6 +134,7 @@ export async function getUserDashboard(userId: string, period: 'week' | 'month' 
         topGenres,
         discoveryRate: Math.round(discoveryRate),
         skipRate: Math.round(skipRate),
+        listeningByDay,
     };
 }
 
