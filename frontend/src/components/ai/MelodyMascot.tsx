@@ -5,6 +5,15 @@ interface MelodyMascotProps {
     size?: 'sm' | 'md' | 'lg';
 }
 
+const mascotImages: Record<string, string> = {
+    idle: '/mascot/melody-default.png',
+    listening: '/mascot/melody-default.png',
+    thinking: '/mascot/melody-ai.png',
+    excited: '/mascot/melody-success.png',
+    celebrating: '/mascot/melody-success.png',
+    sad: '/mascot/melody-404.png',
+};
+
 export const MelodyMascot = ({ size = 'md' }: MelodyMascotProps) => {
     const { mascotState } = useAIStore();
 
@@ -23,6 +32,8 @@ export const MelodyMascot = ({ size = 'md' }: MelodyMascotProps) => {
         sad: { y: 5, rotate: [0, -5, 0], transition: { duration: 2, repeat: Infinity } }
     };
 
+    const mascotSrc = mascotImages[mascotState] || mascotImages.idle;
+
     return (
         <div className={`relative flex items-center justify-center ${sizeClasses[size]} mx-auto mb-6`}>
             {/* Glow Effect */}
@@ -33,15 +44,10 @@ export const MelodyMascot = ({ size = 'md' }: MelodyMascotProps) => {
                 variants={variants}
                 className="relative z-10 w-full h-full"
             >
-                {/* Placeholder for Mascot Image - Replace with actual image path */}
                 <img
-                    src="/mascot/melody-avatar.png"
+                    src={mascotSrc}
                     alt="Melody AI"
                     className="w-full h-full object-contain drop-shadow-xl"
-                    onError={(e) => {
-                        // Fallback in case image is missing
-                        (e.target as HTMLImageElement).src = "https://api.dicebear.com/7.x/bottts/svg?seed=Melody&backgroundColor=6366f1";
-                    }}
                 />
             </motion.div>
 

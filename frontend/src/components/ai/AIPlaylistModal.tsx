@@ -61,16 +61,19 @@ export const AIPlaylistModal = () => {
 
                     {/* Modal content container */}
                     <motion.div
-                        className="relative w-full max-w-4xl max-h-[90vh] overflow-hidden glass-modal rounded-3xl shadow-2xl border border-white/10 flex flex-col"
+                        className="relative w-full max-w-4xl max-h-[90vh] overflow-hidden glass-modal rounded-3xl shadow-2xl border border-border-medium flex flex-col"
                         initial={{ scale: 0.95, opacity: 0, y: 20 }}
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.95, opacity: 0, y: 20 }}
                         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                     >
+                        {/* Specular highlight (top edge) - LiquidGlassCard style */}
+                        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none z-10" />
+
                         {/* Close button */}
                         <button
                             onClick={closeModal}
-                            className="absolute top-6 right-6 z-20 p-2 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all hover:rotate-90"
+                            className="absolute top-6 right-6 z-20 p-2 rounded-full bg-white/5 hover:bg-white/10 text-text-secondary hover:text-text-primary transition-smooth hover:rotate-90"
                             aria-label="Close"
                         >
                             <X className="w-6 h-6" />
@@ -79,11 +82,12 @@ export const AIPlaylistModal = () => {
                         {/* Scrollable Content Area */}
                         <div className="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-12 flex flex-col items-center">
 
-                            {/* Mascot - persistent across stages but with different states handled internally */}
-                            {/* We shrink it slightly in results view to make room for song list */}
-                            <div className="mb-6 shrink-0 transition-all duration-500">
-                                <MelodyMascot size={stage === 'results' ? 'sm' : 'md'} />
-                            </div>
+                            {/* Mascot - shown in prompt/processing only; hidden in results for content-first Spotify-style look */}
+                            {stage !== 'results' && (
+                                <div className="mb-6 shrink-0 transition-all duration-500">
+                                    <MelodyMascot size="md" />
+                                </div>
+                            )}
 
                             {/* Stage Content Switcher */}
                             <div className="w-full max-w-4xl mx-auto flex-1 flex flex-col">

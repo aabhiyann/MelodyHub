@@ -26,34 +26,27 @@ export const StageProcessing = () => {
             exit={{ opacity: 0 }}
             className="flex flex-col items-center justify-center w-full max-w-lg mx-auto py-12"
         >
-            {/* Loading Message */}
-            <div className="h-8 mb-8 overflow-hidden">
-                <motion.h4
+            {/* Loading Message - refined typography */}
+            <div className="h-10 mb-8 overflow-hidden">
+                <motion.h3
                     key={messageIndex}
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: -20, opacity: 0 }}
-                    className="text-2xl font-bold text-center text-white"
+                    className="text-h4 md:text-h3 font-semibold text-center text-text-primary"
                 >
                     {LOADING_MESSAGES[messageIndex]}
-                </motion.h4>
+                </motion.h3>
             </div>
 
-            {/* Progress Bar */}
-            <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden mb-8">
-                <motion.div
-                    className="h-full bg-gradient-to-r from-brand-primary via-purple-500 to-brand-secondary"
-                    initial={{ x: "-100%" }}
-                    animate={{ x: "100%" }}
-                    transition={{
-                        repeat: Infinity,
-                        duration: 1.5,
-                        ease: "linear"
-                    }}
+            {/* Progress Bar - determinate-style using loading-bar */}
+            <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden mb-8">
+                <div
+                    className="h-full w-full bg-gradient-to-r from-brand-primary via-purple-500 to-brand-secondary loading-bar-indeterminate"
                 />
             </div>
 
-            <p className="text-zinc-500 text-sm animate-pulse">
+            <p className="text-text-tertiary text-sm animate-pulse">
                 Melody is working her magic...
             </p>
         </motion.div>
