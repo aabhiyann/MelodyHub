@@ -21,6 +21,9 @@ import {
 
 const router = Router();
 
+// All social routes require authentication
+router.use(protectRoute);
+
 // Friend routes
 router.post("/friend-request", sendFriendRequest);
 router.put("/friend-request/:id/accept", acceptFriendRequest);
