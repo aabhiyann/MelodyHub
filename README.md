@@ -11,7 +11,7 @@
 ![Socket.io](https://img.shields.io/badge/Socket.io-black?style=for-the-badge&logo=socket.io&badgeColor=010101)
 
 [![CI Pipeline](https://github.com/aabhiyann/MelodyHub/actions/workflows/ci.yml/badge.svg)](https://github.com/aabhiyann/MelodyHub/actions/workflows/ci.yml)
-![Test Coverage](https://img.shields.io/badge/coverage-72.8%25-brightgreen?style=for-the-badge)
+![Test Coverage](https://img.shields.io/badge/coverage-80%25-brightgreen?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)
 
 </div>
@@ -20,7 +20,7 @@
 
 **MelodyHub** is a modern, full-stack music streaming platform designed to replicate the best features of Spotify while introducing AI-powered innovation. It features real-time audio playback, collaborative playlists, instant chat, and a beautiful, accessible user interface.
 
-> 🎯 **Production-Ready**: 100% complete | 73% test coverage | WCAG 2.1 AA compliant | Strict TypeScript Backend
+> 🎯 **Production-Ready**: 100% complete | 80%+ test coverage | WCAG 2.1 AA compliant | Strict TypeScript Backend
 
 ![MelodyHub Screenshot](https://github.com/user-attachments/assets/86a7d631-8d30-42cf-a827-23556282c12d)
 
@@ -30,6 +30,7 @@
 -   **API Documentation**: [View API Docs](Docs/professional/API.md)
 -   **System Design**: [View Architecture](Docs/professional/04_SYSTEM_DESIGN.md)
 -   **Project Management**: [View PM Handbook](Docs/professional/ROLE_PROJECT_MANAGER.md)
+-   **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
@@ -46,6 +47,24 @@
 | 🐢 **Melody Mascot** | Delightful mascot with 8 expressive states | ✅ Complete | Custom Components |
 | 📊 **Admin Dashboard** | Manage content and view platform analytics | ✅ Live | Recharts, Role-Based Access |
 | 🛡️ **Strict Security** | JWT Auth, Rate Limiting, Input Validation | ✅ Complete | Clerk, Zod, Helmet |
+| 📈 **Analytics Dashboard** | Listening history, top artists/genres, patterns heatmap | ✅ Live | Recharts, Analytics API |
+| 🔔 **Notifications** | Real-time friend requests and activity; bell in nav | ✅ Live | Socket.io, Notification API |
+| 👤 **Followers / Following** | Lists, mutual friends, clickable profile counts | ✅ Live | UserConnection, Pagination |
+| ⚡ **Redis Caching** | API and query-level caching for faster responses | ✅ Live | Redis, Cache Middleware |
+| 🎭 **Mood & Recommendations** | Mood detection, mood playlists, hybrid recommendations | ✅ Live | Mood Service, Recommendation API |
+| 📱 **PWA / Offline** | Install prompt, offline indicator, lock-screen controls | ✅ Live | MediaSession API, Service Worker |
+
+---
+
+## 📸 Screenshots
+
+| **Home / Browse** | **Login** |
+|:---:|:---:|
+| ![Home](Docs/Mock%20Design/HomePage.png) | ![Login](Docs/Mock%20Design/LoginPage.png) |
+
+| **Add Songs** | **Messaging** |
+|:---:|:---:|
+| ![Add Songs](Docs/Mock%20Design/AddSongs.png) | ![Messaging](Docs/Mock%20Design/Messaging.png) |
 
 ---
 
@@ -68,6 +87,7 @@
 -   Node.js v20+
 -   Docker (Optional, but recommended for consistent env)
 -   Keys for: MongoDB, Cloudinary, Clerk, & Google Gemini.
+-   Redis (optional): Set `REDIS_URL` in backend `.env` for caching; Docker Compose includes Redis.
 
 ### 🐳 Docker Installation (Recommended)
 
@@ -78,7 +98,7 @@
     ```
 
 2.  **Configure Environment**
-    Create `.env` files in `backend/` and `frontend/` based on `.env.example`.
+    Create `.env` files in `backend/` and `frontend/` based on `.env.example`. For backend, include `REDIS_URL` (e.g. `redis://localhost:6379`) if using Redis caching.
 
 3.  **Run with Docker Compose**
     ```bash
