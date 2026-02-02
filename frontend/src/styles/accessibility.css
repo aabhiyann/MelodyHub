@@ -187,3 +187,20 @@ body {
 [data-shortcut]:focus::after {
     opacity: 1;
 }
+
+/* ============================================
+   Category Card Focus States
+   ============================================ */
+
+.category-card:focus-visible {
+    outline: 3px solid var(--color-brand-primary);
+    outline-offset: 4px;
+    box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.2);
+}
+
+.category-card[data-focused="true"] {
+    outline: 3px solid var(--color-brand-primary);
+    outline-offset: 4px;
+    box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.3);
+    transform: scale(1.05) translateY(-4px);
+}
