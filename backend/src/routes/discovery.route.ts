@@ -7,8 +7,8 @@ const router = Router();
 const controller = new DiscoveryController();
 
 router.get("/daily-mix", protectRoute, controller.getDailyMix);
-router.get("/made-for-you", controller.getMadeForYouSongs);
-router.get("/radio/:songId", controller.getRadio);
+router.get("/made-for-you", protectRoute, controller.getMadeForYouSongs);
+router.get("/radio/:songId", protectRoute, controller.getRadio);
 
 // Public/Generic discovery routes (cached)
 router.get("/trending", CacheStrategies.trending, controller.getTrendingSongs);

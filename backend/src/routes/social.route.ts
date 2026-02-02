@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { protectRoute } from "../middleware/auth.middleware.js";
 import {
     sendFriendRequest,
     acceptFriendRequest,
@@ -19,6 +20,9 @@ import {
 } from "../controllers/playlist.controller.js";
 
 const router = Router();
+
+// All social routes require authentication
+router.use(protectRoute);
 
 // Friend routes
 router.post("/friend-request", sendFriendRequest);
