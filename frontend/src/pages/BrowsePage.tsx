@@ -42,7 +42,7 @@ const BrowsePage = () => {
   const [viewType, setViewType] = useState<'grid' | 'list'>('grid');
   const [displayCount, setDisplayCount] = useState(50);
   const { songs, fetchAlbums, fetchSongs, isLoading } = useMusicStore();
-  const { setCurrentSong, setQueue, currentSong, isPlaying } = usePlayerStore();
+  const { setCurrentSong, currentSong, isPlaying } = usePlayerStore();
   const genreTheme = useGenreTheme(selectedGenre);
 
   useEffect(() => {
@@ -62,12 +62,12 @@ const BrowsePage = () => {
 
   // Filter songs based on selected genre
   const allFilteredSongs = selectedGenre ? genreSongs[selectedGenre] || [] : songs;
-  
+
   // Paginated songs for infinite scroll in grid view
-  const displayedSongs = viewType === 'grid' 
+  const displayedSongs = viewType === 'grid'
     ? allFilteredSongs.slice(0, displayCount)
     : allFilteredSongs;
-  
+
   const hasMore = displayCount < allFilteredSongs.length;
 
   const loadMoreSongs = () => {
@@ -95,12 +95,12 @@ const BrowsePage = () => {
   const handleGenreClick = async (genre: string) => {
     const isSelecting = genre !== selectedGenre;
     setSelectedGenre(isSelecting ? genre : null);
-    
+
     // Screen reader announcement
     if (isSelecting) {
       const songCount = genreSongs[genre]?.length || 0;
       announce(`${genre} genre selected. Showing ${songCount} songs.`, 'polite');
-      
+
       // Track genre click event
       try {
         await axiosInstance.post('/analytics/track-event', {
@@ -128,9 +128,8 @@ const BrowsePage = () => {
     enabled: !selectedGenre,
   });
 
-  const handleSongClick = (song: Song, index: number) => {
+  const handleSongClick = (song: Song) => {
     setCurrentSong(song);
-    setQueue(allFilteredSongs);
   };
 
   return (
@@ -194,18 +193,16 @@ const BrowsePage = () => {
                   {/* Browse All / Selected Genre Section */}
                   <section>
                     <div
-                      className={`flex items-center justify-between mb-6 pb-4 border-b transition-colors ${
-                        selectedGenre ? genreTheme.borderAccent : 'border-border-subtle'
-                      }`}
+                      className={`flex items-center justify-between mb-6 pb-4 border-b transition-colors ${selectedGenre ? genreTheme.borderAccent : 'border-border-subtle'
+                        }`}
                     >
                       <div className="flex items-center gap-3">
                         {selectedGenre && (
                           <span className="text-4xl">{genreTheme.icon}</span>
                         )}
                         <h2
-                          className={`text-3xl font-bold transition-colors ${
-                            selectedGenre ? genreTheme.textAccent : 'text-text-primary'
-                          }`}
+                          className={`text-3xl font-bold transition-colors ${selectedGenre ? genreTheme.textAccent : 'text-text-primary'
+                            }`}
                         >
                           {selectedGenre ? `${selectedGenre} Music` : 'Browse all'}
                         </h2>
@@ -260,27 +257,25 @@ const BrowsePage = () => {
                           <p className={`text-lg font-medium transition-colors ${genreTheme.textAccent}`}>
                             {displayedSongs.length} songs
                           </p>
-                          
+
                           {/* View Toggle */}
                           <div className={`flex items-center gap-2 rounded-lg p-1 ${genreTheme.bgAccent}`}>
                             <button
                               onClick={() => setViewType('grid')}
-                              className={`p-2 rounded transition-colors ${
-                                viewType === 'grid'
-                                  ? `bg-gradient-to-r ${genreTheme.gradient} text-white`
-                                  : 'text-text-secondary hover:text-text-primary'
-                              }`}
+                              className={`p-2 rounded transition-colors ${viewType === 'grid'
+                                ? `bg-gradient-to-r ${genreTheme.gradient} text-white`
+                                : 'text-text-secondary hover:text-text-primary'
+                                }`}
                               aria-label="Grid view"
                             >
                               <Grid3x3 className="size-4" />
                             </button>
                             <button
                               onClick={() => setViewType('list')}
-                              className={`p-2 rounded transition-colors ${
-                                viewType === 'list'
-                                  ? `bg-gradient-to-r ${genreTheme.gradient} text-white`
-                                  : 'text-text-secondary hover:text-text-primary'
-                              }`}
+                              className={`p-2 rounded transition-colors ${viewType === 'list'
+                                ? `bg-gradient-to-r ${genreTheme.gradient} text-white`
+                                : 'text-text-secondary hover:text-text-primary'
+                                }`}
                               aria-label="List view"
                             >
                               <List className="size-4" />
@@ -300,7 +295,7 @@ const BrowsePage = () => {
                                 index={index}
                                 isCurrentSong={currentSong?._id === song._id}
                                 isPlaying={isPlaying}
-                                onClick={() => handleSongClick(song, index)}
+                                onClick={() => handleSongClick(song)}
                               />
                             )}
                             className="rounded-lg overflow-hidden"
@@ -315,7 +310,7 @@ const BrowsePage = () => {
                                 index={index}
                                 isCurrentSong={currentSong?._id === song._id}
                                 isPlaying={isPlaying}
-                                onClick={() => handleSongClick(song, index)}
+                                onClick={() => handleSongClick(song)}
                               />
                             ))}
                           </div>
@@ -327,7 +322,7 @@ const BrowsePage = () => {
                                 <div
                                   key={song._id}
                                   className="group cursor-pointer"
-                                  onClick={() => handleSongClick(song, index)}
+                                  onClick={() => handleSongClick(song)}
                                 >
                                   <div className="relative aspect-square mb-3 rounded-xl overflow-hidden shadow-lg group-hover:shadow-xl group-hover:scale-[1.02] transition-all duration-300">
                                     <img
@@ -344,7 +339,7 @@ const BrowsePage = () => {
                                 </div>
                               ))}
                             </div>
-                            
+
                             {/* Infinite scroll trigger */}
                             {hasMore && (
                               <div ref={loadMoreRef} className="flex items-center justify-center py-8">
