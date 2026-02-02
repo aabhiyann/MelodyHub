@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
+import { useCardReveal } from '@/hooks/useCardReveal';
 
 interface CategoryCardProps {
   title: string;
@@ -9,6 +10,10 @@ interface CategoryCardProps {
   onClick?: () => void;
   className?: string;
   size?: 'default' | 'large';
+  index?: number;
+  'data-grid-index'?: number;
+  tabIndex?: number;
+  'data-focused'?: boolean;
 }
 
 export const CategoryCard = ({
@@ -19,16 +24,44 @@ export const CategoryCard = ({
   onClick,
   className,
   size = 'default',
+  index = 0,
+  'data-grid-index': gridIndex,
+  tabIndex = 0,
+  'data-focused': isFocused,
 }: CategoryCardProps) => {
+  const { ref, animate, transition: revealTransition } = useCardReveal({ delay: index });
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick?.();
+    }
+  };
+
   return (
     <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={animate}
+      variants={{
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0 },
+      }}
+      transition={revealTransition}
       whileHover={{ scale: 1.05, y: -4 }}
       whileTap={{ scale: 0.98 }}
-      transition={{ duration: 0.2 }}
       onClick={onClick}
+      onKeyDown={handleKeyDown}
+      tabIndex={tabIndex}
+      role="button"
+      aria-label={`${title} category`}
+      data-grid-index={gridIndex}
+      data-focused={isFocused}
       className={cn(
-        'group relative overflow-hidden rounded-xl cursor-pointer shadow-lg',
-        'hover:shadow-2xl transition-shadow duration-300',
+        'category-card group relative overflow-hidden rounded-xl cursor-pointer shadow-lg',
+        'hover:shadow-2xl transition-all duration-300',
+        'focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-primary/50',
+        isFocused && 'ring-4 ring-brand-primary',
         size === 'large' ? 'aspect-[2/1]' : 'aspect-square',
         gradient,
         className

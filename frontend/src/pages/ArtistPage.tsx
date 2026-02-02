@@ -5,6 +5,7 @@
 
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { SongRow } from '@/components/ui/SongRow';
+import { SongRowSkeleton } from '@/components/skeletons/SongRowSkeleton';
 import { AlbumCard } from '@/components/ui/AlbumCard';
 import Topbar from '@/components/Topbar';
 import { Music, Play, Heart, Disc3 } from 'lucide-react';
@@ -41,7 +42,25 @@ const ArtistPage = () => {
     }
   };
 
-  if (isLoading) return null;
+  if (isLoading) {
+    return (
+      <main className="rounded-md relative overflow-hidden h-full bg-transparent">
+        <Topbar />
+        <ScrollArea className="h-[calc(100vh-180px)]">
+          <div className="p-6 space-y-8">
+            <div className="flex flex-col md:flex-row items-center gap-8">
+              <div className="size-56 rounded-full skeleton-shimmer" />
+              <div className="flex-1 space-y-4">
+                <div className="h-24 w-3/4 skeleton-shimmer rounded" />
+                <div className="h-6 w-1/2 skeleton-shimmer rounded" />
+              </div>
+            </div>
+            <SongRowSkeleton count={10} />
+          </div>
+        </ScrollArea>
+      </main>
+    );
+  }
 
   if (!artistName) return <div>Artist not found</div>;
 
@@ -147,13 +166,14 @@ const ArtistPage = () => {
                   </div>
                 ) : (
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
-                    {artistAlbums.map((album) => (
+                    {artistAlbums.map((album, index) => (
                       <AlbumCard
                         key={album._id}
                         id={album._id}
                         title={album.title}
                         artist={album.artist}
                         imageUrl={album.imageUrl}
+                        index={index}
                         onClick={() => navigate(`/albums/${album._id}`)}
                       />
                     ))}

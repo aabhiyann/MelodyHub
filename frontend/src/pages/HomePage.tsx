@@ -79,27 +79,30 @@ const HomePage = () => {
               <div className="px-6">
                 <h2 className="text-2xl font-bold mb-4">Start browsing</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <CategoryCard
-                    title="Your Library"
-                    gradient="bg-gradient-to-br from-blue-600 to-indigo-600"
-                    icon={<Library className="w-12 h-12" />}
-                    size="large"
-                    onClick={() => navigate('/library')}
-                  />
-                  <CategoryCard
-                    title="Discover"
-                    gradient="bg-gradient-to-br from-purple-600 to-pink-600"
-                    icon={<Compass className="w-12 h-12" />}
-                    size="large"
-                    onClick={() => navigate('/discovery')}
-                  />
-                  <CategoryCard
-                    title="Browse Genres"
-                    gradient="bg-gradient-to-br from-orange-500 to-red-600"
-                    icon={<Radio className="w-12 h-12" />}
-                    size="large"
-                    onClick={() => navigate('/browse')}
-                  />
+              <CategoryCard
+                title="Your Library"
+                gradient="bg-gradient-to-br from-blue-600 to-indigo-600"
+                icon={<Library className="w-12 h-12" />}
+                size="large"
+                index={0}
+                onClick={() => navigate('/library')}
+              />
+              <CategoryCard
+                title="Discover"
+                gradient="bg-gradient-to-br from-purple-600 to-pink-600"
+                icon={<Compass className="w-12 h-12" />}
+                size="large"
+                index={1}
+                onClick={() => navigate('/discovery')}
+              />
+              <CategoryCard
+                title="Browse Genres"
+                gradient="bg-gradient-to-br from-orange-500 to-red-600"
+                icon={<Radio className="w-12 h-12" />}
+                size="large"
+                index={2}
+                onClick={() => navigate('/browse')}
+              />
                 </div>
               </div>
 
