@@ -461,6 +461,12 @@ input[type=range]::-webkit-slider-runnable-track {
   animation: loading-bar 0.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
 }
 
+.loading-bar-indeterminate {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: loading-bar 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
 /* Performance Optimization */
 .will-change-transform {
   will-change: transform;

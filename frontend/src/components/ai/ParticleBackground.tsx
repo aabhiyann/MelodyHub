@@ -16,7 +16,7 @@ export const ParticleBackground = () => {
     }));
 
     return (
-        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.18]">
             {particles.map((particle) => (
                 <motion.div
                     key={particle.id}
