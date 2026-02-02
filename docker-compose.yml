@@ -8,9 +8,11 @@ services:
     environment:
       - PORT=5000
       - MONGODB_URI=mongodb://mongo:27017/melodyhub
+      - REDIS_URL=redis://redis:6379
       - NODE_ENV=production
     depends_on:
       - mongo
+      - redis
     networks:
       - melody-network
 
@@ -23,9 +25,24 @@ services:
     networks:
       - melody-network
 
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - melody-network
+
 networks:
   melody-network:
     driver: bridge
 
 volumes:
   mongo-data:
+  redis-data:
