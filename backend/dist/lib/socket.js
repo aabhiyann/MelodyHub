@@ -1,5 +1,15 @@
 import { Server } from "socket.io";
 import { Message } from "../models/message.model.js";
+let _io = null;
+const _userSockets = new Map();
+/** Emit event to a user by Clerk ID (if they are connected). Used for real-time notifications. */
+export function emitToUser(userId, event, data) {
+    if (_io) {
+        const socketId = _userSockets.get(userId);
+        if (socketId)
+            _io.to(socketId).emit(event, data);
+    }
+}
 export const initializeSocket = (server) => {
     const io = new Server(server, {
         cors: {
@@ -7,7 +17,8 @@ export const initializeSocket = (server) => {
             credentials: true,
         },
     });
-    const userSockets = new Map(); // { userId: socketId}
+    _io = io;
+    const userSockets = _userSockets;
     const userActivities = new Map(); // {userId: activity}
     io.on("connection", (socket) => {
         socket.on("user_connected", (userId) => {
@@ -51,7 +62,7 @@ export const initializeSocket = (server) => {
         });
         socket.on("disconnect", () => {
             let disconnectedUserId;
-            for (const [userId, socketId] of userSockets.entries()) {
+            for (const [userId, socketId] of Array.from(userSockets.entries())) {
                 // find disconnected user
                 if (socketId === socket.id) {
                     disconnectedUserId = userId;

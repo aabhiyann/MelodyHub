@@ -13,7 +13,6 @@ import helmet from "helmet";
 import compression from "compression";
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './config/swagger.config.js';
-import { redisService } from './services/redis.service.js';
 import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
 import adminRoutes from './routes/admin.route.js';
@@ -29,8 +28,11 @@ import socialRoutes from './routes/social.route.js'; // Social & playlist routes
 import lyricsRoutes from './routes/lyrics.route.js'; // Lyrics routes
 import activityRoutes from './routes/activity.route.js';
 import friendRoutes from './routes/friend.route.js';
+import notificationRoutes from './routes/notification.route.js';
+import recommendationRoutes from './routes/recommendation.route.js';
+import moodRoutes from './routes/mood.route.js';
 import gamificationRoutes from './routes/gamification.route.js';
-import { connectDB } from './lib/db.js';
+import { connectDB, connectRedis } from './lib/db.js';
 import { validateEnv } from './lib/env.js';
 import { requestLogger } from './middleware/logger.middleware.js';
 dotenv.config();
@@ -130,6 +132,9 @@ app.use("/api/social", socialRoutes); // Social & playlist routes
 app.use("/api/lyrics", lyricsRoutes); // Lyrics routes
 app.use("/api/activities", activityRoutes); // Activity feed routes
 app.use("/api/friends", friendRoutes); // Friend system routes
+app.use("/api/notifications", notificationRoutes); // Notifications
+app.use("/api/recommendations", recommendationRoutes); // Personalized recommendations
+app.use("/api/mood", moodRoutes); // Mood detection and playlists
 app.use("/api/gamification", gamificationRoutes); // Gamification routes
 if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../frontend/dist")));
@@ -150,12 +155,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
         // Initialize MongoDB
         await connectDB();
         // Initialize Redis (optional - app works without it)
-        if (process.env.NODE_ENV === 'production' || process.env.REDIS_URL) {
-            await redisService.connect();
-        }
-        else {
-            console.log('ℹ️  Redis disabled in development (set REDIS_URL to enable)');
-        }
+        await connectRedis();
         console.log('📚 API Documentation: http://localhost:' + PORT + '/api-docs');
     });
 }

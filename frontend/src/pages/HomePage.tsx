@@ -19,6 +19,7 @@ import { MadeForYou } from '@/pages/home/components/MadeForYou';
 import { ChartsMosaic } from '@/pages/home/components/ChartsMosaic';
 import { GenreMosaic } from '@/pages/home/components/GenreMosaic';
 import { NewReleases } from '@/pages/home/components/NewReleases';
+import { MoodSection } from '@/pages/home/components/MoodSection';
 import { RecommendedSection } from '@/pages/home/components/RecommendedSection';
 import { TopArtists } from '@/pages/home/components/TopArtists';
 
@@ -79,30 +80,30 @@ const HomePage = () => {
               <div className="px-6">
                 <h2 className="text-2xl font-bold mb-4">Start browsing</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <CategoryCard
-                title="Your Library"
-                gradient="bg-gradient-to-br from-blue-600 to-indigo-600"
-                icon={<Library className="w-12 h-12" />}
-                size="large"
-                index={0}
-                onClick={() => navigate('/library')}
-              />
-              <CategoryCard
-                title="Discover"
-                gradient="bg-gradient-to-br from-purple-600 to-pink-600"
-                icon={<Compass className="w-12 h-12" />}
-                size="large"
-                index={1}
-                onClick={() => navigate('/discovery')}
-              />
-              <CategoryCard
-                title="Browse Genres"
-                gradient="bg-gradient-to-br from-orange-500 to-red-600"
-                icon={<Radio className="w-12 h-12" />}
-                size="large"
-                index={2}
-                onClick={() => navigate('/browse')}
-              />
+                  <CategoryCard
+                    title="Your Library"
+                    gradient="bg-gradient-to-br from-blue-600 to-indigo-600"
+                    icon={<Library className="w-12 h-12" />}
+                    size="large"
+                    index={0}
+                    onClick={() => navigate('/library')}
+                  />
+                  <CategoryCard
+                    title="Discover"
+                    gradient="bg-gradient-to-br from-purple-600 to-pink-600"
+                    icon={<Compass className="w-12 h-12" />}
+                    size="large"
+                    index={1}
+                    onClick={() => navigate('/discovery')}
+                  />
+                  <CategoryCard
+                    title="Browse Genres"
+                    gradient="bg-gradient-to-br from-orange-500 to-red-600"
+                    icon={<Radio className="w-12 h-12" />}
+                    size="large"
+                    index={2}
+                    onClick={() => navigate('/browse')}
+                  />
                 </div>
               </div>
 
@@ -116,7 +117,12 @@ const HomePage = () => {
                 <MadeForYou songs={madeForYouSongs} isLoading={isLoading} />
               </div>
 
-              {/* 5. CHARTS & TRENDING */}
+              {/* 5. PLAY BY MOOD */}
+              <div className="px-6">
+                <MoodSection />
+              </div>
+
+              {/* 6. CHARTS & TRENDING */}
               <div className="px-6">
                 <ChartsMosaic
                   trendingSongs={trendingSongs}
@@ -125,17 +131,17 @@ const HomePage = () => {
                 />
               </div>
 
-              {/* 6. GENRE EXPLORATION */}
+              {/* 7. GENRE EXPLORATION */}
               <div className="px-6">
                 <GenreMosaic />
               </div>
 
-              {/* 7. NEW RELEASES */}
+              {/* 8. NEW RELEASES */}
               <div className="pl-6">
                 <NewReleases albums={albums} isLoading={isLoading} />
               </div>
 
-              {/* 8. RECOMMENDED */}
+              {/* 9. RECOMMENDED */}
               <div className="pl-6">
                 <RecommendedSection
                   songs={featuredSongs.slice(5, 15)} // Mocking similar songs
@@ -144,7 +150,7 @@ const HomePage = () => {
                 />
               </div>
 
-              {/* 9. TOP ARTISTS */}
+              {/* 10. TOP ARTISTS */}
               <div className="px-6 pb-12">
                 <TopArtists artists={topArtists} />
               </div>
