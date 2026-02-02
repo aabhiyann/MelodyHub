@@ -15,9 +15,23 @@ import { AdditionalControls } from './player/AdditionalControls';
 import { useKeyboardControls } from '@/hooks/useKeyboardControls';
 import { Play, Pause, SkipForward } from 'lucide-react';
 
+const resolveAudioUrl = (audioUrl?: string) => {
+	if (!audioUrl) return '';
+	if (audioUrl.startsWith('http://') || audioUrl.startsWith('https://')) {
+		return audioUrl;
+	}
+
+	// Treat relative paths as files served by the frontend origin
+	try {
+		return new URL(audioUrl, window.location.origin).toString();
+	} catch {
+		return audioUrl;
+	}
+};
+
 const AudioPlayer = () => {
 	const audioRef = useRef<HTMLAudioElement>(null);
-	const prevSongRef = useRef<string | null>(null);
+	const prevSongIdRef = useRef<string | null>(null);
 
 	const {
 		currentSong,
@@ -74,34 +88,22 @@ const AudioPlayer = () => {
 		return () => audio.removeEventListener('ended', handleEnded);
 	}, [playNext]);
 
-	// Handle song changes
+	// Handle song changes (key off song id so next/prev always update the audio)
 	useEffect(() => {
 		if (!audioRef.current || !currentSong) return;
 
 		const audio = audioRef.current;
-		const isSongChange = prevSongRef.current !== currentSong?.audioUrl;
-
-		console.log('🎵 Song Change:', {
-			isSongChange,
-			currentSong: currentSong.title,
-			audioUrl: currentSong.audioUrl,
-			isPlaying
-		});
+		const isSongChange = currentSong._id !== prevSongIdRef.current;
+		const resolvedUrl = resolveAudioUrl(currentSong.audioUrl);
 
 		if (isSongChange) {
-			audio.src = currentSong?.audioUrl;
-			audio.currentTime = 0;
-			prevSongRef.current = currentSong?.audioUrl;
-
-			console.log('✅ Audio src set:', audio.src);
-
-			if (isPlaying) {
-				audio.play()
-					.then(() => console.log('✅ Audio playing successfully'))
-					.catch(err => {
-						console.error('❌ Playback error:', err);
-						console.log('💡 Tip: Click play button to start (browser autoplay restriction)');
-					});
+			prevSongIdRef.current = currentSong._id;
+			if (resolvedUrl) {
+				audio.src = resolvedUrl;
+				audio.currentTime = 0;
+				if (isPlaying) {
+					audio.play().catch(err => console.error('Playback error:', err));
+				}
 			}
 		}
 	}, [currentSong, isPlaying]);

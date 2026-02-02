@@ -37,7 +37,7 @@ export const ActivityFeed = () => {
             case "like_song": return <Heart className="size-3 text-pink-500 fill-pink-500" />;
             case "create_playlist": return <ListMusic className="size-3 text-violet-500" />;
             case "follow_user": return <User className="size-3 text-blue-500" />;
-            default: return <Music className="size-3 text-zinc-500" />;
+            default: return <Music className="size-3 text-text-tertiary" />;
         }
     };
 
@@ -71,17 +71,17 @@ export const ActivityFeed = () => {
 
     if (!activities || activities.length === 0) {
         return (
-            <div className="w-full h-full bg-zinc-900/50 border-l border-zinc-800 hidden lg:flex lg:flex-col lg:w-72 xl:w-80 p-4">
-                <div className="border-b border-zinc-800 pb-4 mb-4">
-                    <h3 className="font-semibold text-zinc-200">Friend Activity</h3>
+            <div className="w-full h-full bg-surface-elevated border-l border-border-subtle hidden lg:flex lg:flex-col lg:w-72 xl:w-80 p-4">
+                <div className="border-b border-border-subtle pb-4 mb-4">
+                    <h3 className="font-semibold text-text-secondary">Friend Activity</h3>
                 </div>
                 <div className="flex-1 flex flex-col items-center justify-center text-center space-y-3 opacity-60">
-                    <div className="bg-zinc-800 p-3 rounded-full">
-                        <User className="size-6 text-zinc-400" />
+                    <div className="bg-surface-glass-strong p-3 rounded-full">
+                        <User className="size-6 text-text-tertiary" />
                     </div>
                     <div className="space-y-1">
-                        <p className="text-zinc-300 font-medium text-sm">No recent activity</p>
-                        <p className="text-xs text-zinc-500 max-w-[200px]">
+                        <p className="text-text-secondary font-medium text-sm">No recent activity</p>
+                        <p className="text-xs text-text-tertiary max-w-[200px]">
                             Follow friends and artists to see what they are listening to.
                         </p>
                     </div>
@@ -91,9 +91,9 @@ export const ActivityFeed = () => {
     }
 
     return (
-        <div className="w-full h-full bg-zinc-900/50 border-l border-zinc-800 hidden lg:flex lg:flex-col lg:w-72 xl:w-80">
-            <div className="p-4 border-b border-zinc-800">
-                <h3 className="font-semibold text-zinc-200">Friend Activity</h3>
+        <div className="w-full h-full bg-surface-elevated border-l border-border-subtle hidden lg:flex lg:flex-col lg:w-72 xl:w-80">
+            <div className="p-4 border-b border-border-subtle">
+                <h3 className="font-semibold text-text-secondary">Friend Activity</h3>
             </div>
 
             <ScrollArea className="flex-1">
@@ -109,16 +109,16 @@ export const ActivityFeed = () => {
                             <div key={activity._id} className="flex gap-3 relative group">
                                 {/* Avatar */}
                                 <Link to={`/user/${activity.userId.clerkId}`} className="shrink-0 mt-1 relative">
-                                    <Avatar className="size-8 border border-zinc-800">
+                                    <Avatar className="size-8 border border-border-subtle">
                                         <AvatarImage src={activity.userId.imageUrl} alt={activity.userId.fullName} />
                                         <AvatarFallback>{activity.userId.fullName[0]}</AvatarFallback>
                                     </Avatar>
                                     {/* Online Indicator */}
                                     {isOnline && (
-                                        <div className="absolute top-0 right-0 size-3 bg-green-500 rounded-full border-2 border-zinc-900" />
+                                        <div className="absolute top-0 right-0 size-3 bg-green-500 rounded-full border-2 border-surface-base" />
                                     )}
                                     {/* Activity Icon Badge */}
-                                    <div className="absolute -bottom-1 -right-1 bg-zinc-900 rounded-full p-0.5 border border-zinc-800">
+                                    <div className="absolute -bottom-1 -right-1 bg-surface-base rounded-full p-0.5 border border-border-subtle">
                                         <div className="bg-zinc-800 rounded-full p-1">
                                             {getActivityIcon(activity.type)}
                                         </div>
@@ -127,8 +127,8 @@ export const ActivityFeed = () => {
 
                                 {/* Content */}
                                 <div className="flex-1 min-w-0">
-                                    <div className="text-sm text-zinc-400 leading-snug">
-                                        <Link to={`/user/${activity.userId.clerkId}`} className="font-medium text-zinc-200 hover:underline hover:text-white transition-colors">
+                                    <div className="text-sm text-text-tertiary leading-snug">
+                                        <Link to={`/user/${activity.userId.clerkId}`} className="font-medium text-text-secondary hover:underline hover:text-white transition-colors">
                                             {activity.userId.fullName}
                                         </Link>{" "}
                                         {displayActivity ? (
@@ -138,7 +138,7 @@ export const ActivityFeed = () => {
                                         )}
                                     </div>
                                     {!displayActivity && (
-                                        <div className="text-xs text-zinc-500 mt-1">
+                                        <div className="text-xs text-text-tertiary mt-1">
                                             {new Date(activity.createdAt).toLocaleDateString()}
                                         </div>
                                     )}

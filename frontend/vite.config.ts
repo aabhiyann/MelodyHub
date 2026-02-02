@@ -223,13 +223,13 @@ export default defineConfig({
       'framer-motion',
     ],
   },
-  // Test configuration
+  // Test configuration (unit/component only; E2E is Playwright in e2e/)
   // @ts-ignore
   test: {
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/tests/setup.ts',
     css: true,
-    exclude: ['node_modules', 'tests/**'],
+    exclude: ['node_modules', 'tests/**', 'e2e/**'],
   },
 });
