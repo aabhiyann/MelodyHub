@@ -13,14 +13,14 @@ const AdminDashboard = () => {
             {/* Page Header */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold text-zinc-900 dark:text-white tracking-tight">Dashboard</h1>
-                    <p className="text-zinc-500 dark:text-zinc-400 mt-1">
+                    <h1 className="text-3xl font-bold text-text-primary tracking-tight">Dashboard</h1>
+                    <p className="text-text-secondary mt-1">
                         Welcome back, <span className="text-brand-primary font-medium">{authUser?.fullName || 'User'}</span>. Here's what's happening today.
                     </p>
                 </div>
 
                 <div className="flex items-center gap-3">
-                    <select className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 text-sm rounded-lg px-3 py-2 outline-none focus:border-brand-primary transition-colors">
+                    <select className="bg-surface-card dark:bg-surface-elevated border border-border-medium text-sm rounded-lg px-3 py-2 outline-none focus:border-brand-primary transition-colors">
                         <option>Last 7 days</option>
                         <option>Last 30 days</option>
                         <option>Last 90 days</option>

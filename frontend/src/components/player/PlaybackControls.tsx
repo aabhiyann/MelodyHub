@@ -33,7 +33,7 @@ export const PlaybackControls = () => {
                     onClick={shuffleQueue}
                     className={`p-2 rounded-full transition-all duration-200 ${shuffled
                         ? 'text-brand-primary bg-brand-primary/10 shadow-[0_0_12px_rgba(139,92,246,0.3)]'
-                        : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                        : 'text-text-tertiary hover:text-text-primary hover:bg-surface-glass'
                         }`}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
@@ -47,7 +47,7 @@ export const PlaybackControls = () => {
                 <motion.button
                     onClick={playPrevious}
                     disabled={!canGoPrevious}
-                    className="p-2 rounded-full hover:bg-white/10 text-zinc-200 hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="p-2 rounded-full hover:bg-surface-glass-strong text-text-secondary hover:text-text-primary transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                     whileHover={canGoPrevious ? { scale: 1.1 } : {}}
                     whileTap={canGoPrevious ? { scale: 0.95 } : {}}
                     aria-label="Previous track"
@@ -98,7 +98,7 @@ export const PlaybackControls = () => {
                 <motion.button
                     onClick={playNext}
                     disabled={!canGoNext && !isRepeating}
-                    className="p-2 rounded-full hover:bg-white/10 text-zinc-200 hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="p-2 rounded-full hover:bg-surface-glass-strong text-text-secondary hover:text-text-primary transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                     whileHover={canGoNext || isRepeating ? { scale: 1.1 } : {}}
                     whileTap={canGoNext || isRepeating ? { scale: 0.95 } : {}}
                     aria-label="Next track"
@@ -111,7 +111,7 @@ export const PlaybackControls = () => {
                     onClick={toggleRepeat}
                     className={`p-2 rounded-full transition-all duration-200 ${isRepeating
                         ? 'text-brand-primary bg-brand-primary/10 shadow-[0_0_12px_rgba(139,92,246,0.3)]'
-                        : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                        : 'text-text-tertiary hover:text-text-primary hover:bg-surface-glass'
                         }`}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}

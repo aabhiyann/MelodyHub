@@ -43,13 +43,13 @@ export const ActivityFeed = () => {
     ];
 
     return (
-        <div className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-white/5 rounded-xl p-6 h-full">
+        <div className="bg-white dark:bg-surface-base border border-border-subtle rounded-xl p-6 h-full">
             <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-6 flex items-center gap-2">
                 <FileMusic className="size-5 text-brand-primary" />
                 Recent Activity
             </h3>
 
-            <div className="relative border-l border-zinc-100 dark:border-white/5 ml-3 space-y-8 pl-8 py-2">
+            <div className="relative border-l border-border-subtle ml-3 space-y-8 pl-8 py-2">
                 {activities.map((activity, index) => (
                     <div key={index} className="relative group">
                         {/* Timeline Dot */}
@@ -70,7 +70,7 @@ export const ActivityFeed = () => {
                         </div>
 
                         <div className="flex flex-col">
-                            <p className="text-sm text-zinc-600 dark:text-zinc-300">
+                            <p className="text-sm text-text-secondary">
                                 <span className="font-semibold text-zinc-900 dark:text-white">{activity.user}</span> {activity.action}
                                 {activity.target && (
                                     <span className="font-medium text-brand-primary ml-1 truncate block sm:inline">
@@ -78,7 +78,7 @@ export const ActivityFeed = () => {
                                     </span>
                                 )}
                             </p>
-                            <span className="text-xs text-zinc-400 mt-1">
+                            <span className="text-xs text-text-tertiary mt-1">
                                 {formatDistanceToNow(activity.time, { addSuffix: true })}
                             </span>
                         </div>

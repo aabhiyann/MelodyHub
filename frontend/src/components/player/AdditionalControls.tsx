@@ -76,7 +76,7 @@ export const AdditionalControls = ({
             {/* Queue Button */}
             <motion.button
                 onClick={onQueueClick}
-                className={`relative p-2 rounded-full hover:bg-white/10 transition-colors ${queueCount > 0 ? 'text-brand-primary' : 'text-zinc-400'}`}
+                className={`relative p-2 rounded-full hover:bg-white/10 transition-colors ${queueCount > 0 ? 'text-brand-primary' : 'text-text-tertiary'}`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="View queue"
@@ -91,7 +91,7 @@ export const AdditionalControls = ({
                 whileTap={{ scale: 0.95 }}
                 aria-label="Connect to device"
             >
-                <MonitorSpeaker className="w-5 h-5 text-zinc-400 hover:text-white transition-colors" />
+                <MonitorSpeaker className="w-5 h-5 text-text-tertiary hover:text-text-primary transition-colors" />
             </motion.button>
 
             {/* Volume Control */}
@@ -113,9 +113,9 @@ export const AdditionalControls = ({
                 aria-label={isExpanded ? "Collapse player" : "Expand player"}
             >
                 {isExpanded ? (
-                    <Minimize2 className="w-5 h-5 text-zinc-400 hover:text-white transition-colors" />
+                    <Minimize2 className="w-5 h-5 text-text-tertiary hover:text-text-primary transition-colors" />
                 ) : (
-                    <Maximize2 className="w-5 h-5 text-zinc-400 hover:text-white transition-colors" />
+                    <Maximize2 className="w-5 h-5 text-text-tertiary hover:text-text-primary transition-colors" />
                 )}
             </motion.button>
 
@@ -128,26 +128,26 @@ export const AdditionalControls = ({
                     whileTap={{ scale: 0.95 }}
                     aria-label="More options"
                 >
-                    <MoreHorizontal className="w-5 h-5 text-zinc-400 hover:text-white transition-colors" />
+                    <MoreHorizontal className="w-5 h-5 text-text-tertiary hover:text-text-primary transition-colors" />
                 </motion.button>
 
                 {/* More Menu Dropdown */}
                 {showMoreMenu && (
-                    <div className="absolute right-0 bottom-full mb-2 w-48 rounded-xl border border-white/10 bg-zinc-900/95 p-1 shadow-xl backdrop-blur-xl">
-                        <button onClick={handleViewLyrics} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-zinc-300 hover:bg-white/10 hover:text-white transition-colors text-left">
+                    <div className="absolute right-0 bottom-full mb-2 w-48 rounded-xl border border-white/10 bg-surface-card p-1 shadow-xl backdrop-blur-xl">
+                        <button onClick={handleViewLyrics} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-secondary hover:bg-white/10 hover:text-text-primary transition-colors text-left">
                             View Lyrics
                         </button>
-                        <button onClick={handleShareTrack} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-zinc-300 hover:bg-white/10 hover:text-white transition-colors text-left">
+                        <button onClick={handleShareTrack} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-secondary hover:bg-white/10 hover:text-text-primary transition-colors text-left">
                             Share Track
                         </button>
-                        <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-zinc-300 hover:bg-white/10 hover:text-white transition-colors text-left">
+                        <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-secondary hover:bg-white/10 hover:text-text-primary transition-colors text-left">
                             Add to Playlist
                         </button>
                         <div className="h-px bg-white/10 my-1" />
-                        <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-zinc-300 hover:bg-white/10 hover:text-white transition-colors text-left">
+                        <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-secondary hover:bg-white/10 hover:text-text-primary transition-colors text-left">
                             Go to Album
                         </button>
-                        <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-zinc-300 hover:bg-white/10 hover:text-white transition-colors text-left">
+                        <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-secondary hover:bg-white/10 hover:text-text-primary transition-colors text-left">
                             Go to Artist
                         </button>
                     </div>

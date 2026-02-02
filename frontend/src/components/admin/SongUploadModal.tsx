@@ -69,15 +69,15 @@ export const SongUploadModal = ({ isOpen, onClose }: SongUploadModalProps) => {
 
     return (
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl animate-in zoom-in-95 duration-200">
+            <div className="bg-surface-card dark:bg-surface-elevated border border-border-medium rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl animate-in zoom-in-95 duration-200">
                 {/* Header */}
-                <div className="flex items-center justify-between p-6 border-b border-zinc-200 dark:border-white/10 sticky top-0 bg-white dark:bg-zinc-900 z-10">
-                    <h2 className="text-xl font-bold text-zinc-900 dark:text-white">Upload New Song</h2>
+                <div className="flex items-center justify-between p-6 border-b border-border-medium sticky top-0 bg-surface-card dark:bg-surface-elevated z-10">
+                    <h2 className="text-xl font-bold text-text-primary">Upload New Song</h2>
                     <button
                         onClick={onClose}
-                        className="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors"
+                        className="p-2 rounded-lg hover:bg-surface-glass transition-colors"
                     >
-                        <X size={20} className="text-zinc-500" />
+                        <X size={20} className="text-text-tertiary" />
                     </button>
                 </div>
 
@@ -86,11 +86,11 @@ export const SongUploadModal = ({ isOpen, onClose }: SongUploadModalProps) => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Audio File */}
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                            <label className="text-sm font-medium text-text-secondary">
                                 Audio File <span className="text-red-500">*</span>
                             </label>
                             <div
-                                className="relative border-2 border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl p-6 flex flex-col items-center justify-center text-center hover:border-brand-primary/50 hover:bg-brand-primary/5 transition-colors cursor-pointer min-h-[160px]"
+                                className="relative border-2 border-dashed border-border-medium rounded-xl p-6 flex flex-col items-center justify-center text-center hover:border-brand-primary/50 hover:bg-brand-primary/5 transition-colors cursor-pointer min-h-[160px]"
                                 onClick={() => document.getElementById('audio-upload')?.click()}
                             >
                                 <input
@@ -126,11 +126,11 @@ export const SongUploadModal = ({ isOpen, onClose }: SongUploadModalProps) => {
 
                         {/* Cover Image */}
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                            <label className="text-sm font-medium text-text-secondary">
                                 Cover Art <span className="text-red-500">*</span>
                             </label>
                             <div
-                                className="relative border-2 border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl p-1 flex flex-col items-center justify-center text-center hover:border-brand-primary/50 hover:bg-brand-primary/5 transition-colors cursor-pointer aspect-square min-h-[160px]"
+                                className="relative border-2 border-dashed border-border-medium rounded-xl p-1 flex flex-col items-center justify-center text-center hover:border-brand-primary/50 hover:bg-brand-primary/5 transition-colors cursor-pointer aspect-square min-h-[160px]"
                                 onClick={() => document.getElementById('cover-upload')?.click()}
                             >
                                 <input
@@ -161,39 +161,39 @@ export const SongUploadModal = ({ isOpen, onClose }: SongUploadModalProps) => {
                     {/* Form Fields */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Song Title</label>
+                            <label className="text-sm font-medium text-text-secondary">Song Title</label>
                             <input
                                 {...register('title', { required: true })}
-                                className="w-full h-10 px-3 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg focus:border-brand-primary outline-none transition-all"
+                                className="w-full h-10 px-3 bg-surface-glass dark:bg-surface-elevated border border-border-medium rounded-lg focus:border-brand-primary outline-none transition-all"
                                 placeholder="Enter title"
                             />
                             {errors.title && <span className="text-xs text-red-500">Required</span>}
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Artist Name</label>
+                            <label className="text-sm font-medium text-text-secondary">Artist Name</label>
                             <input
                                 {...register('artist', { required: true })}
-                                className="w-full h-10 px-3 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg focus:border-brand-primary outline-none transition-all"
+                                className="w-full h-10 px-3 bg-surface-glass dark:bg-surface-elevated border border-border-medium rounded-lg focus:border-brand-primary outline-none transition-all"
                                 placeholder="Enter artist"
                             />
                             {errors.artist && <span className="text-xs text-red-500">Required</span>}
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Album Name</label>
+                            <label className="text-sm font-medium text-text-secondary">Album Name</label>
                             <input
                                 {...register('album')}
-                                className="w-full h-10 px-3 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg focus:border-brand-primary outline-none transition-all"
+                                className="w-full h-10 px-3 bg-surface-glass dark:bg-surface-elevated border border-border-medium rounded-lg focus:border-brand-primary outline-none transition-all"
                                 placeholder="Single (if empty)"
                             />
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Genre</label>
+                            <label className="text-sm font-medium text-text-secondary">Genre</label>
                             <select
                                 {...register('genre', { required: true })}
-                                className="w-full h-10 px-3 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg focus:border-brand-primary outline-none transition-all"
+                                className="w-full h-10 px-3 bg-surface-glass dark:bg-surface-elevated border border-border-medium rounded-lg focus:border-brand-primary outline-none transition-all"
                             >
                                 <option value="">Select genre</option>
                                 <option value="pop">Pop</option>
@@ -206,11 +206,11 @@ export const SongUploadModal = ({ isOpen, onClose }: SongUploadModalProps) => {
                     </div>
 
                     {/* Footer */}
-                    <div className="pt-4 border-t border-zinc-200 dark:border-white/10 flex justify-end gap-3 sticky bottom-0 bg-white dark:bg-zinc-900 pb-2">
+                    <div className="pt-4 border-t border-border-medium flex justify-end gap-3 sticky bottom-0 bg-surface-card dark:bg-surface-elevated pb-2">
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-4 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-white/5 rounded-lg transition-colors"
+                            className="px-4 py-2 text-sm font-medium text-text-secondary hover:bg-zinc-100 dark:hover:bg-white/5 rounded-lg transition-colors"
                         >
                             Cancel
                         </button>

@@ -39,9 +39,9 @@ export const KPICards = () => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {kpiData.map((kpi) => (
-                <div key={kpi.title} className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-white/5 rounded-xl p-5 hover:border-brand-primary/30 dark:hover:border-brand-primary/30 hover:shadow-lg hover:shadow-brand-primary/5 transition-all duration-300 group">
+                <div key={kpi.title} className="bg-white dark:bg-surface-base border border-border-subtle rounded-xl p-5 hover:border-brand-primary/30 dark:hover:border-brand-primary/30 hover:shadow-lg hover:shadow-brand-primary/5 transition-all duration-300 group">
                     <div className="flex justify-between items-start mb-3">
-                        <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400">{kpi.title}</span>
+                        <span className="text-sm font-medium text-text-tertiary">{kpi.title}</span>
                         <div
                             className="size-10 rounded-lg flex items-center justify-center transition-colors group-hover:scale-110 duration-300"
                             style={{ background: `${kpi.color}15` }}
@@ -50,7 +50,7 @@ export const KPICards = () => {
                         </div>
                     </div>
 
-                    <div className="text-3xl font-bold text-zinc-900 dark:text-white mb-2 tracking-tight">
+                    <div className="text-3xl font-bold text-text-primary mb-2 tracking-tight">
                         {kpi.value}
                     </div>
 
@@ -64,7 +64,7 @@ export const KPICards = () => {
                             {kpi.trend === "up" ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
                             {kpi.change}
                         </span>
-                        <span className="text-xs text-zinc-400">vs last period</span>
+                        <span className="text-xs text-text-tertiary">vs last period</span>
                     </div>
                 </div>
             ))}

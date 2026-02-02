@@ -189,7 +189,7 @@ const MusicCard = memo(({ song, onClick, onPlayClick }: MusicCardProps) => {
 
 export const MusicCardSkeleton = () => (
     <div className='flex-shrink-0 min-w-[160px] max-w-[220px]'>
-        <div className="bg-zinc-800/40 rounded-lg p-4">
+        <div className="bg-surface-card rounded-xl p-4">
             <div className="aspect-square rounded-md bg-white/5 skeleton-shimmer-enhanced mb-4" />
             <div className="space-y-2">
                 <div className="h-3.5 w-3/4 rounded bg-white/5 skeleton-shimmer-enhanced" />
