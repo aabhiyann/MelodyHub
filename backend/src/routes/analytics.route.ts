@@ -26,7 +26,7 @@ router.get("/top-genres", protectRoute, getTopGenres);
 router.get("/listening-patterns", protectRoute, getListeningPatterns);
 
 // Generic event tracking
-router.post("/track-event", async (req, res) => {
+router.post("/track-event", protectRoute, async (req, res) => {
   try {
     const { event, properties } = req.body;
 
