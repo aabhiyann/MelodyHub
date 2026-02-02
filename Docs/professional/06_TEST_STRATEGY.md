@@ -48,3 +48,10 @@ jobs:
 -   **Critical Paths (Auth, Payments)**: 90%+ coverage.
 -   **UI Components**: 70% coverage.
 -   **Utilities/Helpers**: 100% coverage.
+
+## 5. Manual QA Checklist
+Before release or after major feature work, run through the manual QA checklist:
+
+-   **Location**: `Docs/QA_CHECKLIST.md`
+-   **Covers**: Auth, navigation, player, browse/search, library, chat, admin, design/accessibility, cross-browser.
+-   **Usage**: Check off items as verified; log failures and re-verify after fixes.

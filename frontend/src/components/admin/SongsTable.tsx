@@ -88,24 +88,24 @@ export const SongsTable = () => {
     };
 
     return (
-        <div className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-white/5 rounded-xl overflow-hidden flex flex-col shadow-sm">
+        <div className="bg-white dark:bg-surface-base border border-border-subtle rounded-xl overflow-hidden flex flex-col shadow-sm">
             {/* Toolbar */}
-            <div className="p-4 border-b border-zinc-200 dark:border-white/5 flex flex-col sm:flex-row gap-4 justify-between items-center bg-zinc-50/50 dark:bg-zinc-900/50">
+            <div className="p-4 border-b border-border-subtle flex flex-col sm:flex-row gap-4 justify-between items-center bg-surface-glass dark:bg-surface-elevated">
                 <div className="flex items-center gap-3 w-full sm:w-auto">
                     <div className="relative group w-full sm:w-64">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-400 group-focus-within:text-brand-primary transition-colors" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-text-tertiary group-focus-within:text-brand-primary transition-colors" />
                         <input
                             type="search"
                             placeholder="Search songs..."
                             value={filters.search}
                             onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-                            className="w-full h-9 pl-10 pr-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-lg text-sm focus:border-brand-primary outline-none transition-all shadow-sm"
+                            className="w-full h-9 pl-10 pr-4 bg-surface-card dark:bg-surface-elevated border border-border-medium rounded-lg text-sm focus:border-brand-primary outline-none transition-all shadow-sm"
                         />
                     </div>
 
                     {/* Filter Dropdowns (Mock) */}
                     <select
-                        className="h-9 px-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-lg text-sm focus:border-brand-primary outline-none shadow-sm"
+                        className="h-9 px-3 bg-surface-card dark:bg-surface-elevated border border-border-medium rounded-lg text-sm focus:border-brand-primary outline-none shadow-sm"
                         value={filters.genre}
                         onChange={(e) => setFilters({ ...filters, genre: e.target.value })}
                     >
@@ -131,22 +131,22 @@ export const SongsTable = () => {
             <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                     <thead>
-                        <tr className="bg-zinc-50 dark:bg-zinc-900/50 text-xs uppercase text-zinc-500 font-semibold tracking-wider border-b border-zinc-200 dark:border-white/5">
+                        <tr className="bg-surface-glass dark:bg-surface-elevated text-xs uppercase text-text-tertiary font-semibold tracking-wider border-b border-border-subtle">
                             <th className="p-4 w-[40px]">
                                 <input
                                     type="checkbox"
-                                    className="rounded border-zinc-300 text-brand-primary focus:ring-brand-primary cursor-pointer"
+                                    className="rounded border-border-medium text-brand-primary focus:ring-brand-primary cursor-pointer"
                                     checked={currentSongs.length > 0 && selectedRows.size === currentSongs.length}
                                     onChange={toggleSelectAll}
                                 />
                             </th>
-                            <th className="p-4 cursor-pointer hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors" onClick={() => handleSort('title')}>
+                            <th className="p-4 cursor-pointer hover:bg-surface-glass transition-colors" onClick={() => handleSort('title')}>
                                 <div className="flex items-center gap-2">Title <ArrowUpDown size={12} /></div>
                             </th>
-                            <th className="p-4 cursor-pointer hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors" onClick={() => handleSort('artist')}>
+                            <th className="p-4 cursor-pointer hover:bg-surface-glass transition-colors" onClick={() => handleSort('artist')}>
                                 <div className="flex items-center gap-2">Artist <ArrowUpDown size={12} /></div>
                             </th>
-                            <th className="p-4 cursor-pointer hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors" onClick={() => handleSort('albumId')}>
+                            <th className="p-4 cursor-pointer hover:bg-surface-glass transition-colors" onClick={() => handleSort('albumId')}>
                                 <div className="flex items-center gap-2">Album <ArrowUpDown size={12} /></div>
                             </th>
                             <th className="p-4 text-center">Duration</th>
@@ -154,16 +154,16 @@ export const SongsTable = () => {
                             <th className="p-4 w-[50px]"></th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-zinc-100 dark:divide-white/5">
+                    <tbody className="divide-y divide-border-subtle">
                         {currentSongs.map((song) => (
                             <tr
                                 key={song._id}
-                                className={`group hover:bg-zinc-50 dark:hover:bg-white/5 transition-colors ${selectedRows.has(song._id) ? "bg-brand-primary/5 dark:bg-brand-primary/10" : ""}`}
+                                className={`group hover:bg-surface-glass transition-colors ${selectedRows.has(song._id) ? "bg-brand-primary/5 dark:bg-brand-primary/10" : ""}`}
                             >
                                 <td className="p-4">
                                     <input
                                         type="checkbox"
-                                        className="rounded border-zinc-300 text-brand-primary focus:ring-brand-primary cursor-pointer"
+                                        className="rounded border-border-medium text-brand-primary focus:ring-brand-primary cursor-pointer"
                                         checked={selectedRows.has(song._id)}
                                         onChange={() => toggleSelectRow(song._id)}
                                     />
@@ -177,23 +177,23 @@ export const SongsTable = () => {
                                             </div>
                                         </div>
                                         <div className="min-w-0">
-                                            <p className="font-medium text-zinc-900 dark:text-white truncate max-w-[200px]">{song.title}</p>
+                                            <p className="font-medium text-text-primary truncate max-w-[200px]">{song.title}</p>
                                         </div>
                                     </div>
                                 </td>
-                                <td className="p-4 text-sm text-zinc-600 dark:text-zinc-400">{song.artist}</td>
-                                <td className="p-4 text-sm text-zinc-600 dark:text-zinc-400">{song.albumId || '-'}</td>
-                                <td className="p-4 text-sm text-zinc-500 font-mono text-center">{formatDuration(song.duration)}</td>
-                                <td className="p-4 text-sm text-zinc-500 text-right whitespace-nowrap">
+                                <td className="p-4 text-sm text-text-secondary">{song.artist}</td>
+                                <td className="p-4 text-sm text-text-secondary">{song.albumId || '-'}</td>
+                                <td className="p-4 text-sm text-text-tertiary font-mono text-center">{formatDuration(song.duration)}</td>
+                                <td className="p-4 text-sm text-text-tertiary text-right whitespace-nowrap">
                                     {/* Mock date if createdAt logic isn't consistent yet */}
                                     {format(new Date(), 'MMM d, yyyy')}
                                 </td>
                                 <td className="p-4 text-right">
                                     <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <button className="p-1.5 text-zinc-400 hover:text-brand-primary hover:bg-brand-primary/10 rounded-md transition-colors">
+                                        <button className="p-1.5 text-text-tertiary hover:text-brand-primary hover:bg-brand-primary/10 rounded-md transition-colors">
                                             <Edit size={16} />
                                         </button>
-                                        <button className="p-1.5 text-zinc-400 hover:text-red-500 hover:bg-red-500/10 rounded-md transition-colors">
+                                        <button className="p-1.5 text-text-tertiary hover:text-red-500 hover:bg-red-500/10 rounded-md transition-colors">
                                             <Trash2 size={16} />
                                         </button>
                                     </div>
@@ -202,7 +202,7 @@ export const SongsTable = () => {
                         ))}
                         {currentSongs.length === 0 && (
                             <tr>
-                                <td colSpan={7} className="p-8 text-center text-zinc-500">
+                                <td colSpan={7} className="p-8 text-center text-text-tertiary">
                                     <div className="flex flex-col items-center justify-center gap-2">
                                         <Search size={32} className="opacity-20" />
                                         <p>No songs found matching your criteria</p>
@@ -215,13 +215,13 @@ export const SongsTable = () => {
             </div>
 
             {/* Pagination Controls */}
-            <div className="p-4 border-t border-zinc-200 dark:border-white/5 flex items-center justify-between bg-zinc-50/50 dark:bg-zinc-900/50">
-                <span className="text-xs text-zinc-500">
+            <div className="p-4 border-t border-border-subtle flex items-center justify-between bg-surface-glass dark:bg-surface-elevated">
+                <span className="text-xs text-text-tertiary">
                     Showing {startIndex + 1}-{endIndex} of {filteredSongs.length} songs
                 </span>
                 <div className="flex items-center gap-2">
                     <button
-                        className="p-1.5 rounded-md hover:bg-zinc-200 dark:hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        className="p-1.5 rounded-md hover:bg-surface-glass-strong disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                         onClick={() => setCurrentPage(c => Math.max(1, c - 1))}
                         disabled={currentPage === 1}
                     >
@@ -236,7 +236,7 @@ export const SongsTable = () => {
                                     key={p}
                                     className={`size-7 text-xs font-medium rounded-md flex items-center justify-center transition-colors ${currentPage === p
                                         ? "bg-brand-primary text-white shadow-sm"
-                                        : "hover:bg-zinc-200 dark:hover:bg-white/10 text-zinc-600 dark:text-zinc-400"
+                                        : "hover:bg-surface-glass-strong text-text-secondary"
                                         }`}
                                     onClick={() => setCurrentPage(p)}
                                 >
@@ -246,7 +246,7 @@ export const SongsTable = () => {
                         })}
                     </div>
                     <button
-                        className="p-1.5 rounded-md hover:bg-zinc-200 dark:hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        className="p-1.5 rounded-md hover:bg-surface-glass-strong disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                         onClick={() => setCurrentPage(c => Math.min(totalPages, c + 1))}
                         disabled={currentPage === totalPages}
                     >
