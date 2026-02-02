@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import { ActivityService } from "../services/activity.service.js";
 import { ActivityType } from "../models/activity.model.js";
 import { AuthenticatedRequest } from "../types/index.js";
+import * as analyticsService from "../services/analytics.service.js";
 
 const activityService = new ActivityService();
 
@@ -176,5 +177,100 @@ export const getUserPreferences = async (req: Request, res: Response) => {
             message: "Failed to fetch preferences",
             error: error.message,
         });
+    }
+};
+
+/**
+ * GET /api/analytics/dashboard
+ * Overall user stats (listening time, plays, top artists, etc.)
+ */
+export const getDashboard = async (req: Request, res: Response) => {
+    try {
+        const userId = (req as AuthenticatedRequest).auth?.userId;
+        if (!userId) {
+            return res.status(401).json({ success: false, message: "Authentication required" });
+        }
+        const period = (req.query.period as 'week' | 'month' | 'year' | 'all') || 'all';
+        const dashboard = await analyticsService.getUserDashboard(userId, period);
+        return res.status(200).json({ success: true, data: dashboard });
+    } catch (error: any) {
+        console.error("Error fetching dashboard:", error);
+        return res.status(500).json({ success: false, message: "Failed to fetch dashboard", error: error.message });
+    }
+};
+
+/**
+ * GET /api/analytics/listening-history
+ * Recent plays with pagination
+ */
+export const getListeningHistory = async (req: Request, res: Response) => {
+    try {
+        const userId = (req as AuthenticatedRequest).auth?.userId;
+        if (!userId) {
+            return res.status(401).json({ success: false, message: "Authentication required" });
+        }
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = Math.min(parseInt(req.query.limit as string) || 20, 50);
+        const result = await analyticsService.getListeningHistoryPaginated(userId, page, limit);
+        return res.status(200).json({ success: true, ...result });
+    } catch (error: any) {
+        console.error("Error fetching listening history:", error);
+        return res.status(500).json({ success: false, message: "Failed to fetch history", error: error.message });
+    }
+};
+
+/**
+ * GET /api/analytics/top-artists
+ * Top 10 artists by play count
+ */
+export const getTopArtists = async (req: Request, res: Response) => {
+    try {
+        const userId = (req as AuthenticatedRequest).auth?.userId;
+        if (!userId) {
+            return res.status(401).json({ success: false, message: "Authentication required" });
+        }
+        const period = (req.query.period as 'week' | 'month' | 'year' | 'all') || 'all';
+        const dashboard = await analyticsService.getUserDashboard(userId, period);
+        return res.status(200).json({ success: true, data: dashboard.topArtists });
+    } catch (error: any) {
+        console.error("Error fetching top artists:", error);
+        return res.status(500).json({ success: false, message: "Failed to fetch top artists", error: error.message });
+    }
+};
+
+/**
+ * GET /api/analytics/top-genres
+ * Top 5 genres
+ */
+export const getTopGenres = async (req: Request, res: Response) => {
+    try {
+        const userId = (req as AuthenticatedRequest).auth?.userId;
+        if (!userId) {
+            return res.status(401).json({ success: false, message: "Authentication required" });
+        }
+        const period = (req.query.period as 'week' | 'month' | 'year' | 'all') || 'all';
+        const dashboard = await analyticsService.getUserDashboard(userId, period);
+        return res.status(200).json({ success: true, data: dashboard.topGenres });
+    } catch (error: any) {
+        console.error("Error fetching top genres:", error);
+        return res.status(500).json({ success: false, message: "Failed to fetch top genres", error: error.message });
+    }
+};
+
+/**
+ * GET /api/analytics/listening-patterns
+ * Hour/day distribution
+ */
+export const getListeningPatterns = async (req: Request, res: Response) => {
+    try {
+        const userId = (req as AuthenticatedRequest).auth?.userId;
+        if (!userId) {
+            return res.status(401).json({ success: false, message: "Authentication required" });
+        }
+        const patterns = await analyticsService.getListeningPatterns(userId);
+        return res.status(200).json({ success: true, data: patterns });
+    } catch (error: any) {
+        console.error("Error fetching listening patterns:", error);
+        return res.status(500).json({ success: false, message: "Failed to fetch patterns", error: error.message });
     }
 };

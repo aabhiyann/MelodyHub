@@ -1,5 +1,15 @@
 import { Router } from "express";
-import { trackPlay, likeSong, getUserPreferences } from "../controllers/analytics.controller.js";
+import { protectRoute } from "../middleware/auth.middleware.js";
+import {
+    trackPlay,
+    likeSong,
+    getUserPreferences,
+    getDashboard,
+    getListeningHistory,
+    getTopArtists,
+    getTopGenres,
+    getListeningPatterns,
+} from "../controllers/analytics.controller.js";
 
 const router = Router();
 
@@ -7,6 +17,13 @@ const router = Router();
 router.post("/track-play", trackPlay);
 router.post("/like-song", likeSong);
 router.get("/user-preferences", getUserPreferences);
+
+// Dashboard and insights (protected)
+router.get("/dashboard", protectRoute, getDashboard);
+router.get("/listening-history", protectRoute, getListeningHistory);
+router.get("/top-artists", protectRoute, getTopArtists);
+router.get("/top-genres", protectRoute, getTopGenres);
+router.get("/listening-patterns", protectRoute, getListeningPatterns);
 
 // Generic event tracking
 router.post("/track-event", async (req, res) => {

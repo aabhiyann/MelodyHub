@@ -72,7 +72,7 @@ export async function getUserDashboard(userId: string, period: 'week' | 'month' 
     const topArtists: Array<{ artist: string; playCount: number }> = Object.entries(artistCounts)
         .map(([artist, playCount]) => ({ artist, playCount }))
         .sort((a, b) => b.playCount - a.playCount)
-        .slice(0, 5);
+        .slice(0, 10);
 
     // Top songs
     const songCounts: Record<string, { songId: mongoose.Types.ObjectId; title: string; artist: string; playCount: number }> = {};
@@ -114,6 +114,39 @@ export async function getUserDashboard(userId: string, period: 'week' | 'month' 
         topGenres,
         discoveryRate: Math.round(discoveryRate),
         skipRate: Math.round(skipRate),
+    };
+}
+
+/**
+ * Get listening history with pagination
+ */
+export async function getListeningHistoryPaginated(
+    userId: string,
+    page: number = 1,
+    limit: number = 20
+): Promise<{ data: any[]; pagination: { page: number; limit: number; total: number; totalPages: number } }> {
+    const userPref = await UserPreference.findOne({ userId })
+        .populate('listeningHistory.songId')
+        .lean();
+
+    if (!userPref || !userPref.listeningHistory?.length) {
+        return {
+            data: [],
+            pagination: { page, limit, total: 0, totalPages: 0 },
+        };
+    }
+
+    const total = userPref.listeningHistory.length;
+    const totalPages = Math.ceil(total / limit);
+    const skip = (page - 1) * limit;
+    const data = (userPref.listeningHistory as any[])
+        .slice()
+        .reverse()
+        .slice(skip, skip + limit);
+
+    return {
+        data,
+        pagination: { page, limit, total, totalPages },
     };
 }
 
