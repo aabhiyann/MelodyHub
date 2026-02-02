@@ -62,8 +62,31 @@ We use **Conventional Commits** to make our history readable.
 -   **One branch per task**: Create a short-lived branch from up-to-date `main` for each fix or feature (e.g. `fix/player-queue`, `feat/share-track`). Avoid long-lived branches.
 -   **One or more commits per logical change**: Commit often; each commit should represent a single logical change (one fix, one small feature). Do not leave large uncommitted dumps on `main`.
 
+## 5. Branch Structure (Enhancement Roadmap)
+
+For larger initiatives (e.g. testing, caching, analytics), use feature branches off `main`:
+
+```
+main (production-ready)
+  ├── feature/testing-enhancement
+  ├── feature/redis-caching
+  ├── feature/analytics-dashboard
+  ├── feature/social-enhancements
+  ├── feature/mobile-pwa
+  └── feature/ai-improvements
+```
+
+**Workflow per phase:**
+1. Create feature branch from `main`: `git checkout -b feature/phase-name`
+2. Make small, atomic commits every 15–30 minutes
+3. Push frequently: `git push origin feature/phase-name`
+4. Create PR when the phase is complete
+5. Merge to `main` after review (Squash and Merge)
+
+**Commit types:** `feat:`, `test:`, `fix:`, `refactor:`, `perf:`, `docs:`, `chore:`
+
 ---
 
-## 5. Current Active Branches
+## 6. Current Active Branches
 -   `main`: Production-ready code.
--   *(Your next branch)*: `docs/system-design`
+-   *(Your next branch)*: Create from `main` per task (e.g. `feature/foundation-setup`).
