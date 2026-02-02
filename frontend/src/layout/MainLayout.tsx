@@ -37,17 +37,7 @@ const MainLayout = () => {
             <MobileHeader />
 
             <main className="flex-1 overflow-y-auto overflow-x-hidden pb-[140px] pt-[56px] scroll-smooth" id="mobile-main">
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={location.pathname}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                    >
-                        <Outlet />
-                    </motion.div>
-                </AnimatePresence>
+                <Outlet />
             </main>
 
             {/* Background Gradients */}
@@ -88,18 +78,7 @@ const MainLayout = () => {
                 {/* Main content */}
                 <ResizablePanel defaultSize={60} className="bg-transparent z-10">
                     <main id="main-content" role="main" aria-label="Main content" className="h-full rounded-2xl bg-background-elevated/50 overflow-hidden border border-white/5 relative">
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={location.pathname}
-                                initial={{ opacity: 0, y: 20, scale: 0.98 }}
-                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                exit={{ opacity: 0, y: -20, scale: 0.98 }}
-                                transition={{ duration: 0.3, ease: "easeInOut" }}
-                                className="h-full"
-                            >
-                                <Outlet />
-                            </motion.div>
-                        </AnimatePresence>
+                        <Outlet />
                     </main>
                 </ResizablePanel>
 

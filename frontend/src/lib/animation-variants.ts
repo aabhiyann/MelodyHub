@@ -159,6 +159,59 @@ export const pageVariants: Variants = {
     },
 };
 
+// Route-specific transition variants
+export const routeTransitions: Record<string, Variants> = {
+    default: pageVariants,
+    
+    modal: {
+        initial: {
+            opacity: 0,
+            scale: 0.95,
+        },
+        animate: {
+            opacity: 1,
+            scale: 1,
+            transition: transitions.smooth,
+        },
+        exit: {
+            opacity: 0,
+            scale: 0.95,
+            transition: transitions.smooth,
+        },
+    },
+    
+    slide: {
+        initial: {
+            opacity: 0,
+            x: 100,
+        },
+        animate: {
+            opacity: 1,
+            x: 0,
+            transition: transitions.page,
+        },
+        exit: {
+            opacity: 0,
+            x: -100,
+            transition: transitions.page,
+        },
+    },
+    
+    fade: {
+        initial: {
+            opacity: 0,
+        },
+        animate: {
+            opacity: 1,
+            transition: { duration: 0.3 },
+        },
+        exit: {
+            opacity: 0,
+            transition: { duration: 0.2 },
+        },
+    },
+};
+
 export const fadeVariants: Variants = {
     initial: {
         opacity: 0,
