@@ -18,6 +18,7 @@ import { CategoryCard } from '@/components/ui/CategoryCard';
 import Topbar from '@/components/Topbar';
 import { useMusicStore } from '@/stores/MusicStore';
 import { usePlayerStore } from '@/stores/PlayerStore';
+import { axiosInstance } from '@/lib/axios';
 import type { Song } from '@/types';
 import {
   Select,
@@ -118,6 +119,24 @@ const SearchPage = () => {
     return () => clearTimeout(timer);
   }, [performSearch]);
 
+  const handleGenreClick = async (genreName: string) => {
+    setSearchQuery(genreName);
+    
+    // Track genre click event
+    try {
+      await axiosInstance.post('/analytics/track-event', {
+        event: 'genre_click',
+        properties: {
+          genre: genreName,
+          page: 'search',
+          timestamp: new Date().toISOString(),
+        },
+      });
+    } catch (error) {
+      console.error('Failed to track genre click:', error);
+    }
+  };
+
   const handlePlaySong = (song: Song) => {
     const songIndex = songs.findIndex((s) => s._id === song._id);
     playAlbum(songs, songIndex);
@@ -169,13 +188,14 @@ const SearchPage = () => {
               <div>
                 <h2 className="text-2xl font-bold text-white mb-4">Browse All</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-                  {GENRES.filter((g) => g.value !== 'all').map((genre) => (
+                  {GENRES.filter((g) => g.value !== 'all').map((genre, index) => (
                     <CategoryCard
                       key={genre.name}
                       title={genre.name}
                       gradient={`bg-gradient-to-br ${genre.color}`}
                       icon={genre.emoji}
-                      onClick={() => setSearchQuery(genre.name)}
+                      index={index}
+                      onClick={() => handleGenreClick(genre.name)}
                     />
                   ))}
                 </div>
