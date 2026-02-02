@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { SongRow } from '@/components/ui/SongRow';
+import { SongRowSkeleton } from '@/components/skeletons/SongRowSkeleton';
 import { useMusicStore } from '@/stores/MusicStore';
 import { usePlayerStore } from '@/stores/PlayerStore';
 import { Clock, Pause, Play, Disc } from 'lucide-react';
@@ -22,7 +23,26 @@ const AlbumPage = () => {
     if (albumId) fetchAlbumById(albumId);
   }, [fetchAlbumById, albumId]);
 
-  if (isLoading) return null;
+  if (isLoading) {
+    return (
+      <div className="h-full flex flex-col rounded-lg overflow-hidden bg-transparent">
+        <div className="flex-1 overflow-hidden">
+          <ScrollArea className="h-full">
+            <div className="p-6 space-y-8">
+              <div className="flex flex-col md:flex-row gap-8">
+                <div className="size-60 rounded-lg skeleton-shimmer" />
+                <div className="flex-1 space-y-4">
+                  <div className="h-12 w-3/4 skeleton-shimmer rounded" />
+                  <div className="h-6 w-1/2 skeleton-shimmer rounded" />
+                </div>
+              </div>
+              <SongRowSkeleton count={12} />
+            </div>
+          </ScrollArea>
+        </div>
+      </div>
+    );
+  }
 
   const handlePlayAlbum = () => {
     if (!currentAlbum) return;
