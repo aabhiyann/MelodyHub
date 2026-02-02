@@ -75,14 +75,14 @@ const AudioPlayer = () => {
 		audioRef.current.volume = isMuted ? 0 : volume / 100;
 	}, [volume, isMuted]);
 
-	// Handle song ended
+	// Handle song ended (track completion, then play next)
 	useEffect(() => {
 		const audio = audioRef.current;
 		if (!audio) return;
 
 		const handleEnded = () => {
 			useGamificationStore.getState().awardXP(10, 'Song Completed');
-			playNext();
+			playNext(false); // false = completed, not skipped
 		};
 		audio.addEventListener('ended', handleEnded);
 		return () => audio.removeEventListener('ended', handleEnded);

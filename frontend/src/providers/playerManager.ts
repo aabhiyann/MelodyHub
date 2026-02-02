@@ -1,6 +1,7 @@
 import { Song, SocketAuth } from "@/types";
 import { useChatStore } from "@/stores/ChatStore";
 import { StateCreator } from "zustand";
+import { axiosInstance } from "@/lib/axios";
 
 /**
  * Manages music player logic, connected to Zustand state and Chat socket.
@@ -109,10 +110,26 @@ export class PlayerManager {
 	}
 
 	/**
-	 * Plays the next song in the queue, or stops if at the end.
+	 * Tracks play completion/skip for analytics (non-blocking).
 	 */
-	playNext(): void {
-		const { currentIndex, queue, isRepeating } = this.get();
+	private trackPlayCompletion(songId: string, completionRate: number, skipped: boolean): void {
+		axiosInstance
+			.post("/analytics/track-play", { songId, completionRate, skipped })
+			.catch((err) => console.error("[Analytics] track-play failed:", err));
+	}
+
+	/**
+	 * Plays the next song in the queue, or stops if at the end.
+	 * @param skipped - true when user clicked next/skip, false when song ended naturally
+	 */
+	playNext(skipped: boolean = true): void {
+		const { currentIndex, queue, isRepeating, currentSong, currentTime, duration } = this.get();
+
+		// Track current song completion before changing
+		if (currentSong) {
+			const rate = duration > 0 ? Math.min(1, currentTime / duration) : 0;
+			this.trackPlayCompletion(currentSong._id, rate, skipped);
+		}
 
 		if (isRepeating) return;
 
