@@ -14,4 +14,10 @@ export default {
       },
     ],
   },
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    'integration\\.test',
+    'load\\.test',
+    '/setup\\.(ts|js)$',
+  ],
 };

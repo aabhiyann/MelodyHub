@@ -44,6 +44,7 @@ describe('Analytics Service', () => {
       topGenres: [],
       discoveryRate: 0,
       skipRate: 0,
+      listeningByDay: [],
     });
   });
 

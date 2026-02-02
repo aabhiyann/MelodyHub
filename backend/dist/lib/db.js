@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { redisService } from '../services/redis.service.js';
 export const connectDB = async () => {
     try {
         const conn = await mongoose.connect(process.env.MONGODB_URI);
@@ -13,5 +14,17 @@ export const connectDB = async () => {
         else {
             throw error;
         }
+    }
+};
+/**
+ * Initialize Redis connection (optional - app works without it).
+ * Call after connectDB() when REDIS_URL is set or in production.
+ */
+export const connectRedis = async () => {
+    if (process.env.NODE_ENV === 'production' || process.env.REDIS_URL) {
+        await redisService.connect();
+    }
+    else {
+        console.log('ℹ️  Redis disabled in development (set REDIS_URL to enable)');
     }
 };

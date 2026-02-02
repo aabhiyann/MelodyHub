@@ -18,80 +18,82 @@
 
 ---
 
-**MelodyHub** is a modern, full-stack music streaming platform designed to replicate the best features of Spotify while introducing AI-powered innovation. It features real-time audio playback, collaborative playlists, instant chat, and a beautiful, accessible user interface.
+**MelodyHub** is a modernized, full-stack music streaming platform built with React, TypeScript, and Google Gemini AI. It combines Spotify-style playback and discovery with a distinctive UI: glassmorphism, dark theme, the Melody mascot, and a responsive layout. Features include AI playlist generation, real-time chat and notifications, mood-based playlists, an analytics dashboard, collaborative playlists, and PWA support (offline indicator, lock-screen controls).
 
-> 🎯 **Production-Ready**: 100% complete | 80%+ test coverage | WCAG 2.1 AA compliant | Strict TypeScript Backend
+> **Production-ready**: 80%+ test coverage | WCAG 2.1 AA | Strict TypeScript (frontend & backend)
 
-![MelodyHub Screenshot](https://github.com/user-attachments/assets/86a7d631-8d30-42cf-a827-23556282c12d)
+![MelodyHub](Docs/screenshots/hero.png)
 
 ## 🚀 Live Demo & Documentation
 
--   **Live Application**: [https://udaymelodyhhub.vercel.app/](https://udaymelodyhhub.vercel.app/)
--   **API Documentation**: [View API Docs](Docs/professional/API.md)
--   **System Design**: [View Architecture](Docs/professional/04_SYSTEM_DESIGN.md)
--   **Project Management**: [View PM Handbook](Docs/professional/ROLE_PROJECT_MANAGER.md)
--   **Changelog**: [CHANGELOG.md](CHANGELOG.md)
+- **Live Application**: [https://udaymelodyhhub.vercel.app/](https://udaymelodyhhub.vercel.app/)
+- **Tech Stack**: [Docs/TECH_STACK.md](Docs/TECH_STACK.md)
+- **API Documentation**: [View API Docs](Docs/professional/API.md)
+- **System Design**: [View Architecture](Docs/professional/04_SYSTEM_DESIGN.md)
+- **Project Management**: [View PM Handbook](Docs/professional/ROLE_PROJECT_MANAGER.md)
+- **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
 ## ✨ Key Features
 
-| Feature | Description | Status | Tech |
-|---------|-------------|--------|------|
-| 🎵 **Music Streaming** | High-quality audio playback with gapless transitions | ✅ Live | Cloudinary, Custom Player |
-| 🤖 **AI Playlists** | Generate custom playlists using natural language | ✅ Live | Google Gemini 1.5 Flash |
-| 🔍 **Smart Search** | Real-time search with categorized results | ✅ Live | Debounced filtering |
-| 👥 **Shared Playlists** | Collaborative playlist editing in real-time | ✅ Live | MongoDB, Permissions |
-| 💬 **Real-time Chat** | Instant messaging with typing indicators | ✅ Live | Socket.io |
-| 🎨 **Modern UI/UX** | Glassmorphism, animations, dark mode | ✅ Complete | Tailwind v4 |
-| 🐢 **Melody Mascot** | Delightful mascot with 8 expressive states | ✅ Complete | Custom Components |
-| 📊 **Admin Dashboard** | Manage content and view platform analytics | ✅ Live | Recharts, Role-Based Access |
-| 🛡️ **Strict Security** | JWT Auth, Rate Limiting, Input Validation | ✅ Complete | Clerk, Zod, Helmet |
-| 📈 **Analytics Dashboard** | Listening history, top artists/genres, patterns heatmap | ✅ Live | Recharts, Analytics API |
-| 🔔 **Notifications** | Real-time friend requests and activity; bell in nav | ✅ Live | Socket.io, Notification API |
-| 👤 **Followers / Following** | Lists, mutual friends, clickable profile counts | ✅ Live | UserConnection, Pagination |
-| ⚡ **Redis Caching** | API and query-level caching for faster responses | ✅ Live | Redis, Cache Middleware |
-| 🎭 **Mood & Recommendations** | Mood detection, mood playlists, hybrid recommendations | ✅ Live | Mood Service, Recommendation API |
-| 📱 **PWA / Offline** | Install prompt, offline indicator, lock-screen controls | ✅ Live | MediaSession API, Service Worker |
+| Feature                       | Description                                             | Status      | Tech                             |
+| ----------------------------- | ------------------------------------------------------- | ----------- | -------------------------------- |
+| 🎵 **Music Streaming**        | High-quality audio playback with gapless transitions    | ✅ Live     | Cloudinary, Custom Player        |
+| 🤖 **AI Playlists**           | Generate custom playlists using natural language        | ✅ Live     | Google Gemini 1.5 Flash          |
+| 🔍 **Smart Search**           | Real-time search with categorized results               | ✅ Live     | Debounced filtering              |
+| 👥 **Shared Playlists**       | Collaborative playlist editing in real-time             | ✅ Live     | MongoDB, Permissions             |
+| 💬 **Real-time Chat**         | Instant messaging with typing indicators                | ✅ Live     | Socket.io                        |
+| 🎨 **Modern UI/UX**           | Glassmorphism, animations, dark mode                    | ✅ Complete | Tailwind v4                      |
+| 🐢 **Melody Mascot**          | Delightful mascot with 8 expressive states              | ✅ Complete | Custom Components                |
+| 📊 **Admin Dashboard**        | Manage content and view platform analytics              | ✅ Live     | Recharts, Role-Based Access      |
+| 🛡️ **Strict Security**        | JWT Auth, Rate Limiting, Input Validation               | ✅ Complete | Clerk, Zod, Helmet               |
+| 📈 **Analytics Dashboard**    | Listening history, top artists/genres, patterns heatmap | ✅ Live     | Recharts, Analytics API          |
+| 🔔 **Notifications**          | Real-time friend requests and activity; bell in nav     | ✅ Live     | Socket.io, Notification API      |
+| 👤 **Followers / Following**  | Lists, mutual friends, clickable profile counts         | ✅ Live     | UserConnection, Pagination       |
+| ⚡ **Redis Caching**          | API and query-level caching for faster responses        | ✅ Live     | Redis, Cache Middleware          |
+| 🎭 **Mood & Recommendations** | Mood detection, mood playlists, hybrid recommendations  | ✅ Live     | Mood Service, Recommendation API |
+| 📱 **PWA / Offline**          | Install prompt, offline indicator, lock-screen controls | ✅ Live     | MediaSession API, Service Worker |
 
 ---
 
 ## 📸 Screenshots
 
-| **Home / Browse** | **Login** |
-|:---:|:---:|
-| ![Home](Docs/Mock%20Design/HomePage.png) | ![Login](Docs/Mock%20Design/LoginPage.png) |
+|              **Home**              |               **Feature**                |
+| :--------------------------------: | :--------------------------------------: |
+| ![Home](Docs/screenshots/home.png) | ![Feature](Docs/screenshots/feature.png) |
 
-| **Add Songs** | **Messaging** |
-|:---:|:---:|
-| ![Add Songs](Docs/Mock%20Design/AddSongs.png) | ![Messaging](Docs/Mock%20Design/Messaging.png) |
+_Add `hero.png`, `home.png`, and `feature.png` to [Docs/screenshots/](Docs/screenshots/) by capturing them from the running app (see [Docs/screenshots/README.md](Docs/screenshots/README.md))._  
+_Legacy design mockups: [Mock Design](Docs/Mock%20Design/)._
 
 ---
 
 ## 🛠️ Technology Stack
 
-| Category | Technologies |
-| :--- | :--- |
-| **Frontend** | React 19, TypeScript, Vite, Tailwind CSS v4, Zustand, Radix UI |
-| **Backend** | Node.js, Express.js, TypeScript (Strict), Socket.io, Google Gemini AI |
-| **Database** | MongoDB Atlas (Mongoose ODM), Redis (Caching) |
-| **Auth** | Clerk (JWT-based Authentication) |
-| **DevOps** | Docker, GitHub Actions (CI/CD), Vercel |
-| **Testing** | Vitest (Unit), Playwright (E2E), Jest (Integration) |
+| Category     | Technologies                                                                                    |
+| :----------- | :---------------------------------------------------------------------------------------------- |
+| **Frontend** | React 19, TypeScript, Vite 6, Tailwind CSS v4, Zustand, Radix UI, Framer Motion, TanStack Query |
+| **Backend**  | Node.js, Express.js, TypeScript (strict), Socket.io, Google Gemini AI                           |
+| **Database** | MongoDB (Mongoose ODM), Redis (caching)                                                         |
+| **Auth**     | Clerk (JWT-based)                                                                               |
+| **DevOps**   | Docker, GitHub Actions (CI/CD), Vercel (frontend), Render (backend)                             |
+| **Testing**  | Vitest (frontend unit), Jest (backend unit), Playwright (E2E)                                   |
 
 ---
 
 ## ⚡ Getting Started
 
 ### Prerequisites
--   Node.js v20+
--   Docker (Optional, but recommended for consistent env)
--   Keys for: MongoDB, Cloudinary, Clerk, & Google Gemini.
--   Redis (optional): Set `REDIS_URL` in backend `.env` for caching; Docker Compose includes Redis.
+
+- Node.js v20+
+- Docker (Optional, but recommended for consistent env)
+- Keys for: MongoDB, Cloudinary, Clerk, & Google Gemini.
+- Redis (optional): Set `REDIS_URL` in backend `.env` for caching; Docker Compose includes Redis.
 
 ### 🐳 Docker Installation (Recommended)
 
 1.  **Clone the repository**
+
     ```bash
     git clone https://github.com/aabhiyann/MelodyHub.git
     cd MelodyHub
@@ -110,6 +112,7 @@
 ### 💻 Manual Installation
 
 1.  **Backend Setup**
+
     ```bash
     cd backend
     npm install
@@ -129,11 +132,11 @@
 
 We maintain high code quality through our automated CI pipeline:
 
-*   **Linting**: Strict ESLint configuration (custom ruleset).
-*   **Type Safety**: Full TypeScript strict mode enabled on backend & frontend.
-*   **Testing**:
-    *   `npm test` (Frontend): Unit tests via Vitest.
-    *   `npm test` (Backend): Integration tests via Jest.
+- **Linting**: Strict ESLint configuration (custom ruleset).
+- **Type Safety**: Full TypeScript strict mode enabled on backend & frontend.
+- **Testing**:
+  - `npm test` (Frontend): Unit tests via Vitest.
+  - `npm test` (Backend): Integration tests via Jest.
 
 ---
 

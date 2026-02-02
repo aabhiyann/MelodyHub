@@ -1,5 +1,7 @@
 import { Album } from "../models/album.model.js";
 import { BaseService } from "./base.service.js";
+import { redisService } from "./redis.service.js";
+const CACHE_TTL_ALBUMS = 1800; // 30 min
 export class AlbumService extends BaseService {
     constructor() {
         super(Album);
@@ -8,6 +10,10 @@ export class AlbumService extends BaseService {
      * Get all albums with pagination
      */
     async getAllAlbums(page = 1, limit = 20) {
+        const cacheKey = `albums:list:${page}:${limit}`;
+        const cached = await redisService.get(cacheKey);
+        if (cached)
+            return cached;
         const skip = (page - 1) * limit;
         // Get total count for pagination metadata
         const total = await Album.countDocuments();
@@ -17,7 +23,7 @@ export class AlbumService extends BaseService {
             .skip(skip)
             .limit(limit)
             .lean();
-        return {
+        const result = {
             data: albums,
             pagination: {
                 page,
@@ -28,15 +34,24 @@ export class AlbumService extends BaseService {
                 hasPrevPage: page > 1,
             },
         };
+        await redisService.set(cacheKey, result, CACHE_TTL_ALBUMS);
+        return result;
     }
     /**
      * Get a specific album by ID with its songs populated
      */
     async getAlbumById(albumId) {
+        const cacheKey = `album:${albumId}`;
+        const cached = await redisService.get(cacheKey);
+        if (cached)
+            return cached;
         const album = await this.findById(albumId);
         if (!album)
             throw new Error("Album not found");
         // Populate songs after fetching
-        return await album.populate("songs");
+        const populated = await album.populate("songs");
+        const plain = populated.toObject ? populated.toObject() : populated;
+        await redisService.set(cacheKey, plain, CACHE_TTL_ALBUMS);
+        return populated;
     }
 }
