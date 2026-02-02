@@ -28,6 +28,7 @@ import socialRoutes from './routes/social.route.js'; // Social & playlist routes
 import lyricsRoutes from './routes/lyrics.route.js'; // Lyrics routes
 import activityRoutes from './routes/activity.route.js';
 import friendRoutes from './routes/friend.route.js';
+import notificationRoutes from './routes/notification.route.js';
 import gamificationRoutes from './routes/gamification.route.js';
 import { connectDB, connectRedis } from './lib/db.js';
 import { validateEnv } from './lib/env.js';
@@ -148,6 +149,7 @@ app.use("/api/social", socialRoutes); // Social & playlist routes
 app.use("/api/lyrics", lyricsRoutes); // Lyrics routes
 app.use("/api/activities", activityRoutes); // Activity feed routes
 app.use("/api/friends", friendRoutes); // Friend system routes
+app.use("/api/notifications", notificationRoutes); // Notifications
 app.use("/api/gamification", gamificationRoutes); // Gamification routes
 
 if (process.env.NODE_ENV === "production") {

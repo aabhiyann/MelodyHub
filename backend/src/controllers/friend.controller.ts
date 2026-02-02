@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { FriendRequest } from "../models/friendRequest.model.js";
 import { User } from "../models/user.model.js";
+import * as notificationService from "../services/notification.service.js";
+import { emitToUser } from "../lib/socket.js";
 
 export const sendFriendRequest = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -71,6 +73,19 @@ export const sendFriendRequest = async (req: Request, res: Response, next: NextF
             receiverId,
             status: "pending",
         });
+
+        // Notify receiver (use Clerk ID for socket)
+        const receiverDoc = await User.findById(receiverId).select("clerkId").lean();
+        if (receiverDoc?.clerkId) {
+            const notification = await notificationService.createNotification({
+                userId: receiverDoc.clerkId,
+                type: "FRIEND_REQUEST",
+                title: "New friend request",
+                body: `${(sender as any).fullName} sent you a friend request`,
+                metadata: { senderId: (sender as any)._id.toString(), requestId: (newRequest as any)._id?.toString() },
+            });
+            emitToUser(receiverDoc.clerkId, "new_notification", notification);
+        }
 
         res.status(201).json(newRequest);
     } catch (error) {
