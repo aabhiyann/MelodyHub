@@ -110,4 +110,62 @@ export class UserService extends BaseService<IUser> {
 		]);
 		return { followersCount, followingCount };
 	}
+
+	/**
+	 * Get followers list with pagination (users who follow the given user)
+	 */
+	async getFollowersPaginated(userId: string, page: number = 1, limit: number = 20) {
+		const skip = (page - 1) * limit;
+		const connections = await UserConnection.find({ followingId: userId })
+			.populate("followerId", "fullName imageUrl clerkId")
+			.sort({ createdAt: -1 })
+			.skip(skip)
+			.limit(limit)
+			.lean();
+		const total = await UserConnection.countDocuments({ followingId: userId });
+		const data = connections.map((c: any) => ({
+			...c.followerId,
+			_id: c.followerId?._id,
+			followedAt: c.createdAt,
+		}));
+		return { data, pagination: { page, limit, total, totalPages: Math.ceil(total / limit) } };
+	}
+
+	/**
+	 * Get following list with pagination (users the given user follows)
+	 */
+	async getFollowingPaginated(userId: string, page: number = 1, limit: number = 20) {
+		const skip = (page - 1) * limit;
+		const connections = await UserConnection.find({ followerId: userId })
+			.populate("followingId", "fullName imageUrl clerkId")
+			.sort({ createdAt: -1 })
+			.skip(skip)
+			.limit(limit)
+			.lean();
+		const total = await UserConnection.countDocuments({ followerId: userId });
+		const data = connections.map((c: any) => ({
+			...c.followingId,
+			_id: c.followingId?._id,
+			followedAt: c.createdAt,
+		}));
+		return { data, pagination: { page, limit, total, totalPages: Math.ceil(total / limit) } };
+	}
+
+	/**
+	 * Get mutual friends (users who are both followers of the target and in the current user's friends or following)
+	 * For "mutual" we interpret as: users that the current user and the target user both follow (mutual following)
+	 * Or: users that are in both users' friends lists. The plan says "mutual friends" - so friends in common.
+	 * User model has friends: ObjectId[]. So mutual friends = intersection of user1.friends and user2.friends.
+	 */
+	async getMutualFriends(userId: string, targetUserId: string) {
+		const [user1, user2] = await Promise.all([
+			User.findById(userId).select("friends").lean(),
+			User.findById(targetUserId).select("friends").lean(),
+		]);
+		if (!user1 || !user2) return [];
+		const set1 = new Set((user1.friends || []).map((id: any) => id.toString()));
+		const mutual = (user2.friends || []).filter((id: any) => set1.has(id.toString()));
+		const users = await User.find({ _id: { $in: mutual } }).select("fullName imageUrl clerkId").lean();
+		return users;
+	}
 }
