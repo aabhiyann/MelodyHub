@@ -233,7 +233,7 @@ export const FullScreenPlayer = () => {
                                         </motion.button>
 
                                         <motion.button
-                                            onClick={() => { vibrate(); playNext(); }}
+                                            onClick={() => { vibrate(); playNext(true); }}
                                             whileTap={{ scale: 0.9 }}
                                             className="p-4 text-white hover:text-white/80 transition-colors"
                                         >

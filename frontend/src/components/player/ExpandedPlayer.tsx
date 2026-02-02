@@ -95,7 +95,7 @@ export const ExpandedPlayer = () => {
                                 </button>
 
                                 <button
-                                    onClick={playNext}
+                                    onClick={() => playNext(true)}
                                     className="p-2 hover:bg-white/10 rounded-lg transition-colors"
                                 >
                                     <SkipForward className="size-6 text-white" />

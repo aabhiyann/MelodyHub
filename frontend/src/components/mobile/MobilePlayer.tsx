@@ -28,7 +28,7 @@ const MobilePlayer = () => {
     // Gestures for Mini Player
     const miniPlayerHandlers = useSwipeable({
         onSwipedUp: () => setIsExpanded(true),
-        onSwipedLeft: () => playNext(),
+        onSwipedLeft: () => playNext(true),
         onSwipedRight: () => playPrevious(),
         trackMouse: true
     });
@@ -133,7 +133,7 @@ const MobilePlayer = () => {
                                     {isPlaying ? <Pause className="size-8 fill-current" /> : <Play className="size-8 fill-current ml-1" />}
                                 </button>
 
-                                <button onClick={playNext} className="p-2 text-white hover:text-brand-primary transition-colors active:scale-90">
+                                <button onClick={() => playNext(true)} className="p-2 text-white hover:text-brand-primary transition-colors active:scale-90">
                                     <SkipForward className="size-8" />
                                 </button>
 
@@ -180,7 +180,7 @@ const MobilePlayer = () => {
 
                     {/* Next Button only used if enough space, mostly gesture based */}
                     {/* <button 
-                        onClick={(e) => { e.stopPropagation(); playNext(); }}
+                        onClick={(e) => { e.stopPropagation(); playNext(true); }}
                         className="p-2 rounded-full text-white/70 hover:text-white"
                     >
                         <SkipForward className="size-6" />

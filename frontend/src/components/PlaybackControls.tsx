@@ -154,7 +154,7 @@ export const PlaybackControls = () => {
                             size='icon'
                             variant='ghost'
                             className='text-white hover:text-white/80 hover:bg-transparent transition-colors'
-                            onClick={playNext}
+                            onClick={() => playNext(true)}
                             disabled={!currentSong}
                         >
                             <SkipForward className='h-5 w-5 fill-current' />

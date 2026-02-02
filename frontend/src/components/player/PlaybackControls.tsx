@@ -96,7 +96,7 @@ export const PlaybackControls = () => {
 
                 {/* Next Button */}
                 <motion.button
-                    onClick={playNext}
+                    onClick={() => playNext(true)}
                     disabled={!canGoNext && !isRepeating}
                     className="p-2 rounded-full hover:bg-surface-glass-strong text-text-secondary hover:text-text-primary transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                     whileHover={canGoNext || isRepeating ? { scale: 1.1 } : {}}

@@ -33,7 +33,7 @@ export const MiniPlayer = () => {
                         <button onClick={togglePlay} className="p-2 bg-white/10 hover:bg-white/15 rounded-lg transition-colors">
                             {isPlaying ? <Pause className="size-5 text-white fill-white" /> : <Play className="size-5 text-white fill-white" />}
                         </button>
-                        <button onClick={playNext} className="p-2 hover:bg-white/5 rounded-lg transition-colors">
+                        <button onClick={() => playNext(true)} className="p-2 hover:bg-white/5 rounded-lg transition-colors">
                             <SkipForward className="size-5 text-text-secondary hover:text-white" />
                         </button>
                         <button onClick={() => {}} className="p-2 hover:bg-white/5 rounded-lg transition-colors ml-2">

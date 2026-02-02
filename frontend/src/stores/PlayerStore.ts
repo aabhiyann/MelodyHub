@@ -29,7 +29,7 @@ interface PlayerStore {
 	playAlbum: (songs: Song[], startIndex?: number) => void;
 	setCurrentSong: (song: Song | null) => void;
 	togglePlay: () => void;
-	playNext: () => void;
+	playNext: (skipped?: boolean) => void;
 	playPrevious: () => void;
 	shuffleQueue: () => void;
 	toggleRepeat: () => void;
