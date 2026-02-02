@@ -1,27 +1,32 @@
 /**
  * Accessibility Testing Suite
- * WCAG 2.1 automated testing with Axe and Jest
+ * WCAG 2.1 automated testing with Axe and Vitest
  */
 
 import { configureAxe, toHaveNoViolations } from 'jest-axe';
 import { render } from '@testing-library/react';
+import { beforeEach } from 'vitest';
 
-// Extend Jest matchers
+// Extend Vitest expect with jest-axe matchers
 expect.extend(toHaveNoViolations);
 
-// Configure Axe for WCAG 2.1 AA
+// Configure Axe for WCAG 2.1 AA (run only on the passed container, not document)
 const axe = configureAxe({
     rules: {
-        // WCAG 2.1 Level A & AA rules
         'region': { enabled: true },
         'bypass': { enabled: true },
         'color-contrast': { enabled: true },
-        'document-title': { enabled: true },
-        'html-has-lang': { enabled: true },
+        'document-title': { enabled: false }, // we test fragments, not full document
+        'html-has-lang': { enabled: false },  // same
         'label': { enabled: true },
         'link-name': { enabled: true },
-        '  button-name': { enabled: true },
+        'button-name': { enabled: true },
     },
+});
+
+beforeEach(() => {
+    document.documentElement.lang = 'en';
+    document.title = 'Test';
 });
 
 /**
@@ -116,9 +121,9 @@ describe('Accessibility Tests', () => {
 
     it('should have accessible form labels', async () => {
         const component = (
-            <form>
+            <form aria-label="Test form">
                 <label htmlFor="email">Email</label>
-                <input id="email" type="email" />
+                <input id="email" type="email" name="email" aria-label="Email" />
             </form>
         );
 

@@ -2,6 +2,7 @@ import { usePlayerStore } from "@/stores/PlayerStore";
 import { useEffect, useState } from "react";
 import { X, Music } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { LyricsPanel } from "@/components/player/LyricsPanel";
 
 const LyricsView = () => {
     const { currentSong, isLyricsOpen, toggleLyrics } = usePlayerStore();
@@ -60,35 +61,16 @@ const LyricsView = () => {
                     </Button>
                 </div>
 
-                {/* Lyrics Scroll Area */}
-                <div className="flex-1 overflow-y-auto custom-scrollbar pr-4 mask-fade-y">
-                    <div className="space-y-8 py-10">
-                        {/* Placeholder Lyrics - In a real app, this would come from an API */}
-                        {currentSong ? (
-                            <>
-                                <p className="text-3xl font-semibold text-white/90 leading-relaxed hover:text-white transition-colors cursor-pointer origin-left hover:scale-[1.02] duration-300">
-                                    (Instrumental Intro)
-                                </p>
-                                <p className="text-3xl font-semibold text-white/40 leading-relaxed hover:text-white transition-colors cursor-pointer origin-left hover:scale-[1.02] duration-300">
-                                    [Lyrics for "{currentSong.title}" are fetching...]
-                                </p>
-                                <p className="text-3xl font-semibold text-white/40 leading-relaxed hover:text-white transition-colors cursor-pointer origin-left hover:scale-[1.02] duration-300">
-                                    Imagine the most beautiful poetry here.
-                                </p>
-                                <p className="text-3xl font-semibold text-white/40 leading-relaxed hover:text-white transition-colors cursor-pointer origin-left hover:scale-[1.02] duration-300">
-                                    Lines drifting like clouds in the sky.
-                                </p>
-                                <p className="text-3xl font-semibold text-white/40 leading-relaxed hover:text-white transition-colors cursor-pointer origin-left hover:scale-[1.02] duration-300">
-                                    Syncing perfectly with the rhythm.
-                                </p>
-                            </>
-                        ) : (
-                            <div className="flex flex-col items-center justify-center h-full text-white/30">
-                                <Music className="w-24 h-24 mb-6 opacity-20" />
-                                <p className="text-2xl">Play a song to see lyrics</p>
-                            </div>
-                        )}
-                    </div>
+                {/* Lyrics Panel */}
+                <div className="flex-1 min-h-0">
+                    {currentSong ? (
+                        <LyricsPanel song={currentSong} />
+                    ) : (
+                        <div className="flex flex-col items-center justify-center h-full text-white/30">
+                            <Music className="w-24 h-24 mb-6 opacity-20" />
+                            <p className="text-2xl">Play a song to see lyrics</p>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

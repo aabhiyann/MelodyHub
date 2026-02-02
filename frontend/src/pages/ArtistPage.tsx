@@ -78,12 +78,12 @@ const ArtistPage = () => {
 
                             <div className='flex-1 text-center md:text-left space-y-4'>
                                 <div>
-                                    <p className='text-sm text-zinc-300 font-medium uppercase tracking-widest mb-2'>Artist</p>
+                                    <p className='text-sm text-text-secondary font-medium uppercase tracking-widest mb-2'>Artist</p>
                                     <h1 className='text-5xl md:text-8xl font-black text-white tracking-tight mb-4 drop-shadow-lg'>
                                         {artistName}
                                     </h1>
                                 </div>
-                                <div className='flex items-center gap-4 justify-center md:justify-start text-zinc-300'>
+                                <div className='flex items-center gap-4 justify-center md:justify-start text-text-secondary'>
                                     <span className='text-lg'>{artistSongs.length} Songs • {artistAlbums.length} Albums</span>
                                 </div>
 
@@ -113,7 +113,7 @@ const ArtistPage = () => {
                                     Popular Tracks
                                 </h2>
                                 {artistSongs.length === 0 ? (
-                                    <p className='text-zinc-400'>No tracks found for this artist.</p>
+                                    <p className='text-text-tertiary'>No tracks found for this artist.</p>
                                 ) : (
                                     <div className='bg-white/5 rounded-xl border border-white/5 overflow-hidden'>
                                         {artistSongs.map((song, index) => (
@@ -122,7 +122,7 @@ const ArtistPage = () => {
                                                 onClick={() => playAlbum(artistSongs, index)}
                                                 className='group flex items-center gap-4 p-4 hover:bg-white/10 transition-colors cursor-pointer border-b border-white/5 last:border-0'
                                             >
-                                                <span className='text-zinc-500 font-medium w-6 text-center group-hover:hidden'>{index + 1}</span>
+                                                <span className='text-text-tertiary font-medium w-6 text-center group-hover:hidden'>{index + 1}</span>
                                                 <Play className='size-4 text-white hidden group-hover:block w-6' />
 
                                                 <img
@@ -133,10 +133,10 @@ const ArtistPage = () => {
 
                                                 <div className='flex-1 min-w-0'>
                                                     <p className='font-semibold text-white truncate group-hover:text-brand-primary transition-colors'>{song.title}</p>
-                                                    <p className='text-sm text-zinc-400 truncate'>{song.albumId || 'Single'}</p>
+                                                    <p className='text-sm text-text-tertiary truncate'>{song.albumId || 'Single'}</p>
                                                 </div>
 
-                                                <span className='text-sm text-zinc-500 hover:text-white transition-colors'>
+                                                <span className='text-sm text-text-tertiary hover:text-white transition-colors'>
                                                     {/* Duration would go here */}
                                                     3:45
                                                 </span>
@@ -154,13 +154,13 @@ const ArtistPage = () => {
                                 </h2>
                                 {artistAlbums.length === 0 ? (
                                     <div className='p-8 rounded-xl bg-white/5 border border-white/5 text-center'>
-                                        <p className='text-zinc-400'>No albums found.</p>
+                                        <p className='text-text-tertiary'>No albums found.</p>
                                     </div>
                                 ) : (
                                     <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6'>
                                         {artistAlbums.map((album) => (
                                             <div key={album._id} className='group cursor-pointer space-y-3'>
-                                                <div className='relative aspect-square rounded-xl overflow-hidden shadow-lg bg-zinc-800'>
+                                                <div className='relative aspect-square rounded-xl overflow-hidden shadow-lg bg-surface-elevated'>
                                                     <img
                                                         src={album.imageUrl}
                                                         alt={album.title}
@@ -174,7 +174,7 @@ const ArtistPage = () => {
                                                 </div>
                                                 <div>
                                                     <p className='font-bold text-white truncate group-hover:text-brand-primary transition-colors'>{album.title}</p>
-                                                    <p className='text-sm text-zinc-400'>Album • {album.releaseYear}</p>
+                                                    <p className='text-sm text-text-tertiary'>Album • {album.releaseYear}</p>
                                                 </div>
                                             </div>
                                         ))}

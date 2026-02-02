@@ -35,7 +35,7 @@ const COLORS = ['#8B5CF6', '#3B82F6', '#10B981', '#F59E0B', '#EC4899'];
 const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
         return (
-            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 p-3 rounded-lg shadow-xl">
+            <div className="bg-surface-card dark:bg-surface-elevated border border-border-medium p-3 rounded-lg shadow-xl">
                 <p className="font-semibold text-sm mb-1">{label}</p>
                 <p className="text-sm text-brand-primary">
                     {payload[0].value.toLocaleString()}
@@ -53,17 +53,17 @@ export const ChartsSection = () => {
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Main Area Chart */}
-            <div className="lg:col-span-2 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-white/5 rounded-xl p-6">
+            <div className="lg:col-span-2 bg-white dark:bg-surface-base border border-border-subtle rounded-xl p-6">
                 <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">Streams Over Time</h3>
-                    <div className="flex bg-zinc-100 dark:bg-white/5 p-1 rounded-lg">
+                    <h3 className="text-lg font-semibold text-text-primary">Streams Over Time</h3>
+                    <div className="flex bg-surface-glass p-1 rounded-lg">
                         {['Daily', 'Weekly', 'Monthly'].map((range) => (
                             <button
                                 key={range}
                                 onClick={() => setTimeRange(range)}
                                 className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${timeRange === range
-                                    ? 'bg-white dark:bg-zinc-800 text-brand-primary shadow-sm'
-                                    : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-white'
+                                    ? 'bg-white dark:bg-surface-elevated text-brand-primary shadow-sm'
+                                    : 'text-text-tertiary hover:text-text-primary'
                                     }`}
                             >
                                 {range}
@@ -111,8 +111,8 @@ export const ChartsSection = () => {
             {/* Side Charts Column */}
             <div className="space-y-6">
                 {/* Bar Chart - Top Songs */}
-                <div className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-white/5 rounded-xl p-6 h-[200px] flex flex-col">
-                    <h3 className="text-sm font-semibold text-zinc-900 dark:text-white mb-4">Top Songs This Week</h3>
+                <div className="bg-white dark:bg-surface-base border border-border-subtle rounded-xl p-6 h-[200px] flex flex-col">
+                    <h3 className="text-sm font-semibold text-text-primary mb-4">Top Songs This Week</h3>
                     <div className="flex-1 w-full min-h-0">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={topSongsData}>
@@ -127,8 +127,8 @@ export const ChartsSection = () => {
                 </div>
 
                 {/* Pie Chart - Genre Distribution */}
-                <div className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-white/5 rounded-xl p-6 h-[200px] flex flex-col">
-                    <h3 className="text-sm font-semibold text-zinc-900 dark:text-white mb-4">Genre Distribution</h3>
+                <div className="bg-white dark:bg-surface-base border border-border-subtle rounded-xl p-6 h-[200px] flex flex-col">
+                    <h3 className="text-sm font-semibold text-text-primary mb-4">Genre Distribution</h3>
                     <div className="flex-1 w-full min-h-0 relative">
                         <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
@@ -152,7 +152,7 @@ export const ChartsSection = () => {
                         {/* Legend */}
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none">
                             <span className="text-2xl font-bold block">{genreData.length}</span>
-                            <span className="text-[10px] uppercase text-zinc-500 font-medium">Genres</span>
+                            <span className="text-[10px] uppercase text-text-tertiary font-medium">Genres</span>
                         </div>
                     </div>
                 </div>

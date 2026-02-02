@@ -26,20 +26,33 @@ export class LyricsService {
         return fetchedLyrics;
     }
 
-    // Placeholder for external API integration
+    // Fetch lyrics from a free public source (LRCLIB)
     private async fetchLyricsFromExternal(title: string, artist: string): Promise<string | null> {
         console.log(`[LyricsService] Fetching lyrics for: ${title} - ${artist}`);
 
-        // Mock Lyrics (LRC Format for synced display)
-        // Real implementation would use axios to call an API
-        return `[00:05.00] ♫ (Instrumental Intro) ♫
-[00:10.00] This is a generated lyric placeholder
-[00:15.00] For the song "${title}"
-[00:20.00] By the artist "${artist}"
-[00:25.00] Implementing real lyrics requires an API key
-[00:30.00] But this demonstrates the sync capability
-[00:35.00] ♫ (Instrumental Break) ♫
-[00:40.00] Enjoy the music on MelodyHub!`;
+        const url = new URL("https://lrclib.net/api/get");
+        url.searchParams.set("track_name", title);
+        url.searchParams.set("artist_name", artist);
+
+        try {
+            const response = await fetch(url.toString(), {
+                headers: {
+                    "User-Agent": "MelodyHub/1.0 (lyrics fetch)",
+                    "Accept": "application/json",
+                },
+            });
+
+            if (!response.ok) {
+                return null;
+            }
+
+            const data = await response.json();
+            const lyrics = data?.syncedLyrics || data?.plainLyrics || null;
+            return typeof lyrics === "string" && lyrics.trim().length > 0 ? lyrics : null;
+        } catch (error) {
+            console.error("[LyricsService] Failed to fetch lyrics", error);
+            return null;
+        }
     }
 }
 
