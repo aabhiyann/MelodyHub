@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useAuth } from "@clerk/clerk-react";
 
 export const axiosInstance = axios.create({
 	baseURL: import.meta.env.VITE_API_URL || "/api",
@@ -16,11 +15,9 @@ axiosInstance.interceptors.request.use(async (config) => {
 
 	// Production: Add Clerk auth token
 	try {
-		// Get Clerk session token
-		const { getToken } = useAuth.getState ? useAuth.getState() : {};
-
-		if (getToken && typeof getToken === 'function') {
-			const token = await getToken();
+		// Access Clerk from window - it's initialized by ClerkProvider
+		if (typeof window !== 'undefined' && (window as any).Clerk?.session) {
+			const token = await (window as any).Clerk.session.getToken();
 			if (token) {
 				config.headers.Authorization = `Bearer ${token}`;
 			}
