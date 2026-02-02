@@ -137,6 +137,7 @@ songSchema.index({ isTrending: 1 }); // Trending songs
 songSchema.index({ title: 'text', artist: 'text' }); // Text search
 
 // Compound indexes for complex queries
+songSchema.index({ genre: 1, createdAt: -1 }); // Genre + recent
 songSchema.index({ genre: 1, playCount: -1 }); // Popular by genre
 songSchema.index({ createdAt: -1, playCount: -1 }); // Trending new releases
 
