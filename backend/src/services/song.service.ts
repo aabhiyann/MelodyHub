@@ -1,4 +1,9 @@
 import { Song } from "../models/song.model.js";
+import { redisService } from "./redis.service.js";
+
+const CACHE_TTL_FEATURED = 3600; // 1 hour
+const CACHE_TTL_TRENDING = 900; // 15 min
+const CACHE_TTL_MADE_FOR_YOU = 21600; // 6 hours
 
 export class SongService {
   async getAllSongs(page: number = 1, limit: number = 20) {
@@ -28,7 +33,11 @@ export class SongService {
   }
 
   async getFeaturedSongs() {
-    return await Song.aggregate([
+    const cacheKey = "songs:featured";
+    const cached = await redisService.get(cacheKey);
+    if (cached) return cached as any;
+
+    const songs = await Song.aggregate([
       { $sample: { size: 6 } },
       {
         $project: {
@@ -40,10 +49,16 @@ export class SongService {
         },
       },
     ]);
+    await redisService.set(cacheKey, songs, CACHE_TTL_FEATURED);
+    return songs;
   }
 
   async getMadeForYouSongs() {
-    return await Song.aggregate([
+    const cacheKey = "songs:made-for-you";
+    const cached = await redisService.get(cacheKey);
+    if (cached) return cached as any;
+
+    const songs = await Song.aggregate([
       { $sample: { size: 6 } },
       {
         $project: {
@@ -55,12 +70,21 @@ export class SongService {
         },
       },
     ]);
+    await redisService.set(cacheKey, songs, CACHE_TTL_MADE_FOR_YOU);
+    return songs;
   }
 
   async getTrendingSongs() {
-    return await Song.find({})
+    const cacheKey = "songs:trending";
+    const cached = await redisService.get(cacheKey);
+    if (cached) return cached as any;
+
+    const songs = await Song.find({})
       .sort({ createdAt: -1 })
       .limit(4)
-      .select("title artist imageUrl audioUrl");
+      .select("title artist imageUrl audioUrl")
+      .lean();
+    await redisService.set(cacheKey, songs, CACHE_TTL_TRENDING);
+    return songs;
   }
 }
