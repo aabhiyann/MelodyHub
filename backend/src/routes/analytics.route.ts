@@ -16,7 +16,7 @@ const router = Router();
 // Analytics endpoints for tracking user behavior
 router.post("/track-play", protectRoute, trackPlay);
 router.post("/like-song", protectRoute, likeSong);
-router.get("/user-preferences", getUserPreferences);
+router.get("/user-preferences", protectRoute, getUserPreferences);
 
 // Dashboard and insights (protected)
 router.get("/dashboard", protectRoute, getDashboard);
