@@ -1,15 +1,15 @@
-#!/usr/bin/env node
+#!/usr/bin/env tsx
 
 /**
  * Make User Admin Script
  * 
  * Usage:
- *   node scripts/makeAdmin.js <clerkId>
- *   node scripts/makeAdmin.js <email>
+ *   npx tsx scripts/makeAdmin.ts <clerkId>
+ *   npx tsx scripts/makeAdmin.ts <email>
  * 
  * Examples:
- *   node scripts/makeAdmin.js user_2abc123def456
- *   node scripts/makeAdmin.js admin@example.com
+ *   npx tsx scripts/makeAdmin.ts user_2abc123def456
+ *   npx tsx scripts/makeAdmin.ts admin@example.com
  */
 
 import mongoose from 'mongoose';
@@ -21,7 +21,7 @@ dotenv.config();
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/melodyhub';
 
-async function makeAdmin(identifier) {
+async function makeAdmin(identifier: string) {
     try {
         // Connect to database
         console.log('🔌 Connecting to MongoDB...');
@@ -78,8 +78,9 @@ async function makeAdmin(identifier) {
         console.log(`   Image: ${user.imageUrl}`);
         console.log('\n🎉 Done! The user now has admin access.');
 
-    } catch (error) {
-        console.error('❌ Error:', error.message);
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        console.error('❌ Error:', message);
         process.exit(1);
     } finally {
         await mongoose.connection.close();

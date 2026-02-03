@@ -1,10 +1,10 @@
-#!/usr/bin/env node
+#!/usr/bin/env tsx
 
 /**
  * List All Users Script
  * 
  * Usage:
- *   node scripts/listUsers.js
+ *   npx tsx scripts/listUsers.ts
  */
 
 import mongoose from 'mongoose';
@@ -51,8 +51,9 @@ async function listUsers() {
         console.log(`   Admins: ${users.filter(u => u.role === 'admin').length}`);
         console.log(`   Regular users: ${users.filter(u => u.role !== 'admin').length}`);
 
-    } catch (error) {
-        console.error('❌ Error:', error.message);
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        console.error('❌ Error:', message);
         process.exit(1);
     } finally {
         await mongoose.connection.close();
