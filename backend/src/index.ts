@@ -35,6 +35,7 @@ import gamificationRoutes from './routes/gamification.route.js';
 import { connectDB, connectRedis } from './lib/db.js';
 import { validateEnv } from './lib/env.js';
 import { requestLogger } from './middleware/logger.middleware.js';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 
 dotenv.config();
 validateEnv();
@@ -162,6 +163,14 @@ if (process.env.NODE_ENV === "production") {
 		res.sendFile(path.resolve(__dirname, "../frontend", "dist", "index.html"));
 	});
 }
+
+// 404 handler for undefined routes
+app.use(notFoundHandler);
+
+// Global error handler (must be last)
+app.use(errorHandler);
+
+// Legacy error handler (will be removed after migration)
 
 app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
 	console.error("Global Error:", err);
