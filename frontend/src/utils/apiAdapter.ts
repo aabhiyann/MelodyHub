@@ -19,7 +19,7 @@
  * @param response - The axios response data
  * @returns The extracted data
  */
-export function extract Data<T>(response: any): T {
+export function extractData<T>(response: any): T {
     // Check if response follows new format
     if (response && typeof response === 'object' && 'success' in response) {
         // New format: { success: true, data: T }
