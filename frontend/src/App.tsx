@@ -8,6 +8,7 @@ import { LoadingBar } from "./components/LoadingBar";
 import { PageTransition } from "./components/PageTransition";
 import { RequireAuth } from "./guards/RequireAuth";
 import { RequireGuest } from "./guards/RequireGuest";
+import { PageErrorBoundary } from "./components/PageErrorBoundary";
 
 // New UI components
 import { SidebarLayout } from '@/components/navigation/SidebarLayout';
@@ -120,79 +121,81 @@ function App() {
 			<ShortcutsModal isOpen={isShortcutsOpen} onClose={() => setIsShortcutsOpen(false)} />
 
 			<AnimatePresence mode="wait">
-				<Routes location={location} key={location.pathname}>
-					{/* SSO Callback - Use full URL for redirects */}
-					<Route
-						path='/sso-callback'
-						element={
-							<AuthenticateWithRedirectCallback
-								signUpUrl={window.location.origin + "/auth-callback"}
-								signInUrl={window.location.origin + "/auth-callback"}
-								continueSignUpUrl={window.location.origin + "/auth-callback"}
-							/>
-						}
-					/>
+				<PageErrorBoundary>
+					<Routes location={location} key={location.pathname}>
+						{/* SSO Callback - Use full URL for redirects */}
+						<Route
+							path='/sso-callback'
+							element={
+								<AuthenticateWithRedirectCallback
+									signUpUrl={window.location.origin + "/auth-callback"}
+									signInUrl={window.location.origin + "/auth-callback"}
+									continueSignUpUrl={window.location.origin + "/auth-callback"}
+								/>
+							}
+						/>
 
-					{/* Auth Callback */}
-					<Route path='/auth-callback' element={<PageTransition><AuthCallbackPage /></PageTransition>} />
+						{/* Auth Callback */}
+						<Route path='/auth-callback' element={<PageTransition><AuthCallbackPage /></PageTransition>} />
 
-					{/* Landing Page - for guests only */}
-					<Route
-						path='/'
-						element={
-							<RequireGuest>
-								<PageTransition><LandingPage /></PageTransition>
-							</RequireGuest>
-						}
-					/>
+						{/* Landing Page - for guests only */}
+						<Route
+							path='/'
+							element={
+								<RequireGuest>
+									<PageTransition><LandingPage /></PageTransition>
+								</RequireGuest>
+							}
+						/>
 
-					{/* Authenticated Routes - wrapped in RequireAuth */}
-					<Route
-						element={
-							<RequireAuth>
-								<SidebarLayout />
-							</RequireAuth>
-						}
-					>
-						<Route path='/home' element={<PageTransition><HomePage /></PageTransition>} />
-						<Route path='/browse' element={<PageTransition><BrowsePage /></PageTransition>} />
-						<Route path='/radio' element={<PageTransition><RadioPage /></PageTransition>} />
-						<Route path='/search' element={<PageTransition><SearchPage /></PageTransition>} />
-						<Route path='/library' element={<PageTransition><LibraryPage /></PageTransition>} />
-						<Route path='/community' element={<PageTransition><CommunityPage /></PageTransition>} />
-						<Route path='/profile' element={<PageTransition><ProfilePage /></PageTransition>} />
-						<Route path='/profile/:userId' element={<PageTransition><ProfilePage /></PageTransition>} />
-						<Route path='/user/:userId' element={<PageTransition><ProfilePage /></PageTransition>} />
-						<Route path='/followers/:userId' element={<PageTransition><FollowersPage /></PageTransition>} />
-						<Route path='/following/:userId' element={<PageTransition><FollowingPage /></PageTransition>} />
-						<Route path='/chat' element={<PageTransition><ChatPage /></PageTransition>} />
-						<Route path='/playlists/:id' element={<PageTransition><PlaylistPage /></PageTransition>} />
-						<Route path='/analytics' element={<PageTransition><AnalyticsPage /></PageTransition>} />
-						<Route path='/settings' element={<PageTransition><SettingsPage /></PageTransition>} />
-						<Route path='/radio/:songId' element={<PageTransition><RadioPage /></PageTransition>} />
-						<Route path='/albums/:albumId' element={<PageTransition><AlbumPage /></PageTransition>} />
-						<Route path='/artists/:artistId' element={<PageTransition><ArtistPage /></PageTransition>} />
-						<Route path='/quests' element={<PageTransition><GamificationPage /></PageTransition>} />
-						<Route path='*' element={<PageTransition><NotFoundPage /></PageTransition>} />
-					</Route>
-
-					{/* Admin Routes - Separate Layout */}
-					<Route
-						element={
-							<RequireAuth>
-								<Outlet />
-							</RequireAuth>
-						}
-					>
-						<Route path='/admin' element={<AdminLayout />}>
-							<Route index element={<PageTransition><AdminDashboard /></PageTransition>} />
-							<Route path='songs' element={<PageTransition><AdminSongsPage /></PageTransition>} />
-							<Route path='analytics' element={<PageTransition><AnalyticsPage /></PageTransition>} />
-							<Route path='settings' element={<PageTransition><AdminSettingsPage /></PageTransition>} />
-							<Route path='*' element={<PageTransition><AdminDashboard /></PageTransition>} />
+						{/* Authenticated Routes - wrapped in RequireAuth */}
+						<Route
+							element={
+								<RequireAuth>
+									<SidebarLayout />
+								</RequireAuth>
+							}
+						>
+							<Route path='/home' element={<PageTransition><HomePage /></PageTransition>} />
+							<Route path='/browse' element={<PageTransition><BrowsePage /></PageTransition>} />
+							<Route path='/radio' element={<PageTransition><RadioPage /></PageTransition>} />
+							<Route path='/search' element={<PageTransition><SearchPage /></PageTransition>} />
+							<Route path='/library' element={<PageTransition><LibraryPage /></PageTransition>} />
+							<Route path='/community' element={<PageTransition><CommunityPage /></PageTransition>} />
+							<Route path='/profile' element={<PageTransition><ProfilePage /></PageTransition>} />
+							<Route path='/profile/:userId' element={<PageTransition><ProfilePage /></PageTransition>} />
+							<Route path='/user/:userId' element={<PageTransition><ProfilePage /></PageTransition>} />
+							<Route path='/followers/:userId' element={<PageTransition><FollowersPage /></PageTransition>} />
+							<Route path='/following/:userId' element={<PageTransition><FollowingPage /></PageTransition>} />
+							<Route path='/chat' element={<PageTransition><ChatPage /></PageTransition>} />
+							<Route path='/playlists/:id' element={<PageTransition><PlaylistPage /></PageTransition>} />
+							<Route path='/analytics' element={<PageTransition><AnalyticsPage /></PageTransition>} />
+							<Route path='/settings' element={<PageTransition><SettingsPage /></PageTransition>} />
+							<Route path='/radio/:songId' element={<PageTransition><RadioPage /></PageTransition>} />
+							<Route path='/albums/:albumId' element={<PageTransition><AlbumPage /></PageTransition>} />
+							<Route path='/artists/:artistId' element={<PageTransition><ArtistPage /></PageTransition>} />
+							<Route path='/quests' element={<PageTransition><GamificationPage /></PageTransition>} />
+							<Route path='*' element={<PageTransition><NotFoundPage /></PageTransition>} />
 						</Route>
-					</Route>
-				</Routes>
+
+						{/* Admin Routes - Separate Layout */}
+						<Route
+							element={
+								<RequireAuth>
+									<Outlet />
+								</RequireAuth>
+							}
+						>
+							<Route path='/admin' element={<AdminLayout />}>
+								<Route index element={<PageTransition><AdminDashboard /></PageTransition>} />
+								<Route path='songs' element={<PageTransition><AdminSongsPage /></PageTransition>} />
+								<Route path='analytics' element={<PageTransition><AnalyticsPage /></PageTransition>} />
+								<Route path='settings' element={<PageTransition><AdminSettingsPage /></PageTransition>} />
+								<Route path='*' element={<PageTransition><AdminDashboard /></PageTransition>} />
+							</Route>
+						</Route>
+					</Routes>
+				</PageErrorBoundary>
 			</AnimatePresence>
 			<AudioPlayer />
 			<FullScreenPlayer />

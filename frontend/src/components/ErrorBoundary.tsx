@@ -1,8 +1,10 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
+import { reportError } from '@/utils/errorReporting';
 
 interface Props {
     children: ReactNode;
     fallback?: ReactNode;
+    onError?: (error: Error, errorInfo: ErrorInfo) => void;
 }
 
 interface State {
@@ -27,13 +29,11 @@ export class ErrorBoundary extends Component<Props, State> {
     }
 
     componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-        // Log error to console in development
-        console.error('Error caught by boundary:', error, errorInfo);
+        // Report error using centralized utility
+        reportError(error, errorInfo);
 
-        // TODO: Send to error tracking service (Sentry) in production
-        // if (import.meta.env.PROD) {
-        //   Sentry.captureException(error, { extra: errorInfo });
-        // }
+        // Call optional onError callback
+        this.props.onError?.(error, errorInfo);
     }
 
     render() {
