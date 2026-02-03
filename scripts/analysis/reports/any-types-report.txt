@@ -1,0 +1,87 @@
+================================================
+TypeScript 'any' Type Analysis Report
+Generated: Tue Feb  3 18:47:06 EST 2026
+================================================
+
+SUMMARY
+-------
+Total occurrences: 53
+
+BREAKDOWN BY FILE
+-----------------
+8 occurrences in backend/src/controllers/discovery.controller.ts
+8 occurrences in backend/src/controllers/analytics.controller.ts
+6 occurrences in backend/src/utils/errors.ts
+4 occurrences in backend/src/services/user.service.ts
+4 occurrences in backend/src/__tests__/recommendation.test.ts
+3 occurrences in backend/src/utils/database.utils.ts
+3 occurrences in backend/src/routes/health.route.ts
+2 occurrences in backend/src/middleware/validate.middleware.ts
+2 occurrences in backend/src/middleware/cache.middleware.ts
+2 occurrences in backend/src/controllers/ai.controller.ts
+2 occurrences in backend/src/__tests__/songs.integration.test.ts
+1 occurrences in backend/src/services/notification.service.ts
+1 occurrences in backend/src/services/base.service.ts
+1 occurrences in backend/src/services/analytics.service.ts
+1 occurrences in backend/src/scripts/populateDatabase.ts
+1 occurrences in backend/src/middleware/errorHandler.ts
+1 occurrences in backend/src/middleware/auth.middleware.ts
+1 occurrences in backend/src/lib/socket.ts
+1 occurrences in backend/src/lib/db.ts
+1 occurrences in backend/src/controllers/album.controller.ts
+
+DETAILED OCCURRENCES
+--------------------
+backend/src/middleware/errorHandler.ts | Line 16 |  *     details?: any  // Only in development
+backend/src/middleware/cache.middleware.ts | Line 65 |             res.json = function (body: any) {
+backend/src/middleware/cache.middleware.ts | Line 99 |         res.send = function (body: any) {
+backend/src/middleware/validate.middleware.ts | Line 23 |                 const errors = error.issues.map((err: any) => ({
+backend/src/middleware/validate.middleware.ts | Line 63 |                 const errors = error.issues.map((err: any) => ({
+backend/src/middleware/auth.middleware.ts | Line 10 | 		getToken: (options?: any) => Promise<string | null>;
+backend/src/utils/errors.ts | Line 15 |     public readonly details?: any;
+backend/src/utils/errors.ts | Line 22 |         details?: any,
+backend/src/utils/errors.ts | Line 42 |     constructor(message: string, details?: any) {
+backend/src/utils/errors.ts | Line 82 |     constructor(message: string, details?: any) {
+backend/src/utils/errors.ts | Line 102 |     constructor(service: string, details?: any) {
+backend/src/utils/errors.ts | Line 112 |     constructor(message: string, details?: any) {
+backend/src/utils/database.utils.ts | Line 28 | export function createCursorPagination<T extends { _id: any }>(
+backend/src/utils/database.utils.ts | Line 44 |     let cursorValue: any = null;
+backend/src/utils/database.utils.ts | Line 76 | export function createNextCursor<T extends { _id: any }>(
+backend/src/__tests__/songs.integration.test.ts | Line 56 |             let items: any[] = [];
+backend/src/__tests__/songs.integration.test.ts | Line 88 |             let items: any[] = [];
+backend/src/__tests__/recommendation.test.ts | Line 125 |             likedSongs: testSongs.slice(0, 3).map((s: any) => s._id),
+backend/src/__tests__/recommendation.test.ts | Line 126 |             listeningHistory: testSongs.map((s: any) => ({
+backend/src/__tests__/recommendation.test.ts | Line 176 |             listeningHistory: testSongs.map((s: any) => ({
+backend/src/__tests__/recommendation.test.ts | Line 207 |             listeningHistory: testSongs.map((s: any) => ({
+backend/src/scripts/populateDatabase.ts | Line 104 |       } catch (error: any) {
+backend/src/lib/socket.ts | Line 64 | 			} catch (error: any) {
+backend/src/lib/db.ts | Line 8 |   } catch (error: any) {
+backend/src/controllers/analytics.controller.ts | Line 61 |     } catch (error: any) {
+backend/src/controllers/analytics.controller.ts | Line 125 |     } catch (error: any) {
+backend/src/controllers/analytics.controller.ts | Line 173 |     } catch (error: any) {
+backend/src/controllers/analytics.controller.ts | Line 196 |     } catch (error: any) {
+backend/src/controllers/analytics.controller.ts | Line 216 |     } catch (error: any) {
+backend/src/controllers/analytics.controller.ts | Line 235 |     } catch (error: any) {
+backend/src/controllers/analytics.controller.ts | Line 254 |     } catch (error: any) {
+backend/src/controllers/analytics.controller.ts | Line 272 |     } catch (error: any) {
+backend/src/controllers/album.controller.ts | Line 38 |     } catch (error: any) {
+backend/src/controllers/discovery.controller.ts | Line 28 |         } catch (error: any) {
+backend/src/controllers/discovery.controller.ts | Line 68 |         } catch (error: any) {
+backend/src/controllers/discovery.controller.ts | Line 126 |         } catch (error: any) {
+backend/src/controllers/discovery.controller.ts | Line 145 |         } catch (error: any) {
+backend/src/controllers/discovery.controller.ts | Line 159 |             let sortQuery: any = { playCount: -1 };
+backend/src/controllers/discovery.controller.ts | Line 172 |         } catch (error: any) {
+backend/src/controllers/discovery.controller.ts | Line 189 |         } catch (error: any) {
+backend/src/controllers/discovery.controller.ts | Line 213 |         } catch (error: any) {
+backend/src/controllers/ai.controller.ts | Line 66 | 			const songPromises = playlistData.songs.map(async (generatedSong: any) => {
+backend/src/controllers/ai.controller.ts | Line 103 | 		} catch (error: any) {
+backend/src/routes/health.route.ts | Line 38 |     } catch (error: any) {
+backend/src/routes/health.route.ts | Line 60 |     } catch (error: any) {
+backend/src/routes/health.route.ts | Line 93 |     } catch (error: any) {
+backend/src/services/notification.service.ts | Line 32 |     const filter: any = { userId };
+backend/src/services/user.service.ts | Line 126 | 		const data = connections.map((c: any) => ({
+backend/src/services/user.service.ts | Line 146 | 		const data = connections.map((c: any) => ({
+backend/src/services/user.service.ts | Line 166 | 		const set1 = new Set((user1.friends || []).map((id: any) => id.toString()));
+backend/src/services/user.service.ts | Line 167 | 		const mutual = (user2.friends || []).filter((id: any) => set1.has(id.toString()));
+backend/src/services/base.service.ts | Line 10 | 	async findAll(filter: any = {}): Promise<T[]> {
+backend/src/services/analytics.service.ts | Line 148 | ): Promise<{ data: any[]; pagination: { page: number; limit: number; total: number; totalPages: number } }> {

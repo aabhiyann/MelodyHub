@@ -1,0 +1,152 @@
+================================================
+Controller Pattern Analysis Report
+Generated: Tue Feb  3 18:47:06 EST 2026
+================================================
+
+CONTROLLER FILES
+----------------
+✓ backend/src/controllers/auth.controller.ts
+✓ backend/src/controllers/gamification.controller.ts
+✓ backend/src/controllers/analytics.controller.ts
+✓ backend/src/controllers/album.controller.ts
+✓ backend/src/controllers/notification.controller.ts
+✓ backend/src/controllers/user.controller.ts
+✓ backend/src/controllers/admin.controller.ts
+✓ backend/src/controllers/stat.controller.ts
+✓ backend/src/controllers/social.controller.ts
+✓ backend/src/controllers/discovery.controller.ts
+✓ backend/src/controllers/lyrics.controller.ts
+✓ backend/src/controllers/friend.controller.ts
+✓ backend/src/controllers/health.controller.ts
+✓ backend/src/controllers/mood.controller.ts
+✓ backend/src/controllers/activity.controller.ts
+✓ backend/src/controllers/playlist.controller.ts
+✓ backend/src/controllers/connection.controller.ts
+✓ backend/src/controllers/ai.controller.ts
+✓ backend/src/controllers/base.controller.ts
+✓ backend/src/controllers/song.controller.ts
+
+PATTERN 1: Class-based vs Function-based
+-----------------------------------------
+
+Class-based controllers:
+backend/src/controllers/activity.controller.ts
+backend/src/controllers/admin.controller.ts
+backend/src/controllers/ai.controller.ts
+backend/src/controllers/album.controller.ts
+backend/src/controllers/auth.controller.ts
+backend/src/controllers/base.controller.ts
+backend/src/controllers/discovery.controller.ts
+backend/src/controllers/gamification.controller.ts
+backend/src/controllers/health.controller.ts
+backend/src/controllers/lyrics.controller.ts
+backend/src/controllers/song.controller.ts
+backend/src/controllers/stat.controller.ts
+backend/src/controllers/user.controller.ts
+
+Function-based controllers:
+backend/src/controllers/analytics.controller.ts
+backend/src/controllers/connection.controller.ts
+backend/src/controllers/friend.controller.ts
+backend/src/controllers/mood.controller.ts
+backend/src/controllers/notification.controller.ts
+backend/src/controllers/playlist.controller.ts
+backend/src/controllers/social.controller.ts
+
+PATTERN 2: Error Handling
+-------------------------
+
+Controllers using try-catch:
+  Count: 20
+
+Controllers with custom error handling:
+  Count: 20
+
+PATTERN 3: Response Methods
+---------------------------
+
+Using handleSuccess():
+backend/src/controllers/activity.controller.ts:1
+backend/src/controllers/admin.controller.ts:6
+backend/src/controllers/album.controller.ts:2
+backend/src/controllers/auth.controller.ts:1
+backend/src/controllers/base.controller.ts:1
+backend/src/controllers/discovery.controller.ts:11
+backend/src/controllers/health.controller.ts:2
+backend/src/controllers/lyrics.controller.ts:1
+backend/src/controllers/song.controller.ts:4
+backend/src/controllers/stat.controller.ts:1
+backend/src/controllers/user.controller.ts:7
+
+Using handleError():
+backend/src/controllers/activity.controller.ts:1
+backend/src/controllers/admin.controller.ts:5
+backend/src/controllers/album.controller.ts:2
+backend/src/controllers/auth.controller.ts:1
+backend/src/controllers/base.controller.ts:1
+backend/src/controllers/discovery.controller.ts:7
+backend/src/controllers/health.controller.ts:2
+backend/src/controllers/lyrics.controller.ts:1
+backend/src/controllers/song.controller.ts:4
+backend/src/controllers/stat.controller.ts:1
+backend/src/controllers/user.controller.ts:7
+
+Direct res.status() calls:
+backend/src/controllers/activity.controller.ts:1
+backend/src/controllers/admin.controller.ts:1
+backend/src/controllers/ai.controller.ts:4
+backend/src/controllers/album.controller.ts:2
+backend/src/controllers/analytics.controller.ts:25
+backend/src/controllers/base.controller.ts:2
+backend/src/controllers/connection.controller.ts:8
+backend/src/controllers/discovery.controller.ts:1
+backend/src/controllers/friend.controller.ts:16
+backend/src/controllers/gamification.controller.ts:4
+backend/src/controllers/health.controller.ts:5
+backend/src/controllers/mood.controller.ts:3
+backend/src/controllers/notification.controller.ts:10
+backend/src/controllers/playlist.controller.ts:30
+backend/src/controllers/social.controller.ts:30
+backend/src/controllers/user.controller.ts:5
+
+PATTERN 4: Validation
+---------------------
+
+Using validation libraries:
+backend/src/controllers/social.controller.ts
+
+Manual validation (if statements):
+  None
+
+PATTERN 5: Async/Await Usage
+----------------------------
+
+Async methods per file:
+  activity.controller.ts: 1 async methods
+  admin.controller.ts: 5 async methods
+  ai.controller.ts: 2 async methods
+  album.controller.ts: 2 async methods
+  analytics.controller.ts: 8 async methods
+  auth.controller.ts: 1 async methods
+  base.controller.ts: 1 async methods
+  connection.controller.ts: 4 async methods
+  discovery.controller.ts: 8 async methods
+  friend.controller.ts: 4 async methods
+  gamification.controller.ts: 2 async methods
+  health.controller.ts: 4 async methods
+  lyrics.controller.ts: 1 async methods
+  mood.controller.ts: 2 async methods
+  notification.controller.ts: 4 async methods
+  playlist.controller.ts: 7 async methods
+  social.controller.ts: 7 async methods
+  song.controller.ts: 4 async methods
+  stat.controller.ts: 1 async methods
+  user.controller.ts: 7 async methods
+
+RECOMMENDATIONS
+---------------
+1. Standardize on class-based or function-based controllers
+2. Use consistent error handling pattern (handleError helper)
+3. Use consistent response pattern (handleSuccess helper)
+4. Implement validation middleware
+5. Document the chosen patterns

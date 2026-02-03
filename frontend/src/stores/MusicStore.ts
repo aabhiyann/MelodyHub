@@ -3,6 +3,7 @@ import { Album, Song, Stats } from '@/types';
 import toast from 'react-hot-toast';
 import { create } from 'zustand';
 import { getErrorMessage, logError } from '@/utils/errors';
+import { extractData } from '@/utils/apiAdapter';
 
 interface MusicStore {
   songs: Song[];
@@ -49,7 +50,7 @@ export const useMusicStore = create<MusicStore>((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await axiosInstance.get(`/discovery/radio/${songId}`);
-      return response.data.data;
+      return extractData<Song[]>(response.data);
     } catch (error) {
       logError('MusicStore.fetchRadioStation', error);
       return [];
@@ -62,7 +63,7 @@ export const useMusicStore = create<MusicStore>((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await axiosInstance.get('/discovery/daily-mix');
-      return response.data.data || [];
+      return extractData<Song[]>(response.data);
     } catch (error) {
       logError('MusicStore.fetchDailyMix', error);
       return [];
@@ -113,7 +114,8 @@ export const useMusicStore = create<MusicStore>((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await axiosInstance.get('/songs?limit=1000');
-      set({ songs: response.data.data });
+      const paginatedData = extractData<{ data: Song[]; pagination?: any }>(response.data);
+      set({ songs: paginatedData.data || [] });
     } catch (error) {
       set({ error: getErrorMessage(error) });
     } finally {
@@ -125,7 +127,8 @@ export const useMusicStore = create<MusicStore>((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await axiosInstance.get('/stats');
-      set({ stats: response.data });
+      const stats = extractData<Stats>(response.data);
+      set({ stats });
     } catch (error) {
       set({ error: getErrorMessage(error) });
     } finally {
@@ -138,7 +141,8 @@ export const useMusicStore = create<MusicStore>((set) => ({
 
     try {
       const response = await axiosInstance.get('/albums');
-      set({ albums: response.data.albums || [] });
+      const data = extractData<{ albums: Album[] }>(response.data);
+      set({ albums: data.albums || [] });
     } catch (error) {
       set({ error: getErrorMessage(error, 'Failed to fetch albums'), albums: [] });
     } finally {
@@ -150,7 +154,8 @@ export const useMusicStore = create<MusicStore>((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await axiosInstance.get(`/albums/${id}`);
-      set({ currentAlbum: response.data });
+      const album = extractData<Album>(response.data);
+      set({ currentAlbum: album });
     } catch (error) {
       set({ error: getErrorMessage(error) });
     } finally {
@@ -162,7 +167,8 @@ export const useMusicStore = create<MusicStore>((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await axiosInstance.get('/discovery/featured');
-      set({ featuredSongs: response.data.data || response.data || [] });
+      const songs = extractData<Song[]>(response.data);
+      set({ featuredSongs: songs });
     } catch (error) {
       logError('MusicStore.fetchFeaturedSongs', error);
       set({
@@ -178,7 +184,8 @@ export const useMusicStore = create<MusicStore>((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await axiosInstance.get('/discovery/made-for-you');
-      set({ madeForYouSongs: response.data.data || response.data || [] });
+      const songs = extractData<Song[]>(response.data);
+      set({ madeForYouSongs: songs });
     } catch (error) {
       logError('MusicStore.fetchMadeForYouSongs', error);
       set({
@@ -194,7 +201,8 @@ export const useMusicStore = create<MusicStore>((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await axiosInstance.get('/discovery/trending');
-      set({ trendingSongs: response.data.data || response.data || [] });
+      const songs = extractData<Song[]>(response.data);
+      set({ trendingSongs: songs });
     } catch (error) {
       logError('MusicStore.fetchTrendingSongs', error);
       set({
@@ -214,8 +222,9 @@ export const useMusicStore = create<MusicStore>((set) => ({
           'Content-Type': 'multipart/form-data',
         },
       });
+      const newSong = extractData<Song>(response.data);
       set((state) => ({
-        songs: [...state.songs, response.data.data],
+        songs: [...state.songs, newSong],
       }));
       toast.success('Song added successfully');
     } catch (error) {

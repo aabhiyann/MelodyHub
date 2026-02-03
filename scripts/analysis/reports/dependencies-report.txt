@@ -1,0 +1,83 @@
+================================================
+Dependency Usage Analysis Report
+Generated: Tue Feb  3 18:47:07 EST 2026
+================================================
+
+INSTALLED DEPENDENCIES
+----------------------
+Dependencies from package.json:
+
+Production Dependencies:
+  - @clerk/express : ^1.3.57
+  - @google/generative-ai : ^0.24.1
+  - axios : ^1.13.2
+  - cloudinary : ^2.6.0
+  - compression : ^1.8.1
+  - cors : ^2.8.5
+  - dotenv : ^16.4.7
+  - express : ^4.21.2
+  - express-fileupload : ^1.5.1
+  - express-rate-limit : ^8.2.1
+  - helmet : ^8.1.0
+  - ioredis : ^5.9.2
+  - mongodb : ^6.15.0
+  - mongoose : ^8.13.0
+  - node-cron : ^3.0.3
+  - redis : ^5.10.0
+  - socket.io : ^4.8.1
+  - spotify-web-api-node : ^5.0.2
+  - swagger-jsdoc : ^6.2.8
+  - swagger-ui-express : ^5.0.1
+  - zod : ^4.3.5
+  - zustand : ^5.0.3
+
+Dev Dependencies:
+  - @eslint/js : ^9.39.2
+  - @jest/test-sequencer : ^30.2.0
+  - @types/compression : ^1.8.1
+  - @types/cors : ^2.8.19
+  - @types/express : ^5.0.6
+  - @types/express-fileupload : ^1.5.1
+  - @types/express-rate-limit : ^5.1.3
+  - @types/jest : ^30.0.0
+  - @types/node : ^25.0.10
+  - @types/node-cron : ^3.0.11
+  - @types/spotify-web-api-node : ^5.0.11
+  - @types/supertest : ^6.0.3
+  - @types/swagger-jsdoc : ^6.0.4
+  - @types/swagger-ui-express : ^4.1.8
+  - eslint : ^9.39.2
+  - globals : ^17.1.0
+  - jest : ^30.2.0
+  - mongodb-memory-server : ^11.0.1
+  - nodemon : ^3.1.9
+  - supertest : ^7.2.2
+  - ts-jest : ^29.4.6
+  - ts-node : ^10.9.2
+  - tsx : ^4.21.0
+  - typescript : ^5.9.3
+  - typescript-eslint : ^8.53.1
+
+USAGE CHECK
+-----------
+Checking if dependencies are imported in code...
+
+✓ express - Used (47 imports)
+✓ mongoose - Used (33 imports)
+✓ dotenv - Used (7 imports)
+✓ cors - Used (1 imports)
+✓ socket.io - Used (1 imports)
+⚠️  bcryptjs - NOT FOUND in imports (potentially unused)
+⚠️  jsonwebtoken - NOT FOUND in imports (potentially unused)
+✓ cloudinary - Used (1 imports)
+⚠️  cookie-parser - NOT FOUND in imports (potentially unused)
+
+RECOMMENDATIONS
+---------------
+1. Review packages marked as 'potentially unused'
+2. Consider using 'npx depcheck' for comprehensive analysis
+3. Remove truly unused dependencies to reduce bundle size
+4. Update outdated dependencies
+
+Run this for detailed analysis:
+  cd backend && npx depcheck
