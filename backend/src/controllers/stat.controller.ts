@@ -13,7 +13,7 @@ export class StatController extends BaseController {
   async getStats(req: Request, res: Response, next: NextFunction) {
     try {
       const stats = await this.statService.fetchStats();
-      this.handleSuccess(res, stats);
+      this.handleSuccess(res, stats, 200, true); // ← New format
     } catch (error) {
       this.handleError(next, error);
     }

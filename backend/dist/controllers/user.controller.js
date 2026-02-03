@@ -14,7 +14,7 @@ export class UserController extends BaseController {
         try {
             const currentUserId = req.auth.userId;
             const users = await this.userService.getAllExcept(currentUserId);
-            this.handleSuccess(res, users);
+            this.handleSuccess(res, users, 200, true); // ← New format
         }
         catch (error) {
             this.handleError(next, error);
@@ -25,7 +25,7 @@ export class UserController extends BaseController {
             const myId = req.auth.userId;
             const { userId } = req.params;
             const messages = await this.userService.getMessagesBetweenUsers(myId, userId);
-            this.handleSuccess(res, messages);
+            this.handleSuccess(res, messages, 200, true); // ← New format
         }
         catch (error) {
             this.handleError(next, error);
