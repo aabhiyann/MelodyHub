@@ -22,6 +22,7 @@ import { NewReleases } from '@/pages/home/components/NewReleases';
 import { MoodSection } from '@/pages/home/components/MoodSection';
 import { RecommendedSection } from '@/pages/home/components/RecommendedSection';
 import { TopArtists } from '@/pages/home/components/TopArtists';
+import { SectionErrorBoundary } from '@/components/SectionErrorBoundary';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -114,7 +115,9 @@ const HomePage = () => {
 
               {/* 4. MADE FOR YOU */}
               <div className="px-6">
-                <MadeForYou songs={madeForYouSongs} isLoading={isLoading} />
+                <SectionErrorBoundary sect ionName="Made For You">
+                  <MadeForYou songs={madeForYouSongs} isLoading={isLoading} />
+                </SectionErrorBoundary>
               </div>
 
               {/* 5. PLAY BY MOOD */}
@@ -124,11 +127,13 @@ const HomePage = () => {
 
               {/* 6. CHARTS & TRENDING */}
               <div className="px-6">
-                <ChartsMosaic
-                  trendingSongs={trendingSongs}
-                  featuredSongs={featuredSongs}
-                  isLoading={isLoading}
-                />
+                <SectionErrorBoundary sectionName="Charts & Trending">
+                  <ChartsMosaic
+                    trendingSongs={trendingSongs}
+                    featuredSongs={featuredSongs}
+                    isLoading={isLoading}
+                  />
+                </SectionErrorBoundary>
               </div>
 
               {/* 7. GENRE EXPLORATION */}
@@ -173,7 +178,9 @@ const HomePage = () => {
       {/* Activity Feed Sidebar */}
       {isActivityPanelOpen && (
         <div className="hidden lg:block animate-in slide-in-from-right-10 duration-300 w-[280px] border-l border-white/5 bg-black/20 backdrop-blur-xl">
-          <ActivityFeed />
+          <SectionErrorBoundary sectionName="Activity Feed">
+            <ActivityFeed />
+          </SectionErrorBoundary>
         </div>
       )}
     </main>

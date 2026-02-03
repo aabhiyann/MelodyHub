@@ -10,6 +10,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import MessageInput from "../components/MessageInput";
 import { MascotImage } from "@/components/MascotImage";
 import { motion } from "framer-motion";
+import { SectionErrorBoundary } from "@/components/SectionErrorBoundary";
 
 const formatTime = (date: string) => {
 	return new Date(date).toLocaleTimeString("en-US", {
@@ -44,7 +45,9 @@ const ChatPage = () => {
 			<Topbar />
 
 			<div className='grid md:grid-cols-[300px_1fr] grid-cols-[80px_1fr] flex-1 min-h-0 rounded-xl overflow-hidden bg-background-elevated/40 backdrop-blur-lg border border-white/5'>
-				<FriendsList />
+				<SectionErrorBoundary sectionName="Friends List">
+					<FriendsList />
+				</SectionErrorBoundary>
 
 				<div className='flex flex-col h-full bg-white/[0.02] backdrop-blur-md relative min-h-0 overflow-hidden'>
 					{selectedUser ? (
