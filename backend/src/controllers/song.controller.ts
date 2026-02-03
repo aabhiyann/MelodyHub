@@ -20,7 +20,7 @@ export class SongController extends BaseController {
 
 
       const result = await this.songService.getAllSongs(page, limit);
-      this.handleSuccess(res, result);
+      this.handleSuccess(res, result, 200, true); // ← New format
     } catch (error) {
       this.handleError(next, error);
     }
@@ -29,7 +29,7 @@ export class SongController extends BaseController {
   async getFeaturedSongs(req: Request, res: Response, next: NextFunction) {
     try {
       const songs = await this.songService.getFeaturedSongs();
-      this.handleSuccess(res, songs);
+      this.handleSuccess(res, songs, 200, true); // ← New format
     } catch (error) {
       this.handleError(next, error);
     }
@@ -38,7 +38,7 @@ export class SongController extends BaseController {
   async getMadeForYouSongs(req: Request, res: Response, next: NextFunction) {
     try {
       const songs = await this.songService.getMadeForYouSongs();
-      this.handleSuccess(res, songs);
+      this.handleSuccess(res, songs, 200, true); // ← New format
     } catch (error) {
       this.handleError(next, error);
     }
@@ -47,7 +47,7 @@ export class SongController extends BaseController {
   async getTrendingSongs(req: Request, res: Response, next: NextFunction) {
     try {
       const songs = await this.songService.getTrendingSongs();
-      this.handleSuccess(res, songs);
+      this.handleSuccess(res, songs, 200, true); // ← New format
     } catch (error) {
       this.handleError(next, error);
     }
