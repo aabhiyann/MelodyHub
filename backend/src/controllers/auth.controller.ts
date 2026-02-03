@@ -21,7 +21,7 @@ export class AuthController extends BaseController {
         await user.save();
       }
 
-      this.handleSuccess(res, user);
+      this.handleSuccess(res, user, 200, true); // ← New format
     } catch (error) {
       this.handleError(next, error);
     }

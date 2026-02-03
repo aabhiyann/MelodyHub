@@ -20,7 +20,7 @@ export class HealthController extends BaseController {
                 environment: process.env.NODE_ENV || 'development',
             };
 
-            this.handleSuccess(res, healthData);
+            this.handleSuccess(res, healthData, 200, true); // ← New format
         } catch (error) {
             this.handleError(next, error);
         }

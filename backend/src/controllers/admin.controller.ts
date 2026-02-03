@@ -92,13 +92,13 @@ export class AdminController extends BaseController {
       const userId = (req as any).auth?.userId;
 
       if (!userId) {
-        return this.handleSuccess(res, { admin: false });
+        return this.handleSuccess(res, { admin: false }, 200, true); // ← New format
       }
 
       // Check if user has admin role (middleware should have attached this)
       const isAdmin = (req as any).auth?.role === 'admin';
 
-      this.handleSuccess(res, { admin: isAdmin });
+      this.handleSuccess(res, { admin: isAdmin }, 200, true); // ← New format
     } catch (error) {
       this.handleError(next, error);
     }

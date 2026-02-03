@@ -18,7 +18,7 @@ export class AuthController extends BaseController {
                 user.imageUrl = imageUrl;
                 await user.save();
             }
-            this.handleSuccess(res, user);
+            this.handleSuccess(res, user, 200, true); // ← New format
         }
         catch (error) {
             this.handleError(next, error);

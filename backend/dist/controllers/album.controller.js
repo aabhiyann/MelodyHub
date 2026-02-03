@@ -18,7 +18,7 @@ export class AlbumController extends BaseController {
                 });
             }
             const result = await this.albumService.getAllAlbums(page, limit);
-            this.handleSuccess(res, result);
+            this.handleSuccess(res, result, 200, true); // ← New format
         }
         catch (error) {
             this.handleError(next, error);
@@ -28,7 +28,7 @@ export class AlbumController extends BaseController {
         try {
             const { albumId } = req.params;
             const album = await this.albumService.getAlbumById(albumId);
-            this.handleSuccess(res, album);
+            this.handleSuccess(res, album, 200, true); // ← New format
         }
         catch (error) {
             if (error.message === "Album not found") {

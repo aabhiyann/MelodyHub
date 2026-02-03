@@ -14,7 +14,7 @@ export class LyricsController extends BaseController {
         try {
             const songId = req.params.songId as string;
             const lyrics = await this.lyricsService.getLyrics(songId);
-            this.handleSuccess(res, { lyrics });
+            this.handleSuccess(res, { lyrics }, 200, true); // ← New format
         } catch (error) {
             this.handleError(next, error);
         }

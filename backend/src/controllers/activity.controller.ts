@@ -51,7 +51,7 @@ export class ActivityController extends BaseController {
             }
 
             const feed = await this.activityService.getFeed(currentUser._id as string);
-            this.handleSuccess(res, feed);
+            this.handleSuccess(res, feed, 200, true); // ← New format
         } catch (error) {
             this.handleError(next, error);
         }
