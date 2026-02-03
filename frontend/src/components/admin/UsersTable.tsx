@@ -22,7 +22,7 @@ interface AdminUser extends User {
 }
 
 interface UsersTableProps {
-    users?: any[];
+    users?: User[];
     isLoading?: boolean;
     onRoleChange?: (userId: string, role: 'admin' | 'user') => void;
     onStatusChange?: (userId: string, status: 'active' | 'suspended') => void;

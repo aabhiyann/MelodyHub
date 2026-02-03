@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
-	
+
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
@@ -13,6 +13,7 @@ import { axiosInstance } from "@/lib/axios";
 import { Plus, Upload } from "lucide-react";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { getErrorMessage } from "@/utils/errors";
 
 const AddAlbumDialog = () => {
 	const [albumDialogOpen, setAlbumDialogOpen] = useState(false);
@@ -62,8 +63,8 @@ const AddAlbumDialog = () => {
 			setImageFile(null);
 			setAlbumDialogOpen(false);
 			toast.success("Album created successfully");
-		} catch (error: any) {
-			toast.error("Failed to create album: " + error.message);
+		} catch (error) {
+			toast.error(getErrorMessage(error, "Failed to create album"));
 		} finally {
 			setIsLoading(false);
 		}

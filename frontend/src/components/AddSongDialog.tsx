@@ -15,6 +15,7 @@ import { useMusicStore } from "@/stores/MusicStore";
 import { Plus, Upload } from "lucide-react";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { getErrorMessage } from "@/utils/errors";
 
 interface NewSong {
 	title: string;
@@ -81,8 +82,8 @@ const AddSongDialog = () => {
 				image: null,
 			});
 			toast.success("Song added successfully");
-		} catch (error: any) {
-			toast.error("Failed to add song: " + error.message);
+		} catch (error) {
+			toast.error(getErrorMessage(error, "Failed to add song"));
 		} finally {
 			setIsLoading(false);
 		}
@@ -197,9 +198,9 @@ const AddSongDialog = () => {
 								<SelectValue placeholder='Select album' />
 							</SelectTrigger>
 							<SelectContent className='bg-zinc-800 border-zinc-700 text-white'>
-								<SelectItem className = 'hover:bg-zinc-500'value='none'>No Album (Single)</SelectItem>
+								<SelectItem className='hover:bg-zinc-500' value='none'>No Album (Single)</SelectItem>
 								{albums.map((album) => (
-									<SelectItem className = 'hover:bg-zinc-500' key={album._id} value={album._id}>
+									<SelectItem className='hover:bg-zinc-500' key={album._id} value={album._id}>
 										{album.title}
 									</SelectItem>
 								))}
@@ -209,10 +210,10 @@ const AddSongDialog = () => {
 				</div>
 
 				<DialogFooter>
-					<Button className = 'hover:bg-zinc-500' variant='outline' onClick={() => setSongDialogOpen(false)} disabled={isLoading}>
+					<Button className='hover:bg-zinc-500' variant='outline' onClick={() => setSongDialogOpen(false)} disabled={isLoading}>
 						Cancel
 					</Button>
-					<Button  className = 'bg-violet-500 hover:bg-violet-600' variant='outline' onClick={handleSubmit} disabled={isLoading}>
+					<Button className='bg-violet-500 hover:bg-violet-600' variant='outline' onClick={handleSubmit} disabled={isLoading}>
 						{isLoading ? "Uploading..." : "Add Song"}
 					</Button>
 				</DialogFooter>

@@ -16,6 +16,7 @@ import { Upload, Music } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { Song } from "@/types";
+import { getErrorMessage } from "@/utils/errors";
 
 interface SongDialogProps {
     mode?: "add" | "edit";
@@ -121,8 +122,8 @@ const SongDialog = ({
 
             fetchSongs(); // Refresh list
             onOpenChange(false);
-        } catch (error: any) {
-            toast.error(`Failed to ${mode} song: ` + error.message);
+        } catch (error) {
+            toast.error(getErrorMessage(error, `Failed to ${mode} song`));
         } finally {
             setIsLoading(false);
         }
