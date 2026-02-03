@@ -73,6 +73,18 @@ export class AdminController extends BaseController {
         }
     }
     async checkAdmin(req, res, next) {
-        this.handleSuccess(res, { admin: true });
+        try {
+            // Get user from auth middleware
+            const userId = req.auth?.userId;
+            if (!userId) {
+                return this.handleSuccess(res, { admin: false });
+            }
+            // Check if user has admin role (middleware should have attached this)
+            const isAdmin = req.auth?.role === 'admin';
+            this.handleSuccess(res, { admin: isAdmin });
+        }
+        catch (error) {
+            this.handleError(next, error);
+        }
     }
 }
