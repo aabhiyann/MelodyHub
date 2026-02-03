@@ -3,6 +3,7 @@ import { create } from "zustand";
 import toast from "react-hot-toast";
 import { FriendRequest, Activity, UserProfile } from "@/types/social";
 import { getErrorMessage } from "@/utils/errors";
+import { extractData } from "@/utils/apiAdapter"; // Import the adapter
 
 // Re-export User as UserProfile for backwards compatibility
 export type User = UserProfile;
@@ -38,7 +39,7 @@ export const useSocialStore = create<SocialStore>((set, get) => ({
         set({ isLoading: true, error: null });
         try {
             const response = await axiosInstance.get("/users");
-            set({ users: response.data });
+            set({ users: extractData<UserProfile[]>(response.data) }); // Use extractData
         } catch (error) {
             set({ error: getErrorMessage(error) });
         } finally {
