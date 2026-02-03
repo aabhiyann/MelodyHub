@@ -1,27 +1,16 @@
 import { axiosInstance } from "@/lib/axios";
 import { create } from "zustand";
 import toast from "react-hot-toast";
+import { FriendRequest, Activity, UserProfile } from "@/types/social";
+import { getErrorMessage } from "@/utils/errors";
 
-// Types
-export interface User {
-    _id: string;
-    fullName: string;
-    imageUrl: string;
-    clerkId: string;
-}
-
-export interface Activity {
-    _id: string;
-    userId: User;
-    type: "like_song" | "create_playlist" | "follow_user" | "friend_add";
-    targetId: any; // Can be Song, Playlist, or User
-    createdAt: string;
-}
+// Re-export User as UserProfile for backwards compatibility
+export type User = UserProfile;
 
 interface SocialStore {
-    users: User[];
+    users: UserProfile[];
     friends: string[]; // List of friend IDs
-    friendRequests: any[];
+    friendRequests: FriendRequest[];
     activity: Activity[];
     isLoading: boolean;
     error: string | null;
@@ -50,8 +39,8 @@ export const useSocialStore = create<SocialStore>((set, get) => ({
         try {
             const response = await axiosInstance.get("/users");
             set({ users: response.data });
-        } catch (error: any) {
-            set({ error: error.message });
+        } catch (error) {
+            set({ error: getErrorMessage(error) });
         } finally {
             set({ isLoading: false });
         }
@@ -62,8 +51,8 @@ export const useSocialStore = create<SocialStore>((set, get) => ({
         try {
             const response = await axiosInstance.get("/social/friends");
             set({ friends: response.data.data });
-        } catch (error: any) {
-            set({ error: error.message });
+        } catch (error) {
+            set({ error: getErrorMessage(error) });
         } finally {
             set({ isLoading: false });
         }
@@ -74,8 +63,8 @@ export const useSocialStore = create<SocialStore>((set, get) => ({
         try {
             const response = await axiosInstance.get("/social/friend-requests");
             set({ friendRequests: response.data.data });
-        } catch (error: any) {
-            set({ error: error.message });
+        } catch (error) {
+            set({ error: getErrorMessage(error) });
         } finally {
             set({ isLoading: false });
         }
@@ -86,8 +75,8 @@ export const useSocialStore = create<SocialStore>((set, get) => ({
         try {
             const response = await axiosInstance.get("/social/activity");
             set({ activity: response.data.data });
-        } catch (error: any) {
-            set({ error: error.message });
+        } catch (error) {
+            set({ error: getErrorMessage(error) });
         } finally {
             set({ isLoading: false });
         }
@@ -97,8 +86,8 @@ export const useSocialStore = create<SocialStore>((set, get) => ({
         try {
             await axiosInstance.post("/social/friend-request", { friendId });
             toast.success("Friend request sent");
-        } catch (error: any) {
-            toast.error(error.response?.data?.message || "Failed to send request");
+        } catch (error) {
+            toast.error(getErrorMessage(error, "Failed to send request"));
         }
     },
 
@@ -108,8 +97,8 @@ export const useSocialStore = create<SocialStore>((set, get) => ({
             toast.success("Friend request accepted");
             get().fetchFriendRequests();
             get().fetchFriends();
-        } catch (error: any) {
-            toast.error("Failed to accept request");
+        } catch (error) {
+            toast.error(getErrorMessage(error, "Failed to accept request"));
         }
     },
 
@@ -118,8 +107,8 @@ export const useSocialStore = create<SocialStore>((set, get) => ({
             await axiosInstance.put(`/social/friend-request/${requestId}/reject`);
             toast.success("Friend request rejected");
             get().fetchFriendRequests();
-        } catch (error: any) {
-            toast.error("Failed to reject request");
+        } catch (error) {
+            toast.error(getErrorMessage(error, "Failed to reject request"));
         }
     },
 
@@ -128,8 +117,8 @@ export const useSocialStore = create<SocialStore>((set, get) => ({
             await axiosInstance.delete(`/social/friends/${friendId}`);
             toast.success("Friend removed");
             get().fetchFriends();
-        } catch (error: any) {
-            toast.error("Failed to remove friend");
+        } catch (error) {
+            toast.error(getErrorMessage(error, "Failed to remove friend"));
         }
     },
 }));
