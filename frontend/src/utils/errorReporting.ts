@@ -1,58 +1,183 @@
 /**
- * Error Reporting Utility
- * Centralized error logging and monitoring integration
+ * Enhanced Error Reporting with Monitoring Integration
+ * 
+ * This utility provides comprehensive error logging and integrates with
+ * production monitoring services like Sentry, LogRocket, etc.
  */
 
+import { ErrorInfo } from 'react';
+
+// Define error severity levels
+export enum ErrorSeverity {
+  INFO = 'info',
+  WARNING = 'warning',
+  ERROR = 'error',
+  FATAL = 'fatal'
+}
+
+// Extended error context
+export interface ErrorContext {
+  component?: string;
+  userId?: string;
+  userEmail?: string;
+  route?: string;
+  action?: string;
+  metadata?: Record<string, any>;
+  severity?: ErrorSeverity;
+}
+
+/**
+ * Report error to monitoring service and console
+ */
 export const reportError = (
   error: Error,
-  errorInfo?: React.ErrorInfo,
-  context?: string
+  errorInfo?: ErrorInfo,
+  context?: string | ErrorContext
 ): void => {
-  // Always log to console in development
+  // Normalize context
+  const errorContext: ErrorContext = typeof context === 'string'
+    ? { component: context }
+    : (context || {});
+
+  const severity = errorContext.severity || ErrorSeverity.ERROR;
+
+  // Development logging
   if (import.meta.env.DEV) {
-    console.group('🚨 Error Boundary Caught Error');
+    console.group(`🚨 Error Boundary Caught Error [${severity.toUpperCase()}]`);
     console.error('Error:', error);
     console.error('Error Message:', error.message);
-    console.error('Stack:', error.stack);
-    if (errorInfo) {
+    if (error.stack) {
+      console.error('Stack Trace:', error.stack);
+    }
+    if (errorInfo?.componentStack) {
       console.error('Component Stack:', errorInfo.componentStack);
     }
-    if (context) {
-      console.error('Context:', context);
+    if (errorContext) {
+      console.log('Context:', errorContext);
     }
     console.groupEnd();
   }
 
-  // Send to monitoring service (Sentry, LogRocket, etc.)
-  // Uncomment and configure when ready
-  /*
-  if (typeof window !== 'undefined' && window.Sentry) {
-    window.Sentry.captureException(error, {
-      extra: {
-        componentStack: errorInfo?.componentStack,
-        context,
-      },
-    });
+  // Production monitoring integration
+  if (import.meta.env.PROD) {
+    // Sentry integration
+    if (window.Sentry) {
+      window.Sentry.withScope((scope) => {
+        // Set severity
+        scope.setLevel(severity === ErrorSeverity.FATAL ? 'fatal' : severity);
+
+        // Set user context
+        if (errorContext.userId) {
+          scope.setUser({
+            id: errorContext.userId,
+            email: errorContext.userEmail
+          });
+        }
+
+        // Set custom context
+        if (errorContext.component) {
+          scope.setTag('component', errorContext.component);
+        }
+        if (errorContext.route) {
+          scope.setTag('route', errorContext.route);
+        }
+        if (errorContext.action) {
+          scope.setContext('action', { name: errorContext.action });
+        }
+        if (errorContext.metadata) {
+          scope.setContext('metadata', errorContext.metadata);
+        }
+
+        // Set component stack if available
+        if (errorInfo?.componentStack) {
+          scope.setContext('react', {
+            componentStack: errorInfo.componentStack
+          });
+        }
+
+        // Capture the error
+        window.Sentry.captureException(error);
+      });
+    }
+
+    // LogRocket integration
+    if (window.LogRocket) {
+      window.LogRocket.captureException(error, {
+        tags: {
+          component: errorContext.component,
+          severity
+        },
+        extra: {
+          errorInfo,
+          ...errorContext.metadata
+        }
+      });
+    }
+
+    // Custom analytics/logging service
+    if (window.analytics) {
+      window.analytics.track('Error Occurred', {
+        error: error.message,
+        component: errorContext.component,
+        severity,
+        stack: error.stack,
+        ...errorContext.metadata
+      });
+    }
   }
-  */
-
-  // Could also send to custom logging endpoint
-  /*
-  fetch('/api/errors', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      error: error.toString(),
-      stack: error.stack,
-      componentStack: errorInfo?.componentStack,
-      context,
-      timestamp: new Date().toISOString(),
-    }),
-  }).catch(console.error);
-  */
 };
 
-export const logError = (context: string, error: unknown): void => {
-  const errorObj = error instanceof Error ? error : new Error(String(error));
-  reportError(errorObj, undefined, context);
+/**
+ * Report network errors specifically
+ */
+export const reportNetworkError = (
+  error: Error,
+  endpoint?: string,
+  method?: string
+): void => {
+  reportError(error, undefined, {
+    component: 'NetworkRequest',
+    severity: ErrorSeverity.WARNING,
+    metadata: {
+      endpoint,
+      method,
+      isNetworkError: true,
+      timestamp: new Date().toISOString()
+    }
+  });
 };
+
+/**
+ * Report user action errors
+ */
+export const reportUserActionError = (
+  error: Error,
+  action: string,
+  metadata?: Record<string, any>
+): void => {
+  reportError(error, undefined, {
+    action,
+    severity: ErrorSeverity.ERROR,
+    metadata: {
+      ...metadata,
+      userAction: true,
+      timestamp: new Date().toISOString()
+    }
+  });
+};
+
+// Type declarations for monitoring services
+declare global {
+  interface Window {
+    Sentry?: {
+      withScope: (callback: (scope: any) => void) => void;
+      captureException: (error: Error) => void;
+    };
+    LogRocket?: {
+      captureException: (error: Error, context?: any) => void;
+    };
+    analytics?: {
+      track: (event: string, properties?: any) => void;
+    };
+  }
+}
