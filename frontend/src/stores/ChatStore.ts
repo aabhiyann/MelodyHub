@@ -4,7 +4,7 @@ import { useAuthStore } from "./AuthStore";
 import { axiosInstance } from "@/lib/axios";
 import { Message, User } from "@/types";
 import { FriendRequest } from "@/types/social";
-import { handleApiError, getErrorMessage } from "@/utils/errors";
+import { getErrorMessage } from "@/utils/errors";
 
 interface ChatStore {
 	messages: Message[];
