@@ -4,6 +4,7 @@
 import { axiosInstance } from "@/lib/axios";
 import { User } from "@/types";
 import { create } from "zustand";
+import { getErrorMessage } from "@/utils/errors";
 
 interface AuthStoreState {
 	authUser: User | null;
@@ -31,10 +32,10 @@ export const useAuthStore = create<AuthStoreState>((set) => ({
 		try {
 			const response = await axiosInstance.get("/admin/check");
 			set({ isAdmin: response.data.admin, isLoading: false });
-		} catch (error: any) {
+		} catch (error) {
 			set({
 				isAdmin: false,
-				error: error.response?.data?.message || "Failed to check admin status",
+				error: getErrorMessage(error, "Failed to check admin status"),
 				isLoading: false,
 			});
 		}

@@ -4,6 +4,7 @@ import { KPICards } from '@/components/admin/KPICards';
 import { ChartsSection } from '@/components/admin/ChartsSection';
 import { ActivityFeed } from '@/components/admin/ActivityFeed';
 import { motion } from 'framer-motion';
+import { SectionErrorBoundary } from '@/components/SectionErrorBoundary';
 
 const AdminDashboard = () => {
     const { authUser } = useAuthStore();
@@ -40,7 +41,9 @@ const AdminDashboard = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
             >
-                <KPICards />
+                <SectionErrorBoundary sectionName="Dashboard Stats">
+                    <KPICards />
+                </SectionErrorBoundary>
             </motion.div>
 
             {/* Main Content Grid */}
@@ -52,7 +55,9 @@ const AdminDashboard = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
                 >
-                    <ChartsSection />
+                    <SectionErrorBoundary sectionName="Charts">
+                        <ChartsSection />
+                    </SectionErrorBoundary>
                 </motion.div>
 
                 {/* Activity Feed */}
@@ -62,7 +67,9 @@ const AdminDashboard = () => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
                 >
-                    <ActivityFeed />
+                    <SectionErrorBoundary sectionName="Activity Feed">
+                        <ActivityFeed />
+                    </SectionErrorBoundary>
                 </motion.div>
             </div>
         </div>

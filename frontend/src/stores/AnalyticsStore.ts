@@ -1,5 +1,7 @@
 import { axiosInstance } from "@/lib/axios";
 import { create } from "zustand";
+import { Song } from "@/types";
+import { getErrorMessage } from "@/utils/errors";
 
 interface AnalyticsStats {
     totalPlays: number;
@@ -7,7 +9,7 @@ interface AnalyticsStats {
     favoriteGenres: string[];
     favoriteArtists: string[];
     listeningHistory: {
-        songId: any; // Populated song object
+        songId: Song; // Populated song object
         playedAt: string;
         completionRate: number;
         skipped: boolean;
@@ -32,9 +34,9 @@ export const useAnalyticsStore = create<AnalyticsStore>((set) => ({
         try {
             const response = await axiosInstance.get("/analytics/user-preferences");
             set({ stats: response.data.data });
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error fetching analytics:", error);
-            set({ error: error.response?.data?.message || "Failed to fetch analytics" });
+            set({ error: getErrorMessage(error, "Failed to fetch analytics") });
         } finally {
             set({ isLoading: false });
         }

@@ -3,6 +3,8 @@ import { create } from "zustand";
 import { useAuthStore } from "./AuthStore";
 import { axiosInstance } from "@/lib/axios";
 import { Message, User } from "@/types";
+import { FriendRequest } from "@/types/social";
+import { getErrorMessage } from "@/utils/errors";
 
 interface ChatStore {
 	messages: Message[];
@@ -16,7 +18,7 @@ interface ChatStore {
 
 	// Friend System
 	friends: User[];
-	friendRequests: any[];
+	friendRequests: FriendRequest[];
 	searchResult: User[];
 
 	// Actions
@@ -82,8 +84,9 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 		try {
 			await axiosInstance.post("/friends/request", { receiverId });
 			import("react-hot-toast").then(({ toast }) => toast.success("Friend request sent"));
-		} catch (error: any) {
-			import("react-hot-toast").then(({ toast }) => toast.error(error.response?.data?.message || "Failed to send request"));
+		} catch (error) {
+			const errorMsg = getErrorMessage(error, "Failed to send request");
+			import("react-hot-toast").then(({ toast }) => toast.error(errorMsg));
 		}
 	},
 
@@ -93,8 +96,9 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 			import("react-hot-toast").then(({ toast }) => toast.success("Friend request accepted"));
 			get().fetchFriends();
 			get().fetchFriendRequests();
-		} catch (error: any) {
-			import("react-hot-toast").then(({ toast }) => toast.error(error.response?.data?.message || "Failed to accept request"));
+		} catch (error) {
+			const errorMsg = getErrorMessage(error, "Failed to accept request");
+			import("react-hot-toast").then(({ toast }) => toast.error(errorMsg));
 		}
 	},
 

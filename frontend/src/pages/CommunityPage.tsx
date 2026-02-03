@@ -6,6 +6,7 @@ import { useSocialStore } from "@/stores/useSocialStore";
 import { useUser } from "@clerk/clerk-react";
 import { Loader, Search, UserMinus, UserPlus, Users } from "lucide-react";
 import { useEffect, useState } from "react";
+import { SectionErrorBoundary } from "@/components/SectionErrorBoundary";
 
 const CommunityPage = () => {
     const {
@@ -65,68 +66,70 @@ const CommunityPage = () => {
                     </div>
 
                     {/* Users Grid */}
-                    {isLoading ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                            {[1, 2, 3, 4, 5, 6].map((i) => (
-                                <div key={i} className="h-24 rounded-xl bg-white/5 animate-pulse" />
-                            ))}
-                        </div>
-                    ) : filteredUsers.length === 0 ? (
-                        <div className="text-center py-20 text-zinc-400">
-                            <Users className="size-16 mx-auto mb-4 opacity-50" />
-                            <p>No users found matching "{searchQuery}"</p>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                            {filteredUsers.map((user) => (
-                                <div
-                                    key={user._id}
-                                    className="glass-panel p-4 rounded-xl flex items-center gap-4 hover:bg-surface-elevated/40 transition-colors group"
-                                >
-                                    <Avatar className="size-16 border-2 border-white/10">
-                                        <AvatarImage src={user.imageUrl} alt={user.fullName} />
-                                        <AvatarFallback>{user.fullName[0]}</AvatarFallback>
-                                    </Avatar>
+                    <SectionErrorBoundary sectionName="Community Users">
+                        {isLoading ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                                {[1, 2, 3, 4, 5, 6].map((i) => (
+                                    <div key={i} className="h-24 rounded-xl bg-white/5 animate-pulse" />
+                                ))}
+                            </div>
+                        ) : filteredUsers.length === 0 ? (
+                            <div className="text-center py-20 text-zinc-400">
+                                <Users className="size-16 mx-auto mb-4 opacity-50" />
+                                <p>No users found matching "{searchQuery}"</p>
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                {filteredUsers.map((user) => (
+                                    <div
+                                        key={user._id}
+                                        className="glass-panel p-4 rounded-xl flex items-center gap-4 hover:bg-surface-elevated/40 transition-colors group"
+                                    >
+                                        <Avatar className="size-16 border-2 border-white/10">
+                                            <AvatarImage src={user.imageUrl} alt={user.fullName} />
+                                            <AvatarFallback>{user.fullName[0]}</AvatarFallback>
+                                        </Avatar>
 
-                                    <div className="flex-1 min-w-0">
-                                        <h3 className="font-semibold text-white truncate">{user.fullName}</h3>
-                                        <div className="mt-2">
-                                            {isFriend(user._id) ? (
-                                                <Button
-                                                    size="sm"
-                                                    variant="ghost"
-                                                    className="w-full text-red-400 hover:text-red-300 hover:bg-red-500/10 h-8 text-xs justify-start px-2"
-                                                    onClick={() => removeFriend(user._id)}
-                                                >
-                                                    <UserMinus className="size-3.5 mr-2" />
-                                                    Remove
-                                                </Button>
-                                            ) : isPending(user._id) ? (
-                                                <Button
-                                                    size="sm"
-                                                    variant="secondary"
-                                                    className="w-full h-8 text-xs bg-white/10 text-zinc-400 cursor-default"
-                                                    disabled
-                                                >
-                                                    <Loader className="size-3.5 mr-2 animate-spin" />
-                                                    Pending
-                                                </Button>
-                                            ) : (
-                                                <Button
-                                                    size="sm"
-                                                    className="w-full bg-brand-primary h-8 text-xs hover:bg-brand-primary/90"
-                                                    onClick={() => sendFriendRequest(user._id)}
-                                                >
-                                                    <UserPlus className="size-3.5 mr-2" />
-                                                    Connect
-                                                </Button>
-                                            )}
+                                        <div className="flex-1 min-w-0">
+                                            <h3 className="font-semibold text-white truncate">{user.fullName}</h3>
+                                            <div className="mt-2">
+                                                {isFriend(user._id) ? (
+                                                    <Button
+                                                        size="sm"
+                                                        variant="ghost"
+                                                        className="w-full text-red-400 hover:text-red-300 hover:bg-red-500/10 h-8 text-xs justify-start px-2"
+                                                        onClick={() => removeFriend(user._id)}
+                                                    >
+                                                        <UserMinus className="size-3.5 mr-2" />
+                                                        Remove
+                                                    </Button>
+                                                ) : isPending(user._id) ? (
+                                                    <Button
+                                                        size="sm"
+                                                        variant="secondary"
+                                                        className="w-full h-8 text-xs bg-white/10 text-zinc-400 cursor-default"
+                                                        disabled
+                                                    >
+                                                        <Loader className="size-3.5 mr-2 animate-spin" />
+                                                        Pending
+                                                    </Button>
+                                                ) : (
+                                                    <Button
+                                                        size="sm"
+                                                        className="w-full bg-brand-primary h-8 text-xs hover:bg-brand-primary/90"
+                                                        onClick={() => sendFriendRequest(user._id)}
+                                                    >
+                                                        <UserPlus className="size-3.5 mr-2" />
+                                                        Connect
+                                                    </Button>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
+                                ))}
+                            </div>
+                        )}
+                    </SectionErrorBoundary>
                 </div>
             </ScrollArea>
         </main>

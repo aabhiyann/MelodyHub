@@ -4,6 +4,7 @@ export interface IUser extends Document {
 	fullName: string;
 	imageUrl: string;
 	clerkId: string;
+	role: 'user' | 'admin';
 	bio?: string;
 	location?: string;
 	website?: string;
@@ -37,6 +38,11 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 			unique: true,
+		},
+		role: {
+			type: String,
+			enum: ['user', 'admin'],
+			default: 'user',
 		},
 		bio: {
 			type: String,

@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { axiosInstance } from "@/lib/axios";
 import { Song } from "@/types";
 import toast from "react-hot-toast";
+import { getErrorMessage } from "@/utils/errors";
 
 interface AIStore {
 	generatedPlaylist: Song[];
@@ -22,12 +23,10 @@ export const useAIStore = create<AIStore>((set) => ({
 			const response = await axiosInstance.post("/ai/generate", { prompt });
 			set({ generatedPlaylist: response.data.songs, isLoading: false });
 			toast.success("Playlist generated!");
-		} catch (error: any) {
-			set({
-				error: error.response?.data?.message || "Failed to generate playlist",
-				isLoading: false,
-			});
-			toast.error("Failed to generate playlist");
+		} catch (error) {
+			const errorMsg = getErrorMessage(error, "Failed to generate playlist");
+			set({ error: errorMsg, isLoading: false });
+			toast.error(errorMsg);
 		}
 	},
 

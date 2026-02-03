@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { axiosInstance } from "@/lib/axios";
 import { Playlist } from "@/types";
 import toast from "react-hot-toast";
+import { getErrorMessage } from "@/utils/errors";
 
 interface PlaylistStore {
     currentPlaylist: Playlist | null;
@@ -20,8 +21,9 @@ export const usePlaylistStore = create<PlaylistStore>((set) => ({
         try {
             const response = await axiosInstance.get(`/playlists/${id}`);
             set({ currentPlaylist: response.data.data }); // controller returns { success: true, data: playlist }
-        } catch (error: any) {
-            set({ error: error.response?.data?.message || "Failed to fetch playlist" });
+        } catch (error) {
+            const errorMsg = getErrorMessage(error, "Failed to fetch playlist");
+            set({ error: errorMsg });
             toast.error("Failed to load playlist");
         } finally {
             set({ isLoading: false });
