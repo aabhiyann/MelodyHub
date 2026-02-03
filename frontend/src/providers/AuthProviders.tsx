@@ -4,6 +4,7 @@ import { axiosInstance } from "@/lib/axios";
 import { Loader } from "lucide-react";
 import { useAuthStore } from "@/stores/AuthStore";
 import { useChatStore } from "@/stores/ChatStore";
+import { getErrorMessage } from "@/utils/errors";
 
 
 const updateApiToken = (token: string | null) => {
@@ -41,9 +42,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 					// init socket
 					if (userId) initSocket(userId);
 				}
-			} catch (error: any) {
+			} catch (error) {
 				updateApiToken(null);
-				console.log("Error in auth provider", error);
+				console.log("Error in auth provider:", getErrorMessage(error));
 			} finally {
 				setLoading(false);
 			}
