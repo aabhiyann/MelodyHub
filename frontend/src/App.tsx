@@ -8,7 +8,8 @@ import { LoadingBar } from "./components/LoadingBar";
 import { PageTransition } from "./components/PageTransition";
 import { RequireAuth } from "./guards/RequireAuth";
 import { RequireGuest } from "./guards/RequireGuest";
-import { PageErrorBoundary } from "./components/PageErrorBoundary"; \nimport { NetworkStatusToast } from "./components/NetworkStatusToast";
+import { PageErrorBoundary } from "./components/PageErrorBoundary";
+import { NetworkStatusToast } from "./components/NetworkStatusToast";
 
 // New UI components
 import { SidebarLayout } from '@/components/navigation/SidebarLayout';
