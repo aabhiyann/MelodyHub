@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { Song } from '@/types';
 import { axiosInstance as axios } from '@/lib/axios';
+import { getErrorMessage } from '@/utils/errors';
 
 export type AIStage = 'prompt' | 'processing' | 'results';
 export type MascotState = 'idle' | 'listening' | 'thinking' | 'excited' | 'celebrating' | 'sad';
@@ -71,9 +72,9 @@ export const useAIStore = create<AIStore>((set, get) => ({
                 mascotState: 'celebrating',
                 isLoading: false
             });
-        } catch (error: any) {
+        } catch (error) {
             set({
-                error: error.message || "Failed to generate playlist",
+                error: getErrorMessage(error, "Failed to generate playlist"),
                 mascotState: 'sad',
                 isLoading: false,
                 stage: 'prompt'
@@ -95,10 +96,10 @@ export const useAIStore = create<AIStore>((set, get) => ({
                 isPublic: false
             });
             set({ isLoading: false });
-        } catch (error: any) {
+        } catch (error) {
             set({
                 isLoading: false,
-                error: error.message || "Failed to save playlist"
+                error: getErrorMessage(error, "Failed to save playlist")
             });
             throw error;
         }
