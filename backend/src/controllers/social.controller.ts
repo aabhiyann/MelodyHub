@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { Friendship } from "../models/friendship.model.js";
-import { Activity } from "../models/activity.model.js";
 import { AuthenticatedRequest } from "../types/index.js";
+import { SocialService } from "../services/social.service.js";
+
+const socialService = new SocialService();
 
 /**
  * POST /social/friend-request
@@ -26,40 +27,7 @@ export const sendFriendRequest = async (req: Request, res: Response) => {
             });
         }
 
-        if (userId === friendId) {
-            return res.status(400).json({
-                success: false,
-                message: "Cannot send friend request to yourself",
-            });
-        }
-
-        // Check if friendship already exists
-        const [user1, user2] = [userId, friendId].sort();
-        const existing = await Friendship.findOne({ user1, user2 });
-
-        if (existing) {
-            return res.status(400).json({
-                success: false,
-                message: `Friend request already ${existing.status}`,
-            });
-        }
-
-        // Create friendship
-        const friendship = new Friendship({
-            user1,
-            user2,
-            initiator: userId,
-            status: 'pending',
-        });
-
-        await friendship.save();
-
-        // Create activity
-        await Activity.create({
-            userId,
-            type: 'friend_add',
-            metadata: { friendId },
-        });
+        const friendship = await socialService.sendFriendRequest(userId, friendId);
 
         return res.status(201).json({
             success: true,
@@ -69,6 +37,14 @@ export const sendFriendRequest = async (req: Request, res: Response) => {
     } catch (error: unknown) {
         console.error("Error sending friend request:", error);
         const errorMessage = error instanceof Error ? error.message : "Unknown error";
+
+        if (errorMessage.includes("Cannot send friend request to yourself")) {
+            return res.status(400).json({ success: false, message: errorMessage });
+        }
+        if (errorMessage.includes("already")) {
+            return res.status(400).json({ success: false, message: errorMessage });
+        }
+
         return res.status(500).json({
             success: false,
             message: "Failed to send friend request",
@@ -93,34 +69,7 @@ export const acceptFriendRequest = async (req: Request, res: Response) => {
             });
         }
 
-        const friendship = await Friendship.findById(id);
-
-        if (!friendship) {
-            return res.status(404).json({
-                success: false,
-                message: "Friend request not found",
-            });
-        }
-
-        // Verify user is the recipient
-        if (friendship.user1 !== userId && friendship.user2 !== userId) {
-            return res.status(403).json({
-                success: false,
-                message: "Unauthorized",
-            });
-        }
-
-        // Verify request is pending
-        if (friendship.status !== 'pending') {
-            return res.status(400).json({
-                success: false,
-                message: `Request is already ${friendship.status}`,
-            });
-        }
-
-        // Accept request
-        friendship.status = 'accepted';
-        await friendship.save();
+        const friendship = await socialService.acceptFriendRequest(String(id), userId);
 
         return res.status(200).json({
             success: true,
@@ -130,6 +79,17 @@ export const acceptFriendRequest = async (req: Request, res: Response) => {
     } catch (error: unknown) {
         console.error("Error accepting friend request:", error);
         const errorMessage = error instanceof Error ? error.message : "Unknown error";
+
+        if (errorMessage === "Friend request not found") {
+            return res.status(404).json({ success: false, message: errorMessage });
+        }
+        if (errorMessage === "Unauthorized") {
+            return res.status(403).json({ success: false, message: errorMessage });
+        }
+        if (errorMessage.includes("already")) {
+            return res.status(400).json({ success: false, message: errorMessage });
+        }
+
         return res.status(500).json({
             success: false,
             message: "Failed to accept friend request",
@@ -154,25 +114,7 @@ export const rejectFriendRequest = async (req: Request, res: Response) => {
             });
         }
 
-        const friendship = await Friendship.findById(id);
-
-        if (!friendship) {
-            return res.status(404).json({
-                success: false,
-                message: "Friend request not found",
-            });
-        }
-
-        // Verify user is the recipient
-        if (friendship.user1 !== userId && friendship.user2 !== userId) {
-            return res.status(403).json({
-                success: false,
-                message: "Unauthorized",
-            });
-        }
-
-        // Delete the request
-        await Friendship.findByIdAndDelete(id);
+        await socialService.rejectFriendRequest(String(id), userId);
 
         return res.status(200).json({
             success: true,
@@ -181,6 +123,14 @@ export const rejectFriendRequest = async (req: Request, res: Response) => {
     } catch (error: unknown) {
         console.error("Error rejecting friend request:", error);
         const errorMessage = error instanceof Error ? error.message : "Unknown error";
+
+        if (errorMessage === "Friend request not found") {
+            return res.status(404).json({ success: false, message: errorMessage });
+        }
+        if (errorMessage === "Unauthorized") {
+            return res.status(403).json({ success: false, message: errorMessage });
+        }
+
         return res.status(500).json({
             success: false,
             message: "Failed to reject friend request",
@@ -204,15 +154,7 @@ export const getFriends = async (req: Request, res: Response) => {
             });
         }
 
-        const friendships = await Friendship.find({
-            $or: [{ user1: userId }, { user2: userId }],
-            status: 'accepted',
-        });
-
-        // Extract friend IDs
-        const friendIds = friendships.map(f =>
-            f.user1 === userId ? f.user2 : f.user1
-        );
+        const friendIds = await socialService.getFriends(userId);
 
         return res.status(200).json({
             success: true,
@@ -245,10 +187,7 @@ export const getFriendRequests = async (req: Request, res: Response) => {
             });
         }
 
-        const requests = await Friendship.find({
-            $or: [{ user1: userId }, { user2: userId }],
-            status: 'pending',
-        });
+        const requests = await socialService.getFriendRequests(userId);
 
         return res.status(200).json({
             success: true,
@@ -282,14 +221,9 @@ export const removeFriend = async (req: Request, res: Response) => {
             });
         }
 
-        const [user1, user2] = [userId, friendId].sort();
-        const friendship = await Friendship.findOneAndDelete({
-            user1,
-            user2,
-            status: 'accepted',
-        });
+        const removed = await socialService.removeFriend(userId, String(friendId));
 
-        if (!friendship) {
+        if (!removed) {
             return res.status(404).json({
                 success: false,
                 message: "Friendship not found",
@@ -310,6 +244,7 @@ export const removeFriend = async (req: Request, res: Response) => {
         });
     }
 };
+
 /**
  * GET /social/activity
  * Get friends' activity feed
@@ -325,30 +260,7 @@ export const getFriendActivity = async (req: Request, res: Response) => {
             });
         }
 
-        // 1. Get all friends
-        const friendships = await Friendship.find({
-            $or: [{ user1: userId }, { user2: userId }],
-            status: 'accepted',
-        });
-
-        const friendIds = friendships.map(f =>
-            f.user1 === userId ? f.user2 : f.user1
-        );
-
-        // 2. Fetch activities for these friends
-        const activities = await Activity.find({ userId: { $in: friendIds } })
-            .sort({ createdAt: -1 })
-            .limit(20)
-            .populate("userId", "fullName imageUrl")
-            .populate("targetId"); // dynamically populate based on what targetId refs (Song, etc is hard because Activity schema might need 'refPath')
-
-        // Note: effectively populating 'targetId' requires 'refPath' in schema or manual lookup.
-        // For simpler MVP, let's assume we just return the data and frontend might need more info,
-        // OR we improve the aggregation.
-        // Let's check Activity Model again. It has `targetId` but not `refPath`. 
-        // We might want to just return the activity and let frontend handle basic display,
-        // or improved: manually map generic targetId if possible.
-        // For now, let's return it.
+        const activities = await socialService.getFriendActivity(userId);
 
         return res.status(200).json({
             success: true,

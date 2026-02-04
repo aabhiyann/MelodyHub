@@ -1,6 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import { Song } from "../models/song.model.js";
-import { Recommendation } from "../models/recommendation.model.js";
 import {
     hybridRecommendations,
     updateUserAudioPreferences,
@@ -9,6 +7,11 @@ import {
     getDailyMix as getDailyMixService
 } from "../services/recommendation.service.js";
 import { BaseController } from "./base.controller.js";
+import { DiscoveryService } from "../services/discovery.service.js";
+import { Recommendation } from "../models/recommendation.model.js";
+import { Song } from "../models/song.model.js";
+
+const discoveryService = new DiscoveryService();
 
 export class DiscoveryController extends BaseController {
     /**
@@ -18,12 +21,7 @@ export class DiscoveryController extends BaseController {
     getFeaturedSongs = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { limit = 20 } = req.query;
-
-            const songs = await Song.find({ isFeatured: true })
-                .sort({ playCount: -1, createdAt: -1 })
-                .limit(Number(limit))
-                .select("-__v");
-
+            const songs = await discoveryService.getFeaturedSongs(Number(limit));
             this.handleSuccess(res, { success: true, data: songs });
         } catch (error: any) {
             this.handleError(next, error);
@@ -37,33 +35,7 @@ export class DiscoveryController extends BaseController {
     getTrendingSongs = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { limit = 20, period = "24h" } = req.query;
-
-            // Calculate date threshold based on period
-            const now = new Date();
-            let dateThreshold: Date;
-
-            switch (period) {
-                case "7d":
-                    dateThreshold = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-                    break;
-                case "30d":
-                    dateThreshold = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-                    break;
-                case "24h":
-                default:
-                    dateThreshold = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-            }
-
-            const songs = await Song.find({
-                $or: [
-                    { isTrending: true },
-                    { createdAt: { $gte: dateThreshold }, playCount: { $gte: 10 } },
-                ],
-            })
-                .sort({ playCount: -1, likeCount: -1 })
-                .limit(Number(limit))
-                .select("-__v");
-
+            const songs = await discoveryService.getTrendingSongs(Number(limit), String(period));
             this.handleSuccess(res, { success: true, data: songs });
         } catch (error: any) {
             this.handleError(next, error);
@@ -103,7 +75,7 @@ export class DiscoveryController extends BaseController {
             const cached = await Recommendation.findOne({
                 userId,
                 expiresAt: { $gt: new Date() },
-            }).populate("songs");
+            }).populate("songs");;
 
             if (cached && cached.songs.length > 0) {
                 this.handleSuccess(res, {
@@ -135,12 +107,7 @@ export class DiscoveryController extends BaseController {
     getNewReleases = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { limit = 20 } = req.query;
-
-            const songs = await Song.find()
-                .sort({ createdAt: -1 })
-                .limit(Number(limit))
-                .select("-__v");
-
+            const songs = await discoveryService.getNewReleases(Number(limit));
             this.handleSuccess(res, { success: true, data: songs });
         } catch (error: any) {
             this.handleError(next, error);
@@ -155,19 +122,8 @@ export class DiscoveryController extends BaseController {
         try {
             const { genre } = req.params;
             const { limit = 20, sort = "popular" } = req.query;
-
-            let sortQuery: any = { playCount: -1 };
-            if (sort === "recent") {
-                sortQuery = { createdAt: -1 };
-            } else if (sort === "liked") {
-                sortQuery = { likeCount: -1 };
-            }
-
-            const songs = await Song.find({ genre })
-                .sort(sortQuery)
-                .limit(Number(limit))
-                .select("-__v");
-
+            const sortValue = Array.isArray(sort) ? String(sort[0]) : String(sort);
+            const songs = await discoveryService.getSongsByGenre(String(genre), Number(limit), sortValue);
             this.handleSuccess(res, { success: true, data: songs });
         } catch (error: any) {
             this.handleError(next, error);
