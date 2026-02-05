@@ -1,29 +1,23 @@
 import { Router } from "express";
 import { protectRoute } from "../middleware/auth.middleware.js";
-import {
-  trackPlay,
-  likeSong,
-  getUserPreferences,
-  getDashboard,
-  getListeningHistory,
-  getTopArtists,
-  getTopGenres,
-  getListeningPatterns,
-} from "../controllers/analytics.controller.js";
+import { AnalyticsController } from "../controllers/analytics.controller.js";
 
 const router = Router();
 
+// All analytics routes require authentication
+router.use(protectRoute);
+
 // Analytics endpoints for tracking user behavior
-router.post("/track-play", protectRoute, trackPlay);
-router.post("/like-song", protectRoute, likeSong);
-router.get("/user-preferences", protectRoute, getUserPreferences);
+router.post("/track-play", AnalyticsController.trackPlay);
+router.post("/like-song", AnalyticsController.likeSong);
+router.get("/user-preferences", AnalyticsController.getUserPreferences);
 
 // Dashboard and insights (protected)
-router.get("/dashboard", protectRoute, getDashboard);
-router.get("/listening-history", protectRoute, getListeningHistory);
-router.get("/top-artists", protectRoute, getTopArtists);
-router.get("/top-genres", protectRoute, getTopGenres);
-router.get("/listening-patterns", protectRoute, getListeningPatterns);
+router.get("/dashboard", AnalyticsController.getDashboard);
+router.get("/listening-history", AnalyticsController.getListeningHistory);
+router.get("/top-artists", AnalyticsController.getTopArtists);
+router.get("/top-genres", AnalyticsController.getTopGenres);
+router.get("/listening-patterns", AnalyticsController.getListeningPatterns);
 
 // Generic event tracking
 router.post("/track-event", protectRoute, async (req, res) => {
