@@ -90,19 +90,21 @@ export async function getCurrentMood(userId: string): Promise<{
 
 /**
  * Get playlist for a mood (songs matching mood genres)
+ * Returns full song objects ordered by popularity
  */
 export async function getPlaylistForMood(
     mood: MoodLabel,
     limit: number = 20,
     userId?: string
-): Promise<mongoose.Types.ObjectId[]> {
+): Promise<any[]> {
     const genres = MOOD_GENRE_MAP[mood] || MOOD_GENRE_MAP.neutral;
     const songs = await Song.find({
         genre: { $in: genres.map((g) => new RegExp(g, "i")) },
     })
         .sort({ playCount: -1, likeCount: -1 })
         .limit(limit)
-        .select("_id")
         .lean();
-    return songs.map((s) => s._id as mongoose.Types.ObjectId);
+
+    return songs;
 }
+

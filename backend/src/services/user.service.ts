@@ -1,7 +1,8 @@
 import { User, IUser } from "../models/user.model.js";
 import { Message } from "../models/message.model.js";
 import { BaseService } from "./base.service.js";
-import { UserConnection } from "../models/user.connection.model.js";
+import { UserConnection, IUserConnection } from "../models/user.connection.model.js";
+import { Types } from "mongoose";
 
 export class UserService extends BaseService<IUser> {
 	constructor() {
@@ -43,6 +44,31 @@ export class UserService extends BaseService<IUser> {
 	 */
 	async getByClerkId(clerkId: string) {
 		return await this.model.findOne({ clerkId });
+	}
+
+	/**
+	 * Find or create user by Clerk ID during authentication
+	 */
+	async findOrCreateByClerkId(
+		clerkId: string,
+		userData: { firstName?: string; lastName?: string; imageUrl?: string }
+	) {
+		let user = await this.model.findOne({ clerkId });
+
+		if (!user) {
+			user = await this.model.create({
+				clerkId,
+				fullName: `${userData.firstName || ""} ${userData.lastName || ""}`.trim(),
+				imageUrl: userData.imageUrl
+			});
+		} else {
+			// Update user info if existing
+			user.fullName = `${userData.firstName || ""} ${userData.lastName || ""}`.trim();
+			user.imageUrl = userData.imageUrl || "";
+			await user.save();
+		}
+
+		return user;
 	}
 
 	/**
@@ -123,7 +149,11 @@ export class UserService extends BaseService<IUser> {
 			.limit(limit)
 			.lean();
 		const total = await UserConnection.countDocuments({ followingId: userId });
-		const data = connections.map((c: any) => ({
+		// Type assertion for populated document
+		type PopulatedConnection = Omit<IUserConnection, 'followerId'> & {
+			followerId: { _id: Types.ObjectId; fullName?: string; imageUrl?: string; clerkId: string };
+		};
+		const data = (connections as unknown as PopulatedConnection[]).map((c) => ({
 			...c.followerId,
 			_id: c.followerId?._id,
 			followedAt: c.createdAt,
@@ -143,7 +173,11 @@ export class UserService extends BaseService<IUser> {
 			.limit(limit)
 			.lean();
 		const total = await UserConnection.countDocuments({ followerId: userId });
-		const data = connections.map((c: any) => ({
+		// Type assertion for populated document  
+		type PopulatedConnection = Omit<IUserConnection, 'followingId'> & {
+			followingId: { _id: Types.ObjectId; fullName?: string; imageUrl?: string; clerkId: string };
+		};
+		const data = (connections as unknown as PopulatedConnection[]).map((c) => ({
 			...c.followingId,
 			_id: c.followingId?._id,
 			followedAt: c.createdAt,
@@ -163,8 +197,8 @@ export class UserService extends BaseService<IUser> {
 			User.findById(targetUserId).select("friends").lean(),
 		]);
 		if (!user1 || !user2) return [];
-		const set1 = new Set((user1.friends || []).map((id: any) => id.toString()));
-		const mutual = (user2.friends || []).filter((id: any) => set1.has(id.toString()));
+		const set1 = new Set((user1.friends || []).map((id: Types.ObjectId) => id.toString()));
+		const mutual = (user2.friends || []).filter((id: Types.ObjectId) => set1.has(id.toString()));
 		const users = await User.find({ _id: { $in: mutual } }).select("fullName imageUrl clerkId").lean();
 		return users;
 	}

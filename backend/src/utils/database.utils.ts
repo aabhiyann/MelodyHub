@@ -3,7 +3,7 @@
  * Query optimization, pagination, aggregation pipelines
  */
 
-import { FilterQuery, SortOrder } from 'mongoose';
+import { FilterQuery, SortOrder, Types } from 'mongoose';
 
 /**
  * Cursor-based pagination (better than offset for large datasets)
@@ -25,7 +25,7 @@ export interface CursorPaginationResult<T> {
 /**
  * Create cursor-based pagination
  */
-export function createCursorPagination<T extends { _id: any }>(
+export function createCursorPagination<T extends { _id: Types.ObjectId | string }>(
     query: FilterQuery<T>,
     options: CursorPaginationOptions<T> = {}
 ): {
@@ -41,7 +41,7 @@ export function createCursorPagination<T extends { _id: any }>(
     } = options;
 
     // Decode cursor
-    let cursorValue: any = null;
+    let cursorValue: string | Types.ObjectId | null = null;
     if (cursor) {
         try {
             const decoded = Buffer.from(cursor, 'base64').toString('utf-8');
@@ -73,7 +73,7 @@ export function createCursorPagination<T extends { _id: any }>(
 /**
  * Create next cursor from result
  */
-export function createNextCursor<T extends { _id: any }>(
+export function createNextCursor<T extends { _id: Types.ObjectId | string }>(
     data: T[],
     limit: number,
     sortField: keyof T = '_id' as keyof T

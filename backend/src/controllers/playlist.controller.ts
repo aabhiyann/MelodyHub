@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
-import { SharedPlaylist, ISharedPlaylist } from "../models/sharedPlaylist.model.js";
-import { Activity } from "../models/activity.model.js";
-import mongoose from "mongoose";
 import { ActivityService } from "../services/activity.service.js";
 import { ActivityType } from "../models/activity.model.js";
 import { AuthenticatedRequest } from "../types/index.js";
+import { PlaylistService } from "../services/playlist.service.js";
 
 const activityService = new ActivityService();
+const playlistService = new PlaylistService();
 
 /**
  * POST /playlists
@@ -15,26 +14,16 @@ const activityService = new ActivityService();
 export const createPlaylist = async (req: Request, res: Response) => {
     try {
         const userId = (req as AuthenticatedRequest).auth?.userId;
-        const { name, description, isPublic, songs } = req.body;
+        const { name, description, isPublic } = req.body;
 
         if (!userId) {
             return res.status(401).json({ success: false, message: "Authentication required" });
         }
 
-        const playlist = new SharedPlaylist({
-            name,
-            description,
-            owner: userId,
-            isPublic: isPublic || false,
-            collaborators: [],
-            viewers: [],
-            songs: songs || [], // Initialize with provided songs or empty array
-        });
-
-        await playlist.save();
+        const playlist = await playlistService.createPlaylist(userId, { name, description, isPublic });
 
         // Create activity
-        await activityService.logActivity(userId, ActivityType.CREATE_PLAYLIST, (playlist as unknown as ISharedPlaylist).id);
+        await activityService.logActivity(userId, ActivityType.CREATE_PLAYLIST, playlist.id);
 
         return res.status(201).json({
             success: true,
@@ -59,13 +48,7 @@ export const getPlaylists = async (req: Request, res: Response) => {
             return res.status(401).json({ success: false, message: "Authentication required" });
         }
 
-        const playlists = await SharedPlaylist.find({
-            $or: [
-                { owner: userId },
-                { collaborators: userId },
-                { viewers: userId },
-            ],
-        }).populate('songs');
+        const playlists = await playlistService.getAllPlaylists(userId);
 
         return res.status(200).json({ success: true, data: playlists, count: playlists.length });
     } catch (error: unknown) {
@@ -88,20 +71,7 @@ export const addSongToPlaylist = async (req: Request, res: Response) => {
             return res.status(401).json({ success: false, message: "Authentication required" });
         }
 
-        const playlist = await SharedPlaylist.findById(id);
-
-        if (!playlist) {
-            return res.status(404).json({ success: false, message: "Playlist not found" });
-        }
-
-        // Check permission
-        if (playlist.owner !== userId && !playlist.collaborators.includes(userId)) {
-            return res.status(403).json({ success: false, message: "No permission to edit this playlist" });
-        }
-
-        // Add song
-        playlist.songs.push(new mongoose.Types.ObjectId(songId));
-        await playlist.save();
+        const playlist = await playlistService.addSong(String(id), songId, userId);
 
         return res.status(200).json({ success: true, data: playlist });
     } catch (error: unknown) {
@@ -124,6 +94,9 @@ export const sharePlaylist = async (req: Request, res: Response) => {
             return res.status(401).json({ success: false, message: "Authentication required" });
         }
 
+        // This method isn't in PlaylistService yet - keep as is for now
+        // Would need to add sharePlaylist method to service
+        const { SharedPlaylist } = await import("../models/sharedPlaylist.model.js");
         const playlist = await SharedPlaylist.findById(id);
 
         if (!playlist) {
@@ -148,11 +121,6 @@ export const sharePlaylist = async (req: Request, res: Response) => {
 
         await playlist.save();
 
-        // Create activity - skipping share activity for now as it's not in our requirements
-        /*
-        await activityService.logActivity(userId, 'playlist_share', playlist._id.toString());
-        */
-
         return res.status(200).json({ success: true, data: playlist });
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : "Unknown error";
@@ -174,23 +142,7 @@ export const updatePlaylist = async (req: Request, res: Response) => {
             return res.status(401).json({ success: false, message: "Authentication required" });
         }
 
-        const playlist = await SharedPlaylist.findById(id);
-
-        if (!playlist) {
-            return res.status(404).json({ success: false, message: "Playlist not found" });
-        }
-
-        // Only owner can update
-        if (playlist.owner !== userId) {
-            return res.status(403).json({ success: false, message: "Only owner can update playlist" });
-        }
-
-        // Update fields
-        if (name !== undefined) playlist.name = name;
-        if (description !== undefined) playlist.description = description;
-        if (isPublic !== undefined) playlist.isPublic = isPublic;
-
-        await playlist.save();
+        const playlist = await playlistService.updatePlaylist(String(id), userId, { name, description, isPublic });
 
         return res.status(200).json({ success: true, data: playlist, message: "Playlist updated" });
     } catch (error: unknown) {
@@ -212,21 +164,7 @@ export const deletePlaylist = async (req: Request, res: Response) => {
             return res.status(401).json({ success: false, message: "Authentication required" });
         }
 
-        const playlist = await SharedPlaylist.findById(id);
-
-        if (!playlist) {
-            return res.status(404).json({ success: false, message: "Playlist not found" });
-        }
-
-        // Only owner can delete
-        if (playlist.owner !== userId) {
-            return res.status(403).json({ success: false, message: "Only owner can delete playlist" });
-        }
-
-        await SharedPlaylist.findByIdAndDelete(id);
-
-        // Activity for delete? Might not need it for feed, or maybe we do.
-        // For now let's skip it to simplify.
+        await playlistService.deletePlaylist(String(id), userId);
 
         return res.status(200).json({ success: true, message: "Playlist deleted" });
     } catch (error: unknown) {
@@ -244,20 +182,10 @@ export const getPlaylistById = async (req: Request, res: Response) => {
         const userId = (req as AuthenticatedRequest).auth?.userId;
         const { id } = req.params;
 
-        const playlist = await SharedPlaylist.findById(id).populate('songs');
+        const playlist = await playlistService.getPlaylistById(String(id), userId);
 
         if (!playlist) {
             return res.status(404).json({ success: false, message: "Playlist not found" });
-        }
-
-        // Check access
-        const isOwner = userId && playlist.owner === userId;
-        const isCollaborator = userId && playlist.collaborators.includes(userId);
-        const isViewer = userId && playlist.viewers.includes(userId);
-        const isPublic = playlist.isPublic;
-
-        if (!isPublic && !isOwner && !isCollaborator && !isViewer) {
-            return res.status(403).json({ success: false, message: "Access denied" });
         }
 
         return res.status(200).json({ success: true, data: playlist });
