@@ -1,0 +1,217 @@
+================================================
+Service Layer Pattern Analysis Report
+Generated: Tue Feb  3 18:47:07 EST 2026
+================================================
+
+SERVICE FILES
+-------------
+Total service files: 20
+
+✓ stat.service.ts
+✓ album.service.ts
+✓ ai.service.ts
+✓ mood.service.ts
+✓ itunes.service.ts
+✓ notification.service.ts
+✓ user.service.ts
+✓ analytics.service.test.ts
+✓ activity.service.test.ts
+✓ redis.service.test.ts
+✓ recommendation.service.ts
+✓ song.service.ts
+✓ admin.service.ts
+✓ lyrics.service.ts
+✓ base.service.ts
+✓ analytics.service.ts
+✓ activity.service.ts
+✓ gamification.service.ts
+✓ redis.service.ts
+✓ spotify.service.ts
+
+SERVICE PATTERNS
+----------------
+
+Class-based services:
+  Count: 10
+
+Function-based services:
+  Count: 0
+
+BUSINESS LOGIC IN CONTROLLERS
+------------------------------
+Controllers with database queries:
+  Count: 14
+
+Files with DB queries in controllers:
+backend/src/controllers/auth.controller.ts
+backend/src/controllers/gamification.controller.ts
+backend/src/controllers/analytics.controller.ts
+backend/src/controllers/notification.controller.ts
+backend/src/controllers/user.controller.ts
+backend/src/controllers/admin.controller.ts
+backend/src/controllers/social.controller.ts
+backend/src/controllers/discovery.controller.ts
+backend/src/controllers/friend.controller.ts
+backend/src/controllers/mood.controller.ts
+backend/src/controllers/activity.controller.ts
+backend/src/controllers/playlist.controller.ts
+backend/src/controllers/connection.controller.ts
+backend/src/controllers/ai.controller.ts
+
+SERVICE METHOD SIGNATURES
+-------------------------
+
+activity.service.ts:
+    async logActivity(userId: string, type: ActivityType, targetId: string) {
+    async getFeed(userId: string, limit: number = 20) {
+                    switch (activity.type) {
+
+admin.service.ts:
+  async uploadToCloudinary(file: UploadedFile): Promise<string> {
+  async createSong(data: Record<string, unknown> & { albumId?: string }, audioFile: UploadedFile, imageFile: UploadedFile) {
+    if (data.albumId) {
+  async deleteSong(id: string) {
+    if (song?.albumId) {
+  async createAlbum(data: Record<string, unknown>, imageFile: UploadedFile) {
+  async deleteAlbum(id: string) {
+
+ai.service.ts:
+	constructor() {
+		if (!process.env.GEMINI_API_KEY) {
+	async generatePlaylist(prompt: string) {
+
+album.service.ts:
+	constructor() {
+		super(Album);
+	async getAllAlbums(page: number = 1, limit: number = 20) {
+		if (cached) return cached as any;
+	async getAlbumById(albumId: string) {
+		if (cached) return cached as any;
+		if (!album) throw new Error("Album not found");
+
+analytics.service.ts:
+    if (!userPref) {
+    if (period !== 'all') {
+    for (const play of filteredHistory) {
+        if (song?.artist) {
+    for (const play of filteredHistory) {
+        if (song) {
+            if (!songCounts[key]) {
+    for (let d = 29; d >= 0; d--) {
+    if (!userPref || !userPref.listeningHistory?.length) {
+    if (!userPref || userPref.listeningHistory.length === 0) {
+
+base.service.ts:
+	constructor(model: Model<T>) {
+	async findAll(filter: any = {}): Promise<T[]> {
+	async findById(id: string): Promise<T | null> {
+
+gamification.service.ts:
+            for (const user of users) {
+                if (!user.gamification) continue;
+                if (lastListen) {
+                if (lastListen && lastListen.getTime() === today.getTime()) {
+                if (lastListen) {
+                    if (diffDays > 1) {
+                        if (user.gamification.streakFreezes > 0) {
+            for (const user of users) {
+                if (!existing) {
+
+itunes.service.ts:
+    async searchTracks(query: string, limit: number = 50): Promise<iTunesTrack[]> {
+    async getTopTracksByGenre(genre: string, limit: number = 50): Promise<iTunesTrack[]> {
+    async getDiverseTracks(tracksPerGenre: number = 70): Promise<iTunesTrack[]> {
+        for (const genre of genres) {
+    generateAudioFeatures(genre: string): {
+
+lyrics.service.ts:
+    async getLyrics(songId: string): Promise<string | null> {
+        if (!song) {
+        if (song.lyrics) {
+        if (fetchedLyrics) {
+            if (!response.ok) {
+
+mood.service.ts:
+    if (!userPref || userPref.listeningHistory.length === 0) {
+    for (const h of recent) {
+    if (hour >= 6 && hour < 12) timeBias = "energetic";
+    for (const [mood, genres] of Object.entries(MOOD_GENRE_MAP)) {
+        if (genres.some((g) => topGenre.toLowerCase().includes(g.toLowerCase()))) {
+
+notification.service.ts:
+    if (unreadOnly) filter.read = false;
+
+recommendation.service.ts:
+    if (vecA.length !== vecB.length) return 0;
+    for (let i = 0; i < vecA.length; i++) {
+    if (normA === 0 || normB === 0) return 0;
+    if (!userPref || !userPref.audioPreferences) {
+            if (!song.features) return null;
+    if (!userPref || userPref.likedSongs.length < 3) {
+    if (similarUsers.length === 0) {
+    for (const { user, similarity } of topSimilarUsers) {
+        for (const songId of user.likedSongs) {
+            if (userPref.likedSongs.some((id) => id.toString() === songIdStr)) {
+
+redis.service.ts:
+    async connect(): Promise<void> {
+                        if (retries > 10) {
+    async disconnect(): Promise<void> {
+        if (this.client && this.isConnected) {
+        if (!this.client || !this.isConnected) return null;
+            return (data && typeof data === 'string') ? JSON.parse(data) : null;
+        if (!this.client || !this.isConnected) return;
+            if (ttlSeconds) {
+    async del(key: string | string[]): Promise<void> {
+        if (!this.client || !this.isConnected) return;
+
+song.service.ts:
+  async getAllSongs(page: number = 1, limit: number = 20) {
+  async getFeaturedSongs() {
+    if (cached) return cached as any;
+  async getMadeForYouSongs() {
+    if (cached) return cached as any;
+  async getTrendingSongs() {
+    if (cached) return cached as any;
+
+spotify.service.ts:
+    constructor() {
+    async authenticate(): Promise<void> {
+        if (Date.now() >= this.tokenExpiresAt - 60000) { // Refresh 1 minute before expiry
+    async searchTracks(query: string, limit: number = 20): Promise<any[]> {
+    async getAudioFeatures(trackId: string): Promise<any | null> {
+    async getAudioFeaturesMultiple(trackIds: string[]): Promise<any[]> {
+    async getTrack(trackId: string): Promise<any | null> {
+    async getPlaylistTracks(playlistId: string, limit: number = 100): Promise<any[]> {
+    async getTopTracksByGenre(genre: string, limit: number = 50): Promise<any[]> {
+            if (playlists.body.playlists?.items && playlists.body.playlists.items.length > 0) {
+
+stat.service.ts:
+  async fetchStats() {
+    if (cached) return cached as any;
+
+user.service.ts:
+	constructor() {
+		super(User);
+	async getAllExcept(currentUserId: string) {
+	async getUserByIdOrThrow(userId: string) {
+		if (!user) {
+	async getMessagesBetweenUsers(userId1: string, userId2: string) {
+	async getByClerkId(clerkId: string) {
+	async updateProfile(clerkId: string, updates: Partial<IUser>) {
+	async followUser(followerId: string, followingId: string) {
+		if (followerId === followingId) {
+
+RECOMMENDATIONS
+---------------
+1. Create service layer if not exists
+2. Move all business logic from controllers to services
+3. Controllers should only:
+   - Parse request
+   - Call service methods
+   - Return response
+4. Services should handle:
+   - Business logic
+   - Database queries
+   - Data transformation
+5. Standardize service method signatures
