@@ -125,4 +125,80 @@ export class GamificationService {
             console.error('Error generating daily challenges:', error);
         }
     }
+
+    /**
+     * Get user gamification stats (non-static,  for controller use)
+     */
+    async getUserStats(userId: string) {
+        const user = await User.findById(userId);
+        if (!user) {
+            throw new Error("User not found");
+        }
+
+        // Get or create today's challenges
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        let dailyChallenges = await DailyChallenge.findOne({
+            userId: user._id,
+            date: today
+        });
+
+        if (!dailyChallenges) {
+            dailyChallenges = await DailyChallenge.create({
+                userId: user._id,
+                date: today,
+                challenges: [
+                    {
+                        id: 'daily_listen',
+                        type: 'listen_count',
+                        target: 5,
+                        reward: { xp: 10, gems: 5 }
+                    },
+                    {
+                        id: 'daily_login',
+                        type: 'login',
+                        target: 1,
+                        progress: 1,
+                        completed: true,
+                        reward: { xp: 5, gems: 5 }
+                    }
+                ]
+            });
+        }
+
+        return {
+            gamification: user.gamification,
+            dailyChallenges: dailyChallenges.challenges
+        };
+    }
+
+    /**
+     * Award XP to a user
+     */
+    async awardXP(userId: string, amount: number, source: string) {
+        const user = await User.findById(userId);
+        if (!user) {
+            throw new Error("User not found");
+        }
+
+        user.gamification.xp += amount;
+
+        // Simple level progression logic
+        const currentLevel = user.gamification.level;
+        let xpNeeded = 100;
+        if (currentLevel > 10) xpNeeded = 150;
+        if (currentLevel > 25) xpNeeded = 200;
+        if (currentLevel > 50) xpNeeded = 300;
+        if (currentLevel > 75) xpNeeded = 500;
+
+        // Future: implement level-up logic based on total XP
+
+        await user.save();
+
+        return {
+            xp: user.gamification.xp,
+            level: user.gamification.level
+        };
+    }
 }

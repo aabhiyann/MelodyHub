@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import * as moodService from "../services/mood.service.js";
-import { Song } from "../models/song.model.js";
 import { AuthenticatedRequest } from "../types/index.js";
 
 export class MoodController {
@@ -51,18 +50,12 @@ export class MoodController {
             const limit = Math.min(parseInt(req.query.limit as string) || 20, 50);
             const userId = (req as AuthenticatedRequest).auth?.userId;
 
-            const songIds = await moodService.getPlaylistForMood(moodKey, limit, userId);
-            const songs = await Song.find({ _id: { $in: songIds } }).lean();
-
-            // Order songs by the recommendation order
-            const orderMap = new Map(songIds.map((id, i) => [id.toString(), i]));
-            const ordered = songs.sort(
-                (a, b) => (orderMap.get((a as any)._id.toString()) ?? 0) - (orderMap.get((b as any)._id.toString()) ?? 0)
-            );
+            // Service now returns full ordered songs
+            const songs = await moodService.getPlaylistForMood(moodKey, limit, userId);
 
             return res.status(200).json({
                 success: true,
-                data: ordered
+                data: songs
             });
         } catch (error: any) {
             console.error("Error in getPlaylistForMood:", error);

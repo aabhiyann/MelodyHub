@@ -1,12 +1,6 @@
 import { Request, Response } from "express";
-import { UserPreference } from "../models/userPreference.model.js";
-import mongoose from "mongoose";
-import { ActivityService } from "../services/activity.service.js";
-import { ActivityType } from "../models/activity.model.js";
 import { AuthenticatedRequest } from "../types/index.js";
 import * as analyticsService from "../services/analytics.service.js";
-
-const activityService = new ActivityService();
 
 export class AnalyticsController {
     /**
@@ -25,35 +19,8 @@ export class AnalyticsController {
                 });
             }
 
-            // Find or create user preference
-            let userPref = await UserPreference.findOne({ userId });
-
-            if (!userPref) {
-                userPref = new UserPreference({
-                    userId,
-                    listeningHistory: [],
-                    likedSongs: [],
-                    favoriteGenres: [],
-                    favoriteArtists: [],
-                    audioPreferences: {},
-                    explicitContent: false,
-                });
-            }
-
-            // Add to listening history (keep last 100)
-            userPref.listeningHistory.push({
-                songId: new mongoose.Types.ObjectId(songId),
-                playedAt: new Date(),
-                completionRate: completionRate || 0,
-                skipped: skipped || false,
-            });
-
-            // Keep only last 100 plays
-            if (userPref.listeningHistory.length > 100) {
-                userPref.listeningHistory = userPref.listeningHistory.slice(-100);
-            }
-
-            await userPref.save();
+            // Delegate to service
+            await analyticsService.trackPlay(userId, songId, completionRate, skipped);
 
             return res.status(200).json({
                 success: true,
@@ -85,43 +52,13 @@ export class AnalyticsController {
                 });
             }
 
-            let userPref = await UserPreference.findOne({ userId });
-
-            if (!userPref) {
-                userPref = new UserPreference({
-                    userId,
-                    listeningHistory: [],
-                    likedSongs: [],
-                    favoriteGenres: [],
-                    favoriteArtists: [],
-                    audioPreferences: {},
-                    explicitContent: false,
-                });
-            }
-
-            const songObjectId = new mongoose.Types.ObjectId(songId);
-
-            if (liked) {
-                // Add to liked songs if not already liked
-                if (!userPref.likedSongs.some((id) => id.equals(songObjectId))) {
-                    userPref.likedSongs.push(songObjectId);
-
-                    // Log activity
-                    await activityService.logActivity(userId, ActivityType.LIKE_SONG, songId);
-                }
-            } else {
-                // Remove from liked songs
-                userPref.likedSongs = userPref.likedSongs.filter(
-                    (id) => !id.equals(songObjectId)
-                );
-            }
-
-            await userPref.save();
+            // Delegate to service
+            const result = await analyticsService.toggleLikeSong(userId, songId, liked);
 
             return res.status(200).json({
                 success: true,
                 message: liked ? "Song liked" : "Song unliked",
-                likedSongs: userPref.likedSongs,
+                likedSongs: result.likedSongs,
             });
         } catch (error: any) {
             console.error("Error in likeSong:", error);
@@ -148,28 +85,12 @@ export class AnalyticsController {
                 });
             }
 
-            const userPref = await UserPreference.findOne({ userId }).populate(
-                "likedSongs listeningHistory.songId"
-            );
-
-            if (!userPref) {
-                return res.status(200).json({
-                    success: true,
-                    data: null,
-                    message: "No preferences found",
-                });
-            }
+            // Delegate to service for detailed dashboard
+            const dashboard = await analyticsService.getUserDashboard(userId);
 
             return res.status(200).json({
                 success: true,
-                data: {
-                    favoriteGenres: userPref.favoriteGenres,
-                    favoriteArtists: userPref.favoriteArtists,
-                    audioPreferences: userPref.audioPreferences,
-                    likedSongsCount: userPref.likedSongs.length,
-                    totalPlays: userPref.listeningHistory.length,
-                    listeningHistory: userPref.listeningHistory,
-                },
+                data: dashboard,
             });
         } catch (error: any) {
             console.error("Error in getUserPreferences:", error);

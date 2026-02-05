@@ -221,3 +221,90 @@ export async function getListeningPatterns(userId: string): Promise<ListeningPat
         mostActiveTime,
     };
 }
+
+/**
+ * Track a song play
+ */
+export async function trackPlay(
+    userId: string,
+    songId: string,
+    completionRate: number = 0,
+    skipped: boolean = false
+): Promise<void> {
+    let userPref = await UserPreference.findOne({ userId });
+
+    if (!userPref) {
+        userPref = new UserPreference({
+            userId,
+            listeningHistory: [],
+            likedSongs: [],
+            favoriteGenres: [],
+            favoriteArtists: [],
+            audioPreferences: {},
+            explicitContent: false
+        });
+    }
+
+    // Add to listening history (keep last 100)
+    userPref.listeningHistory.push({
+        songId: new mongoose.Types.ObjectId(songId),
+        playedAt: new Date(),
+        completionRate: completionRate || 0,
+        skipped: skipped || false
+    });
+
+    // Keep only last 100 plays
+    if (userPref.listeningHistory.length > 100) {
+        userPref.listeningHistory = userPref.listeningHistory.slice(-100);
+    }
+
+    await userPref.save();
+}
+
+/**
+ * Like or unlike a song
+ */
+export async function toggleLikeSong(
+    userId: string,
+    songId: string,
+    liked: boolean
+): Promise<{ likedSongs: mongoose.Types.ObjectId[] }> {
+    // Import activity service here to avoid circular dependency
+    const { ActivityService } = await import("./activity.service.js");
+    const { ActivityType } = await import("../models/activity.model.js");
+    const activityService = new ActivityService();
+
+    let userPref = await UserPreference.findOne({ userId });
+
+    if (!userPref) {
+        userPref = new UserPreference({
+            userId,
+            listeningHistory: [],
+            likedSongs: [],
+            favoriteGenres: [],
+            favoriteArtists: [],
+            audioPreferences: {},
+            explicitContent: false
+        });
+    }
+
+    const songObjectId = new mongoose.Types.ObjectId(songId);
+
+    if (liked) {
+        // Add to liked songs if not already liked
+        if (!userPref.likedSongs.some((id) => id.equals(songObjectId))) {
+            userPref.likedSongs.push(songObjectId);
+
+            // Log activity
+            await activityService.logActivity(userId, ActivityType.LIKE_SONG, songId);
+        }
+    } else {
+        // Remove from liked songs
+        userPref.likedSongs = userPref.likedSongs.filter(
+            (id) => !id.equals(songObjectId)
+        );
+    }
+
+    await userPref.save();
+    return { likedSongs: userPref.likedSongs };
+}
