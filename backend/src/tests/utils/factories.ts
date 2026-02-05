@@ -32,10 +32,11 @@ export const createTestSong = async (overrides = {}) => {
     const defaults = {
         title: 'Test Song',
         artist: 'Test Artist',
+        imageUrl: 'https://example.com/song.jpg',
         audioUrl: 'https://example.com/song.mp3',
-        imageUrl: 'https://example.com/cover.jpg',
-        duration: 180,
-        genre: ['Pop'],
+        duration: '180',
+        genre: 'Pop', // String, not array
+        year: 2024,
         playCount: 0,
         likeCount: 0,
     };
@@ -77,8 +78,8 @@ export const createTestSongs = async (count: number, overrides = {}) => {
     const songs = [];
     for (let i = 0; i < count; i++) {
         const song = await createTestSong({
-            title: `Test Song ${i + 1}`,
             ...overrides,
+            title: `Test Song ${i + 1}`,
         });
         songs.push(song);
     }
