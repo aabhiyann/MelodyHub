@@ -6,10 +6,10 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, Plus, Maximize2 } from 'lucide-react';
 import { usePlayerStore } from '@/stores/PlayerStore';
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { HeartParticles } from '@/components/shared/HeartParticles';
 
-export const NowPlaying = () => {
+export const NowPlaying = memo(() => {
     const { currentSong, isPlaying } = usePlayerStore();
     const [isLiked, setIsLiked] = useState(false);
     const [showParticles, setShowParticles] = useState(false);
@@ -161,4 +161,4 @@ export const NowPlaying = () => {
             </div>
         </div>
     );
-};
+});

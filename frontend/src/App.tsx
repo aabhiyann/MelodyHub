@@ -9,21 +9,21 @@ import { PageTransition } from "@/components/layout/PageTransition";
 import { RequireAuth } from "./guards/RequireAuth";
 import { RequireGuest } from "./guards/RequireGuest";
 import { PageErrorBoundary } from "@/components/shared/PageErrorBoundary";
-import { NetworkStatusToast } from "@/components/shared/NetworkStatusToast";
-
-// New UI components
+// Lazy load all pages for better code splitting
 import { SidebarLayout } from '@/components/layout/navigation/SidebarLayout';
 import AudioPlayer from '@/components/features/player/AudioPlayer';
-import { FullScreenPlayer } from '@/components/features/player/FullScreenPlayer';
-import { Mascot } from '@/components/features/mascot/Mascot';
-import { AIPlaylistModal } from '@/components/features/ai/AIPlaylistModal';
-import { InstallPrompt } from '@/components/features/mobile/InstallPrompt';
-import { OfflineIndicator } from '@/components/shared/OfflineIndicator';
 import { useKeyboardControls } from '@/hooks/useKeyboardControls';
 // Accessibility
 import { SkipLinks } from "@/components/accessibility/SkipLinks";
 import { ShortcutsModal } from "@/components/accessibility/ShortcutsModal";
 import { useAccessibilityStore } from "@/stores/AccessibilityStore";
+
+// Lazy load heavy global components
+const FullScreenPlayer = lazy(() => import('@/components/features/player/FullScreenPlayer').then(m => ({ default: m.FullScreenPlayer })));
+const Mascot = lazy(() => import('@/components/features/mascot/Mascot').then(m => ({ default: m.Mascot })));
+const AIPlaylistModal = lazy(() => import('@/components/features/ai/AIPlaylistModal').then(m => ({ default: m.AIPlaylistModal })));
+const InstallPrompt = lazy(() => import('@/components/features/mobile/InstallPrompt').then(m => ({ default: m.InstallPrompt })));
+const OfflineIndicator = lazy(() => import('@/components/shared/OfflineIndicator').then(m => ({ default: m.OfflineIndicator })));
 
 // Lazy load all pages for better code splitting
 const AuthCallbackPage = lazy(() => import("./pages/AuthCallbackPage"));
@@ -199,12 +199,13 @@ function App() {
 				</PageErrorBoundary>
 			</AnimatePresence>
 			<AudioPlayer />
-			<FullScreenPlayer />
-			<Mascot />
-			<AIPlaylistModal />
-			<InstallPrompt />
+			<Suspense fallback={null}>
+				<FullScreenPlayer />
+				<Mascot />
+				<AIPlaylistModal />
+				<InstallPrompt />
+			</Suspense>
 		</Suspense>
-
 	);
 }
 

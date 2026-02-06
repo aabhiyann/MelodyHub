@@ -1,6 +1,7 @@
 import { Play, Music } from 'lucide-react';
 import { Song } from '@/types';
 import { cn } from '@/lib/utils';
+import { memo } from 'react';
 
 interface SongRowProps {
   song: Song;
@@ -14,7 +15,7 @@ interface SongRowProps {
   className?: string;
 }
 
-export const SongRow = ({
+export const SongRow = memo(({
   song,
   index,
   isCurrentSong,
@@ -91,4 +92,4 @@ export const SongRow = ({
       <div className="flex items-center text-text-secondary">{formatDuration(song.duration)}</div>
     </div>
   );
-};
+});

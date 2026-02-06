@@ -4,9 +4,9 @@
  */
 
 import { motion } from 'framer-motion';
-import { ListMusic, MonitorSpeaker, MoreHorizontal, Maximize2, Minimize2 } from 'lucide-react';
+import { ListMusic, MonitorSpeaker, MoreHorizontal, Maximize2, Minimize2, Plus } from 'lucide-react';
 import { VolumeControl } from './VolumeControl';
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { usePlayerStore } from '@/stores/PlayerStore';
 import toast from 'react-hot-toast';
 
@@ -21,7 +21,7 @@ interface AdditionalControlsProps {
     onToggleExpanded: () => void;
 }
 
-export const AdditionalControls = ({
+export const AdditionalControls = memo(({
     queueCount,
     onQueueClick,
     volume,
@@ -155,4 +155,4 @@ export const AdditionalControls = ({
             </div>
         </div>
     );
-};
+});
