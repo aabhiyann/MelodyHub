@@ -1,10 +1,10 @@
 import { Download } from 'lucide-react';
 import { useAuthStore } from '@/stores/AuthStore';
-import { KPICards } from '@/components/admin/KPICards';
-import { ChartsSection } from '@/components/admin/ChartsSection';
-import { ActivityFeed } from '@/components/admin/ActivityFeed';
+import { KPICards } from '@/components/features/admin/KPICards';
+import { ChartsSection } from '@/components/features/admin/ChartsSection';
+import { ActivityFeed } from '@/components/features/admin/ActivityFeed';
 import { motion } from 'framer-motion';
-import { SectionErrorBoundary } from '@/components/SectionErrorBoundary';
+import { SectionErrorBoundary } from '@/components/shared/SectionErrorBoundary';
 
 const AdminDashboard = () => {
     const { authUser } = useAuthStore();

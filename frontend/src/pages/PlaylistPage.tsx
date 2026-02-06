@@ -6,8 +6,8 @@ import { Clock, Pause, Play, ListMusic } from "lucide-react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
-import { InviteCollaboratorsDialog } from "@/components/InviteCollaboratorsDialog";
-import { PlaylistSongRow } from "@/components/PlaylistSongRow";
+import { InviteCollaboratorsDialog } from "@/components/features/playlist/InviteCollaboratorsDialog";
+import { PlaylistSongRow } from "@/components/features/playlist/PlaylistSongRow";
 
 const PlaylistPage = () => {
     const { id } = useParams();

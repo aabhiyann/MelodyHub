@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
-import { AdminSidebar } from '@/components/admin/layout/AdminSidebar';
-import { AdminHeader } from '@/components/admin/layout/AdminHeader';
+import { AdminSidebar } from '@/components/features/admin/layout/AdminSidebar';
+import { AdminHeader } from '@/components/features/admin/layout/AdminHeader';
 
 import { useState } from 'react';
 

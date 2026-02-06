@@ -1,6 +1,6 @@
 import { Song } from "@/types";
 import { usePlayerStore } from "@/stores/PlayerStore";
-import { OptimizedImage } from "@/components/OptimizedImage";
+import { OptimizedImage } from "@/components/shared/OptimizedImage";
 import { TrendingUp, Play, ArrowUp } from "lucide-react";
 
 interface ChartsMosaicProps {

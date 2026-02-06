@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
 import { Song } from "@/types";
 import { usePlayerStore } from "@/stores/PlayerStore";
-import { OptimizedImage } from "@/components/OptimizedImage";
+import { OptimizedImage } from "@/components/shared/OptimizedImage";
 
 import { ListeningHistoryItem } from "@/hooks/useHomeData";
 

@@ -1,4 +1,4 @@
-import Topbar from "@/components/Topbar";
+import Topbar from "@/components/layout/Topbar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -6,7 +6,7 @@ import { useSocialStore } from "@/stores/useSocialStore";
 import { useUser } from "@clerk/clerk-react";
 import { Loader, Search, UserMinus, UserPlus, Users } from "lucide-react";
 import { useEffect, useState } from "react";
-import { SectionErrorBoundary } from "@/components/SectionErrorBoundary";
+import { SectionErrorBoundary } from "@/components/shared/SectionErrorBoundary";
 
 const CommunityPage = () => {
     const {

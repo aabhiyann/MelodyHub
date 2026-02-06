@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { CategoryCard } from '@/components/ui/CategoryCard';
-import Topbar from '@/components/Topbar';
+import Topbar from '@/components/layout/Topbar';
 import { useMusicStore } from '@/stores/MusicStore';
 import { usePlayerStore } from '@/stores/PlayerStore';
 import { axiosInstance } from '@/lib/axios';

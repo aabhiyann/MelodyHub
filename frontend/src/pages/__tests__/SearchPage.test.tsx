@@ -15,7 +15,7 @@ vi.mock('@/lib/axios', () => ({
   axiosInstance: { post: vi.fn() },
 }));
 
-vi.mock('@/components/Topbar', () => ({
+vi.mock('@/components/layout/Topbar', () => ({
   default: () => <div data-testid="topbar">Topbar</div>,
 }));
 

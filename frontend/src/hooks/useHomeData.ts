@@ -40,7 +40,7 @@ export const useHomeData = () => {
                     const artistCounts: Record<string, number> = {};
                     const artistImages: Record<string, string> = {};
 
-                    data.listeningHistory.forEach((item: any) => {
+                    data.listeningHistory.forEach((item: ListeningHistoryItem) => {
                         const artist = item.songId?.artist;
                         const imageUrl = item.songId?.imageUrl;
                         if (artist) {

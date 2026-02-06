@@ -4,9 +4,9 @@ import { useMusicStore } from '@/stores/MusicStore';
 import { usePlayerStore } from '@/stores/PlayerStore';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Loader, Music2, Mic2, Radio, Grid3x3, List } from 'lucide-react';
-import { PageTransition } from '@/components/PageTransition';
+import { PageTransition } from '@/components/layout/PageTransition';
 import { CategoryCard } from '@/components/ui/CategoryCard';
-import { VirtualScrollList } from '@/components/VirtualScrollList';
+import { VirtualScrollList } from '@/components/shared/VirtualScrollList';
 import { SongRow } from '@/components/ui/SongRow';
 import { CategoryCardSkeleton } from '@/components/skeletons/CategoryCardSkeleton';
 import { useGenreTheme } from '@/utils/genreThemes';
@@ -15,7 +15,7 @@ import { useGridNavigation } from '@/hooks/useGridNavigation';
 import { useAnnouncement } from '@/hooks/useAnnouncement';
 import { axiosInstance } from '@/lib/axios';
 import { measureGridPerformance } from '@/utils/gridPerformance';
-import Topbar from '@/components/Topbar';
+import Topbar from '@/components/layout/Topbar';
 import { Song } from '@/types';
 
 // Genre configuration with gradients and emojis

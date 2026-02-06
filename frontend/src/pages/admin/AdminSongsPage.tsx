@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
-import { SongsTable } from '@/components/admin/SongsTable';
-import { SongUploadModal } from '@/components/admin/SongUploadModal';
+import { SongsTable } from '@/components/features/admin/SongsTable';
+import { SongUploadModal } from '@/components/features/admin/SongUploadModal';
 import { motion } from 'framer-motion';
 
 import { useEffect } from 'react';

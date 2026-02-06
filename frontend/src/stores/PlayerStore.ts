@@ -1,8 +1,9 @@
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 import { Song } from "@/types";
 import { PlayerManager } from "@/providers/playerManager";
 
-interface PlayerStore {
+interface PlayerState {
 	currentSong: Song | null;
 	isPlaying: boolean;
 	queue: Song[];
@@ -17,12 +18,15 @@ interface PlayerStore {
 	currentTime: number;
 	duration: number;
 	bufferedTime: number;
-	seek: (time: number) => void;
 
 	// UI State
 	isShortcutsGuideOpen: boolean;
-	toggleShortcutsGuide: () => void;
 	isExpanded: boolean;
+}
+
+interface PlayerActions {
+	seek: (time: number) => void;
+	toggleShortcutsGuide: () => void;
 	toggleExpanded: () => void;
 
 	initializeQueue: (songs: Song[]) => void;
@@ -43,47 +47,60 @@ interface PlayerStore {
 	setBufferedTime: (time: number) => void;
 }
 
-export const usePlayerStore = create<PlayerStore>((set, get) => {
-	const manager = new PlayerManager(set, get);
+type PlayerStore = PlayerState & PlayerActions;
 
-	return {
-		currentSong: null,
-		isPlaying: false,
-		queue: [],
-		currentIndex: - 1,
-		shuffled: false,
-		isRepeating: false,
-		isLyricsOpen: false,
-		isQueueOpen: false,
-		// New audio state
-		volume: 70,
-		isMuted: false,
-		currentTime: 0,
-		duration: 0,
-		bufferedTime: 0,
+const initialState: PlayerState = {
+	currentSong: null,
+	isPlaying: false,
+	queue: [],
+	currentIndex: -1,
+	shuffled: false,
+	isRepeating: false,
+	isLyricsOpen: false,
+	isQueueOpen: false,
+	volume: 70,
+	isMuted: false,
+	currentTime: 0,
+	duration: 0,
+	bufferedTime: 0,
+	isShortcutsGuideOpen: false,
+	isExpanded: false,
+};
 
-		// UI State
-		isShortcutsGuideOpen: false,
-		toggleShortcutsGuide: () => set(state => ({ isShortcutsGuideOpen: !state.isShortcutsGuideOpen })),
-		isExpanded: false,
-		toggleExpanded: () => set(state => ({ isExpanded: !state.isExpanded })),
+export const usePlayerStore = create<PlayerStore>()(
+	devtools(
+		(set, get) => {
+			const manager = new PlayerManager(set, get);
 
-		initializeQueue: manager.initializeQueue.bind(manager),
-		playAlbum: manager.playAlbum.bind(manager),
-		setCurrentSong: manager.setCurrentSong.bind(manager),
-		togglePlay: manager.togglePlay.bind(manager),
-		playNext: manager.playNext.bind(manager),
-		playPrevious: manager.playPrevious.bind(manager),
-		shuffleQueue: manager.shuffleQueue.bind(manager),
-		toggleRepeat: manager.toggleRepeat.bind(manager),
-		toggleLyrics: () => set(state => ({ isLyricsOpen: !state.isLyricsOpen })),
-		toggleQueue: () => set(state => ({ isQueueOpen: !state.isQueueOpen })),
-		// New audio actions
-		setVolume: (volume) => set({ volume }),
-		toggleMute: () => set(state => ({ isMuted: !state.isMuted })),
-		setCurrentTime: (time) => set({ currentTime: time }),
-		setDuration: (duration) => set({ duration }),
-		setBufferedTime: (time) => set({ bufferedTime: time }),
-		seek: (time) => set({ currentTime: time }),
-	};
-});
+			return {
+				...initialState,
+
+				// UI State Actions
+				toggleShortcutsGuide: () => set((state) => ({ isShortcutsGuideOpen: !state.isShortcutsGuideOpen }), false, "player/toggleShortcuts"),
+				toggleExpanded: () => set((state) => ({ isExpanded: !state.isExpanded }), false, "player/toggleExpanded"),
+
+				// Manager Delegated Actions
+				initializeQueue: manager.initializeQueue.bind(manager),
+				playAlbum: manager.playAlbum.bind(manager),
+				setCurrentSong: manager.setCurrentSong.bind(manager),
+				togglePlay: manager.togglePlay.bind(manager),
+				playNext: manager.playNext.bind(manager),
+				playPrevious: manager.playPrevious.bind(manager),
+				shuffleQueue: manager.shuffleQueue.bind(manager),
+				toggleRepeat: manager.toggleRepeat.bind(manager),
+
+				toggleLyrics: () => set((state) => ({ isLyricsOpen: !state.isLyricsOpen }), false, "player/toggleLyrics"),
+				toggleQueue: () => set((state) => ({ isQueueOpen: !state.isQueueOpen }), false, "player/toggleQueue"),
+
+				// Audio State Actions
+				setVolume: (volume) => set({ volume }, false, "player/setVolume"),
+				toggleMute: () => set((state) => ({ isMuted: !state.isMuted }), false, "player/toggleMute"),
+				setCurrentTime: (time) => set({ currentTime: time }, false, "player/setTime"),
+				setDuration: (duration) => set({ duration }, false, "player/setDuration"),
+				setBufferedTime: (time) => set({ bufferedTime: time }, false, "player/setBuffered"),
+				seek: (time) => set({ currentTime: time }, false, "player/seek"),
+			};
+		},
+		{ name: "PlayerStore" }
+	)
+);

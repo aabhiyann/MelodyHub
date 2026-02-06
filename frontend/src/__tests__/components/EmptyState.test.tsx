@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { EmptyState } from '@/components/EmptyState';
+import { EmptyState } from '@/components/shared/EmptyState';
 import userEvent from '@testing-library/user-event';
 
 describe('EmptyState Component', () => {

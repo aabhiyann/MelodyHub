@@ -1,16 +1,21 @@
-import Topbar from "@/components/Topbar";
-import { useChatStore } from "@/stores/ChatStore";
-import { Message } from "@/types";
-import { useUser } from "@clerk/clerk-react";
+import Topbar from "@/components/layout/Topbar";
 import { useEffect } from "react";
-import FriendsList from "../components/FriendsList";
-import ChatHeader from "../components/ChatHeader";
+import { useChatStore } from "@/stores/ChatStore";
+import { useAuthStore } from "@/stores/AuthStore";
+import { ChatHeader } from "@/components/features/chat/ChatHeader";
+import { MessageInput } from "@/components/features/chat/MessageInput";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import MessageInput from "../components/MessageInput";
-import { MascotImage } from "@/components/MascotImage";
+import { FriendsList } from "@/components/features/social/FriendsList";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Message } from "@/types";
+import { format } from "date-fns";
+import { User } from "@/types";
+import { Loader2 } from "lucide-react";
+import { MascotImage } from "@/components/shared/MascotImage";
 import { motion } from "framer-motion";
-import { SectionErrorBoundary } from "@/components/SectionErrorBoundary";
+import { SectionErrorBoundary } from "@/components/shared/SectionErrorBoundary";
+import { useUser } from "@clerk/clerk-react";
+
 
 const formatTime = (date: string) => {
 	return new Date(date).toLocaleTimeString("en-US", {

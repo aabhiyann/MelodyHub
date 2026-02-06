@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { Album } from "@/types";
-import { OptimizedImage } from "@/components/OptimizedImage";
+import { OptimizedImage } from "@/components/shared/OptimizedImage";
 
 interface NewReleasesProps {
     albums: Album[];

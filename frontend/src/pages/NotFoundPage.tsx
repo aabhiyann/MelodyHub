@@ -1,7 +1,7 @@
 import { Home, Music } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { MascotImage } from "@/components/MascotImage";
+import { MascotImage } from "@/components/shared/MascotImage";
 
 export default function NotFoundPage() {
 	const navigate = useNavigate();

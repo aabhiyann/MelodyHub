@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { Song } from "@/types";
 import { usePlayerStore } from "@/stores/PlayerStore";
-import { OptimizedImage } from "@/components/OptimizedImage";
+import { OptimizedImage } from "@/components/shared/OptimizedImage";
 
 interface RecommendedSectionProps {
     songs: Song[];

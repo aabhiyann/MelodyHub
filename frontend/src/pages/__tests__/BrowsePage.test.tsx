@@ -27,11 +27,11 @@ vi.mock('@/utils/gridPerformance', () => ({
   measureGridPerformance: vi.fn(() => vi.fn()),
 }));
 
-vi.mock('@/components/Topbar', () => ({
+vi.mock('@/components/layout/Topbar', () => ({
   default: () => <div data-testid="topbar">Topbar</div>,
 }));
 
-vi.mock('@/components/PageTransition', () => ({
+vi.mock('@/components/layout/PageTransition', () => ({
   PageTransition: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 

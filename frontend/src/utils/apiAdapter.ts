@@ -19,9 +19,9 @@
  * @param response - The axios response data
  * @returns The extracted data
  */
-export function extractData<T>(response: any): T {
+export function extractData<T>(response: unknown): T {
     // Check if response follows new format
-    if (response && typeof response === 'object' && 'success' in response) {
+    if (isNewFormat(response)) {
         // New format: { success: true, data: T }
         return response.data as T;
     }
@@ -33,6 +33,6 @@ export function extractData<T>(response: any): T {
 /**
  * Type guard to check if response is in new format
  */
-export function isNewFormat(response: any): response is { success: boolean; data: any } {
-    return response && typeof response === 'object' && 'success' in response;
+export function isNewFormat(response: unknown): response is { success: boolean; data: any } {
+    return !!response && typeof response === 'object' && 'success' in response;
 }

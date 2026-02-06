@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { LoadingScreen } from '@/components/LoadingScreen';
+import { LoadingScreen } from '@/components/shared/LoadingScreen';
 
 describe('LoadingScreen Component', () => {
     it('renders with default message', () => {

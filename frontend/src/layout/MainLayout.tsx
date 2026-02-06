@@ -4,17 +4,17 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import { useEffect, useState } from "react";
 
-import LeftSidebar from "@/components/LeftSidebar";
-import ActivitySidebar from "@/components/ActivitySidebar";
-import AudioPlayer from "@/components/AudioPlayer";
-import PlaybackControls from "@/components/PlaybackControls";
-import QueueView from "@/components/QueueView";
-import LyricsView from "@/components/LyricsView";
+import LeftSidebar from "@/components/layout/LeftSidebar";
+import ActivitySidebar from "@/components/layout/ActivitySidebar";
+import AudioPlayer from "@/components/features/player/AudioPlayer";
+import PlaybackControls from "@/components/features/player/PlaybackControls";
+import QueueView from "@/components/features/player/QueueView";
+import LyricsView from "@/components/features/player/LyricsView";
 import { usePlayerStore } from "@/stores/PlayerStore";
-import { XPFloatingIndicator } from "@/components/gamification/XPFloatingIndicator";
-import MobileNav from "@/components/mobile/MobileNav";
-import MobileHeader from "@/components/mobile/MobileHeader";
-import MobilePlayer from "@/components/mobile/MobilePlayer";
+import { XPFloatingIndicator } from "@/components/features/gamification/XPFloatingIndicator";
+import MobileNav from "@/components/features/mobile/MobileNav";
+import MobileHeader from "@/components/features/mobile/MobileHeader";
+import MobilePlayer from "@/components/features/mobile/MobilePlayer";
 
 const MainLayout = () => {
 

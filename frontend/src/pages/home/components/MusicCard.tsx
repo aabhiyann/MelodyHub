@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { LikeButton } from "@/components/ui/LikeButton";
-import { AddToPlaylistDialog } from "@/components/AddToPlaylistDialog";
-import { OptimizedImage } from "@/components/OptimizedImage";
+import { AddToPlaylistDialog } from "@/components/features/playlist/AddToPlaylistDialog";
+import { OptimizedImage } from "@/components/shared/OptimizedImage";
 import { LiquidGlassCard } from "@/components/ui/LiquidGlassCard";
 import { useCardReveal } from "@/hooks/useCardReveal";
 

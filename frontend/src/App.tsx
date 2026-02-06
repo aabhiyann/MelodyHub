@@ -1,24 +1,24 @@
 import { lazy, Suspense, useState, useEffect } from "react";
 import { Route, Routes, useLocation, Outlet } from "react-router-dom";
 import { AuthenticateWithRedirectCallback } from "@clerk/clerk-react";
-import { LoadingScreen } from "./components/LoadingScreen";
+import { LoadingScreen } from "@/components/shared/LoadingScreen";
 import { Toaster } from "react-hot-toast";
 import { AnimatePresence } from "framer-motion";
-import { LoadingBar } from "./components/LoadingBar";
-import { PageTransition } from "./components/PageTransition";
+import { LoadingBar } from "@/components/shared/LoadingBar";
+import { PageTransition } from "@/components/layout/PageTransition";
 import { RequireAuth } from "./guards/RequireAuth";
 import { RequireGuest } from "./guards/RequireGuest";
-import { PageErrorBoundary } from "./components/PageErrorBoundary";
-import { NetworkStatusToast } from "./components/NetworkStatusToast";
+import { PageErrorBoundary } from "@/components/shared/PageErrorBoundary";
+import { NetworkStatusToast } from "@/components/shared/NetworkStatusToast";
 
 // New UI components
-import { SidebarLayout } from '@/components/navigation/SidebarLayout';
-import AudioPlayer from '@/components/AudioPlayer';
-import { FullScreenPlayer } from '@/components/player/FullScreenPlayer';
-import { Mascot } from '@/components/mascot/Mascot';
-import { AIPlaylistModal } from '@/components/ai/AIPlaylistModal';
-import { InstallPrompt } from '@/components/mobile/InstallPrompt';
-import { OfflineIndicator } from '@/components/OfflineIndicator';
+import { SidebarLayout } from '@/components/layout/navigation/SidebarLayout';
+import AudioPlayer from '@/components/features/player/AudioPlayer';
+import { FullScreenPlayer } from '@/components/features/player/FullScreenPlayer';
+import { Mascot } from '@/components/features/mascot/Mascot';
+import { AIPlaylistModal } from '@/components/features/ai/AIPlaylistModal';
+import { InstallPrompt } from '@/components/features/mobile/InstallPrompt';
+import { OfflineIndicator } from '@/components/shared/OfflineIndicator';
 import { useKeyboardControls } from '@/hooks/useKeyboardControls';
 // Accessibility
 import { SkipLinks } from "@/components/accessibility/SkipLinks";
