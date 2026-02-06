@@ -8,6 +8,7 @@ import { Heart, Plus, Maximize2 } from 'lucide-react';
 import { usePlayerStore } from '@/stores/PlayerStore';
 import { useState, memo } from 'react';
 import { HeartParticles } from '@/components/shared/HeartParticles';
+import { OptimizedImage } from '@/components/shared/OptimizedImage';
 
 export const NowPlaying = memo(() => {
     const { currentSong, isPlaying } = usePlayerStore();
@@ -68,9 +69,10 @@ export const NowPlaying = memo(() => {
                     }}
                     style={{ willChange: "transform" }}
                 >
-                    <img
+                    <OptimizedImage
                         src={currentSong.imageUrl}
                         alt={currentSong.title}
+                        size="thumbnail"
                         className="w-full h-full object-cover"
                     />
                 </motion.div>

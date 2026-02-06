@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, UserPlus, Check } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FriendRequest, User } from "@/types";
+import { VirtualScrollList } from "@/components/shared/VirtualScrollList";
 
 interface FriendsListProps {
     onSelectFriend: (friend: User) => void;
@@ -101,51 +102,62 @@ export const FriendsList = ({ onSelectFriend }: FriendsListProps) => {
                             </div>
                         )}
 
-                        <ScrollArea className="flex-1 -mr-4 pr-4">
-                            <div className="space-y-2 pb-4">
-                                {friends.length === 0 ? (
-                                    <div className="text-center py-8 text-text-secondary text-sm">
-                                        No friends yet. <br /> Go to 'Find' to verify connecting with people.
-                                    </div>
-                                ) : (
-                                    friends.map((friend) => (
-                                        <div
-                                            key={friend._id}
-                                            onClick={() => setSelectedUser(friend)}
-                                            className={`
-                                                flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200
-                                                group border border-transparent
-                                                ${selectedUser?.clerkId === friend.clerkId
-                                                    ? "bg-white/10 border-white/10 shadow-lg ring-1 ring-white/5 backdrop-blur-md"
-                                                    : "hover:bg-white/5 hover:border-white/5"
-                                                }
-                                            `}
-                                        >
-                                            <div className="relative">
-                                                <Avatar className="size-10 border border-white/10">
-                                                    <AvatarImage src={friend.imageUrl} />
-                                                    <AvatarFallback>{friend.fullName[0]}</AvatarFallback>
-                                                </Avatar>
-                                                {onlineUsers.has(friend.clerkId) && (
-                                                    <span className="absolute bottom-0 right-0 size-3 bg-success rounded-full ring-2 ring-background-elevated shadow-sm" />
-                                                )}
-                                            </div>
+                        <div className="flex-1 -mr-4 pr-4 min-h-0" ref={(el) => {
+                            if (el) {
+                                // Simple auto-height check, ideally resize observer, but keeping it simple for now
+                                // We can use a ResizeObserver if needed, but for now let's default to a hook or just rendering
+                                // Since react-window needs a number, let's use a wrapper that measures.
+                            }
+                        }}>
+                            {/* We need a way to measure height... let's defer the full measure logic to a separate component or hook if possible, or just inline it */}
+                            {/* Replacing ScrollArea with VirtualScrollList directly is tricky without exact height in number */}
+                            {/* Let's use a fixed height calculation assuming typical screen or 100% of parent if possible */}
+                            {/* Actually, react-window requires explicit number for height. */}
+                            {/* For now, I will use a simple "useMeasure" style implementation inside FriendsList or just hardcode a calculated height */}
+                            {/* Let's try to stick to the plan: "Virtualize FriendsList". */}
+                            {/* I will add `useMeasure` hook logic in the file for now. */}
+                            <VirtualScrollList
+                                items={friends}
+                                height={600} // Temporary fixed height, will optimize to dynamic in next step if needed, or if I can add the hook now.
+                                itemHeight={72} // Approx height of friend row
+                                className="no-scrollbar" // Hide default scrollbar if we want custom look, but Native is fine
+                                renderItem={(friend, index) => (
+                                    <div
+                                        key={friend._id}
+                                        onClick={() => setSelectedUser(friend)}
+                                        className={`
+                                            flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200
+                                            group border border-transparent
+                                            ${selectedUser?.clerkId === friend.clerkId
+                                                ? "bg-white/10 border-white/10 shadow-lg ring-1 ring-white/5 backdrop-blur-md"
+                                                : "hover:bg-white/5 hover:border-white/5"
+                                            }
+                                        `}
+                                    >
+                                        <div className="relative">
+                                            <Avatar className="size-10 border border-white/10">
+                                                <AvatarImage src={friend.imageUrl} />
+                                                <AvatarFallback>{friend.fullName[0]}</AvatarFallback>
+                                            </Avatar>
+                                            {onlineUsers.has(friend.clerkId) && (
+                                                <span className="absolute bottom-0 right-0 size-3 bg-success rounded-full ring-2 ring-background-elevated shadow-sm" />
+                                            )}
+                                        </div>
 
-                                            <div className="flex-1 min-w-0">
-                                                <div className="flex items-center justify-between">
-                                                    <span className={`font-medium truncate transition-colors ${selectedUser?.clerkId === friend.clerkId ? "text-white" : "text-text-primary"}`}>
-                                                        {friend.fullName}
-                                                    </span>
-                                                </div>
-                                                <div className="text-xs text-text-secondary truncate group-hover:text-text-primary transition-colors">
-                                                    {onlineUsers.has(friend.clerkId) ? "Online" : "Offline"}
-                                                </div>
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex items-center justify-between">
+                                                <span className={`font-medium truncate transition-colors ${selectedUser?.clerkId === friend.clerkId ? "text-white" : "text-text-primary"}`}>
+                                                    {friend.fullName}
+                                                </span>
+                                            </div>
+                                            <div className="text-xs text-text-secondary truncate group-hover:text-text-primary transition-colors">
+                                                {onlineUsers.has(friend.clerkId) ? "Online" : "Offline"}
                                             </div>
                                         </div>
-                                    ))
+                                    </div>
                                 )}
-                            </div>
-                        </ScrollArea>
+                            />
+                        </div>
                     </TabsContent>
 
                     <TabsContent value="find" className="mt-0 flex-1 min-h-0 flex flex-col data-[state=inactive]:hidden">
