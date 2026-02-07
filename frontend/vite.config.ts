@@ -231,5 +231,21 @@ export default defineConfig({
     setupFiles: './src/tests/setup.ts',
     css: true,
     exclude: ['node_modules', 'tests/**', 'e2e/**'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json-summary', 'html'],
+      exclude: [
+        'node_modules/**',
+        'dist/**',
+        '**/*.d.ts',
+        '**/*.test.{ts,tsx}',
+        'src/tests/**',
+        'src/components/ui/**', // Exclude shadcn/ui components (3rd party) mostly
+        'src/types/**',
+        'vite.config.ts',
+        'postcss.config.js',
+        'tailwind.config.js',
+      ],
+    },
   },
 });
