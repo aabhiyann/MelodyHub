@@ -113,8 +113,9 @@ export class ChatManager {
     }
 
     disconnectSocket() {
-        if (this.socket) {
-            this.socket.disconnect();
+        const socket = this.get().socket;
+        if (socket) {
+            socket.disconnect();
             this.socket = null;
         }
         this.set({ socket: null });

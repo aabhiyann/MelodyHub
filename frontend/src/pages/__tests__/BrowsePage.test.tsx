@@ -79,6 +79,16 @@ describe('BrowsePage', () => {
     expect(screen.getByTestId('topbar')).toBeInTheDocument();
   });
 
+  it('fetches data on mount', () => {
+    render(
+      <MemoryRouter>
+        <BrowsePage />
+      </MemoryRouter>
+    );
+    expect(useMusicStore().fetchSongs).toHaveBeenCalled();
+    expect(useMusicStore().fetchAlbums).toHaveBeenCalled();
+  });
+
   it('renders genre grid when songs are loaded', () => {
     const mockSongs = [
       { _id: '1', title: 'Song 1', artist: 'A1', genre: 'Pop', duration: 180 },
@@ -96,5 +106,7 @@ describe('BrowsePage', () => {
       </MemoryRouter>
     );
     expect(screen.getByTestId('topbar')).toBeInTheDocument();
+    expect(screen.getByText('Pop')).toBeInTheDocument();
+    expect(screen.getByText('Rock')).toBeInTheDocument();
   });
 });
