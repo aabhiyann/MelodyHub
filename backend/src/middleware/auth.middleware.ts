@@ -57,7 +57,13 @@ export const requireAdmin = async (req: Request, res: Response, next: NextFuncti
 			return;
 		}
 
-		// Check database for user role
+		// Check if role is already available in auth context (from protectRoute or test bypass)
+		if (authReq.auth.role === 'admin') {
+			next();
+			return;
+		}
+
+		// Check database for user role if not present
 		const user = await User.findOne({ clerkId: authReq.auth.userId });
 
 		if (!user) {

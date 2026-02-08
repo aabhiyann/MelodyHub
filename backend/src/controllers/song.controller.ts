@@ -52,4 +52,14 @@ export class SongController extends BaseController {
       this.handleError(next, error);
     }
   }
+
+  async getRandomSongs(req: Request, res: Response, next: NextFunction) {
+    try {
+      const limit = parseInt(req.query.limit as string) || 10;
+      const songs = await this.songService.getRandomSongs(limit);
+      this.handleSuccess(res, songs, 200, true);
+    } catch (error) {
+      this.handleError(next, error);
+    }
+  }
 }
