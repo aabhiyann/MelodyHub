@@ -9,6 +9,10 @@ export class SongService {
   async getAllSongs(page: number = 1, limit: number = 20) {
     const skip = (page - 1) * limit;
 
+    const cacheKey = `songs:all:${page}:${limit}`;
+    const cached = await redisService.get(cacheKey);
+    if (cached) return cached as any;
+
     // Get total count for pagination metadata
     const total = await Song.countDocuments();
 
@@ -20,7 +24,7 @@ export class SongService {
       .select('title artist imageUrl audioUrl duration isFeatured isTrending albumId')
       .lean(); // Use lean() for better performance
 
-    return {
+    const result = {
       data: songs,
       pagination: {
         page,
@@ -31,6 +35,9 @@ export class SongService {
         hasPrevPage: page > 1,
       },
     };
+
+    await redisService.set(cacheKey, result, 60); // Cache for 60 seconds
+    return result;
   }
 
   async getFeaturedSongs() {
