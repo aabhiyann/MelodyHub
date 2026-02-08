@@ -1,44 +1,28 @@
-# Multi-stage build for optimized image size
+# Build Stage
 FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files
 COPY package*.json ./
+RUN npm ci
 
-# Install ALL dependencies (including devDependencies for build)
-RUN npm ci && \
-    npm cache clean --force
-
-# Copy source
 COPY . .
+RUN npm run build
 
-# Build TypeScript - skip type errors for production build
-RUN npx tsc --noEmit false || echo "Type errors present but build continuing"
-
-# Production stage
+# Production Stage
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodejs -u 1001
+COPY package*.json ./
+RUN npm ci --only=production
 
-# Copy from builder
-COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
-COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
-COPY --from=builder --chown=nodejs:nodejs /app/package*.json ./
+COPY --from=builder /app/dist ./dist
 
-# Set user
-USER nodejs
+# Create a non-root user for security
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
 
-# Expose port
-EXPOSE 5000
+EXPOSE 5001
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=40s \
-    CMD node -e "require('http').get('http://localhost:5000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
-
-# Start
 CMD ["node", "dist/index.js"]
