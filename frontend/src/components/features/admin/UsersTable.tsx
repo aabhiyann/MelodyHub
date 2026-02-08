@@ -150,7 +150,7 @@ export const UsersTable = ({
     ];
 
     const handleBulkAction = () => {
-        console.log("Bulk action for", selectedUsers.length, "users");
+        // TODO: Implement bulk action
     };
 
     return (

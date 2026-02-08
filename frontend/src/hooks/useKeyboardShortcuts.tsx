@@ -97,7 +97,7 @@ export const useKeyboardShortcuts = (enabled = true) => {
                                 songId: currentSong._id,
                                 liked: true
                             });
-                            console.log('❤️ Liked:', currentSong.title);
+                            // console.log('❤️ Liked:', currentSong.title);
                         } catch (error) {
                             console.error('Failed to like song:', error);
                         }

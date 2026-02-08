@@ -26,7 +26,7 @@ const defaultActions: SwipeAction[] = [
     {
         label: 'Delete',
         icon: Trash2,
-        onClick: () => console.log('Delete'),
+        onClick: () => { },// console.log('Delete'),
         color: 'red',
     },
     {

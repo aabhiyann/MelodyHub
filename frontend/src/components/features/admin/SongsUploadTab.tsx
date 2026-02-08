@@ -19,9 +19,9 @@ export const SongsUploadTab = () => {
         setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
     };
 
-    const handleUpload = async (files: File[], metadata: any) => {
+    const handleUpload = async (_files: File[], _metadata: any) => {
         // TODO: Implement actual upload logic with API
-        console.log('Uploading files:', files, 'with metadata:', metadata);
+        // console.log('Uploading files:', files, 'with metadata:', metadata);
 
         // Simulate API call
         await new Promise((resolve) => setTimeout(resolve, 2000));
