@@ -1,16 +1,12 @@
-import Topbar from "@/components/layout/Topbar";
+import Topbar from "@/components/layout/TopBar";
 import { useEffect } from "react";
 import { useChatStore } from "@/stores/ChatStore";
-import { useAuthStore } from "@/stores/AuthStore";
 import { ChatHeader } from "@/components/features/chat/ChatHeader";
 import { MessageInput } from "@/components/features/chat/MessageInput";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FriendsList } from "@/components/features/social/FriendsList";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Message } from "@/types";
-import { format } from "date-fns";
-import { User } from "@/types";
-import { Loader2 } from "lucide-react";
 import { MascotImage } from "@/components/shared/MascotImage";
 import { motion } from "framer-motion";
 import { SectionErrorBoundary } from "@/components/shared/SectionErrorBoundary";
@@ -35,7 +31,13 @@ const formatDate = (date: string) => {
 
 const ChatPage = () => {
 	const { user } = useUser();
-	const { messages, selectedUser, typingUsers, fetchUsers, fetchMessages } = useChatStore();
+	const {
+		selectedUser,
+		messages,
+		fetchUsers,
+		fetchMessages,
+		typingUsers,
+	} = useChatStore();
 
 	useEffect(() => {
 		if (user) fetchUsers();
