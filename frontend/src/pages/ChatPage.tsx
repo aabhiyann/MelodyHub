@@ -32,14 +32,11 @@ const formatDate = (date: string) => {
 const ChatPage = () => {
 	const { user } = useUser();
 	const {
-		users: chatUsers,
 		selectedUser,
 		messages,
 		fetchUsers,
 		fetchMessages,
-		setSelectedUser,
 		typingUsers,
-		onlineUsers
 	} = useChatStore();
 
 	useEffect(() => {
@@ -125,6 +122,18 @@ const ChatPage = () => {
 
 							{/* Typing Indicator & Input Area Container */}
 							<div className="relative w-full z-10">
+								{/* Typing Indicator - Positioned absolutely above the input */}
+								<div className="absolute bottom-full left-6 mb-2 pointer-events-none">
+									{selectedUser && typingUsers?.has(selectedUser.clerkId) && (
+										<div className="flex items-center gap-1.5 bg-background-elevated/90 backdrop-blur-xl px-4 py-2 rounded-full border border-white/10 animate-in slide-in-from-bottom-2 fade-in duration-300 w-fit shadow-lg">
+											<div className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce [animation-delay:-0.3s]" />
+											<div className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce [animation-delay:-0.15s]" />
+											<div className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce" />
+											<span className="text-xs text-text-secondary ml-1.5 font-medium">{selectedUser.fullName} is typing...</span>
+										</div>
+									)}
+								</div>
+
 								<MessageInput />
 							</div>
 						</>
