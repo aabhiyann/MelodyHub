@@ -1,11 +1,11 @@
 import { useAuthStore } from "@/stores/AuthStore";
-import { AdminHeader } from "@/components/layout/AdminHeader";
-import { DashboardStats } from "@/components/features/analytics/DashboardStats";
-import { Settings, Music, BarChart3, Users, Disc } from "lucide-react";
+import AdminHeader from "@/components/layout/AdminHeader";
+import DashboardStats from "@/components/features/analytics/DashboardStats";
+import { Music, BarChart3, Users, Album } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { SongsTabContent } from "@/components/features/admin/SongsTabContent";
-import { AlbumsTabContent } from "@/components/features/admin/AlbumsTabContent";
-import { AnalyticsTabContent } from "@/components/features/admin/AnalyticsTabContent";
+import SongsTabContent from "@/components/features/admin/SongsTabContent";
+import AlbumsTabContent from "@/components/features/admin/AlbumsTabContent";
+import AnalyticsTabContent from "@/components/features/admin/AnalyticsTabContent";
 import { UsersList } from "@/components/features/social/UsersList";
 import { useEffect } from "react";
 import { useMusicStore } from "@/stores/MusicStore";
@@ -25,7 +25,7 @@ const AdminPage = () => {
 
     return (
         <div className='min-h-full bg-transparent flex flex-col p-6 space-y-8'>
-            <Header />
+            <AdminHeader />
 
             <div className="space-y-8">
                 <DashboardStats />
@@ -73,7 +73,7 @@ const AdminPage = () => {
                     <AnalyticsTabContent />
                 </TabsContent>
                 <TabsContent value='users' className="outline-none focus:outline-none">
-                    <UsersTab />
+                    <UsersList />
                 </TabsContent>
             </Tabs>
         </div>

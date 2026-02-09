@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { UserPlus, UserMinus, Users } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 interface UserListItemProps {
     user: {

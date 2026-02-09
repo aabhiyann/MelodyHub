@@ -23,8 +23,8 @@ describe('PlayerManager', () => {
     let mockSocket: any;
     let mockState: any;
 
-    const mockSong1 = { _id: '1', title: 'Song 1', artist: 'Artist 1', albumId: 'a1', duration: 100, imageUrl: 'img1', audioUrl: 'url1' };
-    const mockSong2 = { _id: '2', title: 'Song 2', artist: 'Artist 2', albumId: 'a1', duration: 100, imageUrl: 'img2', audioUrl: 'url2' };
+    const mockSong1 = { _id: '1', title: 'Song 1', artist: 'Artist 1', albumId: 'a1', duration: 100, imageUrl: 'img1', audioUrl: 'url1', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+    const mockSong2 = { _id: '2', title: 'Song 2', artist: 'Artist 2', albumId: 'a1', duration: 100, imageUrl: 'img2', audioUrl: 'url2', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
     const mockQueue = [mockSong1, mockSong2];
 
     beforeEach(() => {

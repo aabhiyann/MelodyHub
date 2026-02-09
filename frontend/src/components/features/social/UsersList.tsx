@@ -1,6 +1,7 @@
 import { useChatStore } from "@/stores/ChatStore";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UserListSkeleton } from "@/components/skeletons";
 
 export const UsersList = () => {
 	const { users, selectedUser, isLoading, setSelectedUser, onlineUsers, activities } = useChatStore();
@@ -22,7 +23,7 @@ export const UsersList = () => {
 			<ScrollArea className='flex-1'>
 				<div className='p-3 space-y-2'>
 					{isLoading ? (
-						Array(5).fill(0).map((_, i) => <UsersListSkeleton key={i} />)
+						<UserListSkeleton count={5} />
 					) : (
 						users.length === 0 ? (
 							<div className="text-zinc-500 text-center p-4 text-sm mt-4">
@@ -94,12 +95,3 @@ export const UsersList = () => {
 };
 
 
-const UsersListSkeleton = () => (
-	<div className='flex items-center gap-4 p-3 rounded-2xl animate-pulse skeleton-shimmer bg-white/5' data-testid="users-list-skeleton">
-		<div className='size-12 bg-white/10 rounded-full' />
-		<div className='flex-1 space-y-2 hidden md:block'>
-			<div className='h-3 bg-white/10 rounded w-24' />
-			<div className='h-2 bg-white/10 rounded w-32' />
-		</div>
-	</div>
-);

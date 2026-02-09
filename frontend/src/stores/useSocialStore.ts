@@ -1,7 +1,7 @@
 import { axiosInstance } from "@/lib/axios";
 import { create } from "zustand";
 import toast from "react-hot-toast";
-import { FriendRequest, Activity, UserProfile } from "@/types/social";
+import { FriendRequest, Activity, UserProfile } from "@/types";
 import { getErrorMessage } from "@/utils/errors";
 import { extractData } from "@/utils/apiAdapter"; // Import the adapter
 

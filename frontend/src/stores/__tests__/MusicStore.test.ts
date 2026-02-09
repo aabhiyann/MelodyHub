@@ -20,11 +20,11 @@ vi.mock('react-hot-toast', () => ({
 import { axiosInstance } from '@/lib/axios';
 
 const mockSongs = [
-  { _id: '1', title: 'Song 1', artist: 'Artist 1', genre: 'Pop', duration: 180 },
-  { _id: '2', title: 'Song 2', artist: 'Artist 2', genre: 'Rock', duration: 200 },
+  { _id: '1', title: 'Song 1', artist: 'Artist 1', genre: 'Pop', duration: 180, imageUrl: 'img1', audioUrl: 'url1', createdAt: '2024-01-01', updatedAt: '2024-01-01' },
+  { _id: '2', title: 'Song 2', artist: 'Artist 2', genre: 'Rock', duration: 200, imageUrl: 'img2', audioUrl: 'url2', createdAt: '2024-01-01', updatedAt: '2024-01-01' },
 ];
 const mockAlbums = [
-  { _id: 'a1', title: 'Album 1', artist: 'Artist 1', songs: [] },
+  { _id: 'a1', title: 'Album 1', artist: 'Artist 1', songs: [], imageUrl: 'img1', releaseYear: 2024 },
 ];
 const mockStats = { totalSongs: 2, totalAlbums: 1, totalUsers: 0, totalArtists: 0 };
 

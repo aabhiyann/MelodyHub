@@ -7,7 +7,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { SongRow } from '@/components/ui/SongRow';
 import { SongRowSkeleton } from '@/components/skeletons/SongRowSkeleton';
 import { AlbumCard } from '@/components/ui/AlbumCard';
-import Topbar from '@/components/layout/Topbar';
+import Topbar from '@/components/layout/TopBar';
 import { Music, Play, Heart, Disc3 } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useMusicStore } from '@/stores/MusicStore';

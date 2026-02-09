@@ -61,8 +61,9 @@ export const reportError = (
   // Production monitoring integration
   if (import.meta.env.PROD) {
     // Sentry integration
-    if (window.Sentry) {
-      window.Sentry.withScope((scope) => {
+    const sentry = window.Sentry;
+    if (sentry) {
+      sentry.withScope((scope) => {
         // Set severity
         scope.setLevel(severity === ErrorSeverity.FATAL ? 'fatal' : severity);
 
@@ -96,7 +97,7 @@ export const reportError = (
         }
 
         // Capture the error
-        window.Sentry.captureException(error);
+        sentry.captureException(error);
       });
     }
 

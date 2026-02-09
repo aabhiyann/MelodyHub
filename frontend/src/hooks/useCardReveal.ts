@@ -10,7 +10,7 @@ interface UseCardRevealOptions {
 export const useCardReveal = (options: UseCardRevealOptions = {}) => {
   const { delay = 0, once = true, rootMargin = '50px' } = options;
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { rootMargin, once });
+  const isInView = useInView(ref as any, { rootMargin, once } as any);
 
   return {
     ref,

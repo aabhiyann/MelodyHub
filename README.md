@@ -30,6 +30,7 @@
 - **Tech Stack**: [Docs/TECH_STACK.md](Docs/TECH_STACK.md)
 - **API Documentation**: [View API Docs](Docs/professional/API.md)
 - **System Design**: [View Architecture](Docs/professional/04_SYSTEM_DESIGN.md)
+- **Frontend Architecture**: [View Frontend Docs](Docs/FRONTEND_ARCHITECTURE.md)
 - **Project Management**: [View PM Handbook](Docs/professional/ROLE_PROJECT_MANAGER.md)
 - **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 

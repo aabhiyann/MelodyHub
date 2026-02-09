@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useNotificationStore } from '../NotificationStore';
 import { axiosInstance } from '@/lib/axios';
 import { useChatStore } from '../ChatStore';

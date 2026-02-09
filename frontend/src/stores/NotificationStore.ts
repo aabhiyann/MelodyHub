@@ -32,7 +32,7 @@ interface NotificationStore {
     subscribeToSocket: () => () => void;
 }
 
-export const useNotificationStore = create<NotificationStore>((set, get) => ({
+export const useNotificationStore = create<NotificationStore>((set) => ({
     items: [],
     unreadCount: 0,
     isLoading: false,
@@ -96,7 +96,7 @@ export const useNotificationStore = create<NotificationStore>((set, get) => ({
 
     subscribeToSocket: () => {
         const socket = useChatStore.getState().socket;
-        if (!socket) return () => {};
+        if (!socket) return () => { };
         const onNew = (notification: NotificationItem) => {
             set((s) => ({
                 items: [notification, ...s.items],

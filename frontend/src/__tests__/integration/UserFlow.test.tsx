@@ -1,6 +1,6 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import BrowsePage from '../../pages/BrowsePage';
 import SearchPage from '../../pages/SearchPage';
@@ -235,7 +235,7 @@ describe('User Flow Integration', () => {
         fireEvent.change(searchInput, { target: { value: 'Test' } });
 
         // 2. Find result
-        const songResult = await screen.findByText('Test Song 1', {}, { timeout: 1000 });
+        await screen.findByText('Test Song 1', {}, { timeout: 1000 });
 
         // 3. Find "Add to Queue" button
         // Note: SearchPage song rows likely have a context menu or button. 

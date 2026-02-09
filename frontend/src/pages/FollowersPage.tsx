@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { axiosInstance } from "@/lib/axios";
-import Topbar from "@/components/layout/Topbar";
+import Topbar from "@/components/layout/TopBar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Users } from "lucide-react";

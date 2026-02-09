@@ -12,11 +12,11 @@ import {
 describe('imageOptimizer', () => {
     describe('supportsWebP', () => {
         it('returns false when window is undefined', () => {
-            const originalWindow = global.window;
+            const originalWindow = globalThis.window;
             // @ts-ignore
-            delete global.window;
+            delete globalThis.window;
             expect(supportsWebP()).toBe(false);
-            global.window = originalWindow;
+            globalThis.window = originalWindow;
         });
 
         it('returns true when canvas supports webp', () => {
@@ -122,15 +122,15 @@ describe('imageOptimizer', () => {
 
     describe('preloadImage', () => {
         it('does nothing if window is undefined', () => {
-            const originalWindow = global.window;
+            const originalWindow = globalThis.window;
             // @ts-ignore
-            delete global.window;
+            delete globalThis.window;
 
             const appendChildSpy = vi.spyOn(document.head, 'appendChild');
             preloadImage('test.jpg');
             expect(appendChildSpy).not.toHaveBeenCalled();
 
-            global.window = originalWindow;
+            globalThis.window = originalWindow;
         });
 
         it('creates and appends link element', () => {
@@ -173,20 +173,20 @@ describe('imageOptimizer', () => {
                 takeRecords = vi.fn();
             };
 
-            originalObserver = global.IntersectionObserver;
-            global.IntersectionObserver = MockIntersectionObserver;
+            originalObserver = globalThis.IntersectionObserver;
+            globalThis.IntersectionObserver = MockIntersectionObserver;
             window.IntersectionObserver = MockIntersectionObserver;
         });
 
         afterEach(() => {
-            global.IntersectionObserver = originalObserver;
+            globalThis.IntersectionObserver = originalObserver;
             window.IntersectionObserver = originalObserver;
             observerCallback = undefined;
         });
 
         it('falls back if IntersectionObserver is not supported', () => {
             // @ts-ignore
-            delete global.IntersectionObserver;
+            delete globalThis.IntersectionObserver;
             // @ts-ignore
             delete window.IntersectionObserver;
 

@@ -5,7 +5,7 @@ import { Home } from 'lucide-react';
 
 // Mock CountUp to avoid animation issues
 vi.mock('react-countup', () => ({
-    default: ({ end, prefix, suffix, separator }: any) => (
+    default: ({ end, prefix, suffix }: any) => (
         <span>{prefix}{end.toLocaleString()}{suffix}</span>
     ),
 }));

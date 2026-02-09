@@ -7,14 +7,10 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, UserPlus, Check } from "lucide-react";
 import { useEffect, useState } from "react";
-import { FriendRequest, User } from "@/types";
+import { FriendRequest } from "@/types";
 import { VirtualScrollList } from "@/components/shared/VirtualScrollList";
 
-interface FriendsListProps {
-    onSelectFriend: (friend: User) => void;
-}
-
-export const FriendsList = ({ onSelectFriend }: FriendsListProps) => {
+export const FriendsList = () => {
     const {
         friends,
         friendRequests,
@@ -121,7 +117,7 @@ export const FriendsList = ({ onSelectFriend }: FriendsListProps) => {
                                 height={600} // Temporary fixed height, will optimize to dynamic in next step if needed, or if I can add the hook now.
                                 itemHeight={72} // Approx height of friend row
                                 className="no-scrollbar" // Hide default scrollbar if we want custom look, but Native is fine
-                                renderItem={(friend, index) => (
+                                renderItem={(friend) => (
                                     <div
                                         key={friend._id}
                                         onClick={() => setSelectedUser(friend)}

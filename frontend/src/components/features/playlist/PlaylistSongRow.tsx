@@ -19,7 +19,7 @@ export const PlaylistSongRow = memo(({ song, index, isCurrentSong, isPlaying, on
     const handleDragEnd = async (_: any, info: PanInfo) => {
         if (info.offset.x < -100) {
             // Swiped Left
-            console.log("Swiped Left - Action");
+            // TODO: Swipe Action
             // Here we could trigger a delete or like
         }
         await controls.start({ x: 0 });

@@ -8,7 +8,7 @@ export interface DailyChallenge {
     description: string;
     target: number;
     progress: number;
-    reward: number;
+    reward: { xp: number; gems: number };
     completed: boolean;
 }
 
