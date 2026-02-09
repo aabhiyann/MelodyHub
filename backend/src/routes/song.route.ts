@@ -12,5 +12,6 @@ router.get("/", validateQuery(paginationSchema), protectRoute, controller.getAll
 router.get("/featured", CacheStrategies.featured, controller.getFeaturedSongs.bind(controller));
 router.get("/made-for-you", controller.getMadeForYouSongs.bind(controller));
 router.get("/trending", CacheStrategies.trending, controller.getTrendingSongs.bind(controller));
+router.get("/random", controller.getRandomSongs.bind(controller));
 
 export default router;

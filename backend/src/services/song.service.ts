@@ -17,6 +17,7 @@ export class SongService {
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
+      .select('title artist imageUrl audioUrl duration isFeatured isTrending albumId')
       .lean(); // Use lean() for better performance
 
     return {
@@ -85,6 +86,23 @@ export class SongService {
       .select("title artist imageUrl audioUrl")
       .lean();
     await redisService.set(cacheKey, songs, CACHE_TTL_TRENDING);
+    return songs;
+  }
+
+  async getRandomSongs(limit: number = 10) {
+    const songs = await Song.aggregate([
+      { $sample: { size: limit } },
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          artist: 1,
+          imageUrl: 1,
+          audioUrl: 1,
+          duration: 1
+        },
+      },
+    ]);
     return songs;
   }
 }
