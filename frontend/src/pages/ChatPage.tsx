@@ -1,16 +1,12 @@
-import Topbar from "@/components/layout/Topbar";
+import Topbar from "@/components/layout/TopBar";
 import { useEffect } from "react";
 import { useChatStore } from "@/stores/ChatStore";
-import { useAuthStore } from "@/stores/AuthStore";
 import { ChatHeader } from "@/components/features/chat/ChatHeader";
 import { MessageInput } from "@/components/features/chat/MessageInput";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FriendsList } from "@/components/features/social/FriendsList";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Message } from "@/types";
-import { format } from "date-fns";
-import { User } from "@/types";
-import { Loader2 } from "lucide-react";
 import { MascotImage } from "@/components/shared/MascotImage";
 import { motion } from "framer-motion";
 import { SectionErrorBoundary } from "@/components/shared/SectionErrorBoundary";
@@ -35,7 +31,16 @@ const formatDate = (date: string) => {
 
 const ChatPage = () => {
 	const { user } = useUser();
-	const { messages, selectedUser, typingUsers, fetchUsers, fetchMessages } = useChatStore();
+	const {
+		users: chatUsers,
+		selectedUser,
+		messages,
+		fetchUsers,
+		fetchMessages,
+		setSelectedUser,
+		typingUsers,
+		onlineUsers
+	} = useChatStore();
 
 	useEffect(() => {
 		if (user) fetchUsers();
@@ -120,18 +125,6 @@ const ChatPage = () => {
 
 							{/* Typing Indicator & Input Area Container */}
 							<div className="relative w-full z-10">
-								{/* Typing Indicator - Positioned absolutely above the input */}
-								<div className="absolute bottom-full left-6 mb-2 pointer-events-none">
-									{selectedUser && typingUsers?.has(selectedUser.clerkId) && (
-										<div className="flex items-center gap-1.5 bg-background-elevated/90 backdrop-blur-xl px-4 py-2 rounded-full border border-white/10 animate-in slide-in-from-bottom-2 fade-in duration-300 w-fit shadow-lg">
-											<div className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce [animation-delay:-0.3s]" />
-											<div className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce [animation-delay:-0.15s]" />
-											<div className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce" />
-											<span className="text-xs text-text-secondary ml-1.5 font-medium">{selectedUser.fullName} is typing...</span>
-										</div>
-									)}
-								</div>
-
 								<MessageInput />
 							</div>
 						</>
