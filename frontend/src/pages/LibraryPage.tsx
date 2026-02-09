@@ -18,7 +18,7 @@ import {
   Share2,
 } from 'lucide-react';
 // import { ScrollArea } from '@/components/ui/scroll-area'; // Replaced by PullToRefresh
-import Topbar from '@/components/Topbar';
+import Topbar from '@/components/layout/Topbar';
 import { useMusicStore } from '@/stores/MusicStore';
 import { usePlayerStore } from '@/stores/PlayerStore';
 import { Link } from 'react-router-dom';
@@ -26,8 +26,8 @@ import { cn } from '@/lib/utils';
 import { axiosInstance } from '@/lib/axios';
 import { Song } from '@/types';
 import toast from 'react-hot-toast';
-import { PlaylistShareModal } from '@/components/PlaylistShareModal';
-import { PullToRefresh } from '@/components/mobile/PullToRefresh';
+import { PlaylistShareModal } from '@/components/features/playlist/PlaylistShareModal';
+import { PullToRefresh } from '@/components/features/mobile/PullToRefresh';
 import {
   AlertDialog,
   AlertDialogAction,

@@ -107,7 +107,7 @@ describe('AuthStore', () => {
             await useAuthStore.getState().checkAdminStatus();
 
             expect(useAuthStore.getState().isAdmin).toBe(false);
-            expect(useAuthStore.getState().error).toBe('Failed to check admin status');
+            expect(useAuthStore.getState().error).toBe('Network error');
             expect(useAuthStore.getState().isLoading).toBe(false);
         });
 

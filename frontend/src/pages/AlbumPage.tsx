@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { SongRow } from '@/components/ui/SongRow';
 import { SongRowSkeleton } from '@/components/skeletons/SongRowSkeleton';
+import { OptimizedImage } from '@/components/shared/OptimizedImage';
 import { useMusicStore } from '@/stores/MusicStore';
 import { usePlayerStore } from '@/stores/PlayerStore';
 import { Clock, Pause, Play, Disc } from 'lucide-react';
@@ -75,10 +76,12 @@ const AlbumPage = () => {
           {/* Content */}
           <div className="relative z-10">
             <div className="flex p-6 gap-6 pb-8">
-              <img
-                src={currentAlbum?.imageUrl}
-                alt={currentAlbum?.title}
-                className="w-[240px] h-[240px] shadow-2xl rounded-lg ring-1 ring-white/10"
+              <OptimizedImage
+                src={currentAlbum?.imageUrl || ''}
+                alt={currentAlbum?.title || 'Album Art'}
+                size="small"
+                className="w-[240px] h-[240px] shadow-2xl rounded-lg ring-1 ring-white/10 object-cover"
+                priority
               />
               <div className="flex flex-col justify-end">
                 <p className="text-sm font-medium text-text-secondary uppercase tracking-wider">

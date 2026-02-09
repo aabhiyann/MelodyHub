@@ -90,7 +90,7 @@ describe('MusicStore', () => {
   });
 
   it('fetchFeaturedSongs sets featuredSongs on success', async () => {
-    vi.mocked(axiosInstance.get).mockResolvedValueOnce({ data: { data: mockSongs } });
+    vi.mocked(axiosInstance.get).mockResolvedValueOnce({ data: { success: true, data: mockSongs } });
     const { result } = renderHook(() => useMusicStore());
 
     await act(async () => {
@@ -122,5 +122,115 @@ describe('MusicStore', () => {
 
     expect(result.current.songs).toHaveLength(1);
     expect(result.current.songs[0]._id).toBe('2');
+  });
+
+  it('fetchRadioStation sets data on success', async () => {
+    vi.mocked(axiosInstance.get).mockResolvedValueOnce({ data: { success: true, data: mockSongs } });
+    const { result } = renderHook(() => useMusicStore());
+
+    await act(async () => {
+      await result.current.fetchRadioStation('1');
+    });
+
+    expect(axiosInstance.get).toHaveBeenCalledWith('/discovery/radio/1');
+  });
+
+  it('fetchDailyMix sets data on success', async () => {
+    vi.mocked(axiosInstance.get).mockResolvedValueOnce({ data: { success: true, data: mockSongs } });
+    const { result } = renderHook(() => useMusicStore());
+
+    await act(async () => {
+      await result.current.fetchDailyMix();
+    });
+
+    expect(axiosInstance.get).toHaveBeenCalledWith('/discovery/daily-mix');
+  });
+
+  it('fetchMadeForYouSongs sets madeForYouSongs on success', async () => {
+    vi.mocked(axiosInstance.get).mockResolvedValueOnce({ data: { success: true, data: mockSongs } });
+    const { result } = renderHook(() => useMusicStore());
+
+    await act(async () => {
+      await result.current.fetchMadeForYouSongs();
+    });
+
+    expect(result.current.madeForYouSongs).toEqual(mockSongs);
+  });
+
+  it('fetchTrendingSongs sets trendingSongs on success', async () => {
+    vi.mocked(axiosInstance.get).mockResolvedValueOnce({ data: { success: true, data: mockSongs } });
+    const { result } = renderHook(() => useMusicStore());
+
+    await act(async () => {
+      await result.current.fetchTrendingSongs();
+    });
+
+    expect(result.current.trendingSongs).toEqual(mockSongs);
+  });
+
+  it('deleteAlbum removes album from state on success', async () => {
+    useMusicStore.setState({ albums: mockAlbums });
+    vi.mocked(axiosInstance.delete).mockResolvedValueOnce(undefined);
+    const { result } = renderHook(() => useMusicStore());
+
+    await act(async () => {
+      await result.current.deleteAlbum('a1');
+    });
+
+    expect(result.current.albums).toHaveLength(0);
+  });
+
+  it('addSong adds song to state on success', async () => {
+    const newSong = { _id: '3', title: 'Song 3', artist: 'Artist 3', genre: 'Pop', duration: 200 };
+    vi.mocked(axiosInstance.post).mockResolvedValueOnce({ data: { success: true, data: newSong } });
+    const { result } = renderHook(() => useMusicStore());
+
+    const formData = new FormData();
+    formData.append('title', 'Song 3');
+
+    await act(async () => {
+      await result.current.addSong(formData);
+    });
+
+    expect(result.current.songs).toContainEqual(newSong);
+  });
+
+  it('fetchFeaturedSongs handles error correctly', async () => {
+    vi.mocked(axiosInstance.get).mockRejectedValueOnce(new Error('Failed'));
+    const { result } = renderHook(() => useMusicStore());
+
+    await act(async () => {
+      await result.current.fetchFeaturedSongs();
+    });
+
+    expect(result.current.error).toBeTruthy();
+    expect(result.current.featuredSongs).toEqual([]);
+    expect(result.current.isLoading).toBe(false);
+  });
+
+  it('fetchMadeForYouSongs handles error correctly', async () => {
+    vi.mocked(axiosInstance.get).mockRejectedValueOnce(new Error('Failed'));
+    const { result } = renderHook(() => useMusicStore());
+
+    await act(async () => {
+      await result.current.fetchMadeForYouSongs();
+    });
+
+    expect(result.current.error).toBeTruthy();
+    expect(result.current.madeForYouSongs).toEqual([]);
+    expect(result.current.isLoading).toBe(false);
+  });
+
+  it('fetchTrendingSongs handles error correctly', async () => {
+    vi.mocked(axiosInstance.get).mockRejectedValueOnce(new Error('Failed'));
+    const { result } = renderHook(() => useMusicStore());
+
+    await act(async () => {
+      await result.current.fetchTrendingSongs();
+    });
+
+    expect(result.current.error).toBeTruthy();
+    expect(result.current.trendingSongs).toEqual([]);
+    expect(result.current.isLoading).toBe(false);
   });
 });

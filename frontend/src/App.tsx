@@ -1,29 +1,29 @@
 import { lazy, Suspense, useState, useEffect } from "react";
 import { Route, Routes, useLocation, Outlet } from "react-router-dom";
 import { AuthenticateWithRedirectCallback } from "@clerk/clerk-react";
-import { LoadingScreen } from "./components/LoadingScreen";
+import { LoadingScreen } from "@/components/shared/LoadingScreen";
 import { Toaster } from "react-hot-toast";
 import { AnimatePresence } from "framer-motion";
-import { LoadingBar } from "./components/LoadingBar";
-import { PageTransition } from "./components/PageTransition";
+import { LoadingBar } from "@/components/shared/LoadingBar";
+import { PageTransition } from "@/components/layout/PageTransition";
 import { RequireAuth } from "./guards/RequireAuth";
 import { RequireGuest } from "./guards/RequireGuest";
-import { PageErrorBoundary } from "./components/PageErrorBoundary";
-import { NetworkStatusToast } from "./components/NetworkStatusToast";
-
-// New UI components
-import { SidebarLayout } from '@/components/navigation/SidebarLayout';
-import AudioPlayer from '@/components/AudioPlayer';
-import { FullScreenPlayer } from '@/components/player/FullScreenPlayer';
-import { Mascot } from '@/components/mascot/Mascot';
-import { AIPlaylistModal } from '@/components/ai/AIPlaylistModal';
-import { InstallPrompt } from '@/components/mobile/InstallPrompt';
-import { OfflineIndicator } from '@/components/OfflineIndicator';
+import { PageErrorBoundary } from "@/components/shared/PageErrorBoundary";
+// Lazy load all pages for better code splitting
+import { SidebarLayout } from '@/components/layout/navigation/SidebarLayout';
+import AudioPlayer from '@/components/features/player/AudioPlayer';
 import { useKeyboardControls } from '@/hooks/useKeyboardControls';
 // Accessibility
 import { SkipLinks } from "@/components/accessibility/SkipLinks";
 import { ShortcutsModal } from "@/components/accessibility/ShortcutsModal";
 import { useAccessibilityStore } from "@/stores/AccessibilityStore";
+
+// Lazy load heavy global components
+const FullScreenPlayer = lazy(() => import('@/components/features/player/FullScreenPlayer').then(m => ({ default: m.FullScreenPlayer })));
+const Mascot = lazy(() => import('@/components/features/mascot/Mascot').then(m => ({ default: m.Mascot })));
+const AIPlaylistModal = lazy(() => import('@/components/features/ai/AIPlaylistModal').then(m => ({ default: m.AIPlaylistModal })));
+const InstallPrompt = lazy(() => import('@/components/features/mobile/InstallPrompt').then(m => ({ default: m.InstallPrompt })));
+const OfflineIndicator = lazy(() => import('@/components/shared/OfflineIndicator').then(m => ({ default: m.OfflineIndicator })));
 
 // Lazy load all pages for better code splitting
 const AuthCallbackPage = lazy(() => import("./pages/AuthCallbackPage"));
@@ -199,12 +199,13 @@ function App() {
 				</PageErrorBoundary>
 			</AnimatePresence>
 			<AudioPlayer />
-			<FullScreenPlayer />
-			<Mascot />
-			<AIPlaylistModal />
-			<InstallPrompt />
+			<Suspense fallback={null}>
+				<FullScreenPlayer />
+				<Mascot />
+				<AIPlaylistModal />
+				<InstallPrompt />
+			</Suspense>
 		</Suspense>
-
 	);
 }
 

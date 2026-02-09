@@ -86,7 +86,7 @@ export function useOptimizedHandlers(onSongChange: (song: Song) => void) {
     // With useCallback, it's only recreated when dependencies change
     const handleSongSelect = useCallback(
         (song: Song) => {
-            console.log('Song selected:', song.title);
+            // console.log('Song selected:', song.title);
             onSongChange(song);
         },
         [onSongChange]

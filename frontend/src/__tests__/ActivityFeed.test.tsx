@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import ActivitySidebar from '../components/ActivitySidebar';
+import ActivitySidebar from '../components/layout/ActivitySidebar';
 import { axiosInstance } from '../lib/axios';
 
 // Mock Clerk

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { MascotImage } from '@/components/MascotImage';
+import { MascotImage } from '@/components/shared/MascotImage';
 
 describe('MascotImage Component', () => {
     it('renders with default state', () => {

@@ -1,5 +1,5 @@
 import { Crown, TrendingUp, Music } from "lucide-react";
-import { OptimizedImage } from "@/components/OptimizedImage";
+import { OptimizedImage } from "@/components/shared/OptimizedImage";
 
 interface TopArtist {
     artist: string;

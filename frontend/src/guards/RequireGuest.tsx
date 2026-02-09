@@ -5,7 +5,7 @@
 
 import { useUser } from '@clerk/clerk-react';
 import { Navigate } from 'react-router-dom';
-import { LoadingScreen } from '@/components/LoadingScreen';
+import { LoadingScreen } from '@/components/shared/LoadingScreen';
 
 interface RequireGuestProps {
     children: React.ReactNode;

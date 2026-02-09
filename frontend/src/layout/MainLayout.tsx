@@ -4,17 +4,16 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import { useEffect, useState } from "react";
 
-import LeftSidebar from "@/components/LeftSidebar";
-import ActivitySidebar from "@/components/ActivitySidebar";
-import AudioPlayer from "@/components/AudioPlayer";
-import PlaybackControls from "@/components/PlaybackControls";
-import QueueView from "@/components/QueueView";
-import LyricsView from "@/components/LyricsView";
+import LeftSidebar from "@/components/layout/LeftSidebar";
+import ActivitySidebar from "@/components/layout/ActivitySidebar";
+import AudioPlayer from "@/components/features/player/AudioPlayer";
+import QueueView from "@/components/features/player/QueueView";
+import LyricsView from "@/components/features/player/LyricsView";
 import { usePlayerStore } from "@/stores/PlayerStore";
-import { XPFloatingIndicator } from "@/components/gamification/XPFloatingIndicator";
-import MobileNav from "@/components/mobile/MobileNav";
-import MobileHeader from "@/components/mobile/MobileHeader";
-import MobilePlayer from "@/components/mobile/MobilePlayer";
+import { XPFloatingIndicator } from "@/components/features/gamification/XPFloatingIndicator";
+import MobileNav from "@/components/features/mobile/MobileNav";
+import MobileHeader from "@/components/features/mobile/MobileHeader";
+import MobilePlayer from "@/components/features/mobile/MobilePlayer";
 
 const MainLayout = () => {
 
@@ -92,7 +91,6 @@ const MainLayout = () => {
             </ResizablePanelGroup>
 
             {/* Z-index 50 ensures playback controls stay on top of everything including lyrics overlay if desired, or lyrics can be 40 */}
-            <PlaybackControls />
 
             {/* Ambient Background Gradient for the whole app */}
             <div className="absolute inset-0 pointer-events-none -z-10 bg-gradient-to-br from-black via-[#0a0a0a] to-[#121212]" />

@@ -3,7 +3,7 @@
  * Complete user administration panel
  */
 
-import { UsersTable } from "@/components/admin/UsersTable";
+import { UsersTable } from "@/components/features/admin/UsersTable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, UserPlus } from "lucide-react";
 import { useChatStore } from "@/stores/ChatStore";

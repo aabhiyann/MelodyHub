@@ -1,7 +1,7 @@
 import { useGamificationStore } from "@/stores/GamificationStore";
-import { DailyChallengeCard } from "@/components/gamification/DailyChallengeCard";
-import { Leaderboard } from "@/components/gamification/Leaderboard";
-import { AchievementsList } from "@/components/gamification/AchievementsList";
+import { DailyChallengeCard } from "@/components/features/gamification/DailyChallengeCard";
+import { Leaderboard } from "@/components/features/gamification/Leaderboard";
+import { AchievementsList } from "@/components/features/gamification/AchievementsList";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Trophy, Target, Medal, Store } from "lucide-react";

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import AudioPlayer from '../components/AudioPlayer';
+import AudioPlayer from '../components/features/player/AudioPlayer';
 import { usePlayerStore } from '../stores/PlayerStore'; // Relative import
 
 // Mock Player Store
@@ -34,16 +34,16 @@ vi.mock('../stores/PlayerStore', () => ({
 }));
 
 // Mock child components to verify props and existence
-vi.mock('../components/player/NowPlaying', () => ({
+vi.mock('../components/features/player/NowPlaying', () => ({
     NowPlaying: () => <div data-testid="now-playing">Now Playing</div>
 }));
-vi.mock('../components/player/PlaybackControls', () => ({
+vi.mock('../components/features/player/PlaybackControls', () => ({
     PlaybackControls: () => <div data-testid="playback-controls">Controls</div>
 }));
-vi.mock('../components/player/ProgressBar', () => ({
+vi.mock('../components/features/player/ProgressBar', () => ({
     ProgressBar: () => <div data-testid="progress-bar">Progress</div>
 }));
-vi.mock('../components/player/AdditionalControls', () => ({
+vi.mock('../components/features/player/AdditionalControls', () => ({
     AdditionalControls: () => <div data-testid="additional-controls">Additional</div>
 }));
 

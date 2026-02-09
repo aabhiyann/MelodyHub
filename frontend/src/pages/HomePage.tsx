@@ -1,11 +1,11 @@
-import Topbar from '@/components/Topbar';
+import Topbar from '@/components/layout/Topbar';
 import { useMusicStore } from '@/stores/MusicStore';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ActivityFeed } from '@/components/home/ActivityFeed';
 import { Sparkles, Library, Compass, Radio } from 'lucide-react';
 
-import { PullToRefresh } from '@/components/mobile/PullToRefresh';
+import { PullToRefresh } from '@/components/features/mobile/PullToRefresh';
 import { useUIStore } from '@/stores/UIStore';
 import { useHomeData } from '@/hooks/useHomeData';
 
@@ -22,7 +22,7 @@ import { NewReleases } from '@/pages/home/components/NewReleases';
 import { MoodSection } from '@/pages/home/components/MoodSection';
 import { RecommendedSection } from '@/pages/home/components/RecommendedSection';
 import { TopArtists } from '@/pages/home/components/TopArtists';
-import { SectionErrorBoundary } from '@/components/SectionErrorBoundary';
+import { SectionErrorBoundary } from '@/components/shared/SectionErrorBoundary';
 
 const HomePage = () => {
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { SuccessToast } from '@/components/SuccessToast';
+import { SuccessToast } from '@/components/shared/SuccessToast';
 
 describe('SuccessToast Component', () => {
     beforeEach(() => {

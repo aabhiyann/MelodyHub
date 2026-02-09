@@ -1,6 +1,8 @@
 import { Play, Music } from 'lucide-react';
 import { Song } from '@/types';
 import { cn } from '@/lib/utils';
+import { memo } from 'react';
+import { OptimizedImage } from '@/components/shared/OptimizedImage';
 
 interface SongRowProps {
   song: Song;
@@ -14,7 +16,7 @@ interface SongRowProps {
   className?: string;
 }
 
-export const SongRow = ({
+export const SongRow = memo(({
   song,
   index,
   isCurrentSong,
@@ -61,10 +63,10 @@ export const SongRow = ({
       {/* Song Info with Thumbnail */}
       <div className="flex items-center gap-3">
         {showThumbnail && (
-          <img
+          <OptimizedImage
             src={song.imageUrl}
             alt={song.title}
-            loading="lazy"
+            size="thumbnail"
             className={cn(thumbnailSizes[thumbnailSize], 'rounded shadow')}
           />
         )}
@@ -91,4 +93,4 @@ export const SongRow = ({
       <div className="flex items-center text-text-secondary">{formatDuration(song.duration)}</div>
     </div>
   );
-};
+});

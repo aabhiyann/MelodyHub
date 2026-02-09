@@ -6,20 +6,7 @@ import { Music, User, Heart, ListMusic } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useChatStore } from "@/stores/ChatStore";
 
-type ActivityType = "like_song" | "create_playlist" | "follow_user";
-
-interface Activity {
-    _id: string;
-    type: ActivityType;
-    userId: {
-        _id: string;
-        fullName: string;
-        imageUrl: string;
-        clerkId: string;
-    };
-    target: any;
-    createdAt: string;
-}
+import { Activity, ActivityType, isSongTarget, isPlaylistTarget, isUserTarget } from "@/types";
 
 export const ActivityFeed = () => {
     const { onlineUsers, activities: userActivities } = useChatStore();
@@ -42,31 +29,34 @@ export const ActivityFeed = () => {
     };
 
     const getActivityText = (activity: Activity) => {
-        const target = activity.target;
+        const target = activity.target as import("@/types").ActivityTarget; // Safely cast here as legacy shape should match compatible props if present
         if (!target) return "did something";
 
-        switch (activity.type) {
-            case "like_song":
-                return (
-                    <span>
-                        liked <span className="font-medium text-white">{target.title}</span> by {target.artist}
-                    </span>
-                );
-            case "create_playlist":
-                return (
-                    <span>
-                        created a new playlist <span className="font-medium text-white">{target.name}</span>
-                    </span>
-                );
-            case "follow_user":
-                return (
-                    <span>
-                        followed <span className="font-medium text-white">{target.fullName}</span>
-                    </span>
-                );
-            default:
-                return "performed an action";
+        if (activity.type === 'like_song' && isSongTarget(target)) {
+            return (
+                <span>
+                    liked <span className="font-medium text-white">{target.title}</span> by {target.artist}
+                </span>
+            );
         }
+
+        if (activity.type === 'create_playlist' && isPlaylistTarget(target)) {
+            return (
+                <span>
+                    created a new playlist <span className="font-medium text-white">{target.name}</span>
+                </span>
+            );
+        }
+
+        if (activity.type === 'follow_user' && isUserTarget(target)) {
+            return (
+                <span>
+                    followed <span className="font-medium text-white">{target.fullName}</span>
+                </span>
+            );
+        }
+
+        return "performed an action";
     };
 
     if (!activities || activities.length === 0) {
@@ -99,8 +89,11 @@ export const ActivityFeed = () => {
             <ScrollArea className="flex-1">
                 <div className="p-4 space-y-4">
                     {activities.map((activity: Activity) => {
-                        const isOnline = onlineUsers.has(activity.userId.clerkId);
-                        const currentActivity = userActivities.get(activity.userId.clerkId);
+                        const user = activity.userId;
+                        if (typeof user === 'string') return null; // Should be populated
+
+                        const isOnline = onlineUsers.has(user.clerkId);
+                        const currentActivity = userActivities.get(user.clerkId);
                         const displayActivity = isOnline && currentActivity && currentActivity !== "Idle"
                             ? currentActivity
                             : null;
@@ -108,10 +101,10 @@ export const ActivityFeed = () => {
                         return (
                             <div key={activity._id} className="flex gap-3 relative group">
                                 {/* Avatar */}
-                                <Link to={`/user/${activity.userId.clerkId}`} className="shrink-0 mt-1 relative">
+                                <Link to={`/user/${user.clerkId}`} className="shrink-0 mt-1 relative">
                                     <Avatar className="size-8 border border-border-subtle">
-                                        <AvatarImage src={activity.userId.imageUrl} alt={activity.userId.fullName} />
-                                        <AvatarFallback>{activity.userId.fullName[0]}</AvatarFallback>
+                                        <AvatarImage src={user.imageUrl} alt={user.fullName} />
+                                        <AvatarFallback>{user.fullName[0]}</AvatarFallback>
                                     </Avatar>
                                     {/* Online Indicator */}
                                     {isOnline && (
@@ -128,8 +121,8 @@ export const ActivityFeed = () => {
                                 {/* Content */}
                                 <div className="flex-1 min-w-0">
                                     <div className="text-sm text-text-tertiary leading-snug">
-                                        <Link to={`/user/${activity.userId.clerkId}`} className="font-medium text-text-secondary hover:underline hover:text-white transition-colors">
-                                            {activity.userId.fullName}
+                                        <Link to={`/user/${user.clerkId}`} className="font-medium text-text-secondary hover:underline hover:text-white transition-colors">
+                                            {user.fullName}
                                         </Link>{" "}
                                         {displayActivity ? (
                                             <span className="text-brand-primary truncate block font-medium">{displayActivity}</span>

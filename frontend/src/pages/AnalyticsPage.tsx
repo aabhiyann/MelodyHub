@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { axiosInstance } from "@/lib/axios";
-import Topbar from "@/components/Topbar";
+import Topbar from "@/components/layout/Topbar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { StatsCard } from "@/components/analytics/StatsCard";
-import { ListeningChart } from "@/components/analytics/ListeningChart";
-import { TopArtistsGrid } from "@/components/analytics/TopArtistsGrid";
-import { RecentlyPlayed } from "@/components/analytics/RecentlyPlayed";
-import { ListeningPatternsHeatmap } from "@/components/analytics/ListeningPatternsHeatmap";
-import { GenreDistributionChart } from "@/components/analytics/GenreDistributionChart";
+import { StatsCard } from "@/components/features/analytics/StatsCard";
+import { ListeningChart } from "@/components/features/analytics/ListeningChart";
+import { TopArtistsGrid } from "@/components/features/analytics/TopArtistsGrid";
+import { RecentlyPlayed } from "@/components/features/analytics/RecentlyPlayed";
+import { ListeningPatternsHeatmap } from "@/components/features/analytics/ListeningPatternsHeatmap";
+import { GenreDistributionChart } from "@/components/features/analytics/GenreDistributionChart";
 import { Clock, Disc3, Play, TrendingUp, User } from "lucide-react";
 
 type Period = "week" | "month" | "year" | "all";

@@ -16,6 +16,10 @@ export const ProfileHeader = ({ user, isOwnProfile, onEdit }: ProfileHeaderProps
     const [isFollowing, setIsFollowing] = useState(user.isFollowing || false);
     const [followersCount, setFollowersCount] = useState(user.followersCount || 0);
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
+
+    // Derived ID
+    const profileUserId = user._id || user.clerkId;
 
     useEffect(() => {
         setIsFollowing(user.isFollowing || false);

@@ -2,13 +2,23 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import axios from 'axios';
 
+export interface DailyChallenge {
+    _id: string;
+    title: string;
+    description: string;
+    target: number;
+    progress: number;
+    reward: number;
+    completed: boolean;
+}
+
 interface GamificationState {
     xp: number;
     level: number;
     gems: number;
     streak: number;
     streakFreezes: number;
-    dailyChallenges: any[];
+    dailyChallenges: DailyChallenge[];
     latestAward: { amount: number, source: string } | null;
     isLoading: boolean;
     fetchStats: () => Promise<void>;

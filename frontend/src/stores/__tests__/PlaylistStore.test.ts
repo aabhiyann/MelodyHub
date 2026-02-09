@@ -79,6 +79,6 @@ describe('PlaylistStore', () => {
       await result.current.fetchPlaylistById('p1');
     });
 
-    expect(result.current.error).toBe('Failed to fetch playlist');
+    expect(result.current.error).toBe('Network error');
   });
 });

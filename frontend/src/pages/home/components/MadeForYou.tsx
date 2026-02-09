@@ -1,7 +1,7 @@
 import { Song } from '@/types';
 import { usePlayerStore } from '@/stores/PlayerStore';
 import { Play, Sparkles, Calendar, Radio } from 'lucide-react';
-import { OptimizedImage } from '@/components/OptimizedImage';
+import { OptimizedImage } from '@/components/shared/OptimizedImage';
 import { LikeButton } from '@/components/ui/LikeButton';
 
 interface MadeForYouProps {

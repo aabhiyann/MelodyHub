@@ -59,4 +59,73 @@ describe('Player Store', () => {
         });
         expect(result.current.isMuted).toBe(true);
     });
+
+    it('toggles shortcuts guide', () => {
+        const { result } = renderHook(() => usePlayerStore());
+
+        expect(result.current.isShortcutsGuideOpen).toBe(false);
+
+        act(() => {
+            result.current.toggleShortcutsGuide();
+        });
+        expect(result.current.isShortcutsGuideOpen).toBe(true);
+    });
+
+    it('toggles expanded mode', () => {
+        const { result } = renderHook(() => usePlayerStore());
+
+        expect(result.current.isExpanded).toBe(false);
+
+        act(() => {
+            result.current.toggleExpanded();
+        });
+        expect(result.current.isExpanded).toBe(true);
+    });
+
+    it('toggles queue', () => {
+        const { result } = renderHook(() => usePlayerStore());
+
+        expect(result.current.isQueueOpen).toBe(false);
+
+        act(() => {
+            result.current.toggleQueue();
+        });
+        expect(result.current.isQueueOpen).toBe(true);
+    });
+
+    it('updates duration', () => {
+        const { result } = renderHook(() => usePlayerStore());
+
+        act(() => {
+            result.current.setDuration(200);
+        });
+        expect(result.current.duration).toBe(200);
+    });
+
+    it('updates buffered time', () => {
+        const { result } = renderHook(() => usePlayerStore());
+
+        act(() => {
+            result.current.setBufferedTime(50);
+        });
+        expect(result.current.bufferedTime).toBe(50);
+    });
+
+    it('seeks to specific time', () => {
+        const { result } = renderHook(() => usePlayerStore());
+
+        act(() => {
+            result.current.seek(45);
+        });
+        expect(result.current.currentTime).toBe(45);
+    });
+
+    it('sets current time', () => {
+        const { result } = renderHook(() => usePlayerStore());
+
+        act(() => {
+            result.current.setCurrentTime(30);
+        });
+        expect(result.current.currentTime).toBe(30);
+    });
 });

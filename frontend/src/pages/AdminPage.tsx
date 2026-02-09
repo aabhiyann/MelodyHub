@@ -1,12 +1,12 @@
 import { useAuthStore } from "@/stores/AuthStore";
-import Header from "../components/AdminHeader";
-import DashboardStats from "../components/DashboardStats";
-import { Album, Music, BarChart3, Users } from "lucide-react";
+import { AdminHeader } from "@/components/layout/AdminHeader";
+import { DashboardStats } from "@/components/features/analytics/DashboardStats";
+import { Settings, Music, BarChart3, Users, Disc } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import SongsTabContent from "../components/SongsTabContent";
-import AlbumsTabContent from "../components/AlbumsTabContent";
-import AnalyticsTabContent from "./admin/components/AnalyticsTabContent";
-import { UsersTab } from "./admin/UsersTab";
+import { SongsTabContent } from "@/components/features/admin/SongsTabContent";
+import { AlbumsTabContent } from "@/components/features/admin/AlbumsTabContent";
+import { AnalyticsTabContent } from "@/components/features/admin/AnalyticsTabContent";
+import { UsersList } from "@/components/features/social/UsersList";
 import { useEffect } from "react";
 import { useMusicStore } from "@/stores/MusicStore";
 
