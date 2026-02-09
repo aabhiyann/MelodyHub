@@ -40,6 +40,26 @@ export class UserService extends BaseService {
         return await this.model.findOne({ clerkId });
     }
     /**
+     * Find or create user by Clerk ID during authentication
+     */
+    async findOrCreateByClerkId(clerkId, userData) {
+        let user = await this.model.findOne({ clerkId });
+        if (!user) {
+            user = await this.model.create({
+                clerkId,
+                fullName: `${userData.firstName || ""} ${userData.lastName || ""}`.trim(),
+                imageUrl: userData.imageUrl
+            });
+        }
+        else {
+            // Update user info if existing
+            user.fullName = `${userData.firstName || ""} ${userData.lastName || ""}`.trim();
+            user.imageUrl = userData.imageUrl || "";
+            await user.save();
+        }
+        return user;
+    }
+    /**
      * Update user profile
      */
     async updateProfile(clerkId, updates) {

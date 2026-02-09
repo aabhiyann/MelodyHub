@@ -1,4 +1,4 @@
-/** @type {import('ts-jest').JestConfigWithTsJest} */
+/** @type {import('ts-jest').JestConfigWithTSJest} */
 export default {
   preset: 'ts-jest/presets/default-esm',
   testEnvironment: 'node',
@@ -16,8 +16,26 @@ export default {
   },
   testPathIgnorePatterns: [
     '/node_modules/',
-    'integration\\.test',
-    'load\\.test',
-    '/setup\\.(ts|js)$',
+    '/dist/',
   ],
+  collectCoverageFrom: [
+    'src/**/*.ts',
+    '!src/**/*.d.ts',
+    '!src/tests/**',
+    '!src/types/**',
+    '!src/**/index.ts',
+  ],
+  coverageDirectory: 'coverage',
+  coverageReporters: ['text', 'lcov', 'html'],
+  coverageThreshold: {
+    global: {
+      branches: 70,
+      functions: 70,
+      lines: 70,
+      statements: 70,
+    },
+  },
+  setupFilesAfterEnv: ['<rootDir>/src/tests/setup.ts'],
+  testTimeout: 10000,
+  verbose: true,
 };
