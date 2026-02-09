@@ -9,6 +9,7 @@ import { PageTransition } from "@/components/layout/PageTransition";
 import { RequireAuth } from "./guards/RequireAuth";
 import { RequireGuest } from "./guards/RequireGuest";
 import { PageErrorBoundary } from "@/components/shared/PageErrorBoundary";
+import { SEO } from "@/components/shared/SEO";
 // Lazy load all pages for better code splitting
 import { SidebarLayout } from '@/components/layout/navigation/SidebarLayout';
 import AudioPlayer from '@/components/features/player/AudioPlayer';
@@ -30,7 +31,7 @@ const AuthCallbackPage = lazy(() => import("./pages/AuthCallbackPage"));
 const HomePage = lazy(() => import("./pages/HomePage"));
 const ChatPage = lazy(() => import("./pages/ChatPage"));
 const AlbumPage = lazy(() => import("./pages/AlbumPage"));
-const AdminLayout = lazy(() => import("./layouts/AdminLayout").then(module => ({ default: module.AdminLayout })));
+const AdminLayout = lazy(() => import("@/components/layout/AdminLayout").then(module => ({ default: module.AdminLayout })));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard")); // Fallback
 const AdminSettingsPage = lazy(() => import("./pages/admin/AdminSettingsPage"));
 const AdminSongsPage = lazy(() => import("./pages/admin/AdminSongsPage"));
@@ -86,6 +87,7 @@ function App() {
 	return (
 
 		<Suspense fallback={<LoadingScreen />}>
+			<SEO />
 			<SkipLinks />
 			<OfflineIndicator />
 			<LoadingBar isLoading={isLoading} />
