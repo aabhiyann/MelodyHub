@@ -1,24 +1,37 @@
 ## Description
-<!-- Briefly describe what this PR does -->
+
+Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context. List any dependencies that are required for this change.
+
+Fixes # (issue)
 
 ## Type of Change
-- [ ] `feat:` New feature
-- [ ] `fix:` Bug fix
-- [ ] `refactor:` Code refactor (no behavior change)
-- [ ] `test:` Adding or updating tests
-- [ ] `docs:` Documentation
-- [ ] `chore:` Maintenance
-- [ ] `perf:` Performance improvement
 
-## Checklist
-- [ ] My code follows the project's style guidelines (ESLint, Prettier)
-- [ ] I have performed a self-review of my code
-- [ ] I have added/updated tests that prove my fix or feature works
-- [ ] New and existing unit tests pass locally
-- [ ] I have updated documentation if needed
+- [ ] 🐛 Bug fix (non-breaking change which fixes an issue)
+- [ ] ✨ New feature (non-breaking change which adds functionality)
+- [ ] 💥 Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] 📝 Documentation update
+- [ ] 🎨 Style/UI update
 
-## Related Issue(s)
-<!-- Link any related issues, e.g. Fixes #123 -->
+## How Has This Been Tested?
+
+Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce.
+
+- [ ] Unit Tests
+- [ ] Integration Tests
+- [ ] Manual Testing (Browsers: Chrome, Firefox, Safari)
+
+## Checklist:
+
+- [ ] My code follows the style guidelines of this project
+- [ ] I have performed a self-review of my own code
+- [ ] I have commented my code, particularly in hard-to-understand areas
+- [ ] I have made corresponding changes to the documentation
+- [ ] My changes generate no new warnings
+- [ ] I have added tests that prove my fix is effective or that my feature works
+- [ ] New and existing unit tests pass locally with my changes
 
 ## Screenshots (if applicable)
-<!-- Add screenshots for UI changes -->
+
+| Before | After |
+| :---: | :---: |
+| _Image_ | _Image_ |
