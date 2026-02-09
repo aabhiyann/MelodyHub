@@ -6,7 +6,7 @@ One-pager for recruiters and technical interviews.
 
 | Layer        | Technologies                                                                             |
 | ------------ | ---------------------------------------------------------------------------------------- |
-| **Frontend** | React 19, TypeScript (strict), Vite 6, Tailwind CSS v4, Zustand, Radix UI, Framer Motion |
+| **Frontend** | React 19, TypeScript (strict), Vite 6, Tailwind CSS v4, Zustand, Radix UI, Framer Motion, React Helmet Async |
 | **Backend**  | Node.js, Express, TypeScript (strict), Socket.io                                         |
 | **Database** | MongoDB (Mongoose ODM), Redis (caching)                                                  |
 | **Auth**     | Clerk (JWT-based)                                                                        |

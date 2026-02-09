@@ -83,6 +83,7 @@ const ChatPage = lazy(() => import('./pages/ChatPage'));
 - **Memoization**: `React.memo` is used for lists components (`SongList`, `AlbumGrid`) to prevent unnecessary re-renders.
 - **Virtualization**: `react-window` is recommended for long lists (100+ items).
 - **Image Optimization**: Custom `OptimizedImage` component handles lazy loading and source sets.
+- **SEO**: `react-helmet-async` manages document head changes (title, meta tags) dynamically per route.
 
 ---
 
