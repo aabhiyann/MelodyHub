@@ -15,7 +15,7 @@ import { useGridNavigation } from '@/hooks/useGridNavigation';
 import { useAnnouncement } from '@/hooks/useAnnouncement';
 import { axiosInstance } from '@/lib/axios';
 import { measureGridPerformance } from '@/utils/gridPerformance';
-import Topbar from '@/components/layout/Topbar';
+import Topbar from '@/components/layout/TopBar';
 import { Song } from '@/types';
 
 // Genre configuration with gradients and emojis
@@ -37,7 +37,7 @@ const GENRE_CONFIG: Record<string, { gradient: string; icon: string }> = {
 
 const BrowsePage = () => {
   const navigate = useNavigate();
-  const announce = useAnnouncement();
+  const { announce } = useAnnouncement();
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
   const [viewType, setViewType] = useState<'grid' | 'list'>('grid');
   const [displayCount, setDisplayCount] = useState(50);
@@ -318,7 +318,7 @@ const BrowsePage = () => {
                           /* Grid view */
                           <>
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                              {displayedSongs.map((song, index) => (
+                              {displayedSongs.map((song) => (
                                 <div
                                   key={song._id}
                                   className="group cursor-pointer"

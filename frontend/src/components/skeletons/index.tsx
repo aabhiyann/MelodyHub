@@ -104,7 +104,7 @@ export const PageLoadingSkeleton = () => (
 export const UserListSkeleton = ({ count = 6 }: { count?: number }) => (
     <div className="space-y-2">
         {Array.from({ length: count }).map((_, i) => (
-            <div key={i} className="flex items-center gap-3 p-3 rounded-lg skeleton-pulse">
+            <div key={i} className="flex items-center gap-3 p-3 rounded-lg skeleton-pulse" data-testid="users-list-skeleton">
                 {/* Avatar */}
                 <div className="size-12 rounded-full bg-white/5 shrink-0" />
                 {/* User info */}

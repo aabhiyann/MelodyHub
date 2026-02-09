@@ -1,4 +1,4 @@
-import Topbar from "@/components/layout/Topbar";
+import Topbar from "@/components/layout/TopBar";
 import { UserProfile } from "@clerk/clerk-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";

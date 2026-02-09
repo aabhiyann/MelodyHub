@@ -6,7 +6,7 @@
 import { useState, useEffect } from 'react';
 import { useUser, useClerk } from '@clerk/clerk-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import Topbar from '@/components/layout/Topbar';
+import Topbar from '@/components/layout/TopBar';
 import { LogOut, Music, PlayCircle, Heart, Calendar, Settings } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '@/lib/axios';

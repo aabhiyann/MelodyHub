@@ -16,11 +16,12 @@ vi.mock('react-hot-toast', () => ({
 // Radix Dialog often renders into a Portal. 
 // Testing library queries default to document.body, so it usually works.
 // However, ResizeObserver often causes issues in JSDOM.
-global.ResizeObserver = class ResizeObserver {
+// However, ResizeObserver often causes issues in JSDOM.
+vi.stubGlobal('ResizeObserver', class ResizeObserver {
     observe() { }
     unobserve() { }
     disconnect() { }
-};
+});
 
 describe('EditProfileModal', () => {
     const mockOnClose = vi.fn();

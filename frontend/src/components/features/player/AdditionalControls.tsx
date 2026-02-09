@@ -4,7 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
-import { ListMusic, MonitorSpeaker, MoreHorizontal, Maximize2, Minimize2, Plus } from 'lucide-react';
+import { ListMusic, MonitorSpeaker, MoreHorizontal, Maximize2, Minimize2 } from 'lucide-react';
 import { VolumeControl } from './VolumeControl';
 import { useState, memo } from 'react';
 import { usePlayerStore } from '@/stores/PlayerStore';

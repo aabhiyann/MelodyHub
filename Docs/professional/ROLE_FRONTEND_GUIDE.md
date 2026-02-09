@@ -21,16 +21,17 @@ This guide is designed for frontend developers working on **MelodyHub**. It cove
 
 ```
 frontend/src/
-├── components/         # Reusable UI components (Atomic Design principles)
-│   ├── ui/             # Shadcn/UI-like base components (Button, Input, etc.)
-│   └── ...             # Feature-specific components
-├── layout/             # Layout components (MainLayout, Sidebar, etc.)
+├── components/         # Reusable UI components
+│   ├── features/       # Feature-specific components (player, admin, etc.)
+│   ├── layout/         # Layout components (LeftSidebar, TopBar)
+│   ├── shared/         # Shared complex components
+│   └── ui/             # Base UI primitives (Button, Input)
 ├── pages/              # Route components (Home, Chat, AlbumPage)
 ├── stores/             # Zustand stores (Global State)
 ├── providers/          # React Context Providers (Auth, Theme)
 ├── lib/                # Utilities and configurations (Axios, cn helper)
 ├── types/              # TypeScript interfaces and types
-└── __tests__/          # Unit tests
+└── __tests__/          # Global tests
 ```
 
 ## State Management (Zustand)

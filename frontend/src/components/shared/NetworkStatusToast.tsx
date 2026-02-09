@@ -6,7 +6,7 @@
 
 import { useEffect } from 'react';
 import { useNetworkStatus } from '@/hooks/useNetworkStatus';
-import { toast } from 'sonner';
+import toast from 'react-hot-toast';
 import { WifiOff, Wifi } from 'lucide-react';
 
 export const NetworkStatusToast = () => {
@@ -14,8 +14,7 @@ export const NetworkStatusToast = () => {
 
     useEffect(() => {
         if (!online) {
-            toast.error('No internet connection', {
-                description: 'Check your network and try again',
+            toast.error('No internet connection: Check your network', {
                 icon: <WifiOff className="size-5" />,
                 duration: Infinity, // Stay until dismissed or back online
                 id: 'network-offline'
@@ -28,8 +27,7 @@ export const NetworkStatusToast = () => {
             // (check if there was an offline toast)
             const wasOffline = document.querySelector('[data-sonner-toast-id="network-offline"]');
             if (wasOffline) {
-                toast.success('Back online', {
-                    description: 'Connection restored',
+                toast.success('Back online: Connection restored', {
                     icon: <Wifi className="size-5" />,
                     duration: 3000
                 });

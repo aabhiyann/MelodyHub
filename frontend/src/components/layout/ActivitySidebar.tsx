@@ -60,6 +60,8 @@ export default ActivitySidebar;
 const ActivityItem = ({ activity }: { activity: Activity }) => {
 	const { userId: actor, type, target } = activity;
 
+	if (typeof actor === 'string') return null;
+
 	let icon = null;
 	let message = "";
 

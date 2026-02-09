@@ -1,5 +1,4 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useState } from "react";
 import { ListMusic } from "lucide-react";
 import { SongsTable } from "./SongsTable";
 import { SongDialog } from "./SongDialog";

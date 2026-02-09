@@ -49,7 +49,7 @@ const MusicCard = memo(({ song, onClick, onPlayClick, index = 0 }: MusicCardProp
                 hidden: { opacity: 0, y: 20 },
                 visible: { opacity: 1, y: 0 },
             }}
-            transition={transition}
+            transition={transition as any}
             onClick={onClick}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}

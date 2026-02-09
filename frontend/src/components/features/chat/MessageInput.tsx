@@ -5,7 +5,7 @@ import { Send } from "lucide-react";
 import { useState, useRef } from "react";
 import { Textarea } from "@/components/ui/textarea";
 
-export const MessageInput = ({ onSendMessage }: MessageInputProps) => {
+export const MessageInput = () => {
 	const [newMessage, setNewMessage] = useState("");
 	const { user } = useUser();
 	const { selectedUser, sendMessage, sendTyping } = useChatStore();

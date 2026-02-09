@@ -1,4 +1,4 @@
-import Topbar from "@/components/layout/Topbar";
+import Topbar from "@/components/layout/TopBar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -39,7 +39,7 @@ const CommunityPage = () => {
 
     const isFriend = (userId: string) => friends.includes(userId);
     const isPending = (userId: string) => friendRequests.some(r =>
-        (r.senderId === userId || r.receiverId === userId) && r.status === 'pending'
+        (r.senderId.clerkId === userId || r.to === userId) && r.status === 'pending'
     );
 
     return (

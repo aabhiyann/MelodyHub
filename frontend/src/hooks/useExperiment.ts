@@ -1,10 +1,10 @@
 import { useMemo, useEffect } from 'react';
 import { getVariant } from '@/utils/experiments';
 import { axiosInstance } from '@/lib/axios';
-import { useAuthStore } from '@/stores/AuthStore';
+import { useUser } from "@clerk/clerk-react";
 
 export const useExperiment = (experimentId: string): string => {
-  const { clerkUser } = useAuthStore();
+  const { user: clerkUser } = useUser();
   const userId = clerkUser?.id || 'anonymous';
 
   // Get variant (memoized to prevent recalculation)

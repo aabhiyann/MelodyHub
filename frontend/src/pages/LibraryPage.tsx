@@ -18,7 +18,7 @@ import {
   Share2,
 } from 'lucide-react';
 // import { ScrollArea } from '@/components/ui/scroll-area'; // Replaced by PullToRefresh
-import Topbar from '@/components/layout/Topbar';
+import Topbar from '@/components/layout/TopBar';
 import { useMusicStore } from '@/stores/MusicStore';
 import { usePlayerStore } from '@/stores/PlayerStore';
 import { Link } from 'react-router-dom';

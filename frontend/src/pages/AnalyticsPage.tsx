@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { axiosInstance } from "@/lib/axios";
-import Topbar from "@/components/layout/Topbar";
+import Topbar from "@/components/layout/TopBar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { StatsCard } from "@/components/features/analytics/StatsCard";
 import { ListeningChart } from "@/components/features/analytics/ListeningChart";

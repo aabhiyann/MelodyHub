@@ -1,4 +1,4 @@
-import Topbar from '@/components/layout/Topbar';
+import Topbar from '@/components/layout/TopBar';
 import { useMusicStore } from '@/stores/MusicStore';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -23,6 +23,7 @@ import { MoodSection } from '@/pages/home/components/MoodSection';
 import { RecommendedSection } from '@/pages/home/components/RecommendedSection';
 import { TopArtists } from '@/pages/home/components/TopArtists';
 import { SectionErrorBoundary } from '@/components/shared/SectionErrorBoundary';
+import { SEO } from '@/components/shared/SEO';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -64,6 +65,7 @@ const HomePage = () => {
   return (
     <main className="rounded-md overflow-hidden h-full bg-transparent flex">
       <div className="flex-1 flex flex-col overflow-hidden relative">
+        <SEO title="Home" />
         <Topbar />
 
         <div className="flex-1 h-full overflow-hidden" id="home-scroll-container">
@@ -115,7 +117,7 @@ const HomePage = () => {
 
               {/* 4. MADE FOR YOU */}
               <div className="px-6">
-                <SectionErrorBoundary sect ionName="Made For You">
+                <SectionErrorBoundary sectionName="Made For You">
                   <MadeForYou songs={madeForYouSongs} isLoading={isLoading} />
                 </SectionErrorBoundary>
               </div>

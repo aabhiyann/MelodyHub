@@ -2,7 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { ProfileHeader } from '../ProfileHeader';
 import { axiosInstance } from '@/lib/axios';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom'; // Removed unused import
 import toast from 'react-hot-toast';
 
 const { mockNavigate } = vi.hoisted(() => ({ mockNavigate: vi.fn() }));

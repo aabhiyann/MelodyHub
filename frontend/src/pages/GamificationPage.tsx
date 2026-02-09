@@ -12,16 +12,18 @@ const GamificationPage = () => {
     // Mock data for now if store is empty/loading
     const challenges = dailyChallenges.length > 0 ? dailyChallenges : [
         {
-            id: 'mock1',
-            type: 'listen_count',
+            _id: 'mock1',
+            title: 'Daily Listener',
+            description: 'Listen to 5 songs',
             target: 5,
             progress: 2,
             completed: false,
             reward: { xp: 50, gems: 10 }
         },
         {
-            id: 'mock2',
-            type: 'login',
+            _id: 'mock2',
+            title: 'Loyal Fan',
+            description: 'Log in to the app',
             target: 1,
             progress: 1,
             completed: true,
@@ -86,7 +88,7 @@ const GamificationPage = () => {
                             <h2 className="text-xl font-bold mb-4">Daily Quests</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {challenges.map(challenge => (
-                                    <DailyChallengeCard key={challenge.id} challenge={challenge} />
+                                    <DailyChallengeCard key={challenge._id} challenge={challenge} />
                                 ))}
                             </div>
                         </TabsContent>

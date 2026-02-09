@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 
 interface DailyChallengeCardProps {
     challenge: {
-        id: string;
-        type: string;
+        _id: string;
+        description: string;
         target: number;
         progress: number;
         completed: boolean;
@@ -27,8 +27,7 @@ export const DailyChallengeCard = ({ challenge }: DailyChallengeCardProps) => {
                     )}
                 </div>
                 <p className="text-sm text-zinc-400 mb-3">
-                    {challenge.type === 'listen_count' && `Listen to ${challenge.target} songs`}
-                    {challenge.type === 'login' && `Log in to the app`}
+                    {challenge.description}
                 </p>
 
                 {/* Progress Bar */}

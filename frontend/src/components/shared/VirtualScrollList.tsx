@@ -3,8 +3,10 @@
  * Uses react-window for performance optimization
  */
 
-// This tool call is actually to refactor VirtualScrollList to be generic first.
-import { List } from 'react-window';
+import * as ReactWindow from 'react-window';
+
+// React Window interop for Vite/Rollup
+const FixedSizeList = (ReactWindow as any).FixedSizeList || (ReactWindow as any).default?.FixedSizeList || (ReactWindow as any).default;
 
 interface VirtualScrollListProps<T> {
     items: T[];
@@ -25,15 +27,23 @@ export const VirtualScrollList = <T extends any>({
         <div style={style}>{renderItem(items[index], index)}</div>
     );
 
+    // Cast to usage
+    const ListComponent = FixedSizeList as any;
+
+    if (!ListComponent) {
+        console.error("VirtualScrollList: FixedSizeList not found in react-window");
+        return null;
+    }
+
     return (
-        <List
+        <ListComponent
             className={className}
-            height={height as number} // react-window types might enforce number, but it often accepts string for 100% if width, but height usually needs explicit number for virtual calc.
+            height={height}
             itemCount={items.length}
             itemSize={itemHeight}
             width="100%"
         >
             {Row}
-        </List>
+        </ListComponent>
     );
 };
