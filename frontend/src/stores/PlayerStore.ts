@@ -41,6 +41,9 @@ interface PlayerState {
 	isShortcutsGuideOpen: boolean;
 	/** Whether the player is in expanded (full screen) mode */
 	isExpanded: boolean;
+
+	/** Number of active listeners on the current song */
+	activeListeners: number;
 }
 
 /**
@@ -86,6 +89,9 @@ interface PlayerActions {
 	setDuration: (duration: number) => void;
 	/** Set buffered time */
 	setBufferedTime: (time: number) => void;
+
+	// Real-time actions
+	setActiveListeners: (count: number) => void;
 }
 
 type PlayerStore = PlayerState & PlayerActions;
@@ -93,6 +99,7 @@ type PlayerStore = PlayerState & PlayerActions;
 const initialState: PlayerState = {
 	currentSong: null,
 	isPlaying: false,
+	activeListeners: 0,
 	queue: [],
 	currentIndex: -1,
 	shuffled: false,
@@ -144,6 +151,9 @@ export const usePlayerStore = create<PlayerStore>()(
 				setDuration: (duration) => set({ duration }, false, "player/setDuration"),
 				setBufferedTime: (time) => set({ bufferedTime: time }, false, "player/setBuffered"),
 				seek: (time) => set({ currentTime: time }, false, "player/seek"),
+
+				// Real-time State Actions
+				setActiveListeners: (count: number) => set({ activeListeners: count }, false, "player/setActiveListeners"),
 			};
 		},
 		{ name: "PlayerStore" }

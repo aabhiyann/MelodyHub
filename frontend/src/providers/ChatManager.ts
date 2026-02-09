@@ -3,7 +3,6 @@ import { StateCreator } from "zustand";
 import { useAuthStore } from "@/stores/AuthStore";
 import { axiosInstance } from "@/lib/axios";
 import { Message, User } from "@/types";
-import { FriendRequest } from "@/types";
 import { getErrorMessage } from "@/utils/errors";
 import toast from "react-hot-toast";
 
@@ -106,6 +105,24 @@ export class ChatManager {
                 typingTimeouts.set(senderId, timeout);
 
                 return { typingUsers: newTypingUsers };
+            });
+        });
+
+        // Listen for Real-time Song Listeners events
+        socket.on("song_listeners", ({ songId, count }: { songId: string; count: number }) => {
+            // Only update if it matches current song? 
+            // Actually, we trust the backend to only send relevant updates 
+            // (since we join specific room).
+            // But we should verify we are playing that song to be safe?
+            // PlayerStore is global.
+            // Import usePlayerStore inside the callback to avoid circular dep issues at module level?
+            // "usePlayerStore" is exported from a store file.
+            // Let's assume we can import it.
+            import("@/stores/PlayerStore").then(({ usePlayerStore }) => {
+                const currentSongId = usePlayerStore.getState().currentSong?._id;
+                if (currentSongId === songId) {
+                    usePlayerStore.getState().setActiveListeners(count);
+                }
             });
         });
 

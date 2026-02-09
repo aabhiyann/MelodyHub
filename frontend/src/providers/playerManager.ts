@@ -36,6 +36,16 @@ export class PlayerManager {
 	}
 
 	/**
+	 * Emits user playing event via socket.
+	 */
+	private emitPlaying(songId: string): void {
+		const socket = useChatStore.getState().socket;
+		if (socket?.connected) {
+			socket.emit("user_playing", songId);
+		}
+	}
+
+	/**
 	 * Initializes the player queue and resets state.
 	 */
 	initializeQueue(songs: Song[]): void {
@@ -56,6 +66,7 @@ export class PlayerManager {
 
 		const song = songs[startIndex];
 		this.emitActivity(`Playing ${song.title} by ${song.artist}`);
+		this.emitPlaying(song._id);
 
 		this.set({
 			queue: songs,
@@ -137,6 +148,7 @@ export class PlayerManager {
 		if (nextIndex < queue.length) {
 			const nextSong = queue[nextIndex];
 			this.emitActivity(`Playing ${nextSong.title} by ${nextSong.artist}`);
+			this.emitPlaying(nextSong._id);
 
 			this.set({
 				currentSong: nextSong,
@@ -158,6 +170,7 @@ export class PlayerManager {
 		if (prevIndex >= 0) {
 			const prevSong = queue[prevIndex];
 			this.emitActivity(`Playing ${prevSong.title} by ${prevSong.artist}`);
+			this.emitPlaying(prevSong._id);
 
 			this.set({
 				currentSong: prevSong,
