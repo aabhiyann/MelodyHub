@@ -3,6 +3,7 @@ import { Message } from "../models/message.model.js";
 import { BaseService } from "./base.service.js";
 import { UserConnection, IUserConnection } from "../models/user.connection.model.js";
 import { Types } from "mongoose";
+import { redisService } from "./redis.service.js";
 
 export class UserService extends BaseService<IUser> {
 	constructor() {
@@ -13,7 +14,15 @@ export class UserService extends BaseService<IUser> {
 	 * Get all users except the current one
 	 */
 	async getAllExcept(currentUserId: string) {
-		return await this.findAll({ clerkId: { $ne: currentUserId } });
+		const cacheKey = "users:all";
+		let users = await redisService.get<IUser[]>(cacheKey);
+
+		if (!users) {
+			users = await this.findAll({});
+			await redisService.set(cacheKey, users, 3600); // 1 hour
+		}
+
+		return users.filter((u) => u.clerkId !== currentUserId);
 	}
 
 	/**
@@ -43,7 +52,23 @@ export class UserService extends BaseService<IUser> {
 	 * Get user by Clerk ID
 	 */
 	async getByClerkId(clerkId: string) {
-		return await this.model.findOne({ clerkId });
+		const cacheKey = `users:profile:${clerkId}`;
+		const cached = await redisService.get<IUser>(cacheKey);
+		if (cached) return new User(cached); // Hydrate mongoose model if needed, or return raw IF controllers handle it.
+		// NOTE: Controllers expect Mongoose document usually. Hydrating might be safer. 
+		// Actually, auth middleware just needs .role. User.findOne returns Document.
+		// If I return plain object, it might break code expecting .save() or virtuals.
+		// For now, let's return plain object and ensure callers handle it or hydrate it. 
+		// BUT `updateProfile` calls `findOneAndUpdate` which returns Document.
+		// `protectRoute` accesses `user.role`. Plain object works.
+		// `UserService` extends `BaseService`.
+		// Let's rely on DB for now for safety OR hydrate. Hydrating: `new User(cached)` (but check isNew).
+
+		const user = await this.model.findOne({ clerkId });
+		if (user) {
+			await redisService.set(cacheKey, user, 3600);
+		}
+		return user;
 	}
 
 	/**
@@ -68,6 +93,10 @@ export class UserService extends BaseService<IUser> {
 			await user.save();
 		}
 
+		// Invalidate
+		await redisService.del(`users:profile:${clerkId}`);
+		await redisService.del("users:all");
+
 		return user;
 	}
 
@@ -75,11 +104,17 @@ export class UserService extends BaseService<IUser> {
 	 * Update user profile
 	 */
 	async updateProfile(clerkId: string, updates: Partial<IUser>) {
-		return await User.findOneAndUpdate(
+		const user = await User.findOneAndUpdate(
 			{ clerkId },
 			{ $set: updates },
 			{ new: true }
 		);
+
+		if (user) {
+			await redisService.del(`users:profile:${clerkId}`);
+			await redisService.del("users:all");
+		}
+		return user;
 	}
 
 	/**

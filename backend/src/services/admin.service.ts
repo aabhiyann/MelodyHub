@@ -2,6 +2,7 @@ import { Song } from "../models/song.model.js";
 import { Album } from "../models/album.model.js";
 import cloudinary from "../lib/cloudinary.js";
 import { UploadedFile } from "express-fileupload";
+import { redisService } from "./redis.service.js";
 
 export class AdminService {
   async uploadToCloudinary(file: UploadedFile): Promise<string> {
@@ -35,6 +36,10 @@ export class AdminService {
       });
     }
 
+    // Invalidate caches
+    await redisService.delPattern('songs:*');
+    await redisService.del('stats:summary');
+
     return song;
   }
 
@@ -48,6 +53,11 @@ export class AdminService {
     }
 
     await Song.findByIdAndDelete(id);
+
+    // Invalidate caches
+    await redisService.delPattern('songs:*');
+    await redisService.del('stats:summary');
+
     return { message: "Song deleted successfully" };
   }
 
@@ -66,6 +76,11 @@ export class AdminService {
   async deleteAlbum(id: string) {
     await Song.deleteMany({ albumId: id });
     await Album.findByIdAndDelete(id);
+
+    // Invalidate caches
+    await redisService.delPattern('songs:*');
+    await redisService.del('stats:summary');
+
     return { message: "Album deleted successfully" };
   }
 }
