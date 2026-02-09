@@ -1,3 +1,4 @@
+# Build Stage
 FROM node:20-alpine AS builder
 
 WORKDIR /app
@@ -6,21 +7,23 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
-# Remove test files to avoid build errors
-RUN find src -name '*.test.ts' -delete && \
-    find src -name '*.test.tsx' -delete && \
-    rm -rf src/tests src/__tests__
-    # Build - use production config with simplified build (type checking done in CI/CD)
-    RUN npx vite build --config vite.config.prod.ts
+RUN npm run build
 
-# Production stage
+# Production Stage
 FROM nginx:alpine
 
-# Copy nginx config
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Copy built files
+# Copy built assets from builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Custom Nginx config to handle React Router (SPA)
+RUN echo 'server { \
+    listen 80; \
+    location / { \
+        root /usr/share/nginx/html; \
+        index index.html index.htm; \
+        try_files $uri $uri/ /index.html; \
+    } \
+}' > /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
