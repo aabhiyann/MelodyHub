@@ -22,7 +22,6 @@ import { NewReleases } from '@/pages/home/components/NewReleases';
 import { MoodSection } from '@/pages/home/components/MoodSection';
 import { RecommendedSection } from '@/pages/home/components/RecommendedSection';
 import { TopArtists } from '@/pages/home/components/TopArtists';
-import { TopArtists } from '@/pages/home/components/TopArtists';
 import { SectionErrorBoundary } from '@/components/shared/SectionErrorBoundary';
 import { SEO } from '@/components/shared/SEO';
 
