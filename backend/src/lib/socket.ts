@@ -74,6 +74,43 @@ export const initializeSocket = (server: HttpServer) => {
 			}
 		});
 
+		// Live Listener Logic
+		socket.on("user_playing", (songId: string) => {
+			try {
+				const userId = Array.from(userSockets.entries()).find(([_, sid]) => sid === socket.id)?.[0];
+				if (!userId) return;
+
+				// Leave previous song room if exists
+				const previousSong = userActivities.get(userId)?.split(":")?.[1]; // simplified tracking needed?
+				// Actually, socket.rooms contains all rooms. We need to identify song rooms.
+				// Pattern: song:{songId}
+
+				// Identify and leave previous song rooms
+				for (const room of socket.rooms) {
+					if (room.startsWith("song:")) {
+						socket.leave(room);
+						const prevSongId = room.split(":")[1];
+						// Emit update to previous room
+						const count = io.sockets.adapter.rooms.get(room)?.size || 0;
+						io.to(room).emit("song_listeners", { songId: prevSongId, count });
+					}
+				}
+
+				// Join new song room
+				const newRoom = `song:${songId}`;
+				socket.join(newRoom);
+
+				// Emit update to new room
+				const count = io.sockets.adapter.rooms.get(newRoom)?.size || 0;
+				io.to(newRoom).emit("song_listeners", { songId, count });
+
+				// Update activity
+				// userActivities.set(userId, `Playing:${songId}`); // Optional: specific tracking
+			} catch (error) {
+				console.error("Socket user_playing error:", error);
+			}
+		});
+
 		socket.on("disconnect", () => {
 			let disconnectedUserId: string | undefined;
 			for (const [userId, socketId] of Array.from(userSockets.entries())) {
@@ -85,8 +122,27 @@ export const initializeSocket = (server: HttpServer) => {
 					break;
 				}
 			}
+
+			// Handle song room cleanup implicitly by disconnect, but might want to broadcast decrement
+			// socket.io handles leaving rooms on disconnect automatically.
+			// BUT we might want to broadcast the new count.
+			// However, since socket is disconnected, we can't iterate its rooms easily here?
+			// Actually, "disconnecting" event gives access to rooms before leaving.
+
 			if (disconnectedUserId) {
 				io.emit("user_disconnected", disconnectedUserId);
+			}
+		});
+
+		socket.on("disconnecting", () => {
+			for (const room of socket.rooms) {
+				if (room.startsWith("song:")) {
+					const songId = room.split(":")[1];
+					// The socket is still in the room, so size includes it. After this event, it drops.
+					// So we should emit (size - 1).
+					const count = (io.sockets.adapter.rooms.get(room)?.size || 1) - 1;
+					io.to(room).emit("song_listeners", { songId, count });
+				}
 			}
 		});
 	});
