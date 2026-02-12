@@ -54,3 +54,26 @@ We use **Docker** to deploy the backend. This ensures it runs exactly as it does
     - Log in (Clerk should redirect back to Vercel).
     - Play a song (Checks Cloudinary + Mongo).
     - Open "AI Playlist" and generate one (Checks Gemini).
+    
+---
+
+## 4. 🤖 Automated Deployment (CI/CD)
+
+We use **GitHub Actions** to automatically deploy to production when changes are pushed to `main`.
+
+### Prerequisites
+You must configure the following **GitHub Secrets** in your repository settings:
+
+| Secret Name | Description | Provider |
+| :--- | :--- | :--- |
+| `VERCEL_TOKEN` | User Token from Vercel Account Settings | Frontend |
+| `VERCEL_ORG_ID` | Organization ID (Project Settings) | Frontend |
+| `VERCEL_PROJECT_ID` | Project ID (Project Settings) | Frontend |
+| `RENDER_API_KEY` | API Key from Render Account Settings | Backend |
+| `RENDER_SERVICE_ID` | Service ID for the Web Service | Backend |
+
+### Workflow
+1. **Push to `main`** triggers the `CI - MelodyHub` workflow.
+2. If CI passes (Lint + Test + Build), the `Deploy to Production` workflow is triggered.
+3. Frontend deploys to **Vercel**.
+4. Backend deploys to **Render**.
