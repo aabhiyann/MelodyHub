@@ -5,8 +5,8 @@
 
 import * as ReactWindow from 'react-window';
 
-// React Window interop for Vite/Rollup
-const FixedSizeList = (ReactWindow as any).FixedSizeList || (ReactWindow as any).default?.FixedSizeList || (ReactWindow as any).default;
+// Type-safe extraction
+const FixedSizeList = (ReactWindow as any).FixedSizeList || ReactWindow;
 
 interface VirtualScrollListProps<T> {
     items: T[];
@@ -27,16 +27,8 @@ export const VirtualScrollList = <T extends any>({
         <div style={style}>{renderItem(items[index], index)}</div>
     );
 
-    // Cast to usage
-    const ListComponent = FixedSizeList as any;
-
-    if (!ListComponent) {
-        console.error("VirtualScrollList: FixedSizeList not found in react-window");
-        return null;
-    }
-
     return (
-        <ListComponent
+        <FixedSizeList
             className={className}
             height={height}
             itemCount={items.length}
@@ -44,6 +36,6 @@ export const VirtualScrollList = <T extends any>({
             width="100%"
         >
             {Row}
-        </ListComponent>
+        </FixedSizeList>
     );
 };
