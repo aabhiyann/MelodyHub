@@ -130,7 +130,7 @@ export class GamificationService {
      * Get user gamification stats (non-static, for controller use)
      */
     async getUserStats(userId: string) {
-        const user = await User.findById(userId);
+        const user = await User.findOne({ clerkId: userId });
         if (!user) {
             throw new Error("User not found");
         }
@@ -192,7 +192,7 @@ export class GamificationService {
      * Award XP to a user
      */
     async awardXP(userId: string, amount: number, source: string) {
-        const user = await User.findById(userId);
+        const user = await User.findOne({ clerkId: userId });
         if (!user) {
             throw new Error("User not found");
         }
