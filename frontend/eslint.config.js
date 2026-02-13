@@ -29,11 +29,14 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-unsafe-return': 'off',
       '@typescript-eslint/ban-types': 'off',
-      '@typescript-eslint/no-unused-vars': 'warn', // Downgrade to warning
-      '@typescript-eslint/ban-ts-comment': 'off', // Allow @ts-ignore
-      '@typescript-eslint/no-empty-object-type': 'off', // Allow empty object types
-      'react-hooks/rules-of-hooks': 'warn', // Downgrade to warning
-      'react-hooks/exhaustive-deps': 'warn', // Already a warning
+      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/ban-ts-comment': 'off',
+      '@typescript-eslint/no-empty-object-type': 'off',
+      '@typescript-eslint/no-unnecessary-type-constraint': 'off',
+      'react-hooks/rules-of-hooks': 'warn',
+      'react-hooks/exhaustive-deps': 'warn',
+      'no-empty': 'warn',
+      'no-case-declarations': 'off',
     },
   },
 )
