@@ -112,22 +112,35 @@ export const AddToPlaylistDialog = ({ songId, onClose, children, open: controlle
                         </div>
                     ) : (
                         <div className="space-y-2 max-h-[300px] overflow-y-auto">
-                            {filteredPlaylists.map((playlist) => (
-                                <button
-                                    key={playlist._id}
-                                    onClick={() => handleAddToPlaylist(playlist._id)}
-                                    className="w-full flex items-center p-3 rounded-md hover:bg-white/5 transition-colors text-left group"
-                                >
-                                    <div className="h-10 w-10 bg-zinc-800 rounded flex items-center justify-center mr-3 group-hover:bg-zinc-700">
-                                        <ListMusic className="h-5 w-5 text-zinc-400" />
-                                    </div>
-                                    <div className="flex-1">
-                                        <p className="font-medium text-white">{playlist.name}</p>
-                                        <p className="text-xs text-zinc-500">{playlist.songs?.length || 0} songs</p>
-                                    </div>
-                                    <Plus className="h-4 w-4 text-zinc-500 group-hover:text-white" />
-                                </button>
-                            ))}
+                            {filteredPlaylists.map((playlist) => {
+                                // Get playlist cover from first song or use fallback
+                                const coverImage = playlist.songs?.[0]?.imageUrl;
+
+                                return (
+                                    <button
+                                        key={playlist._id}
+                                        onClick={() => handleAddToPlaylist(playlist._id)}
+                                        className="w-full flex items-center p-3 rounded-md hover:bg-white/5 transition-colors text-left group"
+                                    >
+                                        {coverImage ? (
+                                            <img
+                                                src={coverImage}
+                                                alt={playlist.name}
+                                                className="h-12 w-12 object-cover rounded mr-3"
+                                            />
+                                        ) : (
+                                            <div className="h-12 w-12 bg-zinc-800 rounded flex items-center justify-center mr-3 group-hover:bg-zinc-700">
+                                                <ListMusic className="h-5 w-5 text-zinc-400" />
+                                            </div>
+                                        )}
+                                        <div className="flex-1">
+                                            <p className="font-medium text-white">{playlist.name}</p>
+                                            <p className="text-xs text-zinc-500">{playlist.songs?.length || 0} songs</p>
+                                        </div>
+                                        <Plus className="h-4 w-4 text-zinc-500 group-hover:text-white" />
+                                    </button>
+                                );
+                            })}
                         </div>
                     )}
                 </div>
