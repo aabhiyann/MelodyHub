@@ -1,84 +1,89 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
-import { usePlaylistStore } from '@/stores/PlaylistStore';
+import { usePlaylistStore } from '../PlaylistStore';
+import { playlistApi } from '@/lib/api/playlist';
 
-vi.mock('@/lib/axios', () => ({
-  axiosInstance: {
-    get: vi.fn(),
-  },
+// Mock the API service
+vi.mock('@/lib/api/playlist', () => ({
+  playlistApi: {
+    getById: vi.fn(),
+    create: vi.fn(),
+    update: vi.fn(),
+    delete: vi.fn(),
+    addSong: vi.fn(),
+    removeSong: vi.fn()
+  }
 }));
 
-vi.mock('react-hot-toast', () => ({
-  default: {
-    error: vi.fn(),
-  },
-}));
-
-import { axiosInstance } from '@/lib/axios';
-
-const mockPlaylist = {
-  _id: 'p1',
-  name: 'My Playlist',
-  songs: [],
-  userId: 'u1',
-  isPublic: true,
-};
-
-describe('PlaylistStore', () => {
+describe('usePlaylistStore', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
     usePlaylistStore.setState({
       currentPlaylist: null,
+      userPlaylists: [],
       isLoading: false,
-      error: null,
+      error: null
     });
+    vi.clearAllMocks();
   });
 
-  it('initializes with default state', () => {
-    const { result } = renderHook(() => usePlaylistStore());
-    expect(result.current.currentPlaylist).toBeNull();
-    expect(result.current.isLoading).toBe(false);
-    expect(result.current.error).toBeNull();
+  it('initializes correctly', () => {
+    const state = usePlaylistStore.getState();
+    expect(state.currentPlaylist).toBeNull();
+    expect(state.userPlaylists).toEqual([]);
+    expect(state.isLoading).toBe(false);
   });
 
-  it('fetchPlaylistById sets currentPlaylist on success', async () => {
-    vi.mocked(axiosInstance.get).mockResolvedValueOnce({
-      data: { data: mockPlaylist },
-    });
-    const { result } = renderHook(() => usePlaylistStore());
+  it('fetchPlaylistById updates state', async () => {
+    const mockPlaylist = { _id: '1', name: 'Test' };
+    // @ts-ignore
+    playlistApi.getById.mockResolvedValue(mockPlaylist);
 
-    await act(async () => {
-      await result.current.fetchPlaylistById('p1');
-    });
+    await usePlaylistStore.getState().fetchPlaylistById('1');
 
-    expect(axiosInstance.get).toHaveBeenCalledWith('/playlists/p1');
-    expect(result.current.currentPlaylist).toEqual(mockPlaylist);
-    expect(result.current.isLoading).toBe(false);
-    expect(result.current.error).toBeNull();
+    const state = usePlaylistStore.getState();
+    expect(state.currentPlaylist).toEqual(mockPlaylist);
+    expect(state.isLoading).toBe(false);
   });
 
-  it('fetchPlaylistById sets error on failure', async () => {
-    vi.mocked(axiosInstance.get).mockRejectedValueOnce({
-      response: { data: { message: 'Not found' } },
-    });
-    const { result } = renderHook(() => usePlaylistStore());
+  it('createPlaylist updates userPlaylists', async () => {
+    const mockPlaylist = { _id: '2', name: 'New' };
+    // @ts-ignore
+    playlistApi.create.mockResolvedValue(mockPlaylist);
 
-    await act(async () => {
-      await result.current.fetchPlaylistById('p1');
-    });
+    await usePlaylistStore.getState().createPlaylist('New', 'Desc', true);
 
-    expect(result.current.error).toBe('Not found');
-    expect(result.current.currentPlaylist).toBeNull();
+    const state = usePlaylistStore.getState();
+    expect(state.userPlaylists).toContainEqual(mockPlaylist);
   });
 
-  it('fetchPlaylistById uses generic error when no message', async () => {
-    vi.mocked(axiosInstance.get).mockRejectedValueOnce(new Error('Network error'));
-    const { result } = renderHook(() => usePlaylistStore());
+  it('addSongToPlaylist calls API', async () => {
+    // @ts-ignore
+    playlistApi.addSong.mockResolvedValue();
+    // @ts-ignore
+    playlistApi.getById.mockResolvedValue({ _id: '1', songs: ['s1'] });
 
-    await act(async () => {
-      await result.current.fetchPlaylistById('p1');
-    });
+    // Setup current playlist
+    usePlaylistStore.setState({ currentPlaylist: { _id: '1', songs: [] } as any });
 
-    expect(result.current.error).toBe('Network error');
+    await usePlaylistStore.getState().addSongToPlaylist('1', 's1');
+
+    expect(playlistApi.addSong).toHaveBeenCalledWith('1', 's1');
+    // Should refetch
+    expect(playlistApi.getById).toHaveBeenCalledWith('1');
+  });
+
+  it('removeSongFromPlaylist optimistically updates', async () => {
+    // Setup initial state with songs
+    const initialPlaylist = { _id: '1', songs: [{ _id: 's1' }, { _id: 's2' }] };
+    usePlaylistStore.setState({ currentPlaylist: initialPlaylist as any });
+
+    // @ts-ignore
+    playlistApi.removeSong.mockResolvedValue();
+
+    await usePlaylistStore.getState().removeSongFromPlaylist('1', 's1');
+
+    const state = usePlaylistStore.getState();
+    // s1 should be gone
+    expect(state.currentPlaylist?.songs).toHaveLength(1);
+    expect(state.currentPlaylist?.songs[0]._id).toBe('s2');
   });
 });
