@@ -54,6 +54,25 @@ We follow a strict categorization for components:
 - **Responsibility**: Route targets. fetching initial data, composing features.
 - **Performance**: Asynchronously loaded via `React.lazy`.
 
+### Component Props Convention
+All new components should extend `BaseComponentProps` from `@/types/components`:
+
+```typescript
+import { BaseComponentProps } from '@/types/components';
+
+interface MyComponentProps extends BaseComponentProps {
+  title: string;
+  onAction: () => void;
+}
+```
+
+This ensures consistent support for:
+- `className`: Custom styling
+- `testId`: Test automation
+- `ariaLabel`, `ariaDescribedBy`: Accessibility
+
+For interactive components, use `InteractiveComponentProps` which adds `disabled` and `isLoading`.
+
 ---
 
 ## 3. State Management (Zustand)
