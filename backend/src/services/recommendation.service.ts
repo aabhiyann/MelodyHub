@@ -15,7 +15,7 @@ export class RecommendationService {
         // Check Cache
         const cacheKey = `rec:similar:${songId}:${limit}`;
         const cached = await redisService.get(cacheKey);
-        if (cached) return cached;
+        if (cached) return cached as any[];
 
         // 1. Get Target Song
         const targetSong = await Song.findById(songId).lean();
@@ -63,7 +63,7 @@ export class RecommendationService {
     async getDiscoverWeekly(userId: string, limit: number = 20): Promise<any[]> {
         const cacheKey = `rec:discover:${userId}`;
         const cached = await redisService.get(cacheKey);
-        if (cached) return cached;
+        if (cached) return cached as any[];
 
         // 1. Get User's History (from Analytics/Activity - simplified for now: use liked songs or recent plays)
         // NOTE: Since we don't have a full "History" model populated with features yet, 
