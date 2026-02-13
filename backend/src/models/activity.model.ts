@@ -7,18 +7,18 @@ export enum ActivityType {
 }
 
 export interface IActivity extends Document {
-    userId: mongoose.Types.ObjectId;
+    userId: string;
     type: ActivityType;
-    targetId: mongoose.Types.ObjectId; // ID of Song, Playlist, or User
+    targetId: string; // ID of Song, Playlist, or User
     createdAt: Date;
 }
 
 const activitySchema = new Schema<IActivity>(
     {
         userId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
+            type: String,
             required: true,
+            index: true,
         },
         type: {
             type: String,
@@ -26,7 +26,7 @@ const activitySchema = new Schema<IActivity>(
             required: true,
         },
         targetId: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: String,
             required: true,
         },
     },
@@ -34,3 +34,4 @@ const activitySchema = new Schema<IActivity>(
 );
 
 export const Activity = mongoose.model<IActivity>("Activity", activitySchema);
+

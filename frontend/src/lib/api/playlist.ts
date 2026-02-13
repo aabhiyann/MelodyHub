@@ -4,29 +4,29 @@ import { extractData } from "@/utils/apiAdapter";
 
 export const playlistApi = {
     getById: async (id: string): Promise<Playlist> => {
-        const response = await axiosInstance.get(`/playlists/${id}`);
+        const response = await axiosInstance.get(`/social/playlists/${id}`);
         return extractData<Playlist>(response.data);
     },
 
     create: async (name: string, description?: string, isPublic: boolean = true): Promise<Playlist> => {
-        const response = await axiosInstance.post("/playlists", { name, description, isPublic });
+        const response = await axiosInstance.post("/social/playlists", { name, description, isPublic });
         return extractData<Playlist>(response.data);
     },
 
     update: async (id: string, updates: Partial<Playlist>): Promise<Playlist> => {
-        const response = await axiosInstance.put(`/playlists/${id}`, updates);
+        const response = await axiosInstance.put(`/social/playlists/${id}`, updates);
         return extractData<Playlist>(response.data);
     },
 
     delete: async (id: string): Promise<void> => {
-        await axiosInstance.delete(`/playlists/${id}`);
+        await axiosInstance.delete(`/social/playlists/${id}`);
     },
 
     addSong: async (playlistId: string, songId: string): Promise<void> => {
-        await axiosInstance.post(`/playlists/${playlistId}/songs`, { songId });
+        await axiosInstance.post(`/social/playlists/${playlistId}/songs`, { songId });
     },
 
     removeSong: async (playlistId: string, songId: string): Promise<void> => {
-        await axiosInstance.delete(`/playlists/${playlistId}/songs/${songId}`);
+        await axiosInstance.delete(`/social/playlists/${playlistId}/songs/${songId}`);
     }
 };

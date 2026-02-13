@@ -22,7 +22,7 @@ export class AIController {
 				return;
 			}
 
-			const model = this.genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+			const model = this.genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 			const systemPrompt = `
 				You are a professional music curator and DJ.
@@ -102,7 +102,26 @@ export class AIController {
 
 		} catch (error: any) {
 			console.error("Error generating playlist:", error);
-			res.status(500).json({ message: "Internal server error", error: error.message });
+			const errorMsg = error?.message || "";
+
+			// Handle rate limiting
+			if (errorMsg.includes("429") || errorMsg.includes("quota") || errorMsg.includes("Too Many Requests")) {
+				res.status(429).json({
+					message: "AI generation rate limit reached. Please try again in a minute.",
+					retryAfter: 60
+				});
+				return;
+			}
+
+			// Handle missing/invalid API key
+			if (errorMsg.includes("API_KEY") || errorMsg.includes("401") || errorMsg.includes("403")) {
+				res.status(503).json({
+					message: "AI service is temporarily unavailable. Please try again later."
+				});
+				return;
+			}
+
+			res.status(500).json({ message: "Failed to generate playlist. Please try again.", error: errorMsg });
 		}
 	};
 }
