@@ -143,6 +143,5 @@ export const NowPlaying = memo(() => {
                 />
             )}
         </div>
-        </div >
     );
 });
