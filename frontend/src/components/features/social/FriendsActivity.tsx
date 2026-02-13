@@ -13,8 +13,9 @@ export const FriendsActivity = () => {
         if (user) fetchUsers();
     }, [user, fetchUsers]);
 
-    // Filter out current user
-    const friends = users.filter((u) => u.clerkId !== user?.id && u.fullName !== "Admin"); // Should ideally use `friends` list from store, but users is populated for now
+    // Filter out current user - guard against non-array data from API errors
+    const usersList = Array.isArray(users) ? users : [];
+    const friends = usersList.filter((u) => u.clerkId !== user?.id && u.fullName !== "Admin");
 
     return (
         <div className='h-full flex flex-col'>

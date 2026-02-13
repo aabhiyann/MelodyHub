@@ -32,15 +32,21 @@ const CommunityPage = () => {
         }
     }, [currentUser, fetchUsers, fetchFriends, fetchFriendRequests]);
 
-    const filteredUsers = users.filter((u) => {
+    const usersList = Array.isArray(users) ? users : [];
+    const filteredUsers = usersList.filter((u) => {
         if (u.clerkId === currentUser?.id) return false;
         return u.fullName.toLowerCase().includes(searchQuery.toLowerCase());
     });
 
-    const isFriend = (userId: string) => friends.includes(userId);
-    const isPending = (userId: string) => friendRequests.some(r =>
-        (r.senderId.clerkId === userId || r.to === userId) && r.status === 'pending'
-    );
+    const requestsList = Array.isArray(friendRequests) ? friendRequests : [];
+    const isFriend = (userId: string) => Array.isArray(friends) && friends.includes(userId);
+    const isPending = (userId: string) => requestsList.some(r => {
+        // senderId can be a populated object or a plain string ID
+        const senderClerkId = typeof r.senderId === 'object' && r.senderId !== null
+            ? (r.senderId as any).clerkId
+            : r.senderId;
+        return (senderClerkId === userId || r.to === userId) && r.status === 'pending';
+    });
 
     return (
         <main className="rounded-md overflow-hidden h-full bg-transparent">

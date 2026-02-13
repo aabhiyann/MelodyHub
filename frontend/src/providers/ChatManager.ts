@@ -226,7 +226,7 @@ export class ChatManager {
             this.set({ isLoading: true });
             // Using existing /users endpoint for now
             const response = await axiosInstance.get("/users");
-            const allUsers = response.data;
+            const allUsers = Array.isArray(response.data) ? response.data : [];
             const filtered = allUsers.filter((user: User) =>
                 user.fullName.toLowerCase().includes(query.toLowerCase())
             );
@@ -241,11 +241,12 @@ export class ChatManager {
         this.set({ isLoading: true });
         try {
             const response = await axiosInstance.get("/users");
-            this.set({ users: response.data, isLoading: false });
+            const data = Array.isArray(response.data) ? response.data : [];
+            this.set({ users: data, isLoading: false });
         } catch (error) {
             console.error("Failed to fetch users:", error);
             toast.error("Failed to load users");
-            this.set({ isLoading: false });
+            this.set({ users: [], isLoading: false });
         }
     }
 
