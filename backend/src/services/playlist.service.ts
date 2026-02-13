@@ -19,13 +19,8 @@ export class PlaylistService {
      * Get all playlists for a user
      */
     async getAllPlaylists(userId: string, limit: number = 50, offset: number = 0): Promise<ISharedPlaylist[]> {
-        // userId is a Clerk ID, need to convert to MongoDB _id
-        const user = await User.findOne({ clerkId: userId });
-        if (!user) {
-            return [];
-        }
-
-        return await SharedPlaylist.find({ owner: user._id })
+        // userId is a Clerk ID, which is what the owner field stores
+        return await SharedPlaylist.find({ owner: userId })
             .sort({ createdAt: -1 })
             .skip(offset)
             .limit(limit)
