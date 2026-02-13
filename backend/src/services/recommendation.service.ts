@@ -97,9 +97,57 @@ export class RecommendationService {
         // Deduplicate
         const uniqueRecs = Array.from(new Set(recommendations.map(s => s._id.toString())))
             .map(id => recommendations.find(s => s._id.toString() === id))
+            .filter(Boolean)
             .slice(0, limit);
 
         await redisService.set(cacheKey, uniqueRecs, CACHE_TTL_DISCOVER);
         return uniqueRecs;
     }
 }
+
+// Export singleton instance
+const recommendationService = new RecommendationService();
+
+// Named exports for backward compatibility with controllers
+export const getSimilarSongs = (songId: string, limit?: number) =>
+    recommendationService.getSimilarSongs(songId, limit);
+
+export const getDiscoverWeekly = (userId: string, limit?: number) =>
+    recommendationService.getDiscoverWeekly(userId, limit);
+
+// Placeholder exports for functions that don't exist yet but are imported
+// These should be implemented based on your actual recommendation logic
+export const hybridRecommendations = async (userId: string, limit: number = 20) => {
+    // Fallback to discover weekly for now
+    const songs = await recommendationService.getDiscoverWeekly(userId, limit);
+    return {
+        songs,
+        algorithm: "discover-weekly",
+        confidence: 0.8
+    };
+};
+
+export const updateUserAudioPreferences = async (userId: string) => {
+    // Placeholder - implement user preference tracking
+    return Promise.resolve();
+};
+
+export const updateUserFavorites = async (userId: string) => {
+    // Placeholder - implement favorites tracking
+    return Promise.resolve();
+};
+
+export const getDailyMix = async (userId: string, limit: number = 20) => {
+    // Fallback to discover weekly
+    return recommendationService.getDiscoverWeekly(userId, limit);
+};
+
+export const contentBasedRecommendations = async (userId: string, limit: number = 20) => {
+    // Fallback to discover weekly
+    return recommendationService.getDiscoverWeekly(userId, limit);
+};
+
+export const collaborativeFilteringRecommendations = async (userId: string, limit: number = 20) => {
+    // Fallback to discover weekly
+    return recommendationService.getDiscoverWeekly(userId, limit);
+};
