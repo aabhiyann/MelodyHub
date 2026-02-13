@@ -14,7 +14,7 @@ export const ActivityFeed = () => {
         queryKey: ["activities"],
         queryFn: async () => {
             const response = await axiosInstance.get("/activities");
-            return response.data as Activity[];
+            return Array.isArray(response.data) ? response.data as Activity[] : [];
         },
         refetchInterval: 30000,
     });

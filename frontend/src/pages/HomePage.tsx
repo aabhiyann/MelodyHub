@@ -97,7 +97,7 @@ const HomePage = () => {
                     icon={<Compass className="w-12 h-12" />}
                     size="large"
                     index={1}
-                    onClick={() => navigate('/discovery')}
+                    onClick={() => navigate('/browse')}
                   />
                   <CategoryCard
                     title="Browse Genres"

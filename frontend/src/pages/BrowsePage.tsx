@@ -184,7 +184,7 @@ const BrowsePage = () => {
                           icon={<Radio className="w-16 h-16" />}
                           size="large"
                           index={2}
-                          onClick={() => navigate('/discovery')}
+                          onClick={() => navigate('/search')}
                         />
                       </div>
                     </section>

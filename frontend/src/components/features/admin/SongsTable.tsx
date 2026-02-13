@@ -79,9 +79,13 @@ export const SongsTable = () => {
 		{
 			accessorKey: "createdAt",
 			header: "Date Added",
-			cell: ({ row }) => (
-				<span>{format(new Date(row.original.createdAt), "MMM d, yyyy")}</span>
-			),
+			cell: ({ row }) => {
+				const dateStr = row.original.createdAt;
+				if (!dateStr) return <span>N/A</span>;
+				const date = new Date(dateStr);
+				if (isNaN(date.getTime())) return <span>N/A</span>;
+				return <span>{format(date, "MMM d, yyyy")}</span>;
+			},
 		},
 		{
 			id: "actions",

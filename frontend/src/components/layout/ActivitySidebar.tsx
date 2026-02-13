@@ -17,7 +17,7 @@ const ActivitySidebar = () => {
 			setIsLoading(true);
 			try {
 				const response = await axiosInstance.get("/activities");
-				setActivities(response.data);
+				setActivities(Array.isArray(response.data) ? response.data : []);
 			} catch (error) {
 				console.error("Failed to fetch activities:", error);
 			} finally {

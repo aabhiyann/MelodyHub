@@ -19,12 +19,16 @@ import {
     TrendingUp,
     Users,
     Sparkles,
+    Target,
+    Settings,
+    Shield,
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { LiquidGlassCard } from '@/components/ui/LiquidGlassCard';
 import { useAIStore } from '@/stores/useAIStore';
+import { useAuthStore } from '@/stores/AuthStore';
 
 interface NavItem {
     id: string;
@@ -43,6 +47,8 @@ const mainNavItems: NavItem[] = [
     { id: 'profile', label: 'Profile', icon: User, path: '/profile' },
     { id: 'community', label: 'Community', icon: Users, path: '/community' },
     { id: 'search', label: 'Search', icon: Search, path: '/search' },
+    { id: 'quests', label: 'Quests', icon: Target, path: '/quests' },
+    { id: 'settings', label: 'Settings', icon: Settings, path: '/settings' },
 ];
 
 interface SidebarProps {
@@ -52,6 +58,7 @@ interface SidebarProps {
 export const Sidebar = ({ className }: SidebarProps) => {
     const [isExpanded, setIsExpanded] = useState(true);
     const { openModal } = useAIStore();
+    const { isAdmin } = useAuthStore();
     const [playlists] = useState([
         { id: '1', name: 'Liked Songs', icon: Heart },
         { id: '2', name: 'My Playlist #1', icon: ListMusic },
@@ -149,6 +156,39 @@ export const Sidebar = ({ className }: SidebarProps) => {
                         </NavLink>
                     ))}
                 </div>
+
+                {/* Admin Link - Only visible for admin users */}
+                {isAdmin && (
+                    <div className="mt-2 px-2">
+                        <NavLink
+                            to="/admin"
+                            className={({ isActive }) =>
+                                cn(
+                                    'flex items-center gap-3 px-3 py-2.5 rounded-lg',
+                                    'transition-all duration-200',
+                                    isActive
+                                        ? 'bg-white/10 text-[var(--brand-primary)]'
+                                        : 'text-text-secondary hover:bg-white/5 hover:text-white'
+                                )
+                            }
+                        >
+                            <Shield className="size-5 shrink-0" />
+                            <AnimatePresence mode="wait">
+                                {isExpanded && (
+                                    <motion.span
+                                        className="font-medium truncate"
+                                        initial={{ opacity: 0, x: -10 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: -10 }}
+                                        transition={{ duration: 0.2 }}
+                                    >
+                                        Admin
+                                    </motion.span>
+                                )}
+                            </AnimatePresence>
+                        </NavLink>
+                    </div>
+                )}
 
                 {/* AI Generator Button - Special Feature */}
                 <div className="mt-4 px-2">
