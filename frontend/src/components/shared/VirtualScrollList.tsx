@@ -3,10 +3,7 @@
  * Uses react-window for performance optimization
  */
 
-// react-window uses CommonJS exports, not ES6 modules
-// Using require to avoid module export issues with Vite
-const ReactWindow = require('react-window');
-const { FixedSizeList } = ReactWindow;
+import { FixedSizeList } from 'react-window';
 
 interface VirtualScrollListProps<T> {
     items: T[];
