@@ -182,7 +182,16 @@ export const getPlaylistById = async (req: Request, res: Response) => {
         const userId = (req as AuthenticatedRequest).auth?.userId;
         const { id } = req.params;
 
-        const playlist = await playlistService.getPlaylistById(String(id), userId);
+        // Validate ObjectId format
+        const playlistId = Array.isArray(id) ? id[0] : id;
+        if (!playlistId || typeof playlistId !== 'string' || !playlistId.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid playlist ID format"
+            });
+        }
+
+        const playlist = await playlistService.getPlaylistById(String(playlistId), userId);
 
         if (!playlist) {
             return res.status(404).json({ success: false, message: "Playlist not found" });
