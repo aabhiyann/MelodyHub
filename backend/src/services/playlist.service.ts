@@ -1,4 +1,5 @@
 import { SharedPlaylist, ISharedPlaylist } from "../models/sharedPlaylist.model.js";
+import { User } from "../models/user.model.js";
 
 export class PlaylistService {
     /**
@@ -18,9 +19,8 @@ export class PlaylistService {
      * Get all playlists for a user
      */
     async getAllPlaylists(userId: string, limit: number = 50, offset: number = 0): Promise<ISharedPlaylist[]> {
-        return await SharedPlaylist.find({
-            $or: [{ owner: userId }, { isPublic: true }],
-        })
+        // userId is a Clerk ID, which is what the owner field stores
+        return await SharedPlaylist.find({ owner: userId })
             .sort({ createdAt: -1 })
             .skip(offset)
             .limit(limit)

@@ -127,12 +127,27 @@ export class GamificationService {
     }
 
     /**
-     * Get user gamification stats (non-static,  for controller use)
+     * Get user gamification stats (non-static, for controller use)
      */
     async getUserStats(userId: string) {
-        const user = await User.findById(userId);
+        const user = await User.findOne({ clerkId: userId });
         if (!user) {
             throw new Error("User not found");
+        }
+
+        // Initialize gamification if it doesn't exist
+        if (!user.gamification) {
+            user.gamification = {
+                xp: 0,
+                level: 1,
+                gems: 0,
+                streak: 0,
+                streakFreezes: 0,
+                achievements: [],
+                lastListenDate: undefined,
+                lastFreezeUsed: undefined
+            };
+            await user.save();
         }
 
         // Get or create today's challenges
@@ -177,9 +192,23 @@ export class GamificationService {
      * Award XP to a user
      */
     async awardXP(userId: string, amount: number, source: string) {
-        const user = await User.findById(userId);
+        const user = await User.findOne({ clerkId: userId });
         if (!user) {
             throw new Error("User not found");
+        }
+
+        // Initialize gamification if it doesn't exist
+        if (!user.gamification) {
+            user.gamification = {
+                xp: 0,
+                level: 1,
+                gems: 0,
+                streak: 0,
+                streakFreezes: 0,
+                achievements: [],
+                lastListenDate: undefined,
+                lastFreezeUsed: undefined
+            };
         }
 
         user.gamification.xp += amount;
