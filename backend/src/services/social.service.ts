@@ -14,8 +14,8 @@ export class SocialService {
 
         // Validate both users exist
         const [user, friend] = await Promise.all([
-            User.findById(userId),
-            User.findById(friendId)
+            User.findOne({ clerkId: userId }),
+            User.findOne({ clerkId: friendId })
         ]);
 
         if (!user || !friend) {
