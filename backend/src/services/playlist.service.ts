@@ -1,4 +1,5 @@
 import { SharedPlaylist, ISharedPlaylist } from "../models/sharedPlaylist.model.js";
+import { User } from "../models/user.model.js";
 
 export class PlaylistService {
     /**
@@ -18,7 +19,13 @@ export class PlaylistService {
      * Get all playlists for a user
      */
     async getAllPlaylists(userId: string, limit: number = 50, offset: number = 0): Promise<ISharedPlaylist[]> {
-        return await SharedPlaylist.find({ owner: userId })
+        // userId is a Clerk ID, need to convert to MongoDB _id
+        const user = await User.findOne({ clerkId: userId });
+        if (!user) {
+            return [];
+        }
+
+        return await SharedPlaylist.find({ owner: user._id })
             .sort({ createdAt: -1 })
             .skip(offset)
             .limit(limit)
