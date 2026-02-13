@@ -11,7 +11,7 @@ export class RecommendationService {
     /**
      * Find songs similar to a given song using Cosine Similarity on audio features
      */
-    async getSimilarSongs(songId: string, limit: number = 10) {
+    async getSimilarSongs(songId: string, limit: number = 10): Promise<any[]> {
         // Check Cache
         const cacheKey = `rec:similar:${songId}:${limit}`;
         const cached = await redisService.get(cacheKey);
@@ -60,7 +60,7 @@ export class RecommendationService {
     /**
      * Generate "Discover Weekly" based on user's recent listening history
      */
-    async getDiscoverWeekly(userId: string, limit: number = 20) {
+    async getDiscoverWeekly(userId: string, limit: number = 20): Promise<any[]> {
         const cacheKey = `rec:discover:${userId}`;
         const cached = await redisService.get(cacheKey);
         if (cached) return cached;
@@ -91,7 +91,7 @@ export class RecommendationService {
 
         for (const seed of seeds) {
             const similar = await this.getSimilarSongs(seed._id.toString(), 5);
-            recommendations = [...recommendations, ...similar];
+            recommendations.push(...similar);
         }
 
         // Deduplicate

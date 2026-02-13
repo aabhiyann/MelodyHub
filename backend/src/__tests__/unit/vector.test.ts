@@ -1,4 +1,4 @@
-import { cosineSimilarity, dotProduct, magnitude } from '../lib/vector.js';
+import { cosineSimilarity, dotProduct, magnitude } from '../../lib/vector.js';
 
 describe('Vector Math', () => {
     describe('magnitude', () => {

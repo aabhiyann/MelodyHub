@@ -75,7 +75,6 @@
     "jsdom": "^27.4.0",
     "msw": "^2.12.7",
     "pa11y": "^9.0.1",
-    "react-helmet-async": "^2.0.5",
     "rollup-plugin-visualizer": "^6.0.5",
     "sharp": "^0.34.5",
     "tailwindcss-animated": "^2.0.0",
