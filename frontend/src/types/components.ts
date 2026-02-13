@@ -1,23 +1,34 @@
-// Component Prop Types
-import { ReactNode, CSSProperties } from 'react';
-
+/**
+ * Base props that all components should extend.
+ * Provides consistent className, testId, and accessibility support.
+ */
 export interface BaseComponentProps {
+    /** Additional CSS classes to apply */
     className?: string;
-    style?: CSSProperties;
-    children?: ReactNode;
+    /** Test ID for automated testing */
+    testId?: string;
+    /** ARIA label for accessibility */
+    ariaLabel?: string;
+    /** ARIA described by for accessibility */
+    ariaDescribedBy?: string;
 }
 
-export interface ModalProps extends BaseComponentProps {
-    isOpen: boolean;
-    onClose: () => void;
-    title?: string;
-}
-
-export interface ButtonProps extends BaseComponentProps {
-    onClick?: () => void;
+/**
+ * Props for interactive components (buttons, inputs, etc.)
+ */
+export interface InteractiveComponentProps extends BaseComponentProps {
+    /** Whether the component is disabled */
     disabled?: boolean;
-    loading?: boolean;
-    variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive';
-    size?: 'sm' | 'md' | 'lg' | 'icon';
-    type?: 'button' | 'submit' | 'reset';
+    /** Whether the component is in a loading state */
+    isLoading?: boolean;
+}
+
+/**
+ * Props for components that can be in an error state
+ */
+export interface ValidatableComponentProps extends InteractiveComponentProps {
+    /** Error message to display */
+    error?: string;
+    /** Whether the component is in an error state */
+    hasError?: boolean;
 }

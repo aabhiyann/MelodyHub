@@ -58,16 +58,53 @@ We follow a strict categorization for components:
 
 ## 3. State Management (Zustand)
 
-We use **Zustand** for global state. Stores are split by domain:
+We use **Zustand** for global state.
+**Pattern:** "Slice Pattern" with separated API Service layers.
 
-- **AuthStore**: User session, admin status.
-- **PlayerStore**: Audio playback state, queue management.
-- **MusicStore**: Data caching for albums, songs, artists.
-- **UIStore**: Global UI state (modals, sidebars).
-- **GamificationStore**: User streaks, points, achievements.
+**Structure:**
+- `src/stores/` contains the hook definitions (Store = State + Actions).
+- `src/lib/api/` contains the framework-agnostic API calls.
 
-**Pattern:**
-Stores separate **State** (data) from **Actions** (functions). Heavy logic is extracted to utility files where possible.
+**Example Store:**
+```typescript
+// src/stores/useExampleStore.ts
+import { create } from 'zustand';
+import { exampleApi } from '@/lib/api/example';
+
+interface State {
+  data: any[];
+  isLoading: boolean;
+  error: string | null;
+}
+
+interface Actions {
+  fetchData: () => Promise<void>;
+}
+
+export const useExampleStore = create<State & Actions>((set) => ({
+  data: [],
+  isLoading: false,
+  error: null,
+  fetchData: async () => {
+    set({ isLoading: true });
+    try {
+      const data = await exampleApi.getData();
+      set({ data });
+    } catch (err) {
+      set({ error: err.message });
+    } finally {
+      set({ isLoading: false });
+    }
+  }
+}));
+```
+
+**Key Stores:**
+- `PlayerStore`: Audio playback, queue, volume.
+- `AuthStore`: User session (Clerk wrapper).
+- `GamificationStore`: XP, Level, Challenges.
+- `useSocialStore`: Friends, Activity Feed.
+- `PlaylistStore`: Playlist CRUD.
 
 ---
 

@@ -1,32 +1,135 @@
 import { create } from "zustand";
-import { axiosInstance } from "@/lib/axios";
 import { Playlist } from "@/types";
-import toast from "react-hot-toast";
 import { getErrorMessage } from "@/utils/errors";
+import { playlistApi } from "@/lib/api/playlist";
 
-interface PlaylistStore {
+interface PlaylistState {
     currentPlaylist: Playlist | null;
+    userPlaylists: Playlist[];
     isLoading: boolean;
     error: string | null;
-    fetchPlaylistById: (id: string) => Promise<void>;
 }
 
-export const usePlaylistStore = create<PlaylistStore>((set) => ({
+interface PlaylistActions {
+    fetchPlaylistById: (id: string) => Promise<void>;
+    fetchUserPlaylists: () => Promise<void>; // Placeholder for future
+    createPlaylist: (name: string, description?: string, isPublic?: boolean) => Promise<Playlist | null>;
+    updatePlaylist: (id: string, updates: Partial<Playlist>) => Promise<void>;
+    deletePlaylist: (id: string) => Promise<void>;
+    addSongToPlaylist: (playlistId: string, songId: string) => Promise<void>;
+    removeSongFromPlaylist: (playlistId: string, songId: string) => Promise<void>;
+    resetError: () => void;
+}
+
+type PlaylistStore = PlaylistState & PlaylistActions;
+
+const initialState: PlaylistState = {
     currentPlaylist: null,
+    userPlaylists: [],
     isLoading: false,
     error: null,
+};
+
+export const usePlaylistStore = create<PlaylistStore>((set, get) => ({
+    ...initialState,
 
     fetchPlaylistById: async (id: string) => {
         set({ isLoading: true, error: null });
         try {
-            const response = await axiosInstance.get(`/playlists/${id}`);
-            set({ currentPlaylist: response.data.data }); // controller returns { success: true, data: playlist }
+            const playlist = await playlistApi.getById(id);
+            set({ currentPlaylist: playlist });
         } catch (error) {
-            const errorMsg = getErrorMessage(error, "Failed to fetch playlist");
-            set({ error: errorMsg });
-            toast.error("Failed to load playlist");
+            set({ error: getErrorMessage(error) });
         } finally {
             set({ isLoading: false });
         }
     },
+
+    fetchUserPlaylists: async () => {
+        // Implementation for listing all playlists for a user
+        // For now, just a placeholder as API endpoint might be different
+    },
+
+    createPlaylist: async (name, description, isPublic) => {
+        set({ isLoading: true, error: null });
+        try {
+            const playlist = await playlistApi.create(name, description, isPublic);
+            set(state => ({
+                userPlaylists: [...state.userPlaylists, playlist]
+            }));
+            return playlist;
+        } catch (error) {
+            set({ error: getErrorMessage(error) });
+            return null;
+        } finally {
+            set({ isLoading: false });
+        }
+    },
+
+    updatePlaylist: async (id, updates) => {
+        set({ isLoading: true, error: null });
+        try {
+            const updatedPlaylist = await playlistApi.update(id, updates);
+            set(state => ({
+                currentPlaylist: state.currentPlaylist?._id === id ? updatedPlaylist : state.currentPlaylist,
+                userPlaylists: state.userPlaylists.map(p => p._id === id ? updatedPlaylist : p)
+            }));
+        } catch (error) {
+            set({ error: getErrorMessage(error) });
+        } finally {
+            set({ isLoading: false });
+        }
+    },
+
+    deletePlaylist: async (id) => {
+        set({ isLoading: true, error: null });
+        try {
+            await playlistApi.delete(id);
+            set(state => ({
+                currentPlaylist: state.currentPlaylist?._id === id ? null : state.currentPlaylist,
+                userPlaylists: state.userPlaylists.filter(p => p._id !== id)
+            }));
+        } catch (error) {
+            set({ error: getErrorMessage(error) });
+        } finally {
+            set({ isLoading: false });
+        }
+    },
+
+    addSongToPlaylist: async (playlistId, songId) => {
+        set({ isLoading: true, error: null });
+        try {
+            await playlistApi.addSong(playlistId, songId);
+            // Ideally we fetch the updated playlist, but for now we can rely on UI update or refetch
+            if (get().currentPlaylist?._id === playlistId) {
+                await get().fetchPlaylistById(playlistId);
+            }
+        } catch (error) {
+            set({ error: getErrorMessage(error) });
+        } finally {
+            set({ isLoading: false });
+        }
+    },
+
+    removeSongFromPlaylist: async (playlistId, songId) => {
+        set({ isLoading: true, error: null });
+        try {
+            await playlistApi.removeSong(playlistId, songId);
+            if (get().currentPlaylist?._id === playlistId) {
+                // Optimistically remove
+                set(state => ({
+                    currentPlaylist: state.currentPlaylist ? {
+                        ...state.currentPlaylist,
+                        songs: state.currentPlaylist.songs.filter((s: any) => s._id !== songId && s !== songId) // Handle populated vs unpopulated
+                    } : null
+                }));
+            }
+        } catch (error) {
+            set({ error: getErrorMessage(error) });
+        } finally {
+            set({ isLoading: false });
+        }
+    },
+
+    resetError: () => set({ error: null })
 }));
