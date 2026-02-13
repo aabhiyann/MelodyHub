@@ -1,21 +1,21 @@
-import { axiosInstance } from "@/lib/axios";
 import { create } from "zustand";
-import toast from "react-hot-toast";
 import { FriendRequest, Activity, UserProfile } from "@/types";
 import { getErrorMessage } from "@/utils/errors";
-import { extractData } from "@/utils/apiAdapter"; // Import the adapter
+import { socialApi } from "@/lib/api/social";
 
 // Re-export User as UserProfile for backwards compatibility
 export type User = UserProfile;
 
-interface SocialStore {
+interface SocialState {
     users: UserProfile[];
     friends: string[]; // List of friend IDs
     friendRequests: FriendRequest[];
     activity: Activity[];
     isLoading: boolean;
     error: string | null;
+}
 
+interface SocialActions {
     fetchUsers: () => Promise<void>;
     fetchFriends: () => Promise<void>;
     fetchFriendRequests: () => Promise<void>;
@@ -25,21 +25,30 @@ interface SocialStore {
     acceptFriendRequest: (requestId: string) => Promise<void>;
     rejectFriendRequest: (requestId: string) => Promise<void>;
     removeFriend: (friendId: string) => Promise<void>;
+
+    // Helper to check if a user is a friend
+    isFriend: (userId: string) => boolean;
 }
 
-export const useSocialStore = create<SocialStore>((set, get) => ({
+type SocialStore = SocialState & SocialActions;
+
+const initialState: SocialState = {
     users: [],
     friends: [],
     friendRequests: [],
     activity: [],
     isLoading: false,
     error: null,
+};
+
+export const useSocialStore = create<SocialStore>((set, get) => ({
+    ...initialState,
 
     fetchUsers: async () => {
         set({ isLoading: true, error: null });
         try {
-            const response = await axiosInstance.get("/users");
-            set({ users: extractData<UserProfile[]>(response.data) }); // Use extractData
+            const users = await socialApi.getUsers();
+            set({ users });
         } catch (error) {
             set({ error: getErrorMessage(error) });
         } finally {
@@ -50,8 +59,8 @@ export const useSocialStore = create<SocialStore>((set, get) => ({
     fetchFriends: async () => {
         set({ isLoading: true, error: null });
         try {
-            const response = await axiosInstance.get("/social/friends");
-            set({ friends: response.data.data });
+            const friends = await socialApi.getFriends();
+            set({ friends });
         } catch (error) {
             set({ error: getErrorMessage(error) });
         } finally {
@@ -62,8 +71,8 @@ export const useSocialStore = create<SocialStore>((set, get) => ({
     fetchFriendRequests: async () => {
         set({ isLoading: true, error: null });
         try {
-            const response = await axiosInstance.get("/social/friend-requests");
-            set({ friendRequests: response.data.data });
+            const friendRequests = await socialApi.getFriendRequests();
+            set({ friendRequests });
         } catch (error) {
             set({ error: getErrorMessage(error) });
         } finally {
@@ -74,8 +83,8 @@ export const useSocialStore = create<SocialStore>((set, get) => ({
     fetchFriendActivity: async () => {
         set({ isLoading: true, error: null });
         try {
-            const response = await axiosInstance.get("/social/activity");
-            set({ activity: response.data.data });
+            const activity = await socialApi.getActivity();
+            set({ activity });
         } catch (error) {
             set({ error: getErrorMessage(error) });
         } finally {
@@ -83,43 +92,66 @@ export const useSocialStore = create<SocialStore>((set, get) => ({
         }
     },
 
-    sendFriendRequest: async (friendId) => {
+    sendFriendRequest: async (friendId: string) => {
+        set({ isLoading: true, error: null });
         try {
-            await axiosInstance.post("/social/friend-request", { friendId });
-            toast.success("Friend request sent");
+            await socialApi.sendFriendRequest(friendId);
+            // Optimistic update could go here, but waiting for fetch is safer for consistent ID state
         } catch (error) {
-            toast.error(getErrorMessage(error, "Failed to send request"));
+            set({ error: getErrorMessage(error) });
+            throw error;
+        } finally {
+            set({ isLoading: false });
         }
     },
 
-    acceptFriendRequest: async (requestId) => {
+    acceptFriendRequest: async (requestId: string) => {
+        set({ isLoading: true, error: null });
         try {
-            await axiosInstance.put(`/social/friend-request/${requestId}/accept`);
-            toast.success("Friend request accepted");
-            get().fetchFriendRequests();
-            get().fetchFriends();
+            await socialApi.acceptFriendRequest(requestId);
+            // Could filter out request from state immediately
+            set(state => ({
+                friendRequests: state.friendRequests.filter(req => req._id !== requestId)
+            }));
+            // Ideally we'd also add to friends list, but we might need the ID from response
+            await get().fetchFriends();
+            await get().fetchFriendActivity();
         } catch (error) {
-            toast.error(getErrorMessage(error, "Failed to accept request"));
+            set({ error: getErrorMessage(error) });
+        } finally {
+            set({ isLoading: false });
         }
     },
 
-    rejectFriendRequest: async (requestId) => {
+    rejectFriendRequest: async (requestId: string) => {
+        set({ isLoading: true, error: null });
         try {
-            await axiosInstance.put(`/social/friend-request/${requestId}/reject`);
-            toast.success("Friend request rejected");
-            get().fetchFriendRequests();
+            await socialApi.rejectFriendRequest(requestId);
+            set(state => ({
+                friendRequests: state.friendRequests.filter(req => req._id !== requestId)
+            }));
         } catch (error) {
-            toast.error(getErrorMessage(error, "Failed to reject request"));
+            set({ error: getErrorMessage(error) });
+        } finally {
+            set({ isLoading: false });
         }
     },
 
-    removeFriend: async (friendId) => {
+    removeFriend: async (friendId: string) => {
+        set({ isLoading: true, error: null });
         try {
-            await axiosInstance.delete(`/social/friends/${friendId}`);
-            toast.success("Friend removed");
-            get().fetchFriends();
+            await socialApi.removeFriend(friendId);
+            set(state => ({
+                friends: state.friends.filter(id => id !== friendId)
+            }));
         } catch (error) {
-            toast.error(getErrorMessage(error, "Failed to remove friend"));
+            set({ error: getErrorMessage(error) });
+        } finally {
+            set({ isLoading: false });
         }
     },
+
+    isFriend: (userId: string) => {
+        return get().friends.includes(userId);
+    }
 }));
