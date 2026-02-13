@@ -4,8 +4,8 @@ import { extractData } from "@/utils/apiAdapter";
 
 export const socialApi = {
     getUsers: async (): Promise<UserProfile[]> => {
-        constresponse = await axiosInstance.get("/users");
-        return extractData<UserProfile[]>(constresponse.data);
+        const response = await axiosInstance.get("/users");
+        return extractData<UserProfile[]>(response.data);
     },
 
     getFriends: async (): Promise<string[]> => {
