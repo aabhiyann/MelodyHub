@@ -13,7 +13,7 @@ export class RecommendationController extends BaseController {
     async getSimilarSongs(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
-            const limit = parseInt(req.query.limit as string) || 10;
+            const limit = parseInt((Array.isArray(req.query.limit) ? req.query.limit[0] : req.query.limit) as string) || 10;
 
             const songs = await this.recommendationService.getSimilarSongs(id, limit);
             this.handleSuccess(res, songs);
@@ -32,7 +32,7 @@ export class RecommendationController extends BaseController {
                 return res.status(401).json({ message: "Unauthorized" });
             }
 
-            const limit = parseInt(req.query.limit as string) || 20;
+            const limit = parseInt((Array.isArray(req.query.limit) ? req.query.limit[0] : req.query.limit) as string) || 20;
             const songs = await this.recommendationService.getDiscoverWeekly(userId, limit);
             this.handleSuccess(res, songs);
         } catch (error) {
