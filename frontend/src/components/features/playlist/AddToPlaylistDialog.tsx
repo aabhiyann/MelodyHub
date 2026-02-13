@@ -6,8 +6,8 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { ListMusic, Plus } from "lucide-react";
-import { useState, useEffect } from "react";
+import { ListMusic, Plus, Search } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
 import { axiosInstance } from "@/lib/axios";
 import toast from "react-hot-toast";
 
@@ -28,6 +28,7 @@ export const AddToPlaylistDialog = ({ songId, onClose, children, open: controlle
     const setOpen = isControlled ? setControlledOpen! : setInternalOpen;
     const [playlists, setPlaylists] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
         if (open) {
@@ -46,6 +47,13 @@ export const AddToPlaylistDialog = ({ songId, onClose, children, open: controlle
             setIsLoading(false);
         }
     };
+
+    // Filter playlists based on search query
+    const filteredPlaylists = useMemo(() => {
+        return playlists.filter(p =>
+            p.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    }, [playlists, searchQuery]);
 
     const handleAddToPlaylist = async (playlistId: string) => {
         try {
@@ -80,14 +88,31 @@ export const AddToPlaylistDialog = ({ songId, onClose, children, open: controlle
                         Select a playlist to add this song to.
                     </DialogDescription>
                 </DialogHeader>
+
+                {/* Search Input */}
+                <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
+                    <input
+                        type="text"
+                        placeholder="Search playlists..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full h-10 pl-10 pr-4 rounded-md bg-zinc-800/50 border border-zinc-700 focus:border-zinc-600 text-white placeholder-zinc-500 transition-all outline-none"
+                    />
+                </div>
+
                 <div className="space-y-4 py-4">
                     {isLoading ? (
                         <div className="text-center text-sm text-zinc-500">Loading playlists...</div>
                     ) : playlists.length === 0 ? (
                         <div className="text-center text-sm text-zinc-500">No playlists found. Create one first!</div>
+                    ) : filteredPlaylists.length === 0 ? (
+                        <div className="text-center text-sm text-zinc-500 py-8">
+                            No playlists match "{searchQuery}"
+                        </div>
                     ) : (
                         <div className="space-y-2 max-h-[300px] overflow-y-auto">
-                            {playlists.map((playlist) => (
+                            {filteredPlaylists.map((playlist) => (
                                 <button
                                     key={playlist._id}
                                     onClick={() => handleAddToPlaylist(playlist._id)}

@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { FriendRequest, Activity, UserProfile } from "@/types";
 import { getErrorMessage } from "@/utils/errors";
 import { socialApi } from "@/lib/api/social";
+import toast from "react-hot-toast";
 
 // Re-export User as UserProfile for backwards compatibility
 export type User = UserProfile;
@@ -93,12 +94,45 @@ export const useSocialStore = create<SocialStore>((set, get) => ({
     },
 
     sendFriendRequest: async (friendId: string) => {
-        set({ isLoading: true, error: null });
+        // Optimistic update - immediately add to pending state
+        // Find the user in the users list to create a proper UserProfile object
+        const friendUser = get().users.find(u => u.clerkId === friendId);
+
+        const tempRequest: FriendRequest = {
+            _id: `temp-${friendId}`,
+            senderId: friendUser || {
+                _id: friendId,
+                clerkId: friendId,
+                fullName: 'Loading...',
+                imageUrl: ''
+            } as UserProfile,
+            to: friendId,
+            status: 'pending',
+            createdAt: new Date().toISOString(),
+        };
+
+        set(state => ({
+            friendRequests: [...state.friendRequests, tempRequest],
+            isLoading: true,
+            error: null
+        }));
+
         try {
             await socialApi.sendFriendRequest(friendId);
-            // Optimistic update could go here, but waiting for fetch is safer for consistent ID state
+            // Refetch to get the actual friend request with correct IDs
+            await get().fetchFriendRequests();
+
+            // Success toast
+            toast.success("Friend request sent!");
         } catch (error) {
-            set({ error: getErrorMessage(error) });
+            // Rollback optimistic update on error
+            set(state => ({
+                friendRequests: state.friendRequests.filter(req => req._id !== tempRequest._id),
+                error: getErrorMessage(error)
+            }));
+
+            // Error toast
+            toast.error("Failed to send friend request");
             throw error;
         } finally {
             set({ isLoading: false });
