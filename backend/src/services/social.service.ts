@@ -38,11 +38,12 @@ export class SocialService {
             status: 'pending',
         });
 
+
         // Create activity
         await Activity.create({
             userId,
-            type: 'friend_add',
-            metadata: { friendId },
+            type: 'follow_user',
+            targetId: friendId,
         });
 
         return friendship;

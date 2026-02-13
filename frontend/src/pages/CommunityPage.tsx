@@ -99,17 +99,17 @@ const CommunityPage = () => {
                                         <div className="flex-1 min-w-0">
                                             <h3 className="font-semibold text-white truncate">{user.fullName}</h3>
                                             <div className="mt-2">
-                                                {isFriend(user._id) ? (
+                                                {isFriend(user.clerkId) ? (
                                                     <Button
                                                         size="sm"
                                                         variant="ghost"
                                                         className="w-full text-red-400 hover:text-red-300 hover:bg-red-500/10 h-8 text-xs justify-start px-2"
-                                                        onClick={() => removeFriend(user._id)}
+                                                        onClick={() => removeFriend(user.clerkId)}
                                                     >
                                                         <UserMinus className="size-3.5 mr-2" />
                                                         Remove
                                                     </Button>
-                                                ) : isPending(user._id) ? (
+                                                ) : isPending(user.clerkId) ? (
                                                     <Button
                                                         size="sm"
                                                         variant="secondary"
@@ -123,7 +123,7 @@ const CommunityPage = () => {
                                                     <Button
                                                         size="sm"
                                                         className="w-full bg-brand-primary h-8 text-xs hover:bg-brand-primary/90"
-                                                        onClick={() => sendFriendRequest(user._id)}
+                                                        onClick={() => sendFriendRequest(user.clerkId)}
                                                     >
                                                         <UserPlus className="size-3.5 mr-2" />
                                                         Connect
