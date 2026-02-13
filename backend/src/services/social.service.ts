@@ -1,5 +1,6 @@
 import { Friendship, IFriendship } from "../models/friendship.model.js";
 import { Activity } from "../models/activity.model.js";
+import { User } from "../models/user.model.js";
 
 export class SocialService {
     /**
@@ -9,6 +10,16 @@ export class SocialService {
         // Validate input
         if (userId === friendId) {
             throw new Error("Cannot send friend request to yourself");
+        }
+
+        // Validate both users exist
+        const [user, friend] = await Promise.all([
+            User.findById(userId),
+            User.findById(friendId)
+        ]);
+
+        if (!user || !friend) {
+            throw new Error("User not found");
         }
 
         // Check if friendship already exists
