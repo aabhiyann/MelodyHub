@@ -1,9 +1,4 @@
-/**
- * Virtual scrolling component for large lists
- * Uses react-window for performance optimization
- */
-
-import { FixedSizeList } from 'react-window';
+import { memo } from 'react';
 
 interface VirtualScrollListProps<T> {
     items: T[];
@@ -20,19 +15,32 @@ export const VirtualScrollList = <T extends any>({
     renderItem,
     className,
 }: VirtualScrollListProps<T>) => {
-    const Row = ({ index, style }: { index: number; style: React.CSSProperties }) => (
-        <div style={style}>{renderItem(items[index], index)}</div>
-    );
-
     return (
-        <FixedSizeList
+        <div
             className={className}
-            height={height}
-            itemCount={items.length}
-            itemSize={itemHeight}
-            width="100%"
+            style={{
+                height,
+                width: '100%',
+                overflowY: 'auto',
+                position: 'relative'
+            }}
         >
-            {Row}
-        </FixedSizeList>
+            <div style={{ height: items.length * itemHeight, position: 'relative' }}>
+                {items.map((item, index) => (
+                    <div
+                        key={index}
+                        style={{
+                            position: 'absolute',
+                            top: index * itemHeight,
+                            left: 0,
+                            width: '100%',
+                            height: itemHeight
+                        }}
+                    >
+                        {renderItem(item, index)}
+                    </div>
+                ))}
+            </div>
+        </div>
     );
 };
