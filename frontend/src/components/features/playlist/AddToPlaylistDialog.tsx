@@ -6,10 +6,11 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { ListMusic, Plus, Search } from "lucide-react";
+import { ListMusic, Plus, Search, FolderPlus, X } from "lucide-react";
 import { useState, useEffect, useMemo } from "react";
 import { axiosInstance } from "@/lib/axios";
 import toast from "react-hot-toast";
+import { usePlaylistStore } from "@/stores/PlaylistStore";
 
 interface AddToPlaylistDialogProps {
     songId: string;
@@ -29,6 +30,10 @@ export const AddToPlaylistDialog = ({ songId, onClose, children, open: controlle
     const [playlists, setPlaylists] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const [isCreating, setIsCreating] = useState(false);
+    const [newPlaylistName, setNewPlaylistName] = useState("");
+
+    const { createPlaylist } = usePlaylistStore();
 
     useEffect(() => {
         if (open) {
@@ -69,6 +74,38 @@ export const AddToPlaylistDialog = ({ songId, onClose, children, open: controlle
         }
     };
 
+    const handleCreatePlaylist = async () => {
+        if (!newPlaylistName.trim()) {
+            toast.error("Please enter a playlist name");
+            return;
+        }
+
+        try {
+            setIsLoading(true);
+            const newPlaylist = await createPlaylist(newPlaylistName.trim(), "", true);
+
+            if (newPlaylist) {
+                // Add song to the newly created playlist
+                await axiosInstance.post(`/social/playlists/${newPlaylist._id}/songs`, {
+                    songId,
+                });
+
+                toast.success(`Created "${newPlaylistName}" and added song!`);
+                setOpen(false);
+                if (onClose) onClose();
+            } else {
+                toast.error("Failed to create playlist");
+            }
+        } catch (error) {
+            toast.error("Failed to create playlist");
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+            setIsCreating(false);
+            setNewPlaylistName("");
+        }
+    };
+
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             {!isControlled && (
@@ -101,48 +138,93 @@ export const AddToPlaylistDialog = ({ songId, onClose, children, open: controlle
                     />
                 </div>
 
-                <div className="space-y-4 py-4">
-                    {isLoading ? (
-                        <div className="text-center text-sm text-zinc-500">Loading playlists...</div>
-                    ) : playlists.length === 0 ? (
-                        <div className="text-center text-sm text-zinc-500">No playlists found. Create one first!</div>
-                    ) : filteredPlaylists.length === 0 ? (
-                        <div className="text-center text-sm text-zinc-500 py-8">
-                            No playlists match "{searchQuery}"
+                {/* Create New Playlist Section */}
+                {isCreating ? (
+                    <div className="p-3 bg-zinc-800/50 rounded-md border border-zinc-700">
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="text"
+                                placeholder="Playlist name..."
+                                value={newPlaylistName}
+                                onChange={(e) => setNewPlaylistName(e.target.value)}
+                                onKeyDown={(e) => e.key === "Enter" && handleCreatePlaylist()}
+                                className="flex-1 h-9 px-3 rounded bg-zinc-900 border border-zinc-700 focus:border-zinc-600 text-white placeholder-zinc-500 transition-all outline-none text-sm"
+                                autoFocus
+                            />
+                            <button
+                                onClick={handleCreatePlaylist}
+                                disabled={isLoading}
+                                className="px-3 h-9 bg-white text-black rounded hover:bg-zinc-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                            >
+                                Create
+                            </button>
+                            <button
+                                onClick={() => {
+                                    setIsCreating(false);
+                                    setNewPlaylistName("");
+                                }}
+                                className="p-2 h-9 w-9 hover:bg-white/5 rounded transition-colors"
+                            >
+                                <X className="h-4 w-4 text-zinc-400" />
+                            </button>
                         </div>
-                    ) : (
-                        <div className="space-y-2 max-h-[300px] overflow-y-auto">
-                            {filteredPlaylists.map((playlist) => {
-                                // Get playlist cover from first song or use fallback
-                                const coverImage = playlist.songs?.[0]?.imageUrl;
+                    </div>
+                ) : (
+                    <button
+                        onClick={() => setIsCreating(true)}
+                        className="w-full flex items-center gap-3 p-3 rounded-md bg-zinc-800/50 hover:bg-zinc-800 border border-dashed border-zinc-700 hover:border-zinc-600 transition-colors text-left group"
+                    >
+                        <div className="h-12 w-12 bg-zinc-800 rounded flex items-center justify-center group-hover:bg-zinc-700">
+                            <FolderPlus className="h-5 w-5 text-zinc-400 group-hover:text-white" />
+                        </div>
+                        <div className="flex-1">
+                            <p className="font-medium text-white">Create New Playlist</p>
+                            <p className="text-xs text-zinc-500">Add song to a new playlist</p>
+                        </div>
+                    </button>
+                )}
 
-                                return (
-                                    <button
-                                        key={playlist._id}
-                                        onClick={() => handleAddToPlaylist(playlist._id)}
-                                        className="w-full flex items-center p-3 rounded-md hover:bg-white/5 transition-colors text-left group"
-                                    >
-                                        {coverImage ? (
-                                            <img
-                                                src={coverImage}
-                                                alt={playlist.name}
-                                                className="h-12 w-12 object-cover rounded mr-3"
-                                            />
-                                        ) : (
-                                            <div className="h-12 w-12 bg-zinc-800 rounded flex items-center justify-center mr-3 group-hover:bg-zinc-700">
-                                                <ListMusic className="h-5 w-5 text-zinc-400" />
-                                            </div>
-                                        )}
-                                        <div className="flex-1">
-                                            <p className="font-medium text-white">{playlist.name}</p>
-                                            <p className="text-xs text-zinc-500">{playlist.songs?.length || 0} songs</p>
+                <div className="space-y-4 py-4">\n                    {isLoading ? (
+                    <div className="text-center text-sm text-zinc-500">Loading playlists...</div>
+                ) : playlists.length === 0 ? (
+                    <div className="text-center text-sm text-zinc-500">No playlists found. Create one first!</div>
+                ) : filteredPlaylists.length === 0 ? (
+                    <div className="text-center text-sm text-zinc-500 py-8">
+                        No playlists match "{searchQuery}"
+                    </div>
+                ) : (
+                    <div className="space-y-2 max-h-[300px] overflow-y-auto">
+                        {filteredPlaylists.map((playlist) => {
+                            // Get playlist cover from first song or use fallback
+                            const coverImage = playlist.songs?.[0]?.imageUrl;
+
+                            return (
+                                <button
+                                    key={playlist._id}
+                                    onClick={() => handleAddToPlaylist(playlist._id)}
+                                    className="w-full flex items-center p-3 rounded-md hover:bg-white/5 transition-colors text-left group"
+                                >
+                                    {coverImage ? (
+                                        <img
+                                            src={coverImage}
+                                            alt={playlist.name}
+                                            className="h-12 w-12 object-cover rounded mr-3"
+                                        />
+                                    ) : (
+                                        <div className="h-12 w-12 bg-zinc-800 rounded flex items-center justify-center mr-3 group-hover:bg-zinc-700">
+                                            <ListMusic className="h-5 w-5 text-zinc-400" />
                                         </div>
-                                        <Plus className="h-4 w-4 text-zinc-500 group-hover:text-white" />
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    )}
+                                    )}
+                                    <div className="flex-1">
+                                        <p className="font-medium text-white">{playlist.name}</p>
+                                        <p className="text-xs text-zinc-500">{playlist.songs?.length || 0} songs</p>
+                                    </div>
+                                    <Plus className="h-4 w-4 text-zinc-500 group-hover:text-white" />
+                                </button>
+                            );
+                        })}
+                    </div>
+                )}
                 </div>
             </DialogContent>
         </Dialog>
