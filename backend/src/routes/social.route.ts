@@ -4,6 +4,7 @@ import {
     sendFriendRequest,
     acceptFriendRequest,
     rejectFriendRequest,
+    cancelFriendRequest,
     getFriends,
     getFriendRequests,
     removeFriend,
@@ -26,6 +27,7 @@ router.use(protectRoute);
 
 // Friend routes
 router.post("/friend-request", sendFriendRequest);
+router.delete("/friend-request/:id", cancelFriendRequest);
 router.put("/friend-request/:id/accept", acceptFriendRequest);
 router.put("/friend-request/:id/reject", rejectFriendRequest);
 router.get("/friends", getFriends);

@@ -35,6 +35,10 @@ export const socialApi = {
         await axiosInstance.post("/social/friend-request/reject", { requestId });
     },
 
+    cancelFriendRequest: async (requestId: string): Promise<void> => {
+        await axiosInstance.delete(`/social/friend-request/${requestId}`);
+    },
+
     removeFriend: async (friendId: string): Promise<void> => {
         await axiosInstance.delete(`/social/friend/${friendId}`);
     }

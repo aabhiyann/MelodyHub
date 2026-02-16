@@ -25,6 +25,7 @@ interface SocialActions {
     sendFriendRequest: (friendId: string) => Promise<void>;
     acceptFriendRequest: (requestId: string) => Promise<void>;
     rejectFriendRequest: (requestId: string) => Promise<void>;
+    cancelFriendRequest: (requestId: string) => Promise<void>;
     removeFriend: (friendId: string) => Promise<void>;
 
     // Helper to check if a user is a friend
@@ -166,6 +167,27 @@ export const useSocialStore = create<SocialStore>((set, get) => ({
             }));
         } catch (error) {
             set({ error: getErrorMessage(error) });
+        } finally {
+            set({ isLoading: false });
+        }
+    },
+
+    cancelFriendRequest: async (requestId: string) => {
+        // Optimistic update - immediately remove from state
+        set(state => ({
+            friendRequests: state.friendRequests.filter(req => req._id !== requestId && req._id !== `temp-${requestId}`),
+            isLoading: true,
+            error: null
+        }));
+
+        try {
+            await socialApi.cancelFriendRequest(requestId);
+            toast.success("Friend request cancelled");
+        } catch (error) {
+            // Refetch on error to restore state
+            await get().fetchFriendRequests();
+            set({ error: getErrorMessage(error) });
+            toast.error("Failed to cancel request");
         } finally {
             set({ isLoading: false });
         }

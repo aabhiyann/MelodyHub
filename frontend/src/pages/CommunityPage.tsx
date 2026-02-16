@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSocialStore } from "@/stores/useSocialStore";
 import { useUser } from "@clerk/clerk-react";
-import { Loader, Search, UserMinus, UserPlus, Users } from "lucide-react";
+import { Loader, Search, UserMinus, UserPlus, Users, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SectionErrorBoundary } from "@/components/shared/SectionErrorBoundary";
 
@@ -17,7 +17,8 @@ const CommunityPage = () => {
         fetchFriends,
         fetchFriendRequests,
         sendFriendRequest,
-        removeFriend
+        removeFriend,
+        cancelFriendRequest
     } = useSocialStore();
 
     const { user: currentUser } = useUser();
@@ -47,6 +48,20 @@ const CommunityPage = () => {
             : r.senderId;
         return (senderClerkId === userId || r.to === userId) && r.status === 'pending';
     });
+
+    const getPendingRequest = (userId: string) => requestsList.find(r => {
+        const senderClerkId = typeof r.senderId === 'object' && r.senderId !== null
+            ? (r.senderId as any).clerkId
+            : r.senderId;
+        return (senderClerkId === userId || r.to === userId) && r.status === 'pending';
+    });
+
+    const handleCancelRequest = (userId: string) => {
+        const request = getPendingRequest(userId);
+        if (request) {
+            cancelFriendRequest(request._id);
+        }
+    };
 
     return (
         <main className="rounded-md overflow-hidden h-full bg-transparent">
@@ -110,15 +125,25 @@ const CommunityPage = () => {
                                                         Remove
                                                     </Button>
                                                 ) : isPending(user.clerkId) ? (
-                                                    <Button
-                                                        size="sm"
-                                                        variant="secondary"
-                                                        className="w-full h-8 text-xs bg-white/10 text-zinc-400 cursor-default"
-                                                        disabled
-                                                    >
-                                                        <Loader className="size-3.5 mr-2 animate-spin" />
-                                                        Pending
-                                                    </Button>
+                                                    <div className="space-y-1">
+                                                        <Button
+                                                            size="sm"
+                                                            variant="secondary"
+                                                            className="w-full h-8 text-xs bg-white/10 text-zinc-400 cursor-default"
+                                                            disabled
+                                                        >
+                                                            <Loader className="size-3.5 mr-2 animate-spin" />
+                                                            Pending
+                                                        </Button>
+                                                        <Button
+                                                            variant="ghost"
+                                                            className="w-full text-zinc-400 hover:text-white hover:bg-white/5 h-8 text-xs justify-start px-2"
+                                                            onClick={() => handleCancelRequest(user.clerkId)}
+                                                        >
+                                                            <X className="size-3.5 mr-2" />
+                                                            Cancel
+                                                        </Button>
+                                                    </div>
                                                 ) : (
                                                     <Button
                                                         size="sm"

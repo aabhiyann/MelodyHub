@@ -140,6 +140,50 @@ export const rejectFriendRequest = async (req: Request, res: Response) => {
 };
 
 /**
+ * DELETE /social/friend-request/:id
+ * Cancel a friend request (by initiator)
+ */
+export const cancelFriendRequest = async (req: Request, res: Response) => {
+    try {
+        const userId = (req as AuthenticatedRequest).auth?.userId;
+        const { id } = req.params;
+
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: "Authentication required",
+            });
+        }
+
+        await socialService.cancelFriendRequest(String(id), userId);
+
+        return res.status(200).json({
+            success: true,
+            message: "Friend request cancelled",
+        });
+    } catch (error: unknown) {
+        console.error("Error cancelling friend request:", error);
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
+
+        if (errorMessage === "Friend request not found") {
+            return res.status(404).json({ success: false, message: errorMessage });
+        }
+        if (errorMessage.includes("Only the initiator")) {
+            return res.status(403).json({ success: false, message: errorMessage });
+        }
+        if (errorMessage.includes("Cannot cancel")) {
+            return res.status(400).json({ success: false, message: errorMessage });
+        }
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to cancel friend request",
+            error: errorMessage,
+        });
+    }
+};
+
+/**
  * GET /social/friends
  * Get user's friends
  */

@@ -96,6 +96,30 @@ export class SocialService {
     }
 
     /**
+     * Cancel friend request (by initiator)
+     */
+    async cancelFriendRequest(requestId: string, userId: string): Promise<void> {
+        const friendship = await Friendship.findById(requestId);
+
+        if (!friendship) {
+            throw new Error("Friend request not found");
+        }
+
+        // Verify user is the initiator
+        if (friendship.initiator !== userId) {
+            throw new Error("Only the initiator can cancel this request");
+        }
+
+        // Verify request is still pending
+        if (friendship.status !== 'pending') {
+            throw new Error(`Cannot cancel ${friendship.status} request`);
+        }
+
+        // Delete the request
+        await Friendship.findByIdAndDelete(requestId);
+    }
+
+    /**
      * Get user's friends
      */
     async getFriends(userId: string): Promise<string[]> {
@@ -115,10 +139,34 @@ export class SocialService {
     /**
      * Get pending friend requests
      */
-    async getFriendRequests(userId: string): Promise<IFriendship[]> {
-        return await Friendship.find({
+    async getFriendRequests(userId: string): Promise<any[]> {
+        const requests = await Friendship.find({
             $or: [{ user1: userId }, { user2: userId }],
             status: 'pending',
+        });
+
+        // Collect all user IDs involved
+        const userIds = new Set<string>();
+        requests.forEach(req => {
+            userIds.add(req.user1);
+            userIds.add(req.user2);
+        });
+
+        // Fetch user details
+        const users = await User.find({ clerkId: { $in: Array.from(userIds) } });
+        const userMap = new Map(users.map(u => [u.clerkId, u]));
+
+        // Map requests to include populated senderId and computed 'to' field
+        return requests.map(req => {
+            const initiator = userMap.get(req.initiator);
+            const receiverId = req.user1 === req.initiator ? req.user2 : req.user1;
+
+            // senderId is expected by frontend, and 'to' is needed for isPending check
+            return {
+                ...req.toObject(),
+                senderId: initiator || { clerkId: req.initiator, fullName: 'Unknown User', imageUrl: '' },
+                to: receiverId
+            };
         });
     }
 
