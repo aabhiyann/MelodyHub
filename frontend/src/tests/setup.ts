@@ -55,3 +55,11 @@ window.IntersectionObserver = class IntersectionObserver {
   }
   unobserve() { }
 } as any;
+
+// Mock ResizeObserver
+window.ResizeObserver = class ResizeObserver {
+  constructor() { }
+  disconnect() { }
+  observe() { }
+  unobserve() { }
+} as any;

@@ -12,6 +12,7 @@ vi.mock('@/lib/api/social', () => ({
         sendFriendRequest: vi.fn(),
         acceptFriendRequest: vi.fn(),
         rejectFriendRequest: vi.fn(),
+        cancelFriendRequest: vi.fn(),
         removeFriend: vi.fn()
     }
 }));
@@ -91,13 +92,52 @@ describe('useSocialStore', () => {
         // @ts-ignore
         socialApi.acceptFriendRequest.mockResolvedValue();
         // @ts-ignore
-        socialApi.getFriends.mockResolvedValue(['user1']); // Subsequent fetch
+        socialApi.getFriends.mockResolvedValue(['user1']);
 
         await useSocialStore.getState().acceptFriendRequest('req1');
 
         const state = useSocialStore.getState();
-        // Request removed
         expect(state.friendRequests).toHaveLength(0);
         expect(socialApi.acceptFriendRequest).toHaveBeenCalledWith('req1');
+    });
+
+    it('rejectFriendRequest removes request from state', async () => {
+        useSocialStore.setState({
+            friendRequests: [{ _id: 'req1', from: 'user1', status: 'pending' } as any]
+        });
+        // @ts-ignore
+        socialApi.rejectFriendRequest.mockResolvedValue();
+
+        await useSocialStore.getState().rejectFriendRequest('req1');
+
+        const state = useSocialStore.getState();
+        expect(state.friendRequests).toHaveLength(0);
+        expect(socialApi.rejectFriendRequest).toHaveBeenCalledWith('req1');
+    });
+
+    it('cancelFriendRequest removes request optimistically', async () => {
+        useSocialStore.setState({
+            friendRequests: [{ _id: 'req1', to: 'user2', status: 'pending' } as any]
+        });
+        // @ts-ignore
+        socialApi.cancelFriendRequest.mockResolvedValue();
+
+        await useSocialStore.getState().cancelFriendRequest('req1');
+
+        const state = useSocialStore.getState();
+        expect(state.friendRequests).toHaveLength(0);
+        expect(socialApi.cancelFriendRequest).toHaveBeenCalledWith('req1');
+    });
+
+    it('removeFriend removes from friends list', async () => {
+        useSocialStore.setState({ friends: ['user1', 'user2'] });
+        // @ts-ignore
+        socialApi.removeFriend.mockResolvedValue();
+
+        await useSocialStore.getState().removeFriend('user1');
+
+        const state = useSocialStore.getState();
+        expect(state.friends).toEqual(['user2']);
+        expect(socialApi.removeFriend).toHaveBeenCalledWith('user1');
     });
 });
