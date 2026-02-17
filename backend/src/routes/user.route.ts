@@ -6,6 +6,7 @@ import { protectRoute } from "../middleware/auth.middleware.js";
 const router = Router();
 const controller = new UserController();
 
+console.log('User Route: protectRoute type:', typeof protectRoute);
 router.get("/", protectRoute, controller.getAllUsers.bind(controller));
 router.get("/messages/:userId", protectRoute, controller.getMessages.bind(controller));
 
