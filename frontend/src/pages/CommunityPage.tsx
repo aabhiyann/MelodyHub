@@ -34,7 +34,17 @@ const CommunityPage = () => {
     }, [currentUser, fetchUsers, fetchFriends, fetchFriendRequests]);
 
     const usersList = Array.isArray(users) ? users : [];
-    const filteredUsers = usersList.filter((u) => {
+
+    // Fallback frontend deduplication by clerkId to handle stale backend cache
+    const uniqueUsersMap = new Map();
+    usersList.forEach(u => {
+        if (u.clerkId && !uniqueUsersMap.has(u.clerkId)) {
+            uniqueUsersMap.set(u.clerkId, u);
+        }
+    });
+    const uniqueUsers = Array.from(uniqueUsersMap.values());
+
+    const filteredUsers = uniqueUsers.filter((u: any) => {
         if (u.clerkId === currentUser?.id) return false;
         return u.fullName.toLowerCase().includes(searchQuery.toLowerCase());
     });

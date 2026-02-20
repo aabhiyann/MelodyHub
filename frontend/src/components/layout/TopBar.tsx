@@ -63,13 +63,13 @@ const Topbar = () => {
 					<SigninAuth />
 				</SignedOut>
 
-				{/* AI Playlist Button (Desktop) */}
+				{/* Magic Button (Desktop) */}
 				<Button
 					onClick={openModal}
-					className="hidden md:flex items-center gap-2 bg-gradient-to-r from-brand-primary to-brand-secondary text-white border-0 hover:opacity-90"
+					className="hidden md:flex items-center gap-2 bg-brand-primary/10 text-brand-primary border border-brand-primary/20 hover:bg-brand-primary/20 hover:border-brand-primary/30 transition-all duration-300"
 				>
-					<Sparkles className="size-4" />
-					<span className="font-semibold">AI Playlist</span>
+					<Sparkles className="size-4 animate-pulse group-hover:scale-110 transition-transform" />
+					<span className="font-semibold text-sm">Magic</span>
 				</Button>
 
 				{/* Activity Feed Toggle */}

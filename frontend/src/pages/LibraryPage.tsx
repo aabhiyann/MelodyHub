@@ -16,6 +16,7 @@ import {
   Pencil,
   Trash2,
   Share2,
+  Music,
 } from 'lucide-react';
 // import { ScrollArea } from '@/components/ui/scroll-area'; // Replaced by PullToRefresh
 import Topbar from '@/components/layout/TopBar';
@@ -60,6 +61,26 @@ interface Playlist {
   createdAt: string;
   isPublic?: boolean;
 }
+
+const PLAYLIST_GRADIENTS = [
+  'from-brand-primary/20 to-brand-secondary/20',
+  'from-purple-500/20 to-pink-500/20',
+  'from-blue-500/20 to-cyan-500/20',
+  'from-emerald-500/20 to-teal-500/20',
+  'from-orange-500/20 to-red-500/20',
+  'from-indigo-500/20 to-purple-500/20'
+];
+
+const getPlaylistGradient = (id: string, isGrid?: boolean) => {
+  if (!id) return PLAYLIST_GRADIENTS[0];
+  const hash = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const colorIndex = hash % PLAYLIST_GRADIENTS.length;
+  // Make opacity slightly higher for grid items to stand out
+  if (isGrid) {
+    return PLAYLIST_GRADIENTS[colorIndex].replace(/\/20/g, '/40');
+  }
+  return PLAYLIST_GRADIENTS[colorIndex];
+};
 
 const LibraryPage = () => {
   const [activeTab, setActiveTab] = useState<TabType>('playlists');
@@ -314,11 +335,11 @@ const LibraryPage = () => {
                           className="group relative p-4 rounded-xl bg-surface-card/40 hover:bg-surface-elevated/60 backdrop-blur-md border border-white/5 transition-all duration-300 hover:-translate-y-1 hover:border-white/10 hover:shadow-xl active:scale-95"
                         >
                           <div
-                            className="relative aspect-square rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow bg-gradient-to-br from-brand-primary/20 to-brand-secondary/20 cursor-pointer"
+                            className={`relative aspect-square rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow bg-gradient-to-br ${getPlaylistGradient(playlist._id, true)} cursor-pointer`}
                             onClick={() => playlist.songs && handlePlaySongs(playlist.songs)}
                           >
-                            <div className="w-full h-full flex items-center justify-center">
-                              <ListMusic className="size-16 text-brand-primary" />
+                            <div className="w-full h-full flex items-center justify-center opacity-80 mix-blend-screen drop-shadow-md">
+                              <Music className="size-16 text-white" />
                             </div>
                             {/* Edit/Delete/Share buttons */}
                             <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1 z-20">
@@ -327,7 +348,7 @@ const LibraryPage = () => {
                                   e.stopPropagation();
                                   setSharingPlaylist(playlist);
                                 }}
-                                className="p-2 rounded-lg bg-surface-elevated/80 hover:bg-brand-primary/80 backdrop-blur-md transition-colors"
+                                className="p-2 rounded-lg bg-black/40 hover:bg-brand-primary/80 backdrop-blur-md transition-colors border border-white/10"
                                 title="Share Playlist"
                               >
                                 <Share2 className="size-4 text-white" />
@@ -338,7 +359,7 @@ const LibraryPage = () => {
                                   setEditingPlaylist(playlist);
                                   setEditName(playlist.name);
                                 }}
-                                className="p-2 rounded-lg bg-white/10 hover:bg-white/20 backdrop-blur-sm"
+                                className="p-2 rounded-lg bg-black/40 hover:bg-white/20 backdrop-blur-sm border border-white/10"
                                 title="Edit Playlist"
                               >
                                 <Pencil className="size-4 text-white" />
@@ -348,16 +369,16 @@ const LibraryPage = () => {
                                   e.stopPropagation();
                                   setDeletingPlaylist(playlist);
                                 }}
-                                className="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 backdrop-blur-sm"
+                                className="p-2 rounded-lg bg-red-500/20 hover:bg-red-600/60 backdrop-blur-sm border border-red-500/20"
                                 title="Delete Playlist"
                               >
-                                <Trash2 className="size-4 text-red-400" />
+                                <Trash2 className="size-4 text-red-100" />
                               </button>
                             </div>
                           </div>
-                          <div>
-                            <p className="font-semibold text-white truncate">{playlist.name}</p>
-                            <p className="text-sm text-zinc-400 truncate">
+                          <div className="mt-3 px-1">
+                            <p className="font-semibold text-white tracking-tight truncate leading-tight">{playlist.name}</p>
+                            <p className="text-sm text-zinc-400 truncate mt-0.5">
                               {playlist.songs?.length || 0} songs
                             </p>
                           </div>

@@ -5,8 +5,13 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Bell, Shield, Smartphone } from "lucide-react";
 import { AccessibilitySettings } from "./settings/AccessibilitySettings";
+import { useState } from "react";
 
 const SettingsPage = () => {
+    const [pushEnabled, setPushEnabled] = useState(true);
+    const [emailEnabled, setEmailEnabled] = useState(false);
+    const [privateEnabled, setPrivateEnabled] = useState(false);
+
     return (
         <div className="h-full bg-transparent rounded-lg overflow-hidden flex flex-col">
             <Topbar />
@@ -37,14 +42,20 @@ const SettingsPage = () => {
                                         <Label className="text-base text-text-primary">Push Notifications</Label>
                                         <p className="text-sm text-text-secondary">Receive alerts about new messages and invites</p>
                                     </div>
-                                    <Switch defaultChecked />
+                                    <Switch
+                                        checked={pushEnabled}
+                                        onCheckedChange={setPushEnabled}
+                                    />
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <div className="space-y-0.5">
                                         <Label className="text-base text-text-primary">Email Updates</Label>
                                         <p className="text-sm text-text-secondary">Get weekly digests of new music</p>
                                     </div>
-                                    <Switch />
+                                    <Switch
+                                        checked={emailEnabled}
+                                        onCheckedChange={setEmailEnabled}
+                                    />
                                 </div>
                             </div>
                         </section>
@@ -60,7 +71,10 @@ const SettingsPage = () => {
                                         <Label className="text-base text-text-primary">Private Profile</Label>
                                         <p className="text-sm text-text-secondary">Only friends can see your listening activity</p>
                                     </div>
-                                    <Switch />
+                                    <Switch
+                                        checked={privateEnabled}
+                                        onCheckedChange={setPrivateEnabled}
+                                    />
                                 </div>
                             </div>
                         </section>

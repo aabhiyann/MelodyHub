@@ -1,5 +1,6 @@
 import { useAccessibilityStore } from '@/stores/AccessibilityStore';
 import { Eye, Type, Activity, Monitor } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
 
 export const AccessibilitySettings = () => {
     const {
@@ -37,16 +38,11 @@ export const AccessibilitySettings = () => {
                             <p className="text-sm text-white/50">Increases contrast for better visibility</p>
                         </div>
                     </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                            type="checkbox"
-                            className="sr-only peer"
-                            checked={highContrast}
-                            onChange={(e) => setHighContrast(e.target.checked)}
-                            aria-label="Toggle High Contrast Mode"
-                        />
-                        <div className="w-11 h-6 bg-zinc-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-brand-primary rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-primary"></div>
-                    </label>
+                    <Switch
+                        checked={highContrast}
+                        onCheckedChange={setHighContrast}
+                        aria-label="Toggle High Contrast Mode"
+                    />
                 </div>
 
                 {/* Large Text */}
@@ -60,16 +56,11 @@ export const AccessibilitySettings = () => {
                             <p className="text-sm text-white/50">Increases font size by 10%</p>
                         </div>
                     </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                            type="checkbox"
-                            className="sr-only peer"
-                            checked={largeText}
-                            onChange={(e) => setLargeText(e.target.checked)}
-                            aria-label="Toggle Large Text Mode"
-                        />
-                        <div className="w-11 h-6 bg-zinc-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-brand-primary rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-primary"></div>
-                    </label>
+                    <Switch
+                        checked={largeText}
+                        onCheckedChange={setLargeText}
+                        aria-label="Toggle Large Text Mode"
+                    />
                 </div>
 
                 {/* Reduced Motion */}
@@ -83,16 +74,11 @@ export const AccessibilitySettings = () => {
                             <p className="text-sm text-white/50">Minimizes animations and transitions</p>
                         </div>
                     </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                            type="checkbox"
-                            className="sr-only peer"
-                            checked={reducedMotion}
-                            onChange={(e) => setReducedMotion(e.target.checked)}
-                            aria-label="Toggle Reduced Motion"
-                        />
-                        <div className="w-11 h-6 bg-zinc-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-brand-primary rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-primary"></div>
-                    </label>
+                    <Switch
+                        checked={reducedMotion}
+                        onCheckedChange={setReducedMotion}
+                        aria-label="Toggle Reduced Motion"
+                    />
                 </div>
 
                 {/* Screen Reader Optimized */}
@@ -106,16 +92,11 @@ export const AccessibilitySettings = () => {
                             <p className="text-sm text-white/50">Simplifies layout and linearizes content</p>
                         </div>
                     </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                            type="checkbox"
-                            className="sr-only peer"
-                            checked={screenReaderOptimized}
-                            onChange={(e) => setScreenReaderOptimized(e.target.checked)}
-                            aria-label="Toggle Screen Reader Optimization"
-                        />
-                        <div className="w-11 h-6 bg-zinc-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-brand-primary rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-primary"></div>
-                    </label>
+                    <Switch
+                        checked={screenReaderOptimized}
+                        onCheckedChange={setScreenReaderOptimized}
+                        aria-label="Toggle Screen Reader Optimization"
+                    />
                 </div>
             </div>
         </section>

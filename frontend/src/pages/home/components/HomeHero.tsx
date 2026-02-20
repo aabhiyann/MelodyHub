@@ -2,6 +2,7 @@ import { useUser } from "@clerk/clerk-react";
 import { Clock, Music, Sparkles } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 interface HomeHeroProps {
     totalListeningTime: number; // in hours or minutes
@@ -13,6 +14,7 @@ export const HomeHero = ({ totalListeningTime, newDiscoveriesCount }: HomeHeroPr
     const [greeting, setGreeting] = useState("");
     const [gradient, setGradient] = useState("");
     const containerRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
 
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -105,15 +107,18 @@ export const HomeHero = ({ totalListeningTime, newDiscoveriesCount }: HomeHeroPr
                     transition={{ delay: 0.5, duration: 0.5 }}
                     className="flex flex-wrap items-center gap-6 pt-2"
                 >
-                    <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/5 backdrop-blur-sm hover:bg-white/10 transition-colors cursor-default">
-                        <Clock className="size-4 text-brand-secondary" />
-                        <span className="text-sm font-medium text-zinc-300">
-                            {totalListeningTime > 0 ? `${Math.round(totalListeningTime / 60)}h listening` : "Start listening"}
+                    <button
+                        onClick={() => navigate('/browse')}
+                        className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/5 backdrop-blur-sm hover:bg-white/10 hover:border-white/10 hover:shadow-lg transition-all cursor-pointer group"
+                    >
+                        <Clock className="size-4 text-brand-secondary group-hover:animate-pulse" />
+                        <span className="text-sm font-medium text-zinc-300 group-hover:text-white transition-colors">
+                            {totalListeningTime > 0 ? `${Math.round(totalListeningTime / 60)}h listening` : "No playtime yet"}
                         </span>
-                    </div>
+                    </button>
 
                     <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/5 backdrop-blur-sm hover:bg-white/10 transition-colors cursor-default">
-                        <Sparkles className="size-4 text-yellow-400" />
+                        <Sparkles className="size-4 text-yellow-500" />
                         <span className="text-sm font-medium text-zinc-300">
                             {newDiscoveriesCount} new discoveries
                         </span>

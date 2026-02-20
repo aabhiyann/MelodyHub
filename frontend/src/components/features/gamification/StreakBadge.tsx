@@ -6,7 +6,10 @@ export const StreakBadge = () => {
     const { streak, streakFreezes } = useGamificationStore();
 
     return (
-        <div className="flex items-center gap-2 bg-zinc-800/50 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/5">
+        <div
+            className="flex items-center gap-2 bg-zinc-800/50 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/5 cursor-default"
+            title={`You have a ${streak}-day listen streak`}
+        >
             <div className="relative">
                 <Flame
                     className={`size-5 ${streak > 0 ? 'text-orange-500 fill-orange-500' : 'text-zinc-500'}`}

@@ -17,7 +17,6 @@ import {
     User,
     TrendingUp,
     Users,
-    Sparkles,
     Target,
     Settings,
     Shield,
@@ -26,7 +25,6 @@ import { NavLink } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 
-import { useAIStore } from '@/stores/useAIStore';
 import { useAuthStore } from '@/stores/AuthStore';
 import { usePlaylistStore } from '@/stores/PlaylistStore';
 
@@ -57,7 +55,6 @@ interface SidebarProps {
 
 export const Sidebar = ({ className }: SidebarProps) => {
     const [isExpanded, setIsExpanded] = useState(true);
-    const { openModal } = useAIStore();
     const { isAdmin } = useAuthStore();
     const { userPlaylists, fetchUserPlaylists } = usePlaylistStore();
 
@@ -189,35 +186,6 @@ export const Sidebar = ({ className }: SidebarProps) => {
                     </div>
                 )}
 
-                {/* AI Generator Button - Special Feature */}
-                <div className="mt-4 px-2">
-                    <button
-                        onClick={openModal}
-                        className={cn(
-                            'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg',
-                            'bg-gradient-to-r from-brand-primary/10 to-brand-secondary/10',
-                            'border border-brand-primary/20',
-                            'hover:from-brand-primary/20 hover:to-brand-secondary/20',
-                            'transition-all duration-300 group',
-                            !isExpanded && 'justify-center px-0'
-                        )}
-                    >
-                        <Sparkles className="size-5 text-brand-primary shrink-0 group-hover:animate-pulse" />
-
-                        <AnimatePresence mode="wait">
-                            {isExpanded && (
-                                <motion.span
-                                    className="font-bold bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent truncate"
-                                    initial={{ opacity: 0, x: -10 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -10 }}
-                                >
-                                    AI Generator
-                                </motion.span>
-                            )}
-                        </AnimatePresence>
-                    </button>
-                </div>
 
                 {/* Playlists Section */}
                 {isExpanded && (
