@@ -11,7 +11,7 @@ import { PlaylistSongRow } from "@/components/features/playlist/PlaylistSongRow"
 
 const PlaylistPage = () => {
     const { id } = useParams();
-    const { fetchPlaylistById, currentPlaylist, isLoading } = usePlaylistStore();
+    const { fetchPlaylistById, currentPlaylist, isLoading, error } = usePlaylistStore();
     const { currentSong, isPlaying, playAlbum, togglePlay } = usePlayerStore();
     const { user } = useUser();
 
@@ -20,6 +20,29 @@ const PlaylistPage = () => {
     }, [fetchPlaylistById, id]);
 
     if (isLoading) return null; // Or skeleton
+
+    if (error || (!isLoading && id && !currentPlaylist)) {
+        return (
+            <div className="h-full flex items-center justify-center text-center p-8">
+                <div>
+                    <ListMusic className="size-16 mx-auto mb-4 text-white/20" />
+                    <h2 className="text-xl font-semibold text-white mb-2">Playlist not found</h2>
+                    <p className="text-text-secondary text-sm">This playlist may have been deleted or doesn't exist.</p>
+                </div>
+            </div>
+        );
+    }
+
+    const getOwnerName = () => {
+        if (!currentPlaylist?.owner) return 'Unknown';
+        if (typeof currentPlaylist.owner === 'string') {
+            return currentPlaylist.owner === user?.id ? 'You' : 'Another user';
+        }
+        // Populated owner object
+        const owner = currentPlaylist.owner as { _id?: string; clerkId?: string; fullName?: string };
+        if (owner.clerkId === user?.id) return 'You';
+        return owner.fullName ?? 'Another user';
+    };
 
     const handlePlayPlaylist = () => {
         if (!currentPlaylist) return;
@@ -64,7 +87,7 @@ const PlaylistPage = () => {
                                     <p className="text-text-secondary text-sm mb-4 max-w-lg">{currentPlaylist.description}</p>
                                 )}
                                 <div className='flex items-center gap-2 text-sm text-text-secondary'>
-                                    <span className='font-medium text-white'>Created by User (Owner ID: {(typeof currentPlaylist?.owner === 'string' ? currentPlaylist.owner : currentPlaylist?.owner._id || '').slice(0, 8)}...)</span>
+                                    <span className='font-medium text-white'>Created by {getOwnerName()}</span>
                                     <span className="flex items-center text-text-secondary"><span className="w-1 h-1 rounded-full bg-text-tertiary mx-2" /> {currentPlaylist?.songs.length} songs</span>
 
                                     {user?.id === currentPlaylist?.owner && currentPlaylist && (

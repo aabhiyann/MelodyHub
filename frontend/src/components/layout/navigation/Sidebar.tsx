@@ -10,7 +10,6 @@ import {
     Radio,
     Library,
     Search,
-    Heart,
     ListMusic,
     ChevronLeft,
     ChevronRight,
@@ -25,10 +24,11 @@ import {
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useAIStore } from '@/stores/useAIStore';
 import { useAuthStore } from '@/stores/AuthStore';
+import { usePlaylistStore } from '@/stores/PlaylistStore';
 
 interface NavItem {
     id: string;
@@ -59,12 +59,11 @@ export const Sidebar = ({ className }: SidebarProps) => {
     const [isExpanded, setIsExpanded] = useState(true);
     const { openModal } = useAIStore();
     const { isAdmin } = useAuthStore();
-    const [playlists] = useState([
-        { id: '1', name: 'Liked Songs', icon: Heart },
-        { id: '2', name: 'My Playlist #1', icon: ListMusic },
-        { id: '3', name: 'Chill Vibes', icon: ListMusic },
-        { id: '4', name: 'Workout Mix', icon: ListMusic },
-    ]);
+    const { userPlaylists, fetchUserPlaylists } = usePlaylistStore();
+
+    useEffect(() => {
+        fetchUserPlaylists();
+    }, [fetchUserPlaylists]);
 
     return (
         <motion.aside
@@ -233,12 +232,13 @@ export const Sidebar = ({ className }: SidebarProps) => {
                         </h3>
 
                         <div className="space-y-1">
-                            {playlists.map((playlist) => {
-                                const PlaylistIcon = playlist.icon;
-                                return (
+                            {userPlaylists.length === 0 ? (
+                                <p className="px-3 py-2 text-xs text-text-tertiary italic">No playlists yet</p>
+                            ) : (
+                                userPlaylists.map((playlist) => (
                                     <NavLink
-                                        key={playlist.id}
-                                        to={`/playlists/${playlist.id}`}
+                                        key={playlist._id}
+                                        to={`/playlists/${playlist._id}`}
                                         className={({ isActive }) =>
                                             cn(
                                                 'flex items-center gap-3 px-3 py-2 rounded-lg',
@@ -249,11 +249,11 @@ export const Sidebar = ({ className }: SidebarProps) => {
                                             )
                                         }
                                     >
-                                        <PlaylistIcon className="size-4 shrink-0" />
+                                        <ListMusic className="size-4 shrink-0" />
                                         <span className="text-sm truncate">{playlist.name}</span>
                                     </NavLink>
-                                );
-                            })}
+                                ))
+                            )}
                         </div>
                     </motion.div>
                 )}

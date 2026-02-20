@@ -3,6 +3,11 @@ import { Playlist } from "@/types";
 import { extractData } from "@/utils/apiAdapter";
 
 export const playlistApi = {
+    getAll: async (): Promise<Playlist[]> => {
+        const response = await axiosInstance.get("/social/playlists");
+        return extractData<Playlist[]>(response.data) ?? [];
+    },
+
     getById: async (id: string): Promise<Playlist> => {
         const response = await axiosInstance.get(`/social/playlists/${id}`);
         return extractData<Playlist>(response.data);

@@ -46,8 +46,15 @@ export const usePlaylistStore = create<PlaylistStore>((set, get) => ({
     },
 
     fetchUserPlaylists: async () => {
-        // Implementation for listing all playlists for a user
-        // For now, just a placeholder as API endpoint might be different
+        set({ isLoading: true, error: null });
+        try {
+            const playlists = await playlistApi.getAll();
+            set({ userPlaylists: playlists });
+        } catch (error) {
+            set({ error: getErrorMessage(error) });
+        } finally {
+            set({ isLoading: false });
+        }
     },
 
     createPlaylist: async (name, description, isPublic) => {
