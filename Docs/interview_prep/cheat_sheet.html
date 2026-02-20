@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MelodyHub Testing Cheat Sheet</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --accent: #2563eb;
+            --code-bg: #1e1e1e;
+            --code-text: #d4d4d4;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1, h2, h3 { color: #0f172a; margin-top: 0; }
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #cbd5e1;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid var(--accent);
+        }
+        .card.important { border-left-color: #ef4444; }
+        .card.script { border-left-color: #10b981; background: #ecfdf5; }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            background: #e2e8f0;
+            margin-right: 0.5rem;
+        }
+        code {
+            background: #e2e8f0;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.85rem;
+        }
+        .script-text {
+            font-size: 1.1rem;
+            font-style: italic;
+            color: #064e3b;
+            border-left: 3px solid #10b981;
+            padding-left: 1rem;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🎓 MelodyHub Testing Cheat Sheet</h1>
+        <p>Keep this open during your call. Read the green boxes verbatim if asked.</p>
+    </div>
+
+    <!-- SECTION 1: THE SCRIPT -->
+    <h2>🗣️ The "Golden Answers" (Read These)</h2>
+    <div class="grid">
+        <div class="card script">
+            <h3>"Tell me about testing on this project."</h3>
+            <div class="script-text">
+                "We use a <strong>Testing Pyramid</strong> strategy. 
+                For the Backend, I use <strong>Jest and Supertest</strong> with an in-memory MongoDB to test API integration. 
+                For the Frontend, I use <strong>Vitest</strong> and <strong>React Testing Library</strong> to test UI components like the Search bar."
+            </div>
+        </div>
+        <div class="card script">
+            <h3>"Why Vitest instead of Jest?"</h3>
+            <div class="script-text">
+                "Speed and config. Since we use Vite as our build tool, Vitest reuses the same configuration. It is much faster and avoids the complex setup issues Jest has with TypeScript."
+            </div>
+        </div>
+        <div class="card script">
+            <h3>"What is Regression Testing?"</h3>
+            <div class="script-text">
+                "It's simply running our existing suite of tests to make sure new code doesn't break old features. I run `npm test` before every commit."
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 2: THE CONCEPTS -->
+    <h2>🧠 Key Concepts (The "What")</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>Unit Testing</h3>
+            <p><strong>Definition:</strong> Testing one tiny function in isolation.</p>
+            <p><strong>Example:</strong> `formatDuration(65)` returns `"1:05"`.</p>
+        </div>
+        <div class="card">
+            <h3>Integration Testing</h3>
+            <p><strong>Definition:</strong> Testing how parts work together (API + DB).</p>
+            <p><strong>Example:</strong> Signing up a user actually creates a record in the database.</p>
+        </div>
+        <div class="card important">
+            <h3>Mocking</h3>
+            <p><strong>Definition:</strong> Faking a complex part (like a DB) to test logic.</p>
+            <p><strong>Tools:</strong> `vi.fn()` or `jest.fn()`.</p>
+            <p><strong>Analogy:</strong> Using a crash test dummy instead of a real person.</p>
+        </div>
+    </div>
+
+    <!-- SECTION 3: THE CODE -->
+    <h2>💻 Code Examples (The "How")</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>Backend Integration (Jest)</h3>
+            <pre>
+it('should save a user', async () => {
+  // 1. Send Fake Request
+  const res = await request(app)
+    .post('/api/login')
+    .send(userData);
+
+  // 2. Check Database
+  const user = await User.findOne({ 
+    email: 'test@test.com' 
+  });
+  
+  expect(user).toBeTruthy();
+});</pre>
+        </div>
+        <div class="card">
+             <h3>Frontend Component (Vitest)</h3>
+             <pre>
+it('renders search results', async () => {
+  // 1. Render Component
+  render(&lt;SearchPage /&gt;);
+  
+  // 2. Type "Rock"
+  await userEvent.type(
+    screen.getByRole('textbox'), 
+    'Rock'
+  );
+
+  // 3. Verify Result
+  expect(screen.getByText('Rock Song'))
+    .toBeInTheDocument();
+});</pre>
+        </div>
+    </div>
+
+</body>
+</html>

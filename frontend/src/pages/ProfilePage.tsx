@@ -43,7 +43,7 @@ const ProfilePage = () => {
                 // Assuming /analytics/user-preferences is private to the user
                 if (isOwnProfile) {
                     const [analyticsRes, playlistRes] = await Promise.all([
-                        axiosInstance.get('/analytics/user-preferences'),
+                        axiosInstance.get('/analytics/dashboard?period=all'),
                         axiosInstance.get('/social/playlists')
                     ]);
 
@@ -81,13 +81,13 @@ const ProfilePage = () => {
     const stats = [
         {
             label: 'Total Plays',
-            value: analyticsData?.totalPlays?.toString() || '0',
+            value: (analyticsData?.totalPlays ?? 0).toString(),
             icon: PlayCircle,
             color: 'text-blue-400'
         },
         {
             label: 'Liked Songs',
-            value: analyticsData?.likedSongsCount?.toString() || '0',
+            value: (analyticsData?.totalLikes ?? 0).toString(),
             icon: Heart,
             color: 'text-pink-400'
         },

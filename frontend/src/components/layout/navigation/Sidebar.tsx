@@ -26,7 +26,7 @@ import {
 import { NavLink } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
-import { LiquidGlassCard } from '@/components/ui/LiquidGlassCard';
+
 import { useAIStore } from '@/stores/useAIStore';
 import { useAuthStore } from '@/stores/AuthStore';
 
@@ -259,22 +259,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
                 )}
             </nav>
 
-            {/* Mini Player Placeholder */}
-            <div className="p-3 border-t border-white/10">
-                <LiquidGlassCard className="p-2">
-                    {isExpanded ? (
-                        <div className="flex items-center gap-2">
-                            <div className="size-10 bg-gradient-to-br from-brand-primary to-brand-secondary rounded shrink-0" />
-                            <div className="flex-1 min-w-0">
-                                <p className="text-xs font-medium text-white truncate">Song Title</p>
-                                <p className="text-xs text-text-tertiary truncate">Artist</p>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="size-10 bg-gradient-to-br from-brand-primary to-brand-secondary rounded mx-auto" />
-                    )}
-                </LiquidGlassCard>
-            </div>
+
         </motion.aside>
     );
 };

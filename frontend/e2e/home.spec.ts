@@ -8,7 +8,7 @@ test('Home page loads', async ({ page }) => {
 
 test('AI Playlist Dialog opens', async ({ page }) => {
   await page.goto('/');
-  // AI button only shows when logged in, or if we mock auth. 
+  // AI button only shows when logged in, or if we mock auth.
   // For critical path, we verify the button *would* exist if auth'd or check public elements
   // Assuming public view for now:
   const homeButton = page.getByRole('link', { name: 'Home' });

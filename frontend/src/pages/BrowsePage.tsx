@@ -163,7 +163,10 @@ const BrowsePage = () => {
                           icon={<Music2 className="w-16 h-16" />}
                           size="large"
                           index={0}
-                          onClick={() => navigate('/home')}
+                          onClick={() => {
+                            // Scroll to the genre grid section
+                            document.querySelector('[role="grid"]')?.scrollIntoView({ behavior: 'smooth' });
+                          }}
                         />
                         <CategoryCard
                           title="Artists"
@@ -174,7 +177,7 @@ const BrowsePage = () => {
                           onClick={() => {
                             // Navigate to first artist from songs
                             if (songs.length > 0) {
-                              navigate(`/artist/${encodeURIComponent(songs[0].artist)}`);
+                              navigate(`/artists/${encodeURIComponent(songs[0].artist)}`);
                             }
                           }}
                         />
@@ -184,7 +187,7 @@ const BrowsePage = () => {
                           icon={<Radio className="w-16 h-16" />}
                           size="large"
                           index={2}
-                          onClick={() => navigate('/search')}
+                          onClick={() => navigate('/radio')}
                         />
                       </div>
                     </section>

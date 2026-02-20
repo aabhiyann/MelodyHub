@@ -1,11 +1,14 @@
 /**
  * MelodyHub Backend Tests
  * Comprehensive test suite for all backend functionality
+ * Skipped in CI: requires a live server on port 5001 (use auth/songs/discovery integration tests for in-memory API tests).
  */
 
 import { describe, test, expect, beforeAll, afterAll } from '@jest/globals';
 
-describe('MelodyHub Backend - Integration Tests', () => {
+const describeIntegration = process.env.CI ? describe.skip : describe;
+
+describeIntegration('MelodyHub Backend - Integration Tests', () => {
     const API_BASE = 'http://localhost:5001/api';
 
     beforeAll(async () => {

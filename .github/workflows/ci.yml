@@ -42,11 +42,11 @@ jobs:
           VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY || 'pk_test_mock_key' }}
           VITE_API_URL: http://localhost:5000
 
-      # Temporarily skip tests to get CI passing for deployment
-      # - name: Run Unit Tests
-      #   run: npm run test:unit
-      #   env:
-      #       VITE_CLERK_PUBLISHABLE_KEY: 'pk_test_mock_key'
+      - name: Run Unit Tests
+        run: npm run test:unit
+        env:
+          VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY || 'pk_test_mock_key' }}
+          VITE_API_URL: http://localhost:5000
 
   # ------------------------------------------------------------------
   # Backend Checks
@@ -85,10 +85,10 @@ jobs:
       - name: Build
         run: npm run build
 
-      # Skipping actual tests for now if they require complex seeding, but providing the step
-      # - name: Run Tests
-      #   run: npm test
-      #   env:
-      #     MONGODB_URI: mongodb://localhost:27017/melodyhub_test
-      #     PORT: 5001
-      #     CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY || 'sk_test_mock' }}
+      - name: Run Tests
+        run: npm test
+        env:
+          MONGODB_URI: mongodb://localhost:27017/melodyhub_test
+          REDIS_URL: redis://localhost:6379
+          PORT: 5001
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY || 'sk_test_mock' }}
