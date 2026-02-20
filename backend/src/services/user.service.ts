@@ -18,7 +18,14 @@ export class UserService extends BaseService<IUser> {
 		let users = await redisService.get<IUser[]>(cacheKey);
 
 		if (!users) {
-			users = await this.findAll({});
+			const rawUsers = await this.findAll({});
+			// Deduplicate by clerkId in case of duplicate DB documents
+			const seen = new Set<string>();
+			users = rawUsers.filter((u) => {
+				if (!u.clerkId || seen.has(u.clerkId)) return false;
+				seen.add(u.clerkId);
+				return true;
+			});
 			await redisService.set(cacheKey, users, 3600); // 1 hour
 		}
 
