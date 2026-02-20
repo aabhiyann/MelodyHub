@@ -118,8 +118,16 @@ const LibraryPage = () => {
   const fetchLikedSongs = async () => {
     setIsLoading(true);
     try {
-      const liked = songs.filter((song) => song.likeCount && song.likeCount > 0);
-      setLikedSongs(liked);
+      // Fetch the current user's liked song IDs from their analytics/preferences
+      const { data: prefData } = await axiosInstance.get('/analytics/user-preferences');
+      const likedIds: string[] = (prefData?.data?.likedSongs ?? []).map((id: string) => String(id));
+      if (likedIds.length === 0) {
+        setLikedSongs([]);
+        return;
+      }
+      // Cross-reference with songs already loaded in the store
+      const matched = songs.filter((song) => likedIds.includes(song._id));
+      setLikedSongs(matched);
     } catch (error) {
       console.error('Failed to fetch liked songs:', error);
       setLikedSongs([]);
