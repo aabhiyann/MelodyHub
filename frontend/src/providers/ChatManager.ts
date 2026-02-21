@@ -226,7 +226,7 @@ export class ChatManager {
             this.set({ isLoading: true });
             // Using existing /users endpoint for now
             const response = await axiosInstance.get("/users");
-            const allUsers = Array.isArray(response.data) ? response.data : [];
+            const allUsers = Array.isArray(response.data) ? response.data : (Array.isArray(response.data?.data) ? response.data.data : []);
             const filtered = allUsers.filter((user: User) =>
                 user.fullName.toLowerCase().includes(query.toLowerCase())
             );
@@ -241,7 +241,7 @@ export class ChatManager {
         this.set({ isLoading: true });
         try {
             const response = await axiosInstance.get("/users");
-            const data = Array.isArray(response.data) ? response.data : [];
+            const data = Array.isArray(response.data) ? response.data : (Array.isArray(response.data?.data) ? response.data.data : []);
             this.set({ users: data, isLoading: false });
         } catch (error) {
             console.error("Failed to fetch users:", error);
@@ -254,10 +254,11 @@ export class ChatManager {
         this.set({ isLoading: true });
         try {
             const response = await axiosInstance.get(`/messages/${userId}`);
-            this.set({ messages: response.data, isLoading: false });
+            const data = Array.isArray(response.data) ? response.data : (Array.isArray(response.data?.data) ? response.data.data : []);
+            this.set({ messages: data, isLoading: false });
         } catch (error) {
             console.error("Failed to fetch messages:", error);
-            this.set({ isLoading: false });
+            this.set({ messages: [], isLoading: false });
         }
     }
 
