@@ -230,15 +230,15 @@ const AudioPlayer = () => {
 						: 'No track loaded'}
 			</div>
 
-			{/* Player UI - Fixed Bottom Bar */}
+			{/* Player UI - Floating Pill */}
 			<div
-				className="fixed bottom-0 left-0 right-0 z-[1000] h-[90px] md:h-[90px] sm:h-[80px]"
+				className="fixed bottom-0 left-0 right-0 md:bottom-6 md:left-6 md:right-6 z-[1000] h-[84px] md:h-[92px] rounded-t-2xl md:rounded-2xl"
 				style={{
-					background: 'rgba(18, 18, 18, 0.85)',
+					background: 'rgba(20, 20, 22, 0.85)', // Slightly refined dark glass
 					backdropFilter: 'blur(60px)',
 					WebkitBackdropFilter: 'blur(60px)',
-					borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-					boxShadow: '0 -8px 32px rgba(0, 0, 0, 0.6)'
+					border: '1px solid rgba(255, 255, 255, 0.08)',
+					boxShadow: '0 16px 40px rgba(0, 0, 0, 0.8)'
 				}}
 			>
 				{/* Content */}
@@ -310,7 +310,7 @@ const AudioPlayer = () => {
 			</div>
 
 			{/* Spacer to prevent content from being hidden behind player */}
-			<div className="h-[90px] md:h-[90px] sm:h-[80px]" />
+			<div className="h-[84px] md:h-[120px]" />
 		</>
 	);
 };
