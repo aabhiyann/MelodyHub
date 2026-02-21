@@ -1,6 +1,5 @@
 import { io, Socket } from "socket.io-client";
 import { StateCreator } from "zustand";
-import { useAuthStore } from "@/stores/AuthStore";
 import { axiosInstance } from "@/lib/axios";
 import { Message, User } from "@/types";
 import { getErrorMessage } from "@/utils/errors";
@@ -15,6 +14,7 @@ export class ChatManager {
     private set: Parameters<StateCreator<any>>[0];
     private get: Parameters<StateCreator<any>>[1];
     private socket: Socket | null = null;
+    private userId: string | null = null;
 
     constructor(
         set: Parameters<StateCreator<any>>[0],
@@ -27,6 +27,7 @@ export class ChatManager {
     initSocket(userId: string) {
         if (this.socket?.connected) return;
 
+        this.userId = userId;
         const socket = io(BASE_URL, {
             auth: { userId },
         });
@@ -141,7 +142,7 @@ export class ChatManager {
     sendMessage(receiverId: string, content: string) {
         if (!this.socket) return;
 
-        const senderId = useAuthStore.getState().authUser?.clerkId;
+        const senderId = this.userId;
         if (!senderId) return;
 
         // Optimistic UI Update
@@ -163,14 +164,14 @@ export class ChatManager {
 
     sendTyping(receiverId: string) {
         if (!this.socket) return;
-        const senderId = useAuthStore.getState().authUser?.clerkId;
+        const senderId = this.userId;
         if (!senderId) return;
         this.socket.emit("typing", { senderId, receiverId });
     }
 
     updateActivity(activity: string) {
         if (!this.socket) return;
-        const userId = useAuthStore.getState().authUser?.clerkId;
+        const userId = this.userId;
         if (!userId) return;
         this.socket.emit("update_activity", { userId, activity });
     }

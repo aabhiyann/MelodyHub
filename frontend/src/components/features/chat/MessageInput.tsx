@@ -12,7 +12,7 @@ export const MessageInput = () => {
 	const lastTypingTimeRef = useRef<number>(0);
 
 	const handleSend = () => {
-		if (!selectedUser || !user || !newMessage) return;
+		if (!selectedUser || !user || !newMessage.trim()) return;
 		sendMessage(selectedUser.clerkId, newMessage.trim());
 		setNewMessage("");
 	};
