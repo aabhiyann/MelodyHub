@@ -5,7 +5,7 @@ import { useAIStore } from '@/stores/useAIStore';
 import { Button } from '@/components/ui/button';
 
 export const StagePrompt = () => {
-    const { userPrompt, setPrompt, generatePlaylist } = useAIStore();
+    const { userPrompt, setPrompt, generatePlaylist, error } = useAIStore();
     const [isFocused, setIsFocused] = useState(false);
 
     const EXAMPLE_PROMPTS = [
@@ -74,6 +74,13 @@ export const StagePrompt = () => {
                     ))}
                 </div>
             </div>
+
+            {/* Error Display */}
+            {error && (
+                <div className="w-full mb-4 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center animate-in fade-in slide-in-from-bottom-2 duration-300">
+                    {error}
+                </div>
+            )}
 
             {/* Submit Button - pill CTA */}
             <Button

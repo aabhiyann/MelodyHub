@@ -35,6 +35,50 @@ const GENRE_CONFIG: Record<string, { gradient: string; icon: string }> = {
   Folk: { gradient: 'bg-gradient-to-br from-amber-600 to-yellow-700', icon: '🪕' },
 };
 
+// Normalize iTunes/varied genre names → GENRE_CONFIG keys
+const GENRE_NORMALIZE: Record<string, string> = {
+  // Pop
+  'Pop': 'Pop', 'Pop Latino': 'Pop', 'Dance Pop': 'Pop',
+  // Rock
+  'Rock': 'Rock', 'Alternative': 'Rock', 'Hard Rock': 'Rock', 'Indie Rock': 'Rock', 'Punk': 'Rock',
+  // K-Pop
+  'K-Pop': 'K-Pop',
+  // Hip Hop
+  'Hip-Hop/Rap': 'Hip Hop', 'Hip-Hop': 'Hip Hop', 'Hip Hop': 'Hip Hop',
+  'Rap': 'Hip Hop', 'Dirty South': 'Hip Hop',
+  // Electronic
+  'Electronic': 'Electronic', 'Electronica': 'Electronic', 'Dance': 'Electronic',
+  'House': 'Electronic', 'Ambient': 'Electronic', 'New Age': 'Electronic',
+  // Jazz
+  'Jazz': 'Jazz', 'Smooth Jazz': 'Jazz',
+  // Classical
+  'Classical': 'Classical', 'Classical Crossover': 'Classical',
+  'Piano': 'Classical', 'Soundtrack': 'Classical', 'Instrumental': 'Classical',
+  // R&B
+  'R&B/Soul': 'R&B', 'R&B': 'R&B',
+  // Country
+  'Country': 'Country',
+  // Latin
+  'Latin': 'Latin', 'Urbano latino': 'Latin', 'Música Mexicana': 'Latin',
+  'Reggae': 'Latin', 'Música tropical': 'Latin', 'Modern Dancehall': 'Latin',
+  // Indie
+  'Indie': 'Indie', 'Singer/Songwriter': 'Indie', 'Folk-Rock': 'Indie',
+  // Metal
+  'Metal': 'Metal',
+  // Folk
+  'Folk': 'Folk', 'Traditional Folk': 'Folk',
+  // Other
+  'Nature': 'Folk', 'Christian': 'Folk', 'Contemporary Gospel': 'Folk',
+  'Afrobeats': 'Latin', 'Fitness & Workout': 'Electronic',
+  'Holiday': 'Pop', 'Musicals': 'Classical',
+};
+
+/** Normalize a raw genre string to match a GENRE_CONFIG key */
+function normalizeGenre(rawGenre: string | undefined | null): string {
+  if (!rawGenre) return 'Pop'; // Default fallback
+  return GENRE_NORMALIZE[rawGenre] || GENRE_NORMALIZE[rawGenre.trim()] || 'Pop';
+}
+
 const BrowsePage = () => {
   const navigate = useNavigate();
   const { announce } = useAnnouncement();
@@ -50,17 +94,16 @@ const BrowsePage = () => {
     fetchSongs();
   }, [fetchAlbums, fetchSongs]);
 
-  // Group songs by genre
+  // Group songs by normalized genre
   const genreSongs = songs.reduce((acc, song) => {
-    const genre = song.genre || 'Other';
+    const genre = normalizeGenre(song.genre);
     if (!acc[genre]) acc[genre] = [];
     acc[genre].push(song);
     return acc;
   }, {} as Record<string, typeof songs>);
 
-  // Show ALL predefined genres + any data-driven ones so Browse never looks empty
-  const allGenreKeys = new Set([...Object.keys(GENRE_CONFIG), ...Object.keys(genreSongs)]);
-  const genres = Array.from(allGenreKeys).sort();
+  // Use only GENRE_CONFIG keys for the genre grid (clean, curated list)
+  const genres = Object.keys(GENRE_CONFIG);
 
   // Filter songs based on selected genre
   const allFilteredSongs = selectedGenre ? genreSongs[selectedGenre] || [] : songs;
