@@ -159,26 +159,26 @@ function App() {
 								</RequireAuth>
 							}
 						>
-							<Route path='/home' element={<PageTransition><HomePage /></PageTransition>} />
-							<Route path='/browse' element={<PageTransition><BrowsePage /></PageTransition>} />
-							<Route path='/radio' element={<PageTransition><RadioPage /></PageTransition>} />
-							<Route path='/search' element={<PageTransition><SearchPage /></PageTransition>} />
-							<Route path='/library' element={<PageTransition><LibraryPage /></PageTransition>} />
-							<Route path='/community' element={<PageTransition><CommunityPage /></PageTransition>} />
-							<Route path='/profile' element={<PageTransition><ProfilePage /></PageTransition>} />
-							<Route path='/profile/:userId' element={<PageTransition><ProfilePage /></PageTransition>} />
-							<Route path='/user/:userId' element={<PageTransition><ProfilePage /></PageTransition>} />
-							<Route path='/followers/:userId' element={<PageTransition><FollowersPage /></PageTransition>} />
-							<Route path='/following/:userId' element={<PageTransition><FollowingPage /></PageTransition>} />
-							<Route path='/chat' element={<PageTransition><ChatPage /></PageTransition>} />
-							<Route path='/playlists/:id' element={<PageTransition><PlaylistPage /></PageTransition>} />
-							<Route path='/analytics' element={<PageTransition><AnalyticsPage /></PageTransition>} />
-							<Route path='/settings' element={<PageTransition><SettingsPage /></PageTransition>} />
-							<Route path='/radio/:songId' element={<PageTransition><RadioPage /></PageTransition>} />
-							<Route path='/albums/:albumId' element={<PageTransition><AlbumPage /></PageTransition>} />
-							<Route path='/artists/:artistId' element={<PageTransition><ArtistPage /></PageTransition>} />
-							<Route path='/quests' element={<PageTransition><GamificationPage /></PageTransition>} />
-							<Route path='*' element={<PageTransition><NotFoundPage /></PageTransition>} />
+							<Route path='/home' element={<Suspense fallback={<LoadingScreen message="Loading your feed..." fullScreen={false} />}><PageTransition><HomePage /></PageTransition></Suspense>} />
+							<Route path='/browse' element={<Suspense fallback={<LoadingScreen message="Curating genres..." fullScreen={false} />}><PageTransition><BrowsePage /></PageTransition></Suspense>} />
+							<Route path='/radio' element={<Suspense fallback={<LoadingScreen message="Tuning the dial..." fullScreen={false} />}><PageTransition><RadioPage /></PageTransition></Suspense>} />
+							<Route path='/search' element={<Suspense fallback={<LoadingScreen message="Ready to explore..." fullScreen={false} />}><PageTransition><SearchPage /></PageTransition></Suspense>} />
+							<Route path='/library' element={<Suspense fallback={<LoadingScreen message="Opening your library..." fullScreen={false} />}><PageTransition><LibraryPage /></PageTransition></Suspense>} />
+							<Route path='/community' element={<Suspense fallback={<LoadingScreen message="Finding fellow listeners..." fullScreen={false} />}><PageTransition><CommunityPage /></PageTransition></Suspense>} />
+							<Route path='/profile' element={<Suspense fallback={<LoadingScreen message="Loading profile..." fullScreen={false} />}><PageTransition><ProfilePage /></PageTransition></Suspense>} />
+							<Route path='/profile/:userId' element={<Suspense fallback={<LoadingScreen message="Loading profile..." fullScreen={false} />}><PageTransition><ProfilePage /></PageTransition></Suspense>} />
+							<Route path='/user/:userId' element={<Suspense fallback={<LoadingScreen message="Loading user data..." fullScreen={false} />}><PageTransition><ProfilePage /></PageTransition></Suspense>} />
+							<Route path='/followers/:userId' element={<Suspense fallback={<LoadingScreen message="Fetching followers..." fullScreen={false} />}><PageTransition><FollowersPage /></PageTransition></Suspense>} />
+							<Route path='/following/:userId' element={<Suspense fallback={<LoadingScreen message="Fetching following..." fullScreen={false} />}><PageTransition><FollowingPage /></PageTransition></Suspense>} />
+							<Route path='/chat' element={<Suspense fallback={<LoadingScreen message="Connecting to friends..." fullScreen={false} />}><PageTransition><ChatPage /></PageTransition></Suspense>} />
+							<Route path='/playlists/:id' element={<Suspense fallback={<LoadingScreen message="Loading playlist..." fullScreen={false} />}><PageTransition><PlaylistPage /></PageTransition></Suspense>} />
+							<Route path='/analytics' element={<Suspense fallback={<LoadingScreen message="Crunching the numbers..." fullScreen={false} />}><PageTransition><AnalyticsPage /></PageTransition></Suspense>} />
+							<Route path='/settings' element={<Suspense fallback={<LoadingScreen message="Warming up the studio..." fullScreen={false} />}><PageTransition><SettingsPage /></PageTransition></Suspense>} />
+							<Route path='/radio/:songId' element={<Suspense fallback={<LoadingScreen message="Creating station..." fullScreen={false} />}><PageTransition><RadioPage /></PageTransition></Suspense>} />
+							<Route path='/albums/:albumId' element={<Suspense fallback={<LoadingScreen message="Loading album..." fullScreen={false} />}><PageTransition><AlbumPage /></PageTransition></Suspense>} />
+							<Route path='/artists/:artistId' element={<Suspense fallback={<LoadingScreen message="Loading artist..." fullScreen={false} />}><PageTransition><ArtistPage /></PageTransition></Suspense>} />
+							<Route path='/quests' element={<Suspense fallback={<LoadingScreen message="Gathering your quests..." fullScreen={false} />}><PageTransition><GamificationPage /></PageTransition></Suspense>} />
+							<Route path='*' element={<Suspense fallback={<LoadingScreen fullScreen={false} />}><PageTransition><NotFoundPage /></PageTransition></Suspense>} />
 						</Route>
 
 						{/* Admin Routes - Separate Layout */}
@@ -190,11 +190,11 @@ function App() {
 							}
 						>
 							<Route path='/admin' element={<AdminLayout />}>
-								<Route index element={<PageTransition><AdminDashboard /></PageTransition>} />
-								<Route path='songs' element={<PageTransition><AdminSongsPage /></PageTransition>} />
-								<Route path='analytics' element={<PageTransition><AnalyticsPage /></PageTransition>} />
-								<Route path='settings' element={<PageTransition><AdminSettingsPage /></PageTransition>} />
-								<Route path='*' element={<PageTransition><AdminDashboard /></PageTransition>} />
+								<Route index element={<Suspense fallback={<LoadingScreen message="Loading dashboard..." fullScreen={false} />}><PageTransition><AdminDashboard /></PageTransition></Suspense>} />
+								<Route path='songs' element={<Suspense fallback={<LoadingScreen message="Loading catalog..." fullScreen={false} />}><PageTransition><AdminSongsPage /></PageTransition></Suspense>} />
+								<Route path='analytics' element={<Suspense fallback={<LoadingScreen message="Analyzing platform data..." fullScreen={false} />}><PageTransition><AnalyticsPage /></PageTransition></Suspense>} />
+								<Route path='settings' element={<Suspense fallback={<LoadingScreen message="Loading settings..." fullScreen={false} />}><PageTransition><AdminSettingsPage /></PageTransition></Suspense>} />
+								<Route path='*' element={<Suspense fallback={<LoadingScreen fullScreen={false} />}><PageTransition><AdminDashboard /></PageTransition></Suspense>} />
 							</Route>
 						</Route>
 					</Routes>

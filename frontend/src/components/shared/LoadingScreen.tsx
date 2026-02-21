@@ -2,11 +2,12 @@ import { MascotImage } from "@/components/shared/MascotImage";
 
 interface LoadingScreenProps {
     message?: string;
+    fullScreen?: boolean;
 }
 
-export const LoadingScreen = ({ message = "Finding the perfect vibe..." }: LoadingScreenProps) => {
+export const LoadingScreen = ({ message = "Finding the perfect vibe...", fullScreen = true }: LoadingScreenProps) => {
     return (
-        <div className='flex flex-col items-center justify-center min-h-screen bg-surface-base'>
+        <div className={`flex flex-col items-center justify-center bg-surface-base ${fullScreen ? 'min-h-screen' : 'h-full min-h-[50vh] rounded-2xl w-full'}`}>
             {/* Animated Melody mascot */}
             <div className='mb-6 animate-pulse'>
                 <MascotImage
