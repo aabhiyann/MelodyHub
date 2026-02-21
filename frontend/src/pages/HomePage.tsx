@@ -2,11 +2,9 @@ import Topbar from '@/components/layout/TopBar';
 import { useMusicStore } from '@/stores/MusicStore';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ActivityFeed } from '@/components/home/ActivityFeed';
 import { Sparkles, Library, Compass, Radio } from 'lucide-react';
 
 import { PullToRefresh } from '@/components/features/mobile/PullToRefresh';
-import { useUIStore } from '@/stores/UIStore';
 import { useHomeData } from '@/hooks/useHomeData';
 
 import { useAIStore } from '@/stores/useAIStore';
@@ -27,7 +25,6 @@ import { SEO } from '@/components/shared/SEO';
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const { isActivityPanelOpen } = useUIStore();
   const { openModal } = useAIStore();
   const {
     trendingSongs,
@@ -176,15 +173,6 @@ const HomePage = () => {
           </PullToRefresh>
         </div>
       </div>
-
-      {/* Activity Feed Sidebar */}
-      {isActivityPanelOpen && (
-        <div className="hidden lg:block animate-in slide-in-from-right-10 duration-300 w-[280px] border-l border-white/5 bg-black/20 backdrop-blur-xl">
-          <SectionErrorBoundary sectionName="Activity Feed">
-            <ActivityFeed />
-          </SectionErrorBoundary>
-        </div>
-      )}
     </main>
   );
 };

@@ -63,20 +63,20 @@ const GamificationPage = () => {
 
             {/* Main Content Tabs */}
             <Tabs defaultValue="quests" className="flex-1 flex flex-col min-h-0">
-                <TabsList className="bg-zinc-900/50 border border-white/5 p-1 w-full justify-start overflow-x-auto">
-                    <TabsTrigger value="quests" className="data-[state=active]:bg-violet-600 data-[state=active]:text-white">
+                <TabsList className="bg-zinc-900/50 p-1 w-full flex overflow-x-auto rounded-xl">
+                    <TabsTrigger value="quests" className="flex-1 rounded-lg data-[state=active]:bg-violet-600 data-[state=active]:text-white data-[state=active]:border-transparent transition-all">
                         <Target className="mr-2 size-4" />
                         Quests
                     </TabsTrigger>
-                    <TabsTrigger value="leaderboard" className="data-[state=active]:bg-violet-600 data-[state=active]:text-white">
+                    <TabsTrigger value="leaderboard" className="flex-1 rounded-lg data-[state=active]:bg-violet-600 data-[state=active]:text-white data-[state=active]:border-transparent transition-all">
                         <Trophy className="mr-2 size-4" />
                         Leaderboard
                     </TabsTrigger>
-                    <TabsTrigger value="achievements" className="data-[state=active]:bg-violet-600 data-[state=active]:text-white">
+                    <TabsTrigger value="achievements" className="flex-1 rounded-lg data-[state=active]:bg-violet-600 data-[state=active]:text-white data-[state=active]:border-transparent transition-all">
                         <Medal className="mr-2 size-4" />
                         Achievements
                     </TabsTrigger>
-                    <TabsTrigger value="shop" className="data-[state=active]:bg-violet-600 data-[state=active]:text-white">
+                    <TabsTrigger value="shop" className="flex-1 rounded-lg data-[state=active]:bg-violet-600 data-[state=active]:text-white data-[state=active]:border-transparent transition-all">
                         <Store className="mr-2 size-4" />
                         Shop
                     </TabsTrigger>

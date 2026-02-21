@@ -12,6 +12,7 @@ import {
   User2,
   SlidersHorizontal,
   X,
+  Play,
 } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { CategoryCard } from '@/components/ui/CategoryCard';
@@ -171,7 +172,7 @@ const SearchPage = () => {
                 placeholder="What do you want to listen to?"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-14 pl-12 pr-4 rounded-full bg-surface-elevated/50 backdrop-blur-md border border-white/10 focus:border-brand-primary/50 text-white placeholder-text-secondary text-base transition-all focus:ring-4 focus:ring-brand-primary/20 outline-none shadow-lg"
+                className="w-full h-12 pl-12 pr-4 rounded-full bg-white/5 hover:bg-white/10 focus:bg-white/10 backdrop-blur-md border border-white/10 focus:border-white/20 text-white placeholder-text-secondary text-sm transition-all focus:ring-2 focus:ring-brand-primary/30 outline-none shadow-lg"
                 autoFocus
               />
               {searching && (
@@ -287,11 +288,16 @@ const SearchPage = () => {
                             onClick={() => handlePlaySong(song)}
                             className="flex items-center gap-4 p-3 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group"
                           >
-                            <img
-                              src={song.imageUrl}
-                              alt={song.title}
-                              className="size-14 rounded-md object-cover"
-                            />
+                            <div className="relative size-14 rounded-md overflow-hidden shrink-0">
+                              <img
+                                src={song.imageUrl}
+                                alt={song.title}
+                                className="w-full h-full object-cover"
+                              />
+                              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <Play className="size-5 text-white fill-white ml-0.5" />
+                              </div>
+                            </div>
                             <div className="flex-1 min-w-0">
                               <h3 className="text-white font-medium truncate group-hover:text-brand-primary transition-colors">
                                 {song.title}

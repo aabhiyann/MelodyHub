@@ -48,7 +48,14 @@ export const usePlaylistStore = create<PlaylistStore>((set, get) => ({
     fetchUserPlaylists: async () => {
         set({ isLoading: true, error: null });
         try {
-            const playlists = await playlistApi.getAll();
+            const rawPlaylists = await playlistApi.getAll();
+            // Deduplicate by _id to prevent sidebar duplicates
+            const seen = new Set<string>();
+            const playlists = rawPlaylists.filter(p => {
+                if (!p._id || seen.has(p._id)) return false;
+                seen.add(p._id);
+                return true;
+            });
             set({ userPlaylists: playlists });
         } catch (error) {
             set({ error: getErrorMessage(error) });

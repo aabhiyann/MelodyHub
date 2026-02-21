@@ -43,7 +43,7 @@ export const InteractiveSlider = ({
         >
             {/* Background Track */}
             <div className="absolute inset-0 flex items-center">
-                <div className="w-full h-1 bg-white/20 rounded-full overflow-hidden group-hover:h-1.5 transition-all duration-300">
+                <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden group-hover:h-2 transition-all duration-300">
                     {/* Buffered Fill */}
                     <div
                         className="absolute top-0 left-0 h-full bg-white/30 rounded-full transition-all duration-300"
@@ -90,9 +90,9 @@ export const InteractiveSlider = ({
 
             {/* Visual Drag Knob */}
             <motion.div
-                className="absolute w-3 h-3 bg-white rounded-full shadow-lg pointer-events-none"
+                className="absolute w-4 h-4 bg-white rounded-full shadow-lg pointer-events-none ring-2 ring-white/20"
                 animate={{
-                    scale: isDragging || hoverPosition !== null ? 1.5 : 0,
+                    scale: isDragging || hoverPosition !== null ? 1.3 : 0,
                     opacity: isDragging || hoverPosition !== null ? 1 : 0
                 }}
                 transition={{ duration: 0.1 }}

@@ -58,7 +58,9 @@ const BrowsePage = () => {
     return acc;
   }, {} as Record<string, typeof songs>);
 
-  const genres = Object.keys(genreSongs).sort();
+  // Show ALL predefined genres + any data-driven ones so Browse never looks empty
+  const allGenreKeys = new Set([...Object.keys(GENRE_CONFIG), ...Object.keys(genreSongs)]);
+  const genres = Array.from(allGenreKeys).sort();
 
   // Filter songs based on selected genre
   const allFilteredSongs = selectedGenre ? genreSongs[selectedGenre] || [] : songs;

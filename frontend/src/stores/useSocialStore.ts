@@ -49,7 +49,17 @@ export const useSocialStore = create<SocialStore>((set, get) => ({
     fetchUsers: async () => {
         set({ isLoading: true, error: null });
         try {
-            const users = await socialApi.getUsers();
+            const rawUsers = await socialApi.getUsers();
+            // Deduplicate by clerkId AND fullName — backend has genuine duplicate documents
+            const seenClerkIds = new Set<string>();
+            const seenNames = new Set<string>();
+            const users = rawUsers.filter(u => {
+                if (u.clerkId && seenClerkIds.has(u.clerkId)) return false;
+                if (u.fullName && seenNames.has(u.fullName)) return false;
+                if (u.clerkId) seenClerkIds.add(u.clerkId);
+                if (u.fullName) seenNames.add(u.fullName);
+                return true;
+            });
             set({ users });
         } catch (error) {
             set({ error: getErrorMessage(error) });

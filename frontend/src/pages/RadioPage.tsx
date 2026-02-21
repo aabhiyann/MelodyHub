@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useMusicStore } from "@/stores/MusicStore";
-import { Loader, Radio as RadioIcon, AlertCircle } from "lucide-react";
+import { usePlayerStore } from "@/stores/PlayerStore";
+import { Loader, Radio as RadioIcon, AlertCircle, Play } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Song } from "@/types";
 import React from "react";
@@ -11,6 +12,7 @@ const RadioPage = () => {
     const { songId } = useParams();
     const navigate = useNavigate();
     const { fetchRadioStation, songs, fetchSongs } = useMusicStore();
+    const { setCurrentSong } = usePlayerStore();
 
     const [stationSongs, setStationSongs] = React.useState<Song[]>([]);
     const [pageLoading, setPageLoading] = React.useState(true);
@@ -96,11 +98,16 @@ const RadioPage = () => {
                 ) : (
                     <div className="grid grid-cols-1 gap-2">
                         {stationSongs.map((song) => (
-                            <div key={song._id} className="flex items-center gap-3 p-3 rounded-lg hover:bg-zinc-800/50 group transition-colors cursor-pointer">
-                                <img src={song.imageUrl} alt={song.title} className="size-12 rounded object-cover" />
-                                <div className="flex-1">
-                                    <div className="font-medium text-white">{song.title}</div>
-                                    <div className="text-sm text-zinc-400">{song.artist}</div>
+                            <div key={song._id} onClick={() => setCurrentSong(song)} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 group transition-colors cursor-pointer">
+                                <div className="relative size-12 rounded overflow-hidden shrink-0">
+                                    <img src={song.imageUrl} alt={song.title} className="w-full h-full object-cover" />
+                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <Play className="size-5 text-white fill-white ml-0.5" />
+                                    </div>
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <div className="font-medium text-white truncate group-hover:text-brand-primary transition-colors">{song.title}</div>
+                                    <div className="text-sm text-zinc-400 truncate">{song.artist}</div>
                                 </div>
                             </div>
                         ))}

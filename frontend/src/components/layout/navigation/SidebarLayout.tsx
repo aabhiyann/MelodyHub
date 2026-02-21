@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
 
 // Lazy load heavy components
-const FriendsActivity = lazy(() => import('@/components/features/social/FriendsActivity').then(m => ({ default: m.FriendsActivity })));
+const RightSidebar = lazy(() => import('@/components/layout/navigation/RightSidebar').then(m => ({ default: m.RightSidebar })));
 const BottomTabBar = lazy(() => import('@/components/features/mobile/BottomTabBar').then(m => ({ default: m.BottomTabBar })));
 
 export const SidebarLayout = () => {
@@ -31,13 +31,11 @@ export const SidebarLayout = () => {
                 {isMobile && <div className="h-24" />}
             </main>
 
-            {/* Friends Activity Sidebar (Right) - Desktop Only */}
+            {/* Right Sidebar (Desktop Only) */}
             {!isMobile && (
-                <aside className="hidden xl:block w-[280px] shrink-0 border-l border-white/5 bg-black/20 backdrop-blur-xl z-30">
-                    <Suspense fallback={<div className="h-full w-full animate-pulse bg-white/5" />}>
-                        <FriendsActivity />
-                    </Suspense>
-                </aside>
+                <Suspense fallback={<div className="h-full w-[280px] shrink-0 animate-pulse bg-white/5 hidden xl:block z-30 border-l border-white/5" />}>
+                    <RightSidebar />
+                </Suspense>
             )}
 
             {/* Mobile Bottom Tabs */}
