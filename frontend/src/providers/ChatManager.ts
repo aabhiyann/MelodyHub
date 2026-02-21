@@ -46,9 +46,13 @@ export class ChatManager {
         });
 
         socket.on("message_sent", (message: Message) => {
-            this.set((state: any) => ({
-                messages: [...state.messages, message],
-            }));
+            // Replace the optimistic temp message with the server-confirmed one
+            this.set((state: any) => {
+                const filteredMessages = state.messages.filter(
+                    (m: Message) => !m._id.startsWith("temp-") || m.content !== message.content
+                );
+                return { messages: [...filteredMessages, message] };
+            });
         });
 
         socket.on("activity_updated", ({ userId, activity }: { userId: string; activity: string }) => {
