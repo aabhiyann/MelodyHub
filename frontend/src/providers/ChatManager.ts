@@ -39,6 +39,14 @@ export class ChatManager {
             socket.emit("user_connected", userId);
         });
 
+        socket.on("connect_error", (error) => {
+            console.error("Socket connection error:", error.message);
+        });
+
+        socket.on("error", (error) => {
+            console.error("Socket error:", error);
+        });
+
         socket.on("receive_message", (message: Message) => {
             this.set((state: any) => ({
                 messages: [...state.messages, message],
@@ -144,7 +152,12 @@ export class ChatManager {
     }
 
     sendMessage(receiverId: string, content: string) {
-        if (!this.socket) return;
+        if (!this.socket || !this.socket.connected) {
+            toast.error("Chat not connected. Reconnecting...");
+            // Attempt reconnection
+            if (this.userId) this.initSocket(this.userId);
+            return;
+        }
 
         const senderId = this.userId;
         if (!senderId) return;
