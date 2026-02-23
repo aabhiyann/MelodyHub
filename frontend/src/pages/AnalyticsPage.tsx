@@ -44,6 +44,7 @@ const AnalyticsPage = () => {
     const [listeningHistory, setListeningHistory] = useState<ListeningHistoryResponse["data"]>([]);
     const [patterns, setPatterns] = useState<ListeningPatternsData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         if (!user) {
@@ -52,8 +53,9 @@ const AnalyticsPage = () => {
         }
         const fetchAll = async () => {
             setIsLoading(true);
+            setError(null);
             try {
-                const [dashboardRes, historyRes, patternsRes] = await Promise.all([
+                const [dashboardRes, historyRes, patternsRes] = await Promise.allSettled([
                     axiosInstance.get<{ success: boolean; data: DashboardData }>(
                         `/analytics/dashboard?period=${period}`
                     ),
@@ -64,13 +66,15 @@ const AnalyticsPage = () => {
                         "/analytics/listening-patterns"
                     ),
                 ]);
-                if (dashboardRes.data.success && dashboardRes.data.data)
-                    setDashboard(dashboardRes.data.data);
-                if (historyRes.data.success && Array.isArray((historyRes.data as any).data))
-                    setListeningHistory((historyRes.data as any).data);
-                if (patternsRes.data.success && patternsRes.data.data) setPatterns(patternsRes.data.data);
-            } catch (error) {
-                console.error("Failed to fetch analytics", error);
+                if (dashboardRes.status === 'fulfilled' && dashboardRes.value.data.success && dashboardRes.value.data.data)
+                    setDashboard(dashboardRes.value.data.data);
+                if (historyRes.status === 'fulfilled' && historyRes.value.data.success && Array.isArray((historyRes.value.data as any).data))
+                    setListeningHistory((historyRes.value.data as any).data);
+                if (patternsRes.status === 'fulfilled' && patternsRes.value.data.success && patternsRes.value.data.data)
+                    setPatterns(patternsRes.value.data.data);
+            } catch (err) {
+                console.error("Failed to fetch analytics", err);
+                setError("Could not load analytics data.");
             } finally {
                 setIsLoading(false);
             }
@@ -89,6 +93,31 @@ const AnalyticsPage = () => {
             <div className="h-full flex items-center justify-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-brand-primary" />
             </div>
+        );
+    }
+
+    if (error || !dashboard) {
+        return (
+            <main className="rounded-md overflow-hidden h-full bg-transparent">
+                <Topbar />
+                <div className="h-[calc(100vh-180px)] flex items-center justify-center p-6">
+                    <div className="text-center max-w-md">
+                        <div className="p-4 rounded-2xl bg-surface-elevated/50 backdrop-blur-md border border-white/5 inline-block mb-6">
+                            <TrendingUp className="size-10 text-brand-primary" />
+                        </div>
+                        <h2 className="text-2xl font-bold text-white mb-3">No Analytics Yet</h2>
+                        <p className="text-zinc-400 mb-6">
+                            Start listening to your favorite songs and your analytics will appear here. Play some tracks to see your stats!
+                        </p>
+                        <button
+                            onClick={() => window.location.reload()}
+                            className="px-6 py-2.5 rounded-full bg-brand-primary text-white font-medium hover:bg-brand-primary/90 transition-colors"
+                        >
+                            Refresh
+                        </button>
+                    </div>
+                </div>
+            </main>
         );
     }
 
@@ -113,11 +142,10 @@ const AnalyticsPage = () => {
                                 <button
                                     key={p}
                                     onClick={() => setPeriod(p)}
-                                    className={`px-3 py-1.5 rounded-lg text-sm font-medium capitalize transition-colors ${
-                                        period === p
-                                            ? "bg-brand-primary text-white"
-                                            : "bg-white/5 text-zinc-400 hover:bg-white/10"
-                                    }`}
+                                    className={`px-3 py-1.5 rounded-lg text-sm font-medium capitalize transition-colors ${period === p
+                                        ? "bg-brand-primary text-white"
+                                        : "bg-white/5 text-zinc-400 hover:bg-white/10"
+                                        }`}
                                 >
                                     {p === "all" ? "All time" : p}
                                 </button>

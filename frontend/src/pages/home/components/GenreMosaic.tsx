@@ -26,7 +26,7 @@ export const GenreMosaic = () => {
         {GENRES.map((genre) => (
           <div
             key={genre.name}
-            onClick={() => navigate(`/genre/${genre.name.toLowerCase()}`)}
+            onClick={() => navigate('/browse')}
             className="group relative aspect-square rounded-2xl overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-2xl"
           >
             {/* Gradient Background */}

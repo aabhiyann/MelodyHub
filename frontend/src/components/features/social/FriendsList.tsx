@@ -98,23 +98,10 @@ export const FriendsList = () => {
                             </div>
                         )}
 
-                        <div className="flex-1 -mr-4 pr-4 min-h-0" ref={(el) => {
-                            if (el) {
-                                // Simple auto-height check, ideally resize observer, but keeping it simple for now
-                                // We can use a ResizeObserver if needed, but for now let's default to a hook or just rendering
-                                // Since react-window needs a number, let's use a wrapper that measures.
-                            }
-                        }}>
-                            {/* We need a way to measure height... let's defer the full measure logic to a separate component or hook if possible, or just inline it */}
-                            {/* Replacing ScrollArea with VirtualScrollList directly is tricky without exact height in number */}
-                            {/* Let's use a fixed height calculation assuming typical screen or 100% of parent if possible */}
-                            {/* Actually, react-window requires explicit number for height. */}
-                            {/* For now, I will use a simple "useMeasure" style implementation inside FriendsList or just hardcode a calculated height */}
-                            {/* Let's try to stick to the plan: "Virtualize FriendsList". */}
-                            {/* I will add `useMeasure` hook logic in the file for now. */}
+                        <div className="flex-1 -mr-4 pr-4 min-h-0">
                             <VirtualScrollList
                                 items={friends}
-                                height={600} // Temporary fixed height, will optimize to dynamic in next step if needed, or if I can add the hook now.
+                                height={'100%'}
                                 itemHeight={72} // Approx height of friend row
                                 className="no-scrollbar" // Hide default scrollbar if we want custom look, but Native is fine
                                 renderItem={(friend) => (
