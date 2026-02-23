@@ -6,7 +6,7 @@ const Header = () => {
 		<div className='flex items-center justify-between'>
 			<div className='flex items-center gap-3'>
 				<Link to='/' className='rounded-lg'>
-					<img src='/melodylogo.jpg' className='size-10 rounded-lg shadow-sm' />
+					<img src='/melodylogo.jpg' className='size-10 rounded-full object-cover shadow-sm' />
 				</Link>
 				<div>
 					<h1 className='text-3xl font-bold text-white tracking-tight'>Admin Dashboard</h1>
