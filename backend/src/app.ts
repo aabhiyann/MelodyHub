@@ -126,12 +126,7 @@ app.use("/api/recommendations", recommendationRoutes);
 app.use("/api/mood", moodRoutes);
 app.use("/api/gamification", gamificationRoutes);
 
-if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(rootDir, "../frontend/dist")));
-    app.get("*", (req: Request, res: Response) => {
-        res.sendFile(path.resolve(rootDir, "../frontend", "dist", "index.html"));
-    });
-}
+// Removed static serving for frontend as frontend is hosted separately on Vercel
 
 // 404 handler for undefined routes
 app.use(notFoundHandler);
