@@ -72,9 +72,21 @@ export const useAIStore = create<AIStore>((set, get) => ({
                 mascotState: 'celebrating',
                 isLoading: false
             });
-        } catch (error) {
+        } catch (error: any) {
+            // Parse specific error types for user-friendly messages
+            let errorMsg = "Failed to generate playlist. Please try again.";
+
+            if (error?.response?.status === 429) {
+                const retryAfter = error.response.data?.retryAfter || 60;
+                errorMsg = `AI is taking a breather! Please try again in ${retryAfter} seconds. ☕`;
+            } else if (error?.response?.status === 503) {
+                errorMsg = "AI service is temporarily unavailable. Please try again later.";
+            } else {
+                errorMsg = getErrorMessage(error, "Failed to generate playlist");
+            }
+
             set({
-                error: getErrorMessage(error, "Failed to generate playlist"),
+                error: errorMsg,
                 mascotState: 'sad',
                 isLoading: false,
                 stage: 'prompt'
