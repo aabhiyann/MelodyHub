@@ -286,7 +286,7 @@
 
 ### Before Demo
 
-- [ ] Open live site: https://udaymelodyhhub.vercel.app/
+- [ ] Open live site: https://melodyhubmusic.vercel.app/
 - [ ] Test AI playlist generation (make sure it works)
 - [ ] Have 2-3 demo prompts ready
 - [ ] Clear browser cache for fresh load time

@@ -7,4 +7,4 @@ Disallow: /auth-callback
 Disallow: /sso-callback
 
 # Sitemap
-Sitemap: https://udaymelodyhhub.vercel.app/sitemap.xml
+Sitemap: https://melodyhubmusic.vercel.app/sitemap.xml

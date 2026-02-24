@@ -75,12 +75,12 @@ describe('TopBar', () => {
         render(<Topbar />);
         expect(screen.getByText('StreakBadge')).toBeDefined();
         expect(screen.getByText('GemsIndicator')).toBeDefined();
-        expect(screen.getByText('AI Playlist')).toBeDefined();
+        expect(screen.getByText('Magic')).toBeDefined();
     });
 
     it('opens AI modal on click', () => {
         render(<Topbar />);
-        const aiBtn = screen.getByText('AI Playlist').closest('button');
+        const aiBtn = screen.getByText('Magic').closest('button');
         fireEvent.click(aiBtn!);
         expect(mockOpenModal).toHaveBeenCalled();
     });

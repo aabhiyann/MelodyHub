@@ -32,7 +32,7 @@ export const SocialProofSection = () => {
                 </div>
 
                 {/* Stats */}
-                <div className="flex flex-wrap justify-center gap-12 md:gap-24 border-t border-white/10 pt-16">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 border-t border-white/10 pt-16">
                     {[
                         { label: "Active Users", value: "100K+" },
                         { label: "Songs Streamed", value: "10M+" },
@@ -40,8 +40,8 @@ export const SocialProofSection = () => {
                         { label: "Average Rating", value: "4.8★" }
                     ].map((stat, i) => (
                         <div key={i} className="text-center">
-                            <div className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-zinc-500 mb-2">{stat.value}</div>
-                            <div className="text-sm text-zinc-500 font-medium uppercase tracking-wider">{stat.label}</div>
+                            <div className="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-zinc-500 mb-2">{stat.value}</div>
+                            <div className="text-xs md:text-sm text-zinc-500 font-medium uppercase tracking-wider">{stat.label}</div>
                         </div>
                     ))}
                 </div>
