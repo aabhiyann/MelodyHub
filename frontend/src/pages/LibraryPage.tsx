@@ -22,7 +22,7 @@ import {
 import Topbar from '@/components/layout/TopBar';
 import { useMusicStore } from '@/stores/MusicStore';
 import { usePlayerStore } from '@/stores/PlayerStore';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { axiosInstance } from '@/lib/axios';
 import { Song } from '@/types';
@@ -85,6 +85,7 @@ const getPlaylistGradient = (id: string, isGrid?: boolean) => {
 const LibraryPage = () => {
   const [activeTab, setActiveTab] = useState<TabType>('playlists');
   const [viewType, setViewType] = useState<ViewType>('grid');
+  const navigate = useNavigate();
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [likedSongs, setLikedSongs] = useState<Song[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -336,7 +337,7 @@ const LibraryPage = () => {
                         >
                           <div
                             className={`relative aspect-square rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow bg-gradient-to-br ${getPlaylistGradient(playlist._id, true)} cursor-pointer`}
-                            onClick={() => playlist.songs && handlePlaySongs(playlist.songs)}
+                            onClick={() => navigate(`/playlists/${playlist._id}`)}
                           >
                             <div className="w-full h-full flex items-center justify-center opacity-80 mix-blend-screen drop-shadow-md">
                               <Music className="size-16 text-white" />
@@ -393,8 +394,8 @@ const LibraryPage = () => {
                           className="flex items-center gap-4 p-3 rounded-lg hover:bg-white/10 transition-colors group active:scale-95 duration-200"
                         >
                           <div
-                            className="size-14 rounded-md bg-gradient-to-br from-brand-primary/20 to-brand-secondary/20 flex items-center justify-center cursor-pointer"
-                            onClick={() => playlist.songs && handlePlaySongs(playlist.songs)}
+                            className="size-14 rounded-md bg-gradient-to-br from-brand-primary/20 to-brand-secondary/20 flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity"
+                            onClick={() => navigate(`/playlists/${playlist._id}`)}
                           >
                             <ListMusic className="size-6 text-brand-primary" />
                           </div>

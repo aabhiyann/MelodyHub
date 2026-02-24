@@ -11,6 +11,7 @@ import { MascotImage } from "@/components/shared/MascotImage";
 import { motion } from "framer-motion";
 import { SectionErrorBoundary } from "@/components/shared/SectionErrorBoundary";
 import { useUser } from "@clerk/clerk-react";
+import { cn } from "@/lib/utils";
 
 
 const formatTime = (date: string) => {
@@ -51,12 +52,24 @@ const ChatPage = () => {
 		<div className='h-full flex flex-col rounded-lg overflow-hidden bg-transparent'>
 			<Topbar />
 
-			<div className='grid md:grid-cols-[300px_1fr] grid-cols-[80px_1fr] flex-1 min-h-0 rounded-xl overflow-hidden bg-background-elevated/40 backdrop-blur-lg border border-white/5'>
-				<SectionErrorBoundary sectionName="Friends List">
-					<FriendsList />
-				</SectionErrorBoundary>
+			<div className='flex md:grid md:grid-cols-[300px_1fr] flex-1 min-h-0 rounded-xl overflow-hidden bg-background-elevated/40 backdrop-blur-lg border border-white/5 relative'>
+				<div
+					className={cn(
+						"w-full md:w-auto h-full flex-shrink-0 md:block transition-all duration-300",
+						selectedUser ? "hidden" : "block"
+					)}
+				>
+					<SectionErrorBoundary sectionName="Friends List">
+						<FriendsList />
+					</SectionErrorBoundary>
+				</div>
 
-				<div className='flex flex-col h-full bg-white/[0.02] backdrop-blur-md relative min-h-0 overflow-hidden'>
+				<div
+					className={cn(
+						"flex flex-col h-full bg-white/[0.02] backdrop-blur-md relative min-h-0 overflow-hidden w-full transition-all duration-300",
+						!selectedUser ? "hidden md:flex" : "block"
+					)}
+				>
 					{selectedUser ? (
 						<>
 							<ChatHeader />

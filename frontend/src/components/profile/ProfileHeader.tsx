@@ -24,7 +24,7 @@ export const ProfileHeader = ({ user, isOwnProfile, onEdit }: ProfileHeaderProps
     useEffect(() => {
         setIsFollowing(user.isFollowing || false);
         setFollowersCount(user.followersCount || 0);
-    }, [user]);
+    }, [profileUserId]);
 
     const handleFollowToggle = async () => {
         setIsLoading(true);

@@ -125,7 +125,7 @@ function App() {
 
 			<AnimatePresence mode="wait">
 				<PageErrorBoundary>
-					<Routes location={location} key={location.pathname}>
+					<Routes location={location}>
 						{/* SSO Callback - Use full URL for redirects */}
 						<Route
 							path='/sso-callback'

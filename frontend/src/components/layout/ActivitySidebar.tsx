@@ -26,7 +26,7 @@ const ActivitySidebar = () => {
 		};
 
 		fetchActivities();
-	}, [user]);
+	}, [user?.id]);
 
 	return (
 		<div className='h-full bg-background-elevated/40 border-l border-white/5 flex flex-col backdrop-blur-md'>

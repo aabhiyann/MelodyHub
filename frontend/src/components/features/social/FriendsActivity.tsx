@@ -11,7 +11,7 @@ export const FriendsActivity = () => {
 
     useEffect(() => {
         if (user) fetchUsers();
-    }, [user, fetchUsers]);
+    }, [user?.id, fetchUsers]);
 
     // Filter out current user - guard against non-array data from API errors
     const usersList = Array.isArray(users) ? users : [];

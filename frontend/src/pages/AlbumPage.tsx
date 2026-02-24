@@ -9,6 +9,8 @@ import { Clock, Pause, Play, Disc } from 'lucide-react';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
+import Topbar from '@/components/layout/TopBar';
+
 export const formatDuration = (seconds: number) => {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
@@ -26,7 +28,8 @@ const AlbumPage = () => {
 
   if (isLoading) {
     return (
-      <div className="h-full flex flex-col rounded-lg overflow-hidden bg-transparent">
+      <main className="h-full flex flex-col rounded-lg overflow-hidden bg-transparent">
+        <Topbar />
         <div className="flex-1 overflow-hidden">
           <ScrollArea className="h-full">
             <div className="p-6 space-y-8">
@@ -41,7 +44,7 @@ const AlbumPage = () => {
             </div>
           </ScrollArea>
         </div>
-      </div>
+      </main>
     );
   }
 
@@ -63,8 +66,9 @@ const AlbumPage = () => {
   };
 
   return (
-    <div className="h-full bg-transparent">
-      <ScrollArea className="h-full rounded-md">
+    <main className='rounded-md overflow-hidden h-full bg-transparent flex flex-col'>
+      <Topbar />
+      <ScrollArea className='flex-1 rounded-md'>
         {/* Main Content */}
         <div className="relative min-h-full">
           {/* bg gradient - Reduced for cleaner glass look */}
@@ -154,7 +158,7 @@ const AlbumPage = () => {
           </div>
         </div>
       </ScrollArea>
-    </div>
+    </main>
   );
 };
 export default AlbumPage;

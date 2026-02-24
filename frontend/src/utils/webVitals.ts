@@ -51,11 +51,14 @@ function sendToAnalytics(metric: Metric) {
             navigationType: metric.navigationType,
         });
 
+        const apiUrl = import.meta.env.VITE_API_URL || '/api';
+        const endpoint = `${apiUrl}/analytics/web-vitals`;
+
         // Use sendBeacon if available (doesn't block page unload)
         if (navigator.sendBeacon) {
-            navigator.sendBeacon('/api/analytics/web-vitals', body);
+            navigator.sendBeacon(endpoint, body);
         } else {
-            fetch('/api/analytics/web-vitals', {
+            fetch(endpoint, {
                 body,
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

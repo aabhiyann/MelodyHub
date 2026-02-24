@@ -9,27 +9,49 @@ import { useUser } from "@clerk/clerk-react";
 import { InviteCollaboratorsDialog } from "@/components/features/playlist/InviteCollaboratorsDialog";
 import { PlaylistSongRow } from "@/components/features/playlist/PlaylistSongRow";
 
+import Topbar from "@/components/layout/TopBar";
+
 const PlaylistPage = () => {
     const { id } = useParams();
     const { fetchPlaylistById, currentPlaylist, isLoading, error } = usePlaylistStore();
     const { currentSong, isPlaying, playAlbum, togglePlay } = usePlayerStore();
     const { user } = useUser();
 
+    const isReady = currentPlaylist?._id === id;
+
     useEffect(() => {
-        if (id) fetchPlaylistById(id);
-    }, [fetchPlaylistById, id]);
+        if (id && currentPlaylist?._id !== id) {
+            fetchPlaylistById(id);
+        }
+    }, [fetchPlaylistById, id, currentPlaylist?._id]);
 
-    if (isLoading) return null; // Or skeleton
-
-    if (error || (!isLoading && id && !currentPlaylist)) {
+    if (isLoading || (!isReady && !error)) {
         return (
-            <div className="h-full flex items-center justify-center text-center p-8">
-                <div>
-                    <ListMusic className="size-16 mx-auto mb-4 text-white/20" />
-                    <h2 className="text-xl font-semibold text-white mb-2">Playlist not found</h2>
-                    <p className="text-text-secondary text-sm">This playlist may have been deleted or doesn't exist.</p>
+            <main className="h-full flex items-center justify-center p-8 flex-col bg-transparent">
+                <Topbar />
+                <div className="flex-1 w-full flex items-center justify-center">
+                    <div className="animate-pulse space-y-4 w-full max-w-lg">
+                        <div className="h-48 w-48 bg-white/10 mx-auto rounded-lg" />
+                        <div className="h-8 bg-white/10 w-3/4 mx-auto rounded" />
+                        <div className="h-4 bg-white/10 w-1/2 mx-auto rounded" />
+                    </div>
                 </div>
-            </div>
+            </main>
+        );
+    }
+
+    if (error || !currentPlaylist) {
+        return (
+            <main className="h-full flex items-center justify-center text-center p-8 flex-col bg-transparent">
+                <Topbar />
+                <div className="flex-1 w-full flex items-center justify-center">
+                    <div>
+                        <ListMusic className="size-16 mx-auto mb-4 text-white/20" />
+                        <h2 className="text-xl font-semibold text-white mb-2">Playlist not found</h2>
+                        <p className="text-text-secondary text-sm">This playlist may have been deleted or doesn't exist.</p>
+                    </div>
+                </div>
+            </main>
         );
     }
 
@@ -62,8 +84,9 @@ const PlaylistPage = () => {
     };
 
     return (
-        <div className='h-full bg-transparent'>
-            <ScrollArea className='h-full rounded-md'>
+        <main className='rounded-md overflow-hidden h-full bg-transparent flex flex-col'>
+            <Topbar />
+            <ScrollArea className='flex-1 rounded-md'>
                 {/* Main Content */}
                 <div className='relative min-h-full'>
                     {/* bg gradient - Reduced for cleaner glass look */}
@@ -161,7 +184,7 @@ const PlaylistPage = () => {
                     </div>
                 </div>
             </ScrollArea>
-        </div>
+        </main>
     );
 };
 export default PlaylistPage;

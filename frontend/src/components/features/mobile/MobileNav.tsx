@@ -1,4 +1,4 @@
-import { Home, Search, Library, Sparkles, User } from "lucide-react";
+import { Home, Search, Library, MessageSquare, Compass } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
@@ -7,10 +7,10 @@ const MobileNav = () => {
 
     const tabs = [
         { name: "Home", icon: Home, path: "/home" },
-        { name: "Search", icon: Search, path: "/search" },
+        { name: "Browse", icon: Compass, path: "/browse" },
         { name: "Library", icon: Library, path: "/library" },
-        { name: "AI", icon: Sparkles, path: "/ai-playlist" },
-        { name: "Profile", icon: User, path: "/profile" }, // Assuming a profile route or user route
+        { name: "Chat", icon: MessageSquare, path: "/chat" },
+        { name: "Search", icon: Search, path: "/search" },
     ];
 
     const handleVibrate = () => {

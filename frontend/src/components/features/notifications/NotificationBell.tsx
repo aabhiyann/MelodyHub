@@ -14,7 +14,7 @@ export const NotificationBell = () => {
 
     useEffect(() => {
         if (user) fetchNotifications();
-    }, [user, fetchNotifications]);
+    }, [user?.id, fetchNotifications]);
 
     useEffect(() => {
         const socket = useChatStore.getState().socket;

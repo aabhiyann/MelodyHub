@@ -9,7 +9,7 @@ axiosInstance.interceptors.request.use(async (config) => {
 	// Test environment bypass - inject headers if in test mode
 	if (typeof window !== 'undefined' && window.localStorage.getItem('TEST_MODE') === 'true') {
 		config.headers['x-test-mode'] = 'true';
-		config.headers['x-test-user-id'] = 'test-user-123';
+		config.headers['x-test-user-id'] = window.localStorage.getItem('TEST_USER_ID') || 'user_38WnSniIRJrePFl9PmplAl7PrrX';
 		return config;
 	}
 

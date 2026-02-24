@@ -3,7 +3,7 @@
  * Native app-like bottom navigation with 4 tabs
  */
 
-import { Home, Compass, Radio, Library, Search } from 'lucide-react';
+import { Home, Compass, MessageSquare, Library, Search } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -18,9 +18,9 @@ interface Tab {
 const tabs: Tab[] = [
     { id: 'home', label: 'Home', icon: Home, path: '/home' },
     { id: 'browse', label: 'Browse', icon: Compass, path: '/browse' },
-    { id: 'radio', label: 'Radio', icon: Radio, path: '/radio' },
-    { id: 'library', label: 'Library', icon: Library, path: '/library' },
     { id: 'search', label: 'Search', icon: Search, path: '/search' },
+    { id: 'chat', label: 'Chat', icon: MessageSquare, path: '/chat' },
+    { id: 'library', label: 'Library', icon: Library, path: '/library' },
 ];
 
 export const BottomTabBar = () => {

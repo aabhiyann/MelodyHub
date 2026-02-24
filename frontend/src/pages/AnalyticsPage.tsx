@@ -80,7 +80,7 @@ const AnalyticsPage = () => {
             }
         };
         fetchAll();
-    }, [user, period]);
+    }, [user?.id, period]);
 
     const listeningTimeMinutes = dashboard
         ? Math.round(dashboard.totalListeningTime / 60)

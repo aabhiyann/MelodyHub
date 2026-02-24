@@ -56,7 +56,7 @@ const LeftSidebar = () => {
             )}
           >
             <Home className='mr-3 size-5 group-hover:scale-110 transition-transform' />
-            <span className='hidden md:inline'>Home</span>
+            <span className='inline'>Home</span>
           </Link>
 
           {/* Browse */}
@@ -73,7 +73,7 @@ const LeftSidebar = () => {
             )}
           >
             <Library className='mr-3 size-5 group-hover:scale-110 transition-transform' />
-            <span className='hidden md:inline'>Browse</span>
+            <span className='inline'>Browse</span>
           </Link>
 
           {/* Radio */}
@@ -90,7 +90,7 @@ const LeftSidebar = () => {
             )}
           >
             <Mic2 className='mr-3 size-5 group-hover:scale-110 transition-transform' />
-            <span className='hidden md:inline'>Radio</span>
+            <span className='inline'>Radio</span>
           </Link>
 
           {/* Search - Placeholder for future */}
@@ -107,7 +107,7 @@ const LeftSidebar = () => {
             )}
           >
             <Search className='mr-3 size-5 group-hover:scale-110 transition-transform' />
-            <span className='hidden md:inline'>Search</span>
+            <span className='inline'>Search</span>
           </Link>
 
           <Link
@@ -123,7 +123,7 @@ const LeftSidebar = () => {
             )}
           >
             <Target className='mr-3 size-5 group-hover:scale-110 transition-transform text-yellow-500' />
-            <span className='hidden md:inline'>Quests</span>
+            <span className='inline'>Quests</span>
           </Link>
 
           {/* Library - Placeholder for future */}
@@ -140,7 +140,7 @@ const LeftSidebar = () => {
             )}
           >
             <Library className='mr-3 size-5 group-hover:scale-110 transition-transform' />
-            <span className='hidden md:inline'>Your Library</span>
+            <span className='inline'>Your Library</span>
           </Link>
         </div>
 
@@ -165,7 +165,7 @@ const LeftSidebar = () => {
                 )}
               >
                 <Sparkles className='mr-3 size-5 group-hover:scale-110 transition-transform text-brand-primary' />
-                <span className='hidden md:inline'>Ask Melody</span>
+                <span className='inline'>Ask Melody</span>
               </Link>
 
               {/* Chat */}
@@ -182,7 +182,7 @@ const LeftSidebar = () => {
                 )}
               >
                 <MessageSquare className='mr-3 size-5 group-hover:scale-110 transition-transform' />
-                <span className='hidden md:inline'>Chat</span>
+                <span className='inline'>Chat</span>
               </Link>
             </>
           )}
@@ -204,7 +204,7 @@ const LeftSidebar = () => {
                 )}
               >
                 <LockKeyholeOpen className='mr-3 size-5 group-hover:scale-110 transition-transform' />
-                <span className='hidden md:inline'>Admin</span>
+                <span className='inline'>Admin</span>
               </Link>
             </>
           )}
@@ -216,7 +216,7 @@ const LeftSidebar = () => {
         <div className='flex items-center justify-between mb-4 px-2'>
           <div className='flex items-center text-text-secondary group cursor-pointer hover:text-white transition-colors'>
             <Library className='size-5 mr-3 group-hover:scale-110 transition-transform' />
-            <span className='hidden md:inline font-semibold tracking-tight'>Collections</span>
+            <span className='inline font-semibold tracking-tight'>Collections</span>
           </div>
         </div>
 
@@ -231,7 +231,7 @@ const LeftSidebar = () => {
                 <div className="bg-gradient-to-br from-purple-600 to-pink-600 p-2 rounded-md">
                   <Heart className='size-4 text-white' />
                 </div>
-                <span className='font-medium text-sm hidden md:inline'>Liked Songs</span>
+                <span className='font-medium text-sm inline'>Liked Songs</span>
               </Link>
 
               <Link
@@ -241,7 +241,7 @@ const LeftSidebar = () => {
                 <div className="bg-gradient-to-br from-indigo-600 to-purple-600 p-2 rounded-md">
                   <ListMusic className='size-4 text-white' />
                 </div>
-                <span className='font-medium text-sm hidden md:inline'>Playlists</span>
+                <span className='font-medium text-sm inline'>Playlists</span>
               </Link>
 
               <Link
@@ -251,7 +251,7 @@ const LeftSidebar = () => {
                 <div className="bg-gradient-to-br from-blue-600 to-cyan-600 p-2 rounded-md">
                   <Mic2 className='size-4 text-white' />
                 </div>
-                <span className='font-medium text-sm hidden md:inline'>Artists</span>
+                <span className='font-medium text-sm inline'>Artists</span>
               </Link>
             </div>
 
@@ -277,7 +277,7 @@ const LeftSidebar = () => {
                     alt='Album'
                     className='size-10 rounded-md flex-shrink-0 object-cover shadow-sm group-hover:shadow-md transition-shadow'
                   />
-                  <div className='flex-1 min-w-0 hidden md:block'>
+                  <div className='flex-1 min-w-0 block'>
                     <p className='font-medium text-text-primary truncate text-sm'>{album.title}</p>
                     <p className='text-xs text-text-secondary truncate group-hover:text-text-primary transition-colors'>
                       {album.artist}
@@ -299,7 +299,7 @@ const LeftSidebar = () => {
               alt={user.firstName || 'User'}
               className='size-10 rounded-full object-cover ring-2 ring-white/10'
             />
-            <div className='flex-1 min-w-0 hidden md:block'>
+            <div className='flex-1 min-w-0 block'>
               <p className='font-medium text-white text-sm truncate'>
                 {user.firstName} {user.lastName}
               </p>
