@@ -102,7 +102,7 @@ export const HeroSection = () => {
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.15 }}
-                                className="block text-transparent bg-clip-text bg-gradient-to-br from-brand-primary via-brand-secondary to-accent-blue pb-2"
+                                className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400 pb-2"
                             >
                                 Reimagined
                             </motion.span>
@@ -177,7 +177,7 @@ export const HeroSection = () => {
                             rotateY: springRotateY,
                             transformStyle: 'preserve-3d',
                         }}
-                        className="relative z-20 w-[360px] h-[640px]"
+                        className="relative z-20 w-[280px] h-[500px] sm:w-[360px] sm:h-[640px]"
                     >
                         {/* 3D Phone Body */}
                         <div
@@ -316,7 +316,7 @@ export const HeroSection = () => {
                     <div className="w-1 h-3 bg-current rounded-full" />
                 </div>
             </motion.div>
-        </section>
+        </section >
     );
 };
 

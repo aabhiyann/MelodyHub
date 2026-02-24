@@ -232,7 +232,7 @@ const AudioPlayer = () => {
 
 			{/* Player UI - Floating Pill */}
 			<div
-				className="fixed bottom-0 left-0 right-0 md:bottom-6 md:left-6 md:right-6 z-[1000] h-[84px] md:h-[92px] rounded-t-2xl md:rounded-2xl"
+				className="fixed bottom-[72px] left-2 right-2 md:bottom-6 md:left-6 md:right-6 z-[1000] h-[60px] md:h-[92px] rounded-xl md:rounded-2xl"
 				style={{
 					background: 'rgba(20, 20, 22, 0.85)', // Slightly refined dark glass
 					backdropFilter: 'blur(60px)',
@@ -242,8 +242,8 @@ const AudioPlayer = () => {
 				}}
 			>
 				{/* Content */}
-				<div className="h-full px-4 md:px-6 max-w-[1920px] mx-auto">
-					<div className="grid grid-cols-1 md:grid-cols-3 h-full items-center gap-4">
+				<div className="h-full px-3 md:px-6 max-w-[1920px] mx-auto">
+					<div className="flex md:grid md:grid-cols-3 h-full items-center justify-between gap-4">
 
 						{/* Left: Now Playing */}
 						<div className="flex justify-between items-center w-full md:w-auto min-w-0 gap-4">

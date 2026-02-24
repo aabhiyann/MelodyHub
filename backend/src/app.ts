@@ -91,6 +91,7 @@ app.use(compression());
 
 app.use(clerkMiddleware());
 app.use(express.json());
+app.use(express.text());
 
 // Request logging middleware
 if (process.env.NODE_ENV !== 'test') {

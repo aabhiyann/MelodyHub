@@ -45,7 +45,16 @@ router.post("/track-event", protectRoute, async (req, res) => {
 // Web Vitals endpoint
 router.post("/web-vitals", async (req, res) => {
   try {
-    const { name, value, rating, delta, id } = req.body;
+    let body = req.body;
+    if (typeof body === 'string' && body.length > 0) {
+      try {
+        body = JSON.parse(body);
+      } catch (e) {
+        console.warn("[Web Vitals] Failed to parse string body", e);
+      }
+    }
+
+    const { name, value, rating, delta, id } = body;
 
     // Log metrics (in production, save to database)
     console.log(`[Web Vitals] ${name}: ${value} (${rating})`);
