@@ -136,6 +136,18 @@ export class ChatManager {
             });
         });
 
+        // Friend Request Events
+        socket.on("friend_request_accepted", () => {
+            this.fetchFriends();
+            this.fetchFriendRequests();
+        });
+
+        socket.on("new_notification", (notification: any) => {
+            if (notification?.type === "FRIEND_REQUEST") {
+                this.fetchFriendRequests();
+            }
+        });
+
         // Listen for Real-time Song Listeners events
         socket.on("song_listeners", ({ songId, count }: { songId: string; count: number }) => {
             // Only update if it matches current song? 

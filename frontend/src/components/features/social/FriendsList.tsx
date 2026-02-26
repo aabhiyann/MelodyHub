@@ -89,33 +89,6 @@ export const FriendsList = () => {
                     </TabsList>
 
                     <TabsContent value="friends" className="mt-0 flex-1 min-h-0 flex flex-col data-[state=inactive]:hidden">
-                        {/* Friend Requests Section */}
-                        {friendRequests.length > 0 && (
-                            <div className="mb-4 flex-shrink-0">
-                                <h3 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2 px-1">Requests</h3>
-                                <div className="space-y-2">
-                                    {friendRequests.map((req: FriendRequest) => (
-                                        <div key={req._id} className="flex items-center gap-3 p-2 rounded-lg bg-background-base/40 border border-white/5 shadow-sm hover:bg-white/5 transition-colors">
-                                            <Avatar className="size-8 ring-1 ring-white/10">
-                                                <AvatarImage src={req.senderId.imageUrl} />
-                                                <AvatarFallback>{req.senderId.fullName[0]}</AvatarFallback>
-                                            </Avatar>
-                                            <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-medium text-text-primary truncate">{req.senderId.fullName}</p>
-                                            </div>
-                                            <Button
-                                                size="icon"
-                                                variant="ghost"
-                                                className="size-7 text-success hover:text-success/80 hover:bg-success/10 rounded-full"
-                                                onClick={() => acceptFriendRequest(req._id)}
-                                            >
-                                                <Check className="size-4" />
-                                            </Button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
 
                         <div className="flex-1 -mr-4 pr-4 min-h-0">
                             <VirtualScrollList

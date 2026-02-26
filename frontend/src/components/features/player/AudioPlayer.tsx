@@ -234,8 +234,8 @@ const AudioPlayer = () => {
 			{/* Player UI - Floating Pill */}
 			<div
 				onClick={(e) => {
-					// Only expand if clicking the container (not buttons inside) and on mobile layout
-					if (window.innerWidth < 768 && !(e.target as HTMLElement).closest('button')) {
+					// Expand if clicking the container (not buttons inside) for all devices
+					if (!(e.target as HTMLElement).closest('button') && !(e.target as HTMLElement).closest('input')) {
 						toggleExpanded();
 					}
 				}}

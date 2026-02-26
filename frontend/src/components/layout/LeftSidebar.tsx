@@ -41,7 +41,7 @@ const LeftSidebar = () => {
   return (
     <div className='h-full flex flex-col gap-2'>
       {/* Main Navigation */}
-      <div className='rounded-xl glass-panel flex flex-col p-3 shadow-sm'>
+      <div className='rounded-xl glass-panel bg-zinc-950/95 flex flex-col p-3 shadow-sm'>
         <div className='space-y-1'>
           <Link
             to={'/home'}
@@ -212,7 +212,7 @@ const LeftSidebar = () => {
       </div>
 
       {/* Library/Collections Section */}
-      <div className='flex-1 rounded-xl glass-panel flex flex-col p-4 shadow-sm'>
+      <div className='flex-1 rounded-xl glass-panel bg-zinc-950/95 flex flex-col p-4 shadow-sm'>
         <div className='flex items-center justify-between mb-4 px-2'>
           <div className='flex items-center text-text-secondary group cursor-pointer hover:text-white transition-colors'>
             <Library className='size-5 mr-3 group-hover:scale-110 transition-transform' />

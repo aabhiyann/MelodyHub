@@ -131,6 +131,13 @@ export class FriendService {
         // Add to friends lists
         await User.findByIdAndUpdate(request.senderId, { $addToSet: { friends: request.receiverId } });
         await User.findByIdAndUpdate(request.receiverId, { $addToSet: { friends: request.senderId } });
+
+        // Notify both users in real-time
+        const sender = await User.findById(request.senderId);
+        if (sender && sender.clerkId) {
+            emitToUser(sender.clerkId, "friend_request_accepted", { friendId: userClerkId });
+        }
+        emitToUser(userClerkId, "friend_request_accepted", { friendId: sender?.clerkId });
     }
 
     /**

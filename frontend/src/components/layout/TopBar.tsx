@@ -20,92 +20,104 @@ const Topbar = () => {
 	const isRootRoute = ['/home', '/browse', '/search', '/library', '/chat'].includes(location.pathname) || location.pathname === '/';
 
 	return (
-		<div
-			className='flex items-center justify-between p-4 sticky top-0 z-50 glass-toolbar'
-		>
-			{/* Logo with Melody Icon */}
-			<div className='flex gap-3 items-center'>
-				<div className="md:hidden flex items-center">
-					{!isRootRoute ? (
-						<Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="text-text-secondary hover:text-white mr-1 -ml-2">
-							<ChevronLeft className="size-8" />
-						</Button>
-					) : (
-						<Sheet>
-							<SheetTrigger asChild>
-								<Button variant="ghost" size="icon" className="text-text-secondary hover:text-white mr-1">
-									<Menu className="size-6" />
-								</Button>
-							</SheetTrigger>
-							<SheetContent side="left" className="p-0 bg-black/95 backdrop-blur-2xl w-[280px] border-r border-white/10 shadow-2xl z-[100]">
-								<SheetHeader className="p-4 border-b border-white/10 text-left">
-									<SheetTitle className="flex items-center gap-2">
-										<img src='/mascot/melody-icon.png' alt='Melody mascot' className='size-6 rounded-full' />
-										<span className="font-display font-bold text-lg bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">MelodyHub</span>
-									</SheetTitle>
-								</SheetHeader>
-								<div className="p-2 h-[calc(100vh-65px)] overflow-y-auto pb-20">
-									<LeftSidebar />
-								</div>
-							</SheetContent>
-						</Sheet>
-					)}
-				</div>
+		<div className='flex flex-col sticky top-0 z-50 glass-toolbar bg-zinc-950/90 w-full'>
+			<div className='flex items-center justify-between p-4 w-full'>
+				{/* Logo with Melody Icon */}
+				<div className='flex gap-3 items-center'>
+					<div className="md:hidden flex items-center">
+						{!isRootRoute ? (
+							<Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="text-text-secondary hover:text-white mr-1 -ml-2">
+								<ChevronLeft className="size-8" />
+							</Button>
+						) : (
+							<Sheet>
+								<SheetTrigger asChild>
+									<Button variant="ghost" size="icon" className="text-text-secondary hover:text-white mr-1">
+										<Menu className="size-6" />
+									</Button>
+								</SheetTrigger>
+								<SheetContent side="left" className="p-0 bg-black/95 backdrop-blur-2xl w-[280px] border-r border-white/10 shadow-2xl z-[100]">
+									<SheetHeader className="p-4 border-b border-white/10 text-left">
+										<SheetTitle className="flex items-center gap-2">
+											<img src='/mascot/melody-icon.png' alt='Melody mascot' className='size-6 rounded-full' />
+											<span className="font-display font-bold text-lg bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">MelodyHub</span>
+										</SheetTitle>
+									</SheetHeader>
+									<div className="p-2 h-[calc(100vh-65px)] overflow-y-auto pb-20">
+										<LeftSidebar />
+									</div>
+								</SheetContent>
+							</Sheet>
+						)}
+					</div>
 
-				<Link to="/home" className='hidden md:flex items-center gap-2 hover:opacity-80 transition-opacity'>
-					<img
-						src='/mascot/melody-icon.png'
-						alt='Melody mascot'
-						className='size-8 drop-shadow-lg rounded-full object-cover'
-					/>
-					<span className='font-display font-bold text-xl tracking-tight
+					<Link to="/home" className='hidden md:flex items-center gap-2 hover:opacity-80 transition-opacity'>
+						<img
+							src='/mascot/melody-icon.png'
+							alt='Melody mascot'
+							className='size-8 drop-shadow-lg rounded-full object-cover'
+						/>
+						<span className='font-display font-bold text-xl tracking-tight
             bg-gradient-to-r from-brand-primary to-brand-secondary
             bg-clip-text text-transparent
           '>
-						MelodyHub
-					</span>
-				</Link>
-			</div>
-
-			{/* User Actions */}
-			<div className='flex items-center gap-4'>
-				<div className="hidden md:flex items-center gap-2 mr-2">
-					<StreakBadge />
-					<GemsIndicator />
+							MelodyHub
+						</span>
+					</Link>
 				</div>
 
-				<SignedOut>
-					<SigninAuth />
-				</SignedOut>
+				{/* User Actions */}
+				<div className='flex items-center gap-4'>
+					<div className="hidden md:flex items-center gap-2 mr-2">
+						<StreakBadge />
+						<GemsIndicator />
+					</div>
 
-				{/* Magic Button (Desktop) */}
-				<Button
-					onClick={openModal}
-					className="hidden md:flex items-center gap-2 bg-brand-primary/10 text-brand-primary border border-brand-primary/20 hover:bg-brand-primary/20 hover:border-brand-primary/30 transition-all duration-300"
-				>
-					<Sparkles className="size-4 animate-pulse group-hover:scale-110 transition-transform" />
-					<span className="font-semibold text-sm">Magic</span>
-				</Button>
+					<SignedOut>
+						<SigninAuth />
+					</SignedOut>
 
-				{/* Activity Feed Toggle */}
-				<Button
-					variant="ghost"
-					size="icon"
-					className="text-text-secondary hover:text-text-primary hidden lg:flex"
-					onClick={toggleActivityPanel}
-					title={isActivityPanelOpen ? "Hide Friend Activity" : "Show Friend Activity"}
-				>
-					<Users className={cn("size-5 transition-colors", isActivityPanelOpen && "text-brand-primary")} />
-				</Button>
+					{/* Magic Button (Desktop) */}
+					<Button
+						onClick={openModal}
+						className="hidden md:flex items-center gap-2 bg-brand-primary/10 text-brand-primary border border-brand-primary/20 hover:bg-brand-primary/20 hover:border-brand-primary/30 transition-all duration-300"
+					>
+						<Sparkles className="size-4 animate-pulse group-hover:scale-110 transition-transform" />
+						<span className="font-semibold text-sm">Magic</span>
+					</Button>
 
-				<SignedIn>
-					<NotificationBell />
-				</SignedIn>
+					{/* Activity Feed Toggle */}
+					<Button
+						variant="ghost"
+						size="icon"
+						className="text-text-secondary hover:text-text-primary hidden lg:flex"
+						onClick={toggleActivityPanel}
+						title={isActivityPanelOpen ? "Hide Friend Activity" : "Show Friend Activity"}
+					>
+						<Users className={cn("size-5 transition-colors", isActivityPanelOpen && "text-brand-primary")} />
+					</Button>
 
-				<div className='hover:scale-105 transition-transform duration-200'>
-					<UserButton />
+					<SignedIn>
+						<NotificationBell />
+					</SignedIn>
+
+					<div className='hover:scale-105 transition-transform duration-200'>
+						<UserButton />
+					</div>
 				</div>
 			</div>
+
+			{/* Mobile Quick Filters (Home Only) */}
+			{location.pathname === '/home' && (
+				<div className="px-4 pb-3 md:hidden">
+					<div className="flex overflow-x-auto no-scrollbar space-x-3">
+						<Button className="rounded-full bg-brand-primary text-white hover:bg-brand-primary/90 font-semibold text-sm transition-transform active:scale-95 shadow-lg shadow-brand-primary/20 shrink-0 h-9 px-5">All</Button>
+						<Button variant="outline" className="rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-sm border-white/5 shrink-0 h-9 px-5">Music</Button>
+						<Button variant="outline" className="rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-sm border-white/5 shrink-0 h-9 px-5 gap-2" onClick={(e) => { e.preventDefault(); navigate('/library?tab=podcasts'); }}>Podcasts</Button>
+						<Button variant="outline" className="rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-sm border-white/5 shrink-0 h-9 px-5" onClick={(e) => { e.preventDefault(); document.querySelector('.cl-userButtonTrigger')?.dispatchEvent(new window.MouseEvent('click', { bubbles: true })); }}>Profile</Button>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 };
