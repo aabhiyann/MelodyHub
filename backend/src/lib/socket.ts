@@ -88,6 +88,13 @@ export const initializeSocket = (server: HttpServer) => {
 			}
 		});
 
+		socket.on("stop_typing", ({ senderId, receiverId }: { senderId: string; receiverId: string }) => {
+			const receiverSocketId = userSockets.get(receiverId);
+			if (receiverSocketId) {
+				io.to(receiverSocketId).emit("user_stop_typing", { senderId });
+			}
+		});
+
 		// Live Listener Logic
 		socket.on("user_playing", (songId: string) => {
 			try {

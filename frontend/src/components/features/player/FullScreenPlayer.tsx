@@ -13,7 +13,9 @@ import {
     ListMusic,
     Mic2,
     MonitorSpeaker,
-    MoreHorizontal
+    MoreHorizontal,
+    Volume1,
+    Volume2
 } from 'lucide-react';
 import { usePlayerStore } from '@/stores/PlayerStore';
 // import { useMusicStore } from '@/stores/MusicStore';
@@ -34,7 +36,11 @@ export const FullScreenPlayer = () => {
         playPrevious,
         currentTime,
         duration,
-        seek
+        seek,
+        volume,
+        setVolume,
+        isMuted,
+        toggleMute
     } = usePlayerStore();
 
     const [activeTab, setActiveTab] = useState<'player' | 'lyrics' | 'queue'>('player');
@@ -209,7 +215,7 @@ export const FullScreenPlayer = () => {
                                     </div>
 
                                     {/* Controls */}
-                                    <div className="flex items-center justify-between px-2 pb-8">
+                                    <div className="flex items-center justify-between px-2 pb-6">
                                         <ShuffleButton />
 
                                         <motion.button
@@ -241,6 +247,36 @@ export const FullScreenPlayer = () => {
                                         </motion.button>
 
                                         <RepeatButton />
+                                    </div>
+
+                                    {/* Mobile Volume Slider */}
+                                    <div className="flex items-center gap-3 px-4 pb-6 w-full max-w-[400px] mx-auto opacity-70 hover:opacity-100 transition-opacity">
+                                        <button onClick={() => setVolume(0)}><Volume1 className="size-4 text-white" /></button>
+                                        <div className="relative flex-1 h-3 flex items-center group">
+                                            <input
+                                                type="range"
+                                                min="0"
+                                                max="100"
+                                                value={isMuted ? 0 : volume}
+                                                onChange={(e) => {
+                                                    const vol = Number(e.target.value);
+                                                    setVolume(vol);
+                                                    if (isMuted && vol > 0) toggleMute();
+                                                }}
+                                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                            />
+                                            <div className="w-full h-1 bg-white/20 rounded-full overflow-hidden">
+                                                <div
+                                                    className="h-full bg-white rounded-full group-hover:bg-brand-primary transition-colors"
+                                                    style={{ width: `${isMuted ? 0 : volume}%` }}
+                                                />
+                                            </div>
+                                            <div
+                                                className="absolute h-3 w-3 bg-white rounded-full shadow-md pointer-events-none transition-transform opacity-0 group-hover:opacity-100"
+                                                style={{ left: `calc(${isMuted ? 0 : volume}% - 6px)` }}
+                                            />
+                                        </div>
+                                        <button onClick={() => setVolume(100)}><Volume2 className="size-4 text-white" /></button>
                                     </div>
 
                                     {/* Bottom Actions */}

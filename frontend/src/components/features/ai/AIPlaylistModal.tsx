@@ -80,7 +80,7 @@ export const AIPlaylistModal = () => {
                         </button>
 
                         {/* Scrollable Content Area */}
-                        <div className="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-12 flex flex-col items-center">
+                        <div className="flex-1 overflow-y-auto custom-scrollbar p-6 pb-24 md:p-12 flex flex-col items-center">
 
                             {/* Mascot - shown in prompt/processing only; hidden in results for content-first Spotify-style look */}
                             {stage !== 'results' && (

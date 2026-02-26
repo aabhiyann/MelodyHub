@@ -122,6 +122,20 @@ export class ChatManager {
             });
         });
 
+        socket.on("user_stop_typing", ({ senderId }: { senderId: string }) => {
+            this.set((state: ChatStore) => {
+                const newTypingUsers = new Set(state.typingUsers);
+                newTypingUsers.delete(senderId);
+
+                if (typingTimeouts.has(senderId)) {
+                    clearTimeout(typingTimeouts.get(senderId));
+                    typingTimeouts.delete(senderId);
+                }
+
+                return { typingUsers: newTypingUsers };
+            });
+        });
+
         // Listen for Real-time Song Listeners events
         socket.on("song_listeners", ({ songId, count }: { songId: string; count: number }) => {
             // Only update if it matches current song? 
@@ -185,6 +199,13 @@ export class ChatManager {
         const senderId = this.userId;
         if (!senderId) return;
         this.socket.emit("typing", { senderId, receiverId });
+    }
+
+    sendStopTyping(receiverId: string) {
+        if (!this.socket) return;
+        const senderId = this.userId;
+        if (!senderId) return;
+        this.socket.emit("stop_typing", { senderId, receiverId });
     }
 
     updateActivity(activity: string) {

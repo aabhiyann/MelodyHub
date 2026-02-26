@@ -292,7 +292,7 @@ const LeftSidebar = () => {
 
       {/* User Profile Section */}
       {user && (
-        <div className='rounded-xl bg-background-elevated/40 backdrop-blur-md border border-white/5 p-3 shadow-sm'>
+        <div className='rounded-xl bg-black/60 backdrop-blur-3xl border border-white/5 p-3 shadow-sm'>
           <div className='flex items-center gap-3'>
             <img
               src={user.imageUrl}

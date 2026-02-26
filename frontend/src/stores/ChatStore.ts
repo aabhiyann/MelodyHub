@@ -23,6 +23,7 @@ export interface ChatActions {
 	disconnectSocket: () => void;
 	sendMessage: (receiverId: string, content: string) => void;
 	sendTyping: (receiverId: string) => void;
+	sendStopTyping: (receiverId: string) => void;
 	fetchUsers: () => Promise<void>;
 	fetchMessages: (userId: string) => Promise<void>;
 	setSelectedUser: (user: User | null) => void;
@@ -63,6 +64,7 @@ export const useChatStore = create<ChatStore>()(
 				disconnectSocket: manager.disconnectSocket.bind(manager),
 				sendMessage: manager.sendMessage.bind(manager),
 				sendTyping: manager.sendTyping.bind(manager),
+				sendStopTyping: manager.sendStopTyping.bind(manager),
 				updateActivity: manager.updateActivity.bind(manager),
 
 				fetchUsers: manager.fetchUsers.bind(manager),

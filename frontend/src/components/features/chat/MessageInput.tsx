@@ -8,13 +8,17 @@ import { Textarea } from "@/components/ui/textarea";
 export const MessageInput = () => {
 	const [newMessage, setNewMessage] = useState("");
 	const { user } = useUser();
-	const { selectedUser, sendMessage, sendTyping } = useChatStore();
+	const { selectedUser, sendMessage, sendTyping, sendStopTyping } = useChatStore();
 	const lastTypingTimeRef = useRef<number>(0);
 
 	const handleSend = () => {
 		if (!selectedUser || !user || !newMessage.trim()) return;
 		sendMessage(selectedUser.clerkId, newMessage.trim());
 		setNewMessage("");
+
+		// Instantly kill typing indicator on send
+		if ((window as any).typingTimeout) clearTimeout((window as any).typingTimeout);
+		sendStopTyping(selectedUser.clerkId);
 	};
 
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -25,12 +29,27 @@ export const MessageInput = () => {
 	};
 
 	const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-		setNewMessage(e.target.value);
+		const val = e.target.value;
+		setNewMessage(val);
+
+		// Handle Typing Indicators with Stop Debounce
 		if (selectedUser) {
 			const now = Date.now();
-			if (now - lastTypingTimeRef.current > 2000) { // Throttle to every 2 seconds
+			if (now - lastTypingTimeRef.current > 2000) { // Throttle typing emission
 				sendTyping(selectedUser.clerkId);
 				lastTypingTimeRef.current = now;
+			}
+
+			// Clear previous stop timeout
+			if ((window as any).typingTimeout) clearTimeout((window as any).typingTimeout);
+
+			if (val === "") {
+				sendStopTyping(selectedUser.clerkId);
+			} else {
+				// Set new stop timeout
+				(window as any).typingTimeout = setTimeout(() => {
+					sendStopTyping(selectedUser.clerkId);
+				}, 2500);
 			}
 		}
 	};
