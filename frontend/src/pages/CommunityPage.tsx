@@ -44,7 +44,7 @@ const CommunityPage = () => {
     });
     const uniqueUsers = Array.from(uniqueUsersMap.values());
 
-    const filteredUsers = uniqueUsers.filter((u: any) => {
+    const filteredUsers = uniqueUsers.filter((u: { _id?: string; clerkId?: string; fullName: string; imageUrl?: string }) => {
         if (u.clerkId === currentUser?.id) return false;
         return u.fullName.toLowerCase().includes(searchQuery.toLowerCase());
     });

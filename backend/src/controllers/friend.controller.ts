@@ -11,14 +11,14 @@ export const sendFriendRequest = async (req: Request, res: Response, next: NextF
         const result = await friendService.sendFriendRequest(senderId, receiverId);
 
         res.status(201).json(result);
-    } catch (error: any) {
-        if (error.message === "Sender not found" || error.message === "User not found") {
-            return res.status(404).json({ message: error.message });
+    } catch (error) {
+        if ((error instanceof Error ? error.message : "Unknown error") === "Sender not found" || (error instanceof Error ? error.message : "Unknown error") === "User not found") {
+            return res.status(404).json({ message: (error instanceof Error ? error.message : "Unknown error") });
         }
-        if (error.message === "You cannot request yourself" ||
-            error.message === "Request already exists" ||
-            error.message === "Already friends") {
-            return res.status(400).json({ message: error.message });
+        if ((error instanceof Error ? error.message : "Unknown error") === "You cannot request yourself" ||
+            (error instanceof Error ? error.message : "Unknown error") === "Request already exists" ||
+            (error instanceof Error ? error.message : "Unknown error") === "Already friends") {
+            return res.status(400).json({ message: (error instanceof Error ? error.message : "Unknown error") });
         }
         next(error);
     }
@@ -32,12 +32,12 @@ export const acceptFriendRequest = async (req: Request, res: Response, next: Nex
         await friendService.acceptFriendRequest(requestId, userId);
 
         res.status(200).json({ message: "Friend request accepted" });
-    } catch (error: any) {
-        if (error.message === "User not found" || error.message === "Request not found") {
-            return res.status(404).json({ message: error.message });
+    } catch (error) {
+        if ((error instanceof Error ? error.message : "Unknown error") === "User not found" || (error instanceof Error ? error.message : "Unknown error") === "Request not found") {
+            return res.status(404).json({ message: (error instanceof Error ? error.message : "Unknown error") });
         }
-        if (error.message === "Not authorized") {
-            return res.status(403).json({ message: error.message });
+        if ((error instanceof Error ? error.message : "Unknown error") === "Not authorized") {
+            return res.status(403).json({ message: (error instanceof Error ? error.message : "Unknown error") });
         }
         next(error);
     }
@@ -64,9 +64,9 @@ export const getFriends = async (req: Request, res: Response, next: NextFunction
         }
 
         res.status(200).json(friends);
-    } catch (error: any) {
-        if (error.message === "User not found") {
-            return res.status(404).json({ message: error.message });
+    } catch (error) {
+        if ((error instanceof Error ? error.message : "Unknown error") === "User not found") {
+            return res.status(404).json({ message: (error instanceof Error ? error.message : "Unknown error") });
         }
         next(error);
     }

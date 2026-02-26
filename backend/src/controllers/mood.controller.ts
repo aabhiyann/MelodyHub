@@ -24,7 +24,7 @@ export class MoodController {
                 success: true,
                 data: result
             });
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error in getCurrentMood:", error);
             next(error);
         }
@@ -57,7 +57,7 @@ export class MoodController {
                 success: true,
                 data: songs
             });
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error in getPlaylistForMood:", error);
             next(error);
         }

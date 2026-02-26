@@ -46,7 +46,7 @@ export class ConnectionController {
                 success: true,
                 ...result
             });
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error in getFollowers:", error);
             next(error);
         }
@@ -77,7 +77,7 @@ export class ConnectionController {
                 success: true,
                 ...result
             });
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error in getFollowing:", error);
             next(error);
         }
@@ -126,7 +126,7 @@ export class ConnectionController {
                 success: true,
                 data: mutual
             });
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error in getMutualFriends:", error);
             next(error);
         }

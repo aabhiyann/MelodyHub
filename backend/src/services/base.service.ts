@@ -7,7 +7,7 @@ export class BaseService<T extends Document> {
 		this.model = model;
 	}
 
-	async findAll(filter: any = {}): Promise<T[]> {
+	async findAll(filter: Record<string, unknown> = {}): Promise<T[]> {
 		return await this.model.find(filter);
 	}
 

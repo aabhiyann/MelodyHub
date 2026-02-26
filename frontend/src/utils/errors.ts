@@ -51,7 +51,7 @@ export function handleApiError(error: unknown): ApiError {
     // Handle Axios errors (most common in API calls)
     if (isAxiosError(error)) {
         return {
-            message: error.response.data?.message || error.message || 'An error occurred',
+            message: error.response.data?.message || (error instanceof Error ? error.message : "Unknown error") || 'An error occurred',
             status: error.response.status,
             details: error.response.data,
         };
@@ -60,7 +60,7 @@ export function handleApiError(error: unknown): ApiError {
     // Handle standard Error objects
     if (isErrorWithMessage(error)) {
         return {
-            message: error.message,
+            message: (error instanceof Error ? error.message : "Unknown error"),
         };
     }
 

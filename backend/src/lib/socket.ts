@@ -75,9 +75,9 @@ export const initializeSocket = (server: HttpServer) => {
 				}
 
 				socket.emit("message_sent", message);
-			} catch (error: any) {
+			} catch (error) {
 				console.error("Message error:", error);
-				socket.emit("message_error", error.message);
+				socket.emit("message_error", (error instanceof Error ? error.message : "Unknown error"));
 			}
 		});
 

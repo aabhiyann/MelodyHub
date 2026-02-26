@@ -58,7 +58,7 @@ export class DiscoveryService {
      * Get songs by genre
      */
     async getSongsByGenre(genre: string, limit: number = 20, sort: string = "popular"): Promise<any[]> {
-        let sortQuery: any = { playCount: -1 };
+        let sortQuery: Record<string, 1 | -1> = { playCount: -1 };
 
         if (sort === "recent") {
             sortQuery = { createdAt: -1 };

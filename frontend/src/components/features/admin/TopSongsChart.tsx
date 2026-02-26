@@ -99,9 +99,9 @@ export const TopSongsChart = ({ data = generateMockTopSongs(), limit = 10 }: Top
                                     boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
                                 }}
                                 cursor={{ fill: 'rgba(0,0,0,0.05)' }}
-                                formatter={(value: any, _name, props) => [
-                                    `${value.toLocaleString()} plays`,
-                                    `${props.payload.name} - ${props.payload.artist}`,
+                                formatter={(value: number | string | undefined, _name: string | undefined, props: { payload?: { name: string; artist: string } }) => [
+                                    `${(value ?? 0).toLocaleString()} plays`,
+                                    `${props.payload?.name} - ${props.payload?.artist}`,
                                 ]}
                             />
 

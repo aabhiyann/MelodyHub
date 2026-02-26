@@ -32,7 +32,7 @@ const genreData = [
 
 const COLORS = ['#8B5CF6', '#3B82F6', '#10B981', '#F59E0B', '#EC4899'];
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: { value: number; name: string }[]; label?: string }) => {
     if (active && payload && payload.length) {
         return (
             <div className="bg-surface-card dark:bg-surface-elevated border border-border-medium p-3 rounded-lg shadow-xl">

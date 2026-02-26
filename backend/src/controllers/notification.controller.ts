@@ -28,7 +28,7 @@ export class NotificationController {
                 success: true,
                 ...result
             });
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error in getNotifications:", error);
             next(error);
         }
@@ -62,7 +62,7 @@ export class NotificationController {
                 success: true,
                 data: notification
             });
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error in markAsRead:", error);
             next(error);
         }
@@ -89,7 +89,7 @@ export class NotificationController {
                 success: true,
                 markedCount: count
             });
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error in markAllAsRead:", error);
             next(error);
         }
@@ -123,7 +123,7 @@ export class NotificationController {
                 success: true,
                 message: "Deleted"
             });
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error in deleteNotification:", error);
             next(error);
         }

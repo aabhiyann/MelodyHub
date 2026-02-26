@@ -16,7 +16,7 @@ interface PlaylistSongRowProps {
 export const PlaylistSongRow = memo(({ song, index, isCurrentSong, isPlaying, onClick }: PlaylistSongRowProps) => {
     const controls = useAnimation();
 
-    const handleDragEnd = async (_: any, info: PanInfo) => {
+    const handleDragEnd = async (_: MouseEvent | TouchEvent | PointerEvent | Event, info: PanInfo) => {
         if (info.offset.x < -100) {
             // Swiped Left
             // TODO: Swipe Action

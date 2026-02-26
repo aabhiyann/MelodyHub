@@ -45,7 +45,7 @@ export const reportError = (
   if (import.meta.env.DEV) {
     console.group(`🚨 Error Boundary Caught Error [${severity.toUpperCase()}]`);
     console.error('Error:', error);
-    console.error('Error Message:', error.message);
+    console.error('Error Message:', (error instanceof Error ? error.message : "Unknown error"));
     if (error.stack) {
       console.error('Stack Trace:', error.stack);
     }
@@ -118,7 +118,7 @@ export const reportError = (
     // Custom analytics/logging service
     if (window.analytics) {
       window.analytics.track('Error Occurred', {
-        error: error.message,
+        error: (error instanceof Error ? error.message : "Unknown error"),
         component: errorContext.component,
         severity,
         stack: error.stack,
@@ -168,17 +168,25 @@ export const reportUserActionError = (
 };
 
 // Type declarations for monitoring services
+interface SentryScope {
+  setLevel: (level: string) => void;
+  setUser: (user: { id?: string; email?: string } | null) => void;
+  setTag: (key: string, value: string) => void;
+  setContext: (key: string, context: unknown) => void;
+}
+
 declare global {
   interface Window {
     Sentry?: {
-      withScope: (callback: (scope: any) => void) => void;
+      withScope: (callback: (scope: SentryScope) => void) => void;
       captureException: (error: Error) => void;
     };
     LogRocket?: {
-      captureException: (error: Error, context?: any) => void;
+      captureException: (error: Error, context?: Record<string, unknown>) => void;
     };
     analytics?: {
-      track: (event: string, properties?: any) => void;
+      track: (event: string, properties?: Record<string, unknown>) => void;
     };
   }
 }
+

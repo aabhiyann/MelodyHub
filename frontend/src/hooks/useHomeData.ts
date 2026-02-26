@@ -62,9 +62,9 @@ export const useHomeData = () => {
 
                     setTopArtists(sortedArtists);
                 }
-            } catch (err: any) {
+            } catch (err) {
                 console.error("Error fetching home data:", err);
-                setError(err.message || "Failed to load personalized data");
+                setError((err instanceof Error ? err.message : "Unknown error") || "Failed to load personalized data");
             } finally {
                 setIsLoading(false);
             }

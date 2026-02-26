@@ -55,10 +55,10 @@ export class AIController {
 					const response = await result.response;
 					text = response.text();
 					break; // Success, exit retry loop
-				} catch (retryError: any) {
-					const isRateLimit = retryError?.message?.includes("429") ||
-						retryError?.message?.includes("quota") ||
-						retryError?.message?.includes("Too Many Requests");
+				} catch (retryError) {
+					const isRateLimit = ((retryError as Error)?.message)?.includes("429") ||
+						((retryError as Error)?.message)?.includes("quota") ||
+						((retryError as Error)?.message)?.includes("Too Many Requests");
 
 					if (isRateLimit && attempt < maxRetries - 1) {
 						const delay = Math.pow(2, attempt + 1) * 1000; // 2s, 4s, 8s
@@ -120,9 +120,9 @@ export class AIController {
 
 			res.status(200).json(playlistData);
 
-		} catch (error: any) {
+		} catch (error) {
 			console.error("Error generating playlist:", error);
-			const errorMsg = error?.message || "";
+			const errorMsg = ((error as Error)?.message) || "";
 
 			// Handle rate limiting
 			if (errorMsg.includes("429") || errorMsg.includes("quota") || errorMsg.includes("Too Many Requests")) {

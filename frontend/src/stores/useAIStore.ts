@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { Song } from '@/types';
 import { axiosInstance as axios } from '@/lib/axios';
 import { getErrorMessage } from '@/utils/errors';
+import { AxiosError } from 'axios';
 
 export type AIStage = 'prompt' | 'processing' | 'results';
 export type MascotState = 'idle' | 'listening' | 'thinking' | 'excited' | 'celebrating' | 'sad';
@@ -72,14 +73,15 @@ export const useAIStore = create<AIStore>((set, get) => ({
                 mascotState: 'celebrating',
                 isLoading: false
             });
-        } catch (error: any) {
+        } catch (error) {
             // Parse specific error types for user-friendly messages
             let errorMsg = "Failed to generate playlist. Please try again.";
+            const axiosError = error as AxiosError<{ retryAfter?: number }>;
 
-            if (error?.response?.status === 429) {
-                const retryAfter = error.response.data?.retryAfter || 60;
+            if (axiosError?.response?.status === 429) {
+                const retryAfter = axiosError.response?.data?.retryAfter || 60;
                 errorMsg = `AI is taking a breather! Please try again in ${retryAfter} seconds. ☕`;
-            } else if (error?.response?.status === 503) {
+            } else if (axiosError?.response?.status === 503) {
                 errorMsg = "AI service is temporarily unavailable. Please try again later.";
             } else {
                 errorMsg = getErrorMessage(error, "Failed to generate playlist");

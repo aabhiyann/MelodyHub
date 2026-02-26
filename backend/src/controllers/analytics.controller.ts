@@ -26,12 +26,12 @@ export class AnalyticsController {
                 success: true,
                 message: "Play tracked successfully",
             });
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error in trackPlay:", error);
             return res.status(500).json({
                 success: false,
                 message: "Failed to track play",
-                error: error.message,
+                error: (error instanceof Error ? error.message : "Unknown error"),
             });
         }
     }
@@ -60,12 +60,12 @@ export class AnalyticsController {
                 message: liked ? "Song liked" : "Song unliked",
                 likedSongs: result.likedSongs,
             });
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error in likeSong:", error);
             return res.status(500).json({
                 success: false,
                 message: "Failed to like/unlike song",
-                error: error.message,
+                error: (error instanceof Error ? error.message : "Unknown error"),
             });
         }
     }
@@ -92,12 +92,12 @@ export class AnalyticsController {
                 success: true,
                 data: dashboard,
             });
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error in getUserPreferences:", error);
             return res.status(500).json({
                 success: false,
                 message: "Failed to fetch preferences",
-                error: error.message,
+                error: (error instanceof Error ? error.message : "Unknown error"),
             });
         }
     }
@@ -124,12 +124,12 @@ export class AnalyticsController {
                 success: true,
                 data: dashboard
             });
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error in getDashboard:", error);
             return res.status(500).json({
                 success: false,
                 message: "Failed to fetch dashboard",
-                error: error.message
+                error: (error instanceof Error ? error.message : "Unknown error")
             });
         }
     }
@@ -157,12 +157,12 @@ export class AnalyticsController {
                 success: true,
                 ...result
             });
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error in getListeningHistory:", error);
             return res.status(500).json({
                 success: false,
                 message: "Failed to fetch history",
-                error: error.message
+                error: (error instanceof Error ? error.message : "Unknown error")
             });
         }
     }
@@ -189,12 +189,12 @@ export class AnalyticsController {
                 success: true,
                 data: dashboard.topArtists
             });
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error in getTopArtists:", error);
             return res.status(500).json({
                 success: false,
                 message: "Failed to fetch top artists",
-                error: error.message
+                error: (error instanceof Error ? error.message : "Unknown error")
             });
         }
     }
@@ -221,12 +221,12 @@ export class AnalyticsController {
                 success: true,
                 data: dashboard.topGenres
             });
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error in getTopGenres:", error);
             return res.status(500).json({
                 success: false,
                 message: "Failed to fetch top genres",
-                error: error.message
+                error: (error instanceof Error ? error.message : "Unknown error")
             });
         }
     }
@@ -252,12 +252,12 @@ export class AnalyticsController {
                 success: true,
                 data: patterns
             });
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error in getListeningPatterns:", error);
             return res.status(500).json({
                 success: false,
                 message: "Failed to fetch patterns",
-                error: error.message
+                error: (error instanceof Error ? error.message : "Unknown error")
             });
         }
     }

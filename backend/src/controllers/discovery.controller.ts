@@ -23,7 +23,7 @@ export class DiscoveryController extends BaseController {
             const { limit = 20 } = req.query;
             const songs = await discoveryService.getFeaturedSongs(Number(limit));
             this.handleSuccess(res, { success: true, data: songs });
-        } catch (error: any) {
+        } catch (error) {
             this.handleError(next, error);
         }
     };
@@ -37,7 +37,7 @@ export class DiscoveryController extends BaseController {
             const { limit = 20, period = "24h" } = req.query;
             const songs = await discoveryService.getTrendingSongs(Number(limit), String(period));
             this.handleSuccess(res, { success: true, data: songs });
-        } catch (error: any) {
+        } catch (error) {
             this.handleError(next, error);
         }
     };
@@ -95,7 +95,7 @@ export class DiscoveryController extends BaseController {
             );
 
             this.handleSuccess(res, { success: true, data: songs, algorithm, confidence });
-        } catch (error: any) {
+        } catch (error) {
             this.handleError(next, error);
         }
     };
@@ -109,7 +109,7 @@ export class DiscoveryController extends BaseController {
             const { limit = 20 } = req.query;
             const songs = await discoveryService.getNewReleases(Number(limit));
             this.handleSuccess(res, { success: true, data: songs });
-        } catch (error: any) {
+        } catch (error) {
             this.handleError(next, error);
         }
     };
@@ -125,7 +125,7 @@ export class DiscoveryController extends BaseController {
             const sortValue = Array.isArray(sort) ? String(sort[0]) : String(sort);
             const songs = await discoveryService.getSongsByGenre(String(genre), Number(limit), sortValue);
             this.handleSuccess(res, { success: true, data: songs });
-        } catch (error: any) {
+        } catch (error) {
             this.handleError(next, error);
         }
     };
@@ -142,7 +142,7 @@ export class DiscoveryController extends BaseController {
             const songs = await getSimilarSongs(songId as string, Number(limit));
 
             this.handleSuccess(res, { success: true, data: songs, seedSongId: songId });
-        } catch (error: any) {
+        } catch (error) {
             this.handleError(next, error);
         }
     };
@@ -166,7 +166,7 @@ export class DiscoveryController extends BaseController {
             const songs = await getDailyMixService(userId, Number(limit));
 
             this.handleSuccess(res, { success: true, data: songs });
-        } catch (error: any) {
+        } catch (error) {
             this.handleError(next, error);
         }
     };

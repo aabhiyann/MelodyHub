@@ -145,7 +145,7 @@ export async function getListeningHistoryPaginated(
     userId: string,
     page: number = 1,
     limit: number = 20
-): Promise<{ data: any[]; pagination: { page: number; limit: number; total: number; totalPages: number } }> {
+): Promise<{ data: unknown[]; pagination: { page: number; limit: number; total: number; totalPages: number } }> {
     const userPref = await UserPreference.findOne({ userId })
         .populate('listeningHistory.songId')
         .lean();

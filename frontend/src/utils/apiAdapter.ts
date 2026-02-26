@@ -33,6 +33,6 @@ export function extractData<T>(response: unknown): T {
 /**
  * Type guard to check if response is in new format
  */
-export function isNewFormat(response: unknown): response is { success: boolean; data: any } {
+export function isNewFormat(response: unknown): response is { success: boolean; data: unknown } {
     return !!response && typeof response === 'object' && 'success' in response;
 }

@@ -92,7 +92,7 @@ export class FriendService {
     /**
      * Handle Melody Bot friend request (auto-accept)
      */
-    private async handleMelodyBotFriend(senderId: any, botId: any): Promise<any> {
+    private async handleMelodyBotFriend(senderId: string, botId: string) {
         // Update both users' friends lists
         await User.findByIdAndUpdate(senderId, { $addToSet: { friends: botId } });
         await User.findByIdAndUpdate(botId, { $addToSet: { friends: senderId } });

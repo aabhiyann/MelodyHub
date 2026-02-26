@@ -87,7 +87,7 @@ export class RecommendationService {
         // Pick 3 random songs, find 5 similar to each.
 
         const seeds = await Song.aggregate([{ $sample: { size: 3 } }]);
-        let recommendations: any[] = [];
+        let recommendations: Array<{ _id: { toString(): string };[key: string]: unknown }> = [];
 
         for (const seed of seeds) {
             const similar = await this.getSimilarSongs(seed._id.toString(), 5);

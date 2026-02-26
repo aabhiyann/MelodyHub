@@ -35,9 +35,9 @@ export class AlbumController extends BaseController {
       const { albumId } = req.params;
       const album = await this.albumService.getAlbumById(albumId as string);
       this.handleSuccess(res, album, 200, true); // ← New format
-    } catch (error: any) {
-      if (error.message === "Album not found") {
-        return res.status(404).json({ message: error.message });
+    } catch (error) {
+      if ((error instanceof Error ? error.message : "Unknown error") === "Album not found") {
+        return res.status(404).json({ message: (error instanceof Error ? error.message : "Unknown error") });
       }
       this.handleError(next, error);
     }

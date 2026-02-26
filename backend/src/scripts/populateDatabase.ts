@@ -101,8 +101,8 @@ async function populateDatabase() {
         if (savedCount % 50 === 0) {
           console.log(`   Saved ${savedCount}/${playableTracks.length} songs...`);
         }
-      } catch (error: any) {
-        console.error(`   Error saving ${track.trackName}:`, error.message);
+      } catch (error) {
+        console.error(`   Error saving ${track.trackName}:`, (error instanceof Error ? error.message : "Unknown error"));
         skippedCount++;
       }
     }

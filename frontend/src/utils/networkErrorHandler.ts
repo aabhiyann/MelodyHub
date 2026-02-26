@@ -133,7 +133,7 @@ export const getNetworkErrorMessage = (error: unknown): string => {
 
     if (axios.isAxiosError(error)) {
         // Network/timeout errors
-        if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+        if (error.code === 'ECONNABORTED' || (error instanceof Error ? error.message : "Unknown error")?.includes('timeout')) {
             return 'Request timeout. Please check your internet connection and try again.';
         }
 
@@ -173,7 +173,7 @@ export const getNetworkErrorMessage = (error: unknown): string => {
     }
 
     if (error instanceof Error) {
-        return error.message;
+        return (error instanceof Error ? error.message : "Unknown error");
     }
 
     return 'An unknown error occurred';

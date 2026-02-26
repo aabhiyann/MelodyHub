@@ -41,7 +41,7 @@ export class ChatManager {
         });
 
         socket.on("connect_error", (error) => {
-            console.error("Socket connection error:", error.message);
+            console.error("Socket connection error:", (error instanceof Error ? error.message : "Unknown error"));
         });
 
         socket.on("error", (error) => {
@@ -142,7 +142,7 @@ export class ChatManager {
             this.fetchFriendRequests();
         });
 
-        socket.on("new_notification", (notification: any) => {
+        socket.on("new_notification", (notification: { type?: string; message?: string; title?: string; sender?: { _id: string; username: string }; newRequest?: unknown }) => {
             if (notification?.type === "FRIEND_REQUEST") {
                 this.fetchFriendRequests();
             }

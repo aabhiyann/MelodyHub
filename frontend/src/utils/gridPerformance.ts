@@ -45,7 +45,7 @@ export const measureGridPerformance = (gridId: string) => {
   };
 };
 
-export const useGridPerformance = (gridId: string, dependencies: any[] = []) => {
+export const useGridPerformance = (gridId: string, dependencies: unknown[] = []) => {
   useEffect(() => {
     const cleanup = measureGridPerformance(gridId);
     return cleanup;

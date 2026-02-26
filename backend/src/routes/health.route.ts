@@ -35,11 +35,11 @@ router.get("/", async (req, res) => {
                 total: Math.round(process.memoryUsage().heapTotal / 1024 / 1024) + " MB",
             },
         });
-    } catch (error: any) {
+    } catch (error) {
         return res.status(503).json({
             success: false,
             status: "unhealthy",
-            error: error.message,
+            error: (error instanceof Error ? error.message : "Unknown error"),
         });
     }
 });
@@ -57,11 +57,11 @@ router.get("/cache", async (req, res) => {
             cache: stats,
             timestamp: new Date().toISOString(),
         });
-    } catch (error: any) {
+    } catch (error) {
         return res.status(500).json({
             success: false,
             message: "Failed to get cache stats",
-            error: error.message,
+            error: (error instanceof Error ? error.message : "Unknown error"),
         });
     }
 });
@@ -90,11 +90,11 @@ router.get("/database", async (req, res) => {
             },
             timestamp: new Date().toISOString(),
         });
-    } catch (error: any) {
+    } catch (error) {
         return res.status(500).json({
             success: false,
             message: "Failed to get database stats",
-            error: error.message,
+            error: (error instanceof Error ? error.message : "Unknown error"),
         });
     }
 });

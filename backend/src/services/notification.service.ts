@@ -29,7 +29,7 @@ export async function getNotifications(
 ): Promise<{ data: INotification[]; total: number; unreadCount: number }> {
     const { unreadOnly = false, page = 1, limit = 20 } = options;
     const skip = (page - 1) * limit;
-    const filter: any = { userId };
+    const filter: Record<string, unknown> = { userId };
     if (unreadOnly) filter.read = false;
 
     const [data, total, unreadCount] = await Promise.all([
