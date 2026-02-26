@@ -11,10 +11,14 @@ export const NotificationBell = () => {
     const [open, setOpen] = useState(false);
     const anchorRef = useRef<HTMLDivElement>(null);
     const { unreadCount, fetchNotifications, subscribeToSocket } = useNotificationStore();
+    const { friendRequests, fetchFriendRequests } = useChatStore();
 
     useEffect(() => {
-        if (user) fetchNotifications();
-    }, [user?.id, fetchNotifications]);
+        if (user) {
+            fetchNotifications();
+            fetchFriendRequests();
+        }
+    }, [user?.id, fetchNotifications, fetchFriendRequests]);
 
     useEffect(() => {
         const socket = useChatStore.getState().socket;
@@ -26,6 +30,8 @@ export const NotificationBell = () => {
 
     if (!user) return null;
 
+    const totalUnread = unreadCount + friendRequests.length;
+
     return (
         <div className="relative" ref={anchorRef}>
             <Button
@@ -36,9 +42,9 @@ export const NotificationBell = () => {
                 title="Notifications"
             >
                 <Bell className="size-5" />
-                {unreadCount > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-brand-primary text-[10px] font-bold text-white">
-                        {unreadCount > 99 ? "99+" : unreadCount}
+                {totalUnread > 0 && (
+                    <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-brand-primary text-[10px] font-bold text-white shadow-sm ring-1 ring-background-base">
+                        {totalUnread > 99 ? "99+" : totalUnread}
                     </span>
                 )}
             </Button>

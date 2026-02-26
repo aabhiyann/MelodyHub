@@ -1,8 +1,12 @@
 import { useRef, useEffect } from "react";
 import { useNotificationStore } from "@/stores/NotificationStore";
+import { useChatStore } from "@/stores/ChatStore";
 import { NotificationItem } from "./NotificationItem";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Check } from "lucide-react";
+import { FriendRequest } from "@/types";
 
 interface NotificationDropdownProps {
     isOpen: boolean;
@@ -12,6 +16,7 @@ interface NotificationDropdownProps {
 
 export const NotificationDropdown = ({ isOpen, onClose, anchorRef }: NotificationDropdownProps) => {
     const { items, fetchNotifications, markAsRead, markAllAsRead, isLoading } = useNotificationStore();
+    const { friendRequests, acceptFriendRequest } = useChatStore();
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -36,6 +41,8 @@ export const NotificationDropdown = ({ isOpen, onClose, anchorRef }: Notificatio
 
     if (!isOpen) return null;
 
+    const hasNoItems = items.length === 0 && friendRequests.length === 0;
+
     return (
         <div
             ref={dropdownRef}
@@ -57,10 +64,33 @@ export const NotificationDropdown = ({ isOpen, onClose, anchorRef }: Notificatio
             <ScrollArea className="flex-1 max-h-[320px]">
                 {isLoading ? (
                     <div className="p-6 text-center text-zinc-500 text-sm">Loading...</div>
-                ) : items.length === 0 ? (
+                ) : hasNoItems ? (
                     <div className="p-6 text-center text-zinc-500 text-sm">No notifications yet</div>
                 ) : (
                     <div className="p-2 space-y-1">
+                        {/* Render Friend Requests First */}
+                        {friendRequests.map((req: FriendRequest) => (
+                            <div key={req._id} className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/5 shadow-sm hover:bg-white/10 transition-colors">
+                                <Avatar className="size-8 ring-1 ring-white/10">
+                                    <AvatarImage src={req.senderId.imageUrl} />
+                                    <AvatarFallback>{req.senderId.fullName[0]}</AvatarFallback>
+                                </Avatar>
+                                <div className="flex-1 min-w-0">
+                                    <p className="text-sm font-medium text-text-primary truncate">{req.senderId.fullName}</p>
+                                    <p className="text-xs text-text-secondary truncate">Sent you a friend request</p>
+                                </div>
+                                <Button
+                                    size="icon"
+                                    variant="ghost"
+                                    className="size-7 text-success hover:text-success/80 hover:bg-success/10 rounded-full"
+                                    onClick={() => acceptFriendRequest(req._id)}
+                                >
+                                    <Check className="size-4" />
+                                </Button>
+                            </div>
+                        ))}
+
+                        {/* Regular Notifications */}
                         {items.map((item) => (
                             <NotificationItem key={item._id} item={item} onMarkRead={markAsRead} />
                         ))}
@@ -70,3 +100,4 @@ export const NotificationDropdown = ({ isOpen, onClose, anchorRef }: Notificatio
         </div>
     );
 };
+

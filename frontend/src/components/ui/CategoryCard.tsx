@@ -58,8 +58,8 @@ export const CategoryCard = ({
       data-grid-index={gridIndex}
       data-focused={isFocused}
       className={cn(
-        'category-card group relative overflow-hidden rounded-xl cursor-pointer shadow-lg',
-        'hover:shadow-2xl transition-all duration-300',
+        'category-card group relative overflow-hidden rounded-2xl cursor-pointer shadow-lg border border-white/10 backdrop-blur-md',
+        'hover:shadow-2xl hover:border-white/20 transition-all duration-300',
         'focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-primary/50',
         isFocused && 'ring-4 ring-brand-primary',
         size === 'large' ? 'aspect-[2/1]' : 'aspect-square',
@@ -74,7 +74,7 @@ export const CategoryCard = ({
           alt=""
           className={cn(
             'absolute object-cover opacity-80',
-            'transition-transform duration-300 group-hover:scale-110',
+            'transition-transform duration-500 ease-out group-hover:scale-105',
             size === 'large'
               ? 'right-0 bottom-0 w-32 h-32 rotate-12'
               : 'right-0 bottom-0 w-24 h-24 rotate-12'
@@ -91,7 +91,7 @@ export const CategoryCard = ({
       >
         {/* Icon */}
         {icon && (
-          <div className={cn('mb-2', size === 'large' ? 'text-6xl' : 'text-5xl')}>
+          <div className={cn('mb-2 opacity-90', size === 'large' ? 'text-6xl' : 'text-5xl')}>
             {typeof icon === 'string' ? icon : icon}
           </div>
         )}
@@ -99,8 +99,8 @@ export const CategoryCard = ({
         {/* Title */}
         <h3
           className={cn(
-            'font-bold text-white leading-tight',
-            size === 'large' ? 'text-3xl md:text-4xl' : 'text-xl md:text-2xl'
+            'font-bold text-white leading-tight tracking-tight drop-shadow-sm',
+            size === 'large' ? 'text-3xl md:text-3xl' : 'text-xl md:text-xl'
           )}
         >
           {title}

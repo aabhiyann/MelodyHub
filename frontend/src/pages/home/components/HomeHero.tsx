@@ -80,7 +80,7 @@ export const HomeHero = ({ totalListeningTime, newDiscoveriesCount }: HomeHeroPr
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, ease: "easeOut" }}
-                        className="text-4xl md:text-5xl font-bold tracking-tight text-white"
+                        className="text-3xl md:text-5xl font-bold tracking-tight text-white"
                     >
                         <span className="bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">
                             {greeting},

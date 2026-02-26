@@ -38,8 +38,11 @@ export const FriendsList = () => {
         searchUsers(searchQuery);
     }
 
+    // Deduplicate search results by _id
+    const uniqueSearch = Array.from(new Map(searchResult.map(user => [user._id, user])).values());
+
     // Filter out self and already friends from search results
-    const filteredSearch = searchResult.filter(u =>
+    const filteredSearch = uniqueSearch.filter(u =>
         u.clerkId !== authUser?.clerkId &&
         !friends.some(f => f.clerkId === u.clerkId)
     );
