@@ -59,9 +59,9 @@ const ChatPage = () => {
 
 	const getBubbleClasses = (isMe: boolean, isFirst: boolean, isLast: boolean, isTemp: boolean) => {
 		return cn(
-			"px-4 py-2.5 text-[15px] leading-relaxed shadow-sm transition-all duration-200 tracking-tight",
-			// Color Theme (Premium Gradient for Sender, clean dark for Recipient)
-			isMe ? "bg-gradient-to-br from-brand-primary to-purple-600 text-white shadow-[0_4px_16px_rgba(139,92,246,0.4)] border border-white/10" : "bg-zinc-800/90 text-zinc-100 border border-white/5",
+			"px-3.5 py-2 text-[15px] leading-relaxed transition-all duration-200 tracking-tight",
+			// Color Theme (Classic flat Apple Blue for Sender, flat dark gray for Recipient)
+			isMe ? "bg-[#0A84FF] text-white" : "bg-[#26252A] text-zinc-100",
 			// Base Radius (iMessage-style deep Pill)
 			"rounded-[20px]",
 			// Dynamic Bubble Clustering (Apple iMessage style)
