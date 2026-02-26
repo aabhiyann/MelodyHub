@@ -51,4 +51,8 @@ Our GitHub Actions pipeline will automatically run on every PR:
 -   What actually happened.
 -   Notes (possibly including why you think this might be happening, or stuff you tried that didn't work).
 
+## Useful Resources
+- [Debugging Guide & Lessons Learned](./Docs/DEBUGGING_GUIDE.md): Check this before diving into UI rendering or API strictness bugs.
+- [Good First Issues](./Docs/GOOD_FIRST_ISSUES.md): A curated list of UI/UX styling tweaks and API cleanups perfect for newcomers!
+
 Happy Coding! 🎵🐢
