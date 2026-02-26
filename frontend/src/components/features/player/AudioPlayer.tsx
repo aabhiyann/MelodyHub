@@ -11,7 +11,6 @@ import { useChatStore } from '@/stores/ChatStore';
 import { NowPlaying } from './NowPlaying';
 import { PlaybackControls } from './PlaybackControls';
 import { ProgressBar } from './ProgressBar';
-import { ProgressBar } from './ProgressBar';
 import { AdditionalControls } from './AdditionalControls';
 import { useKeyboardControls } from '@/hooks/useKeyboardControls';
 import { Play, Pause, SkipForward } from 'lucide-react';
