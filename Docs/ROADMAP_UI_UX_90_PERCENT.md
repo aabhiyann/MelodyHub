@@ -46,15 +46,29 @@ Premium apps respond to the user constantly. The current application is too stat
 ---
 
 ## Phase 5: Deployed Audit & Mobile Upgrades (The 90%+ Push)
-The Vercel deployment requires a final layer of deep mechanical polish:
-1. **Top Mobile Navigation Consistency:**
-   - Every mobile page (especially sub-pages like Chat or Playlist views) must feature a distinct, easily accessible **Back Button** in the top left/right to prevent users from getting trapped.
-2. **Quick Filter Chips (Spotify-Style):**
-   - Implement horizontal scrolling pill/chip buttons (e.g., "All", "Music", "Podcasts", "Profile") on the Home screen or Library to allow instant layout filtering.
-3. **Expandable Mobile Player Constraints:**
-   - Ensure the mobile `MiniPlayer`/Pill flawlessly expands into the `MobilePlayer` full-screen view without gesture stuttering, and ensure it can be dismissed gracefully.
-4. **General Animation Sweetening:**
-   - Audit all page transitions, skeleton loaders, and interactive components on the deployed site. Ensure the latency between click and animation is zero, aiming for 60fps framer-motion layout transitions.
+- [x] Run browser subagent on Vercel deployment (`melodyhubmusic.vercel.app`)
+- [x] Implement Mobile Top Navigation Back Buttons
+- [x] Implement Quick Filter Chips ("All", "Music", "Profile")
+- [x] Verify Expandable Mobile Player interactions and gesture physics
+- [x] Audit global interaction smoothness (React JSX strict mode patches)
+
+---
+
+## Phase 6: Core "Feel" Overhaul (Motion, Glass, and Edge-cases)
+Based on the second live browser subagent audit, the app functions perfectly but the "soul" (the physics and optics) still lacks the 90% threshold.
+1. **Glassmorphism Tunings:**
+   - The Mobile Hamburger Menu is currently unreadable because `backdrop-blur-sm` is too weak. Increase to `backdrop-blur-2xl bg-black/80`.
+   - Add defined borders (`border-white/10`) to user sent chat messages so they pop against the true black background.
+2. **Global Route Transitions (Framer Motion):**
+   - Wrap the `App.tsx` routes in an `<AnimatePresence>` to enable cross-fades and smooth `y: 10 -> y: 0` entry animations between Home, Browse, Search, and Library. Instant cuts ruin the premium illusion.
+3. **The "Live" Chat Feel:**
+   - Implement pulsing "..." typing indicators when the backend socket emits a typing event.
+   - Use `framer-motion` for new messages entering the DOM instead of them instantly popping into existence.
+4. **Player Completeness:**
+   - Add a Volume Slider icon/dragger to the Mobile Player (`FullScreenPlayer.tsx`).
+   - Implement "Active Line Focus" for Lyrics (highlight the current line in white, gracefully dimming the rest to `opacity-30`).
+5. **AI Modal Layout Edge-Case:**
+   - Ensure the `ScrollArea` properly wraps the preset prompts inside the "AI Sparkles" modal so they aren't cut off on `390px` height viewports.
 
 ---
 **Execution Strategy:** We will tackle these phase by phase, committing to `main` as we perfect each micro-interaction.
