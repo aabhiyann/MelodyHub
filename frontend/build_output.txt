@@ -1,0 +1,151 @@
+
+> frontend@0.0.0 build
+> tsc -b && vite build
+
+vite v6.2.5 building for production...
+transforming...
+✓ 6 modules transformed.
+
+✨ [vite-plugin-compression]:algorithm=gzip - compressed file successfully: 
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/AdminLayout-Dobx82Qr.js.gz               6.23kb / gzip: 2.08kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/AdminSettingsPage-C1IAarFu.js.gz         4.61kb / gzip: 1.11kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/AlbumPage-tY-Z2OeM.js.gz                 4.21kb / gzip: 1.57kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/AdminDashboard-DNmZBaWU.js.gz            9.73kb / gzip: 3.17kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/BottomTabBar--u0st-ui.js.gz              1.52kb / gzip: 0.80kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/AIPlaylistModal-UMYM2Djs.js.gz           15.37kb / gzip: 4.59kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/AuthCallbackPage-fxhp-PGi.js.gz          1.22kb / gzip: 0.67kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/ArtistPage-D7LiS2H2.js.gz                7.72kb / gzip: 2.64kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/AnalyticsPage-CAE0MRqP.js.gz             14.66kb / gzip: 4.17kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/CategoryCard-j6VSmGQ3.js.gz              1.77kb / gzip: 0.92kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/BrowsePage-BCtoeXQt.js.gz                12.49kb / gzip: 4.19kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/FollowingPage-BotAtVqb.js.gz             2.09kb / gzip: 1.04kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/FollowersPage-Yy5FaYfO.js.gz             1.78kb / gzip: 0.91kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/CommunityPage-Dob7a6SM.js.gz             8.01kb / gzip: 2.69kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/InstallPrompt-DM3m7jfV.js.gz             1.96kb / gzip: 0.92kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/MusicStore-ChjBGepV.js.gz                5.34kb / gzip: 1.39kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/AdminSongsPage-DygVfhdL.js.gz            46.45kb / gzip: 14.59kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/ChatPage-BQ-nDWKR.js.gz                  13.60kb / gzip: 4.05kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/NotFoundPage-xFO5PEgE.js.gz              1.49kb / gzip: 0.69kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/Mascot-DPBKjC8y.js.gz                    7.78kb / gzip: 2.95kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/GamificationPage-duT5_3bM.js.gz          9.33kb / gzip: 2.73kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/LandingPage-DMXEvENq.js.gz               19.05kb / gzip: 5.45kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/OfflineIndicator-C1rMUXQM.js.gz          1.06kb / gzip: 0.58kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/PlaylistPage-DbPuv9-T.js.gz              9.03kb / gzip: 3.09kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/LibraryPage-DWGe1bEU.js.gz               25.61kb / gzip: 6.76kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/PullToRefresh-COSuhIae.js.gz             1.34kb / gzip: 0.74kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/ProfilePage-BTdBZjCZ.js.gz               11.84kb / gzip: 3.70kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/HomePage-CgaHPV4z.js.gz                  33.12kb / gzip: 7.81kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/SectionErrorBoundary-B6zflM57.js.gz      1.30kb / gzip: 0.63kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/RadioPage-B3g8h_co.js.gz                 3.20kb / gzip: 1.33kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/UserListItem-CDGI45ee.js.gz              1.28kb / gzip: 0.62kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/avatar-DJIZZ9d0.js.gz                    2.89kb / gzip: 1.26kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/SongRow-Co3lJ4BB.js.gz                   1.60kb / gzip: 0.80kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/SearchPage-DdIKT2xM.js.gz                9.97kb / gzip: 3.16kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/card-Bgvz7UtD.js.gz                      2.18kb / gzip: 0.83kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/TopBar-DbSglrdA.js.gz                    20.95kb / gzip: 5.36kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/index-BiDhQeYz.js.gz                     2.39kb / gzip: 1.14kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/date-vendor-DG5yY7T3.js.gz               24.67kb / gzip: 7.26kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/index-CK5CevAp.js.gz                     2.72kb / gzip: 1.28kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/form-vendor-RN0SCQs3.js.gz               52.98kb / gzip: 13.44kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/input-ZhnjhkEW.js.gz                     1.71kb / gzip: 0.90kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/SettingsPage-CGhWg2N5.js.gz              6.33kb / gzip: 1.52kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/RightSidebar-Bw6epf4J.js.gz              18.11kb / gzip: 6.01kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/scroll-area-DOIMt0TQ.js.gz               15.68kb / gzip: 4.88kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/switch-DYaL8W-J.js.gz                    1.81kb / gzip: 0.90kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/FullScreenPlayer-Dh9NthHg.js.gz          8.78kb / gzip: 2.92kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/textarea-CkNozkLz.js.gz                  1.06kb / gzip: 0.58kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/useAIStore-Wv6MvuFF.js.gz                1.77kb / gzip: 0.79kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/tabs-DrzckG8v.js.gz                      7.79kb / gzip: 2.98kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/workbox-window.prod.es5-CLYUWRvB.js.gz   5.54kb / gzip: 2.24kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/index.html.gz                                   1.43kb / gzip: 0.62kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/sw.js.gz                                        7.48kb / gzip: 2.58kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/workbox-4b126c97.js.gz                          22.25kb / gzip: 7.52kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/auth-vendor-DAr6DkSw.js.gz               64.17kb / gzip: 17.12kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/select-DQZw8IEX.js.gz                    57.91kb / gzip: 19.34kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/react-vendor-CN1tyu8l.js.gz              46.78kb / gzip: 16.40kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/index-DXOrA0JS.css.gz                    174.81kb / gzip: 24.43kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/ui-vendor-DWXkp9VW.js.gz                 155.44kb / gzip: 50.29kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/chart-vendor-tERMEMqP.js.gz              371.43kb / gzip: 105.57kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/index-BecECgo-.js.gz                     458.04kb / gzip: 144.05kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/stats.html.gz                                   1712.99kb / gzip: 182.27kb
+
+
+
+✨ [vite-plugin-compression]:algorithm=brotliCompress - compressed file successfully: 
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/AdminLayout-Dobx82Qr.js.br               6.23kb / brotliCompress: 1.87kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/AdminSettingsPage-C1IAarFu.js.br         4.61kb / brotliCompress: 0.94kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/AIPlaylistModal-UMYM2Djs.js.br           15.37kb / brotliCompress: 4.08kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/AlbumPage-tY-Z2OeM.js.br                 4.21kb / brotliCompress: 1.39kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/AuthCallbackPage-fxhp-PGi.js.br          1.22kb / brotliCompress: 0.59kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/AnalyticsPage-CAE0MRqP.js.br             14.66kb / brotliCompress: 3.72kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/BottomTabBar--u0st-ui.js.br              1.52kb / brotliCompress: 0.70kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/BrowsePage-BCtoeXQt.js.br                12.49kb / brotliCompress: 3.68kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/ArtistPage-D7LiS2H2.js.br                7.72kb / brotliCompress: 2.39kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/CategoryCard-j6VSmGQ3.js.br              1.77kb / brotliCompress: 0.79kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/AdminSongsPage-DygVfhdL.js.br            46.45kb / brotliCompress: 13.05kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/ChatPage-BQ-nDWKR.js.br                  13.60kb / brotliCompress: 3.65kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/CommunityPage-Dob7a6SM.js.br             8.01kb / brotliCompress: 2.40kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/FollowingPage-BotAtVqb.js.br             2.09kb / brotliCompress: 0.93kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/FullScreenPlayer-Dh9NthHg.js.br          8.78kb / brotliCompress: 2.59kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/FollowersPage-Yy5FaYfO.js.br             1.78kb / brotliCompress: 0.80kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/GamificationPage-duT5_3bM.js.br          9.33kb / brotliCompress: 2.40kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/InstallPrompt-DM3m7jfV.js.br             1.96kb / brotliCompress: 0.78kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/LandingPage-DMXEvENq.js.br               19.05kb / brotliCompress: 4.74kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/NotFoundPage-xFO5PEgE.js.br              1.49kb / brotliCompress: 0.59kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/Mascot-DPBKjC8y.js.br                    7.78kb / brotliCompress: 2.63kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/HomePage-CgaHPV4z.js.br                  33.12kb / brotliCompress: 6.90kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/MusicStore-ChjBGepV.js.br                5.34kb / brotliCompress: 1.24kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/PullToRefresh-COSuhIae.js.br             1.34kb / brotliCompress: 0.64kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/OfflineIndicator-C1rMUXQM.js.br          1.06kb / brotliCompress: 0.49kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/PlaylistPage-DbPuv9-T.js.br              9.03kb / brotliCompress: 2.78kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/LibraryPage-DWGe1bEU.js.br               25.61kb / brotliCompress: 5.97kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/ProfilePage-BTdBZjCZ.js.br               11.84kb / brotliCompress: 3.27kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/RightSidebar-Bw6epf4J.js.br              18.11kb / brotliCompress: 5.38kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/SongRow-Co3lJ4BB.js.br                   1.60kb / brotliCompress: 0.69kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/SectionErrorBoundary-B6zflM57.js.br      1.30kb / brotliCompress: 0.53kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/SearchPage-DdIKT2xM.js.br                9.97kb / brotliCompress: 2.79kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/SettingsPage-CGhWg2N5.js.br              6.33kb / brotliCompress: 1.29kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/card-Bgvz7UtD.js.br                      2.18kb / brotliCompress: 0.71kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/UserListItem-CDGI45ee.js.br              1.28kb / brotliCompress: 0.55kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/RadioPage-B3g8h_co.js.br                 3.20kb / brotliCompress: 1.17kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/TopBar-DbSglrdA.js.br                    20.95kb / brotliCompress: 4.80kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/avatar-DJIZZ9d0.js.br                    2.89kb / brotliCompress: 1.12kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/date-vendor-DG5yY7T3.js.br               24.67kb / brotliCompress: 6.51kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/index-BiDhQeYz.js.br                     2.39kb / brotliCompress: 1.03kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/input-ZhnjhkEW.js.br                     1.71kb / brotliCompress: 0.78kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/scroll-area-DOIMt0TQ.js.br               15.68kb / brotliCompress: 4.33kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/auth-vendor-DAr6DkSw.js.br               64.17kb / brotliCompress: 15.13kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/switch-DYaL8W-J.js.br                    1.81kb / brotliCompress: 0.78kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/AdminDashboard-DNmZBaWU.js.br            9.73kb / brotliCompress: 2.80kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/form-vendor-RN0SCQs3.js.br               52.98kb / brotliCompress: 11.95kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/react-vendor-CN1tyu8l.js.br              46.78kb / brotliCompress: 14.65kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/textarea-CkNozkLz.js.br                  1.06kb / brotliCompress: 0.49kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/useAIStore-Wv6MvuFF.js.br                1.77kb / brotliCompress: 0.70kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/tabs-DrzckG8v.js.br                      7.79kb / brotliCompress: 2.66kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/index.html.br                                   1.43kb / brotliCompress: 0.46kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/workbox-window.prod.es5-CLYUWRvB.js.br   5.54kb / brotliCompress: 1.98kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/sw.js.br                                        7.48kb / brotliCompress: 2.20kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/index-CK5CevAp.js.br                     2.72kb / brotliCompress: 1.16kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/workbox-4b126c97.js.br                          22.25kb / brotliCompress: 6.81kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/select-DQZw8IEX.js.br                    57.91kb / brotliCompress: 17.29kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/index-DXOrA0JS.css.br                    174.81kb / brotliCompress: 19.04kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/ui-vendor-DWXkp9VW.js.br                 155.44kb / brotliCompress: 44.37kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/chart-vendor-tERMEMqP.js.br              371.43kb / brotliCompress: 87.92kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/assets/index-BecECgo-.js.br                     458.04kb / brotliCompress: 122.86kb
+dist//Users/abhiyansainju/Developer/MelodyHub/frontend/stats.html.br                                   1712.99kb / brotliCompress: 126.61kb
+
+
+✗ Build failed in 3.16s
+error during build:
+[vite-plugin-pwa:build] [plugin vite-plugin-pwa:build] src/index.css: There was an error during the build:
+  Can't resolve 'tw-animate-css' in '/Users/abhiyansainju/Developer/MelodyHub/frontend/src'
+Additionally, handling the error in the 'buildEnd' hook caused the following error:
+  Can't resolve 'tw-animate-css' in '/Users/abhiyansainju/Developer/MelodyHub/frontend/src'
+file: /Users/abhiyansainju/Developer/MelodyHub/frontend/src/index.css
+    at getRollupError (file:///Users/abhiyansainju/Developer/MelodyHub/frontend/node_modules/rollup/dist/es/shared/parseAst.js:397:41)
+    at file:///Users/abhiyansainju/Developer/MelodyHub/frontend/node_modules/rollup/dist/es/shared/node-entry.js:23044:39
+    at async catchUnfinishedHookActions (file:///Users/abhiyansainju/Developer/MelodyHub/frontend/node_modules/rollup/dist/es/shared/node-entry.js:22508:16)
+    at async rollupInternal (file:///Users/abhiyansainju/Developer/MelodyHub/frontend/node_modules/rollup/dist/es/shared/node-entry.js:23027:5)
+    at async buildEnvironment (file:///Users/abhiyansainju/Developer/MelodyHub/frontend/node_modules/vite/dist/node/chunks/dep-Pj_jxEzN.js:51494:14)
+    at async Object.defaultBuildApp [as buildApp] (file:///Users/abhiyansainju/Developer/MelodyHub/frontend/node_modules/vite/dist/node/chunks/dep-Pj_jxEzN.js:51957:5)
+    at async CAC.<anonymous> (file:///Users/abhiyansainju/Developer/MelodyHub/frontend/node_modules/vite/dist/node/cli.js:860:7)

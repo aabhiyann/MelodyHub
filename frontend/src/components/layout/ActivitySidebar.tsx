@@ -68,15 +68,15 @@ const ActivityItem = ({ activity }: { activity: Activity }) => {
 	switch (type) {
 		case "like_song":
 			icon = <Heart className="size-3 text-red-400" fill="currentColor" />;
-			message = `liked ${target?.title}`;
+			message = `liked ${target?.title ? String(target.title) : 'a song'}`;
 			break;
 		case "create_playlist":
 			icon = <Music className="size-3 text-blue-400" />;
-			message = `created playlist ${target?.name}`;
+			message = `created playlist ${target?.name ? String(target.name) : 'new playlist'}`;
 			break;
 		case "follow_user":
 			icon = <UserPlus className="size-3 text-green-400" />;
-			message = `followed ${target?.fullName}`;
+			message = `followed ${target?.fullName ? String(target.fullName) : 'a user'}`;
 			break;
 		default:
 			return null;
@@ -101,12 +101,12 @@ const ActivityItem = ({ activity }: { activity: Activity }) => {
 					</div>
 
 					<div className='mt-1 text-xs text-text-secondary truncate'>
-						{message}
+						{String(message)}
 					</div>
 
-					{type === 'like_song' && target?.artist && (
+					{type === 'like_song' && !!target?.artist && (
 						<div className="mt-0.5 text-[10px] text-text-tertiary truncate">
-							by {target.artist}
+							by {String(target.artist)}
 						</div>
 					)}
 				</div>

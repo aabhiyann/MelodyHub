@@ -35,7 +35,7 @@ export const ActivityFeed = () => {
         if (activity.type === 'like_song' && isSongTarget(target)) {
             return (
                 <span>
-                    liked <span className="font-medium text-white">{target.title}</span> by {target.artist}
+                    liked <span className="font-medium text-white">{String(target.title)}</span> by {String(target.artist)}
                 </span>
             );
         }
@@ -43,7 +43,7 @@ export const ActivityFeed = () => {
         if (activity.type === 'create_playlist' && isPlaylistTarget(target)) {
             return (
                 <span>
-                    created a new playlist <span className="font-medium text-white">{target.name}</span>
+                    created a new playlist <span className="font-medium text-white">{String(target.name)}</span>
                 </span>
             );
         }
@@ -51,7 +51,7 @@ export const ActivityFeed = () => {
         if (activity.type === 'follow_user' && isUserTarget(target)) {
             return (
                 <span>
-                    followed <span className="font-medium text-white">{target.fullName}</span>
+                    followed <span className="font-medium text-white">{String(target.fullName)}</span>
                 </span>
             );
         }
