@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { LyricsPanel } from "@/components/features/player/LyricsPanel";
 
 const LyricsView = () => {
-    const { currentSong, isLyricsOpen, toggleLyrics } = usePlayerStore();
+    const { currentSong, isLyricsOpen, toggleLyrics, currentTime } = usePlayerStore();
     const [isVisible, setIsVisible] = useState(false);
 
     // Simple animation delay for smooth entrance
@@ -64,7 +64,7 @@ const LyricsView = () => {
                 {/* Lyrics Panel */}
                 <div className="flex-1 min-h-0">
                     {currentSong ? (
-                        <LyricsPanel song={currentSong} />
+                        <LyricsPanel song={currentSong} currentTime={currentTime} />
                     ) : (
                         <div className="flex flex-col items-center justify-center h-full text-white/30">
                             <Music className="w-24 h-24 mb-6 opacity-20" />
