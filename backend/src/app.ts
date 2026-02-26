@@ -38,10 +38,29 @@ validateEnv();
 
 const app = express();
 
+const allowedOrigins = [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:5175",
+    "http://localhost:3000",
+];
+
+// MUST be before Rate Limiters so 429s get CORS headers
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if (origin.endsWith('.vercel.app') || allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+        callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+}));
+
 // Rate Limiting Configuration
 const generalLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: process.env.NODE_ENV === "production" ? 100 : 1000, // 100 in prod, 1000 in dev
+    max: process.env.NODE_ENV === "production" ? 500 : 1000, // Loosened from 100 to 500 for prod
     message: "Too many requests from this IP, please try again after 15 minutes",
     standardHeaders: true,
     legacyHeaders: false,
@@ -49,7 +68,7 @@ const generalLimiter = rateLimit({
 
 const strictLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes  
-    max: process.env.NODE_ENV === "production" ? 10 : 100, // 10 in prod, 100 in dev
+    max: process.env.NODE_ENV === "production" ? 50 : 100, // Loosened from 10 to 50 for prod
     message: "Too many requests to this endpoint, please try again later",
     standardHeaders: true,
     legacyHeaders: false,
@@ -59,28 +78,6 @@ const strictLimiter = rateLimit({
 if (process.env.NODE_ENV === "production") {
     app.use("/api", generalLimiter);
 }
-
-const rootDir = path.resolve();
-
-const allowedOrigins = [
-    "http://localhost:5173",
-    "http://localhost:5174",
-    "http://localhost:5175",
-    "http://localhost:3000",
-];
-
-app.use(cors({
-    origin: (origin, callback) => {
-        // Allow requests with no origin (mobile apps, curl, etc.)
-        if (!origin) return callback(null, true);
-        // Allow any vercel.app subdomain
-        if (origin.endsWith('.vercel.app') || allowedOrigins.includes(origin)) {
-            return callback(null, true);
-        }
-        callback(new Error('Not allowed by CORS'));
-    },
-    credentials: true,
-}));
 
 app.use(helmet({
     crossOriginResourcePolicy: false,
