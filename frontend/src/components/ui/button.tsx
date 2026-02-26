@@ -15,23 +15,23 @@ const buttonVariants = cva(
 
         // Blue Secondary (Social/Info) - design token
         secondary:
-          "bg-brand-secondary text-white shadow-md hover:bg-brand-secondary/90 hover:shadow-lg hover:scale-105 active:scale-100",
+          "bg-brand-secondary text-white shadow-md hover:bg-brand-secondary/90 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200",
 
         // Success/Active - semantic token
         success:
-          "bg-semantic-success text-white shadow-md hover:bg-semantic-success/90 hover:scale-105 active:scale-100",
+          "bg-semantic-success text-white shadow-md hover:bg-semantic-success/90 hover:scale-105 active:scale-95 transition-all duration-200",
 
         // Destructive - semantic token
         destructive:
-          "bg-semantic-error text-white shadow-md hover:bg-semantic-error/90 focus-visible:ring-semantic-error/20 dark:focus-visible:ring-semantic-error/40 hover:scale-105 active:scale-100",
+          "bg-semantic-error text-white shadow-md hover:bg-semantic-error/90 focus-visible:ring-semantic-error/20 dark:focus-visible:ring-semantic-error/40 hover:scale-105 active:scale-95 transition-all duration-200",
 
         // Outline (Brand border)
         outline:
-          "border-2 border-brand-primary/30 bg-transparent hover:bg-brand-primary/10 hover:border-brand-primary text-brand-primary",
+          "border-2 border-brand-primary/30 bg-transparent hover:bg-brand-primary/10 hover:border-brand-primary text-brand-primary active:scale-95 transition-all duration-200",
 
         // Ghost (Minimal)
         ghost:
-          "hover:bg-white/5 hover:text-brand-primary text-text-secondary",
+          "hover:bg-white/5 hover:text-brand-primary text-text-secondary active:scale-95 transition-all duration-200",
 
         // Link Style
         link:
@@ -39,7 +39,7 @@ const buttonVariants = cva(
 
         // Glassmorphism variant
         glass:
-          "glass-panel hover:glass-strong text-white hover:border-brand-primary/50",
+          "glass-panel hover:glass-strong text-white hover:border-brand-primary/50 active:scale-95 transition-all duration-200",
 
         // Liquid Premium
         liquid:

@@ -151,7 +151,7 @@ const MobilePlayer = () => {
                 <div
                     {...miniPlayerHandlers}
                     onClick={() => setIsExpanded(true)}
-                    className="fixed bottom-[74px] left-2 right-2 h-[64px] bg-[rgba(20,20,20,0.95)] backdrop-blur-md border border-white/10 rounded-xl shadow-lg z-[95] flex items-center px-2 pr-4 overflow-hidden"
+                    className="fixed bottom-[74px] left-2 right-2 h-[64px] bg-background-elevated/80 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl shadow-black/40 z-[95] flex items-center px-2 pr-4 overflow-hidden"
                 >
                     {/* Progress Bar (Top Border) */}
                     <div
@@ -162,7 +162,7 @@ const MobilePlayer = () => {
                     <img
                         src={currentSong.imageUrl}
                         alt="cover"
-                        className="size-12 rounded-lg object-cover shrink-0 mr-3 animate-spin-slow"
+                        className="size-12 rounded-lg object-cover shrink-0 mr-3 animate-spin-slow shadow-lg shadow-black/50 ring-1 ring-white/5"
                         style={{ animationPlayState: isPlaying ? 'running' : 'paused' }}
                     />
 

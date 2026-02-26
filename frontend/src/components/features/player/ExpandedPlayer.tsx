@@ -38,7 +38,7 @@ export const ExpandedPlayer = () => {
                 exit={{ y: '100%' }}
                 transition={{ type: 'spring', damping: 30, stiffness: 300 }}
             >
-                <div className="bg-bg-secondary border-t border-white/10 backdrop-blur-xl p-6">
+                <div className="bg-background-elevated/80 border-t border-white/10 backdrop-blur-2xl p-6 shadow-2xl">
                     {/* Header */}
                     <div className="flex items-center justify-between mb-4">
                         <button
@@ -61,7 +61,7 @@ export const ExpandedPlayer = () => {
                         <motion.img
                             src={currentSong.imageUrl}
                             alt={currentSong.title}
-                            className="size-32 rounded-lg object-cover shadow-xl"
+                            className="size-32 rounded-xl object-cover shadow-2xl shadow-black/50 ring-1 ring-white/5"
                             layoutId="albumArt"
                         />
 

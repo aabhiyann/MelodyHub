@@ -55,7 +55,7 @@ const LeftSidebar = () => {
                 : 'text-text-secondary hover:text-white hover:bg-white/5'
             )}
           >
-            <Home className='mr-3 size-5 group-hover:scale-110 transition-transform' />
+            <Home className='mr-3 size-5 group-hover:scale-110 transition-transform' fill={isActiveRoute('/home') ? "currentColor" : "none"} strokeWidth={isActiveRoute('/home') ? 2.5 : 2} />
             <span className='inline'>Home</span>
           </Link>
 
@@ -72,7 +72,7 @@ const LeftSidebar = () => {
                 : 'text-text-secondary hover:text-white hover:bg-white/5'
             )}
           >
-            <Library className='mr-3 size-5 group-hover:scale-110 transition-transform' />
+            <Library className='mr-3 size-5 group-hover:scale-110 transition-transform' fill={isActiveRoute('/browse') ? "currentColor" : "none"} strokeWidth={isActiveRoute('/browse') ? 2.5 : 2} />
             <span className='inline'>Browse</span>
           </Link>
 
@@ -89,7 +89,7 @@ const LeftSidebar = () => {
                 : 'text-text-secondary hover:text-white hover:bg-white/5'
             )}
           >
-            <Mic2 className='mr-3 size-5 group-hover:scale-110 transition-transform' />
+            <Mic2 className='mr-3 size-5 group-hover:scale-110 transition-transform' fill={isActiveRoute('/radio') ? "currentColor" : "none"} strokeWidth={isActiveRoute('/radio') ? 2.5 : 2} />
             <span className='inline'>Radio</span>
           </Link>
 
@@ -106,7 +106,7 @@ const LeftSidebar = () => {
                 : 'text-text-secondary hover:text-white hover:bg-white/5'
             )}
           >
-            <Search className='mr-3 size-5 group-hover:scale-110 transition-transform' />
+            <Search className='mr-3 size-5 group-hover:scale-110 transition-transform' strokeWidth={isActiveRoute('/search') ? 2.5 : 2} />
             <span className='inline'>Search</span>
           </Link>
 
@@ -122,7 +122,7 @@ const LeftSidebar = () => {
                 : 'text-text-secondary hover:text-white hover:bg-white/5'
             )}
           >
-            <Target className='mr-3 size-5 group-hover:scale-110 transition-transform text-yellow-500' />
+            <Target className='mr-3 size-5 group-hover:scale-110 transition-transform text-yellow-500' fill={isActiveRoute('/quests') ? "currentColor" : "none"} strokeWidth={isActiveRoute('/quests') ? 2.5 : 2} />
             <span className='inline'>Quests</span>
           </Link>
 
@@ -139,7 +139,7 @@ const LeftSidebar = () => {
                 : 'text-text-secondary hover:text-white hover:bg-white/5'
             )}
           >
-            <Library className='mr-3 size-5 group-hover:scale-110 transition-transform' />
+            <Library className='mr-3 size-5 group-hover:scale-110 transition-transform' fill={isActiveRoute('/library') ? "currentColor" : "none"} strokeWidth={isActiveRoute('/library') ? 2.5 : 2} />
             <span className='inline'>Your Library</span>
           </Link>
         </div>
@@ -164,7 +164,7 @@ const LeftSidebar = () => {
                     : 'text-text-secondary hover:text-white hover:bg-white/5'
                 )}
               >
-                <Sparkles className='mr-3 size-5 group-hover:scale-110 transition-transform text-brand-primary' />
+                <Sparkles className='mr-3 size-5 group-hover:scale-110 transition-transform text-brand-primary' fill={isActiveRoute('/ai') ? "currentColor" : "none"} strokeWidth={isActiveRoute('/ai') ? 2.5 : 2} />
                 <span className='inline'>Ask Melody</span>
               </Link>
 
@@ -181,7 +181,7 @@ const LeftSidebar = () => {
                     : 'text-text-secondary hover:text-white hover:bg-white/5'
                 )}
               >
-                <MessageSquare className='mr-3 size-5 group-hover:scale-110 transition-transform' />
+                <MessageSquare className='mr-3 size-5 group-hover:scale-110 transition-transform' fill={isActiveRoute('/chat') ? "currentColor" : "none"} strokeWidth={isActiveRoute('/chat') ? 2.5 : 2} />
                 <span className='inline'>Chat</span>
               </Link>
             </>
@@ -203,7 +203,7 @@ const LeftSidebar = () => {
                     : 'text-text-secondary hover:text-white hover:bg-white/5'
                 )}
               >
-                <LockKeyholeOpen className='mr-3 size-5 group-hover:scale-110 transition-transform' />
+                <LockKeyholeOpen className='mr-3 size-5 group-hover:scale-110 transition-transform' fill={isActiveRoute('/admin') ? "currentColor" : "none"} strokeWidth={isActiveRoute('/admin') ? 2.5 : 2} />
                 <span className='inline'>Admin</span>
               </Link>
             </>

@@ -52,6 +52,8 @@ export const BottomTabBar = () => {
                                         'size-6 mb-1 transition-colors',
                                         isActive ? 'text-brand-primary' : 'text-gray-400'
                                     )}
+                                    fill={isActive && tab.id !== 'search' ? 'currentColor' : 'none'}
+                                    strokeWidth={isActive ? 2.5 : 2}
                                 />
                                 <span
                                     className={cn(
@@ -65,7 +67,7 @@ export const BottomTabBar = () => {
                                 {/* Active indicator */}
                                 {isActive && (
                                     <motion.div
-                                        layoutId="activeTab"
+                                        layoutId="activeTabMobile"
                                         className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-1 bg-brand-primary rounded-full"
                                         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                                     />

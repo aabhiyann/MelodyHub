@@ -9,6 +9,7 @@ import { Search, UserPlus, Check } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FriendRequest } from "@/types";
 import { VirtualScrollList } from "@/components/shared/VirtualScrollList";
+import { motion } from "framer-motion";
 
 export const FriendsList = () => {
     const {
@@ -28,6 +29,7 @@ export const FriendsList = () => {
 
     const { authUser } = useAuthStore();
     const [searchQuery, setSearchQuery] = useState("");
+    const [activeTab, setActiveTab] = useState("friends");
 
     useEffect(() => {
         fetchFriends();
@@ -38,8 +40,8 @@ export const FriendsList = () => {
         searchUsers(searchQuery);
     }
 
-    // Deduplicate search results by _id
-    const uniqueSearch = Array.from(new Map(searchResult.map(user => [user._id, user])).values());
+    // Deduplicate search results by clerkId to prevent seed duplication bugs
+    const uniqueSearch = Array.from(new Map(searchResult.map(user => [user.clerkId || user._id, user])).values());
 
     // Filter out self and already friends from search results
     const filteredSearch = uniqueSearch.filter(u =>
@@ -56,19 +58,33 @@ export const FriendsList = () => {
                     </h2>
                 </div>
 
-                <Tabs defaultValue="friends" className="w-full flex flex-col h-full">
-                    <TabsList className="grid w-full grid-cols-2 bg-background-base/50 mb-4 h-10 p-1 flex-shrink-0">
+                <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex flex-col h-full">
+                    <TabsList className="grid w-full grid-cols-2 bg-background-base/50 mb-4 h-10 p-1 flex-shrink-0 relative">
                         <TabsTrigger
                             value="friends"
-                            className="data-[state=active]:bg-white/10 data-[state=active]:text-white text-text-secondary rounded-md transition-all text-xs font-medium uppercase tracking-wide"
+                            className="relative z-10 data-[state=active]:text-white text-text-secondary rounded-md transition-colors text-xs font-medium uppercase tracking-wide bg-transparent data-[state=active]:bg-transparent"
                         >
                             Friends
+                            {activeTab === "friends" && (
+                                <motion.div
+                                    layoutId="activeTabIndicator"
+                                    className="absolute inset-0 bg-white/10 rounded-md -z-10"
+                                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                                />
+                            )}
                         </TabsTrigger>
                         <TabsTrigger
                             value="find"
-                            className="data-[state=active]:bg-white/10 data-[state=active]:text-white text-text-secondary rounded-md transition-all text-xs font-medium uppercase tracking-wide"
+                            className="relative z-10 data-[state=active]:text-white text-text-secondary rounded-md transition-colors text-xs font-medium uppercase tracking-wide bg-transparent data-[state=active]:bg-transparent"
                         >
                             Find
+                            {activeTab === "find" && (
+                                <motion.div
+                                    layoutId="activeTabIndicator"
+                                    className="absolute inset-0 bg-white/10 rounded-md -z-10"
+                                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                                />
+                            )}
                         </TabsTrigger>
                     </TabsList>
 

@@ -1,5 +1,5 @@
 import Topbar from "@/components/layout/TopBar";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useChatStore } from "@/stores/ChatStore";
 import { ChatHeader } from "@/components/features/chat/ChatHeader";
 import { MessageInput } from "@/components/features/chat/MessageInput";
@@ -40,6 +40,8 @@ const ChatPage = () => {
 		typingUsers,
 	} = useChatStore();
 
+	const scrollRef = useRef<HTMLDivElement>(null);
+
 	useEffect(() => {
 		if (user) fetchUsers();
 	}, [fetchUsers, user]);
@@ -47,6 +49,32 @@ const ChatPage = () => {
 	useEffect(() => {
 		if (selectedUser) fetchMessages(selectedUser.clerkId);
 	}, [selectedUser, fetchMessages]);
+
+	// Auto-scroll to bottom on new messages
+	useEffect(() => {
+		if (scrollRef.current) {
+			scrollRef.current.scrollIntoView({ behavior: "smooth" });
+		}
+	}, [messages]);
+
+	const getBubbleClasses = (isMe: boolean, isFirst: boolean, isLast: boolean, isTemp: boolean) => {
+		return cn(
+			"px-4 py-2 text-[15px] leading-relaxed shadow-sm transition-all duration-200",
+			// Color Theme
+			isMe ? "bg-brand-primary text-white shadow-md" : "bg-background-elevated/80 text-text-primary border border-white/5",
+			// Base Radius
+			"rounded-2xl",
+			// Dynamic Bubble Clustering (Apple iMessage style)
+			isMe && !isFirst && "rounded-tr-[4px]",
+			isMe && !isLast && "rounded-br-[4px]",
+			isMe && isLast && "rounded-br-none",
+			!isMe && !isFirst && "rounded-tl-[4px]",
+			!isMe && !isLast && "rounded-bl-[4px]",
+			!isMe && isLast && "rounded-bl-none",
+			// Optimistic UI State
+			isTemp && "opacity-60"
+		);
+	};
 
 	return (
 		<div className='h-full flex flex-col rounded-lg overflow-hidden bg-transparent'>
@@ -80,12 +108,21 @@ const ChatPage = () => {
 									{messages.map((message: Message, index) => {
 										const isMyMessage = message.senderId === user?.id;
 										const previousMessage = messages[index - 1];
-										const isSameSender = previousMessage?.senderId === message.senderId;
-										const isSequential = isSameSender && (
-											new Date(message.createdAt).getTime() - new Date(previousMessage.createdAt).getTime() < 5 * 60 * 1000
-										);
+										const nextMessage = messages[index + 1];
+
+										const isSameSenderAsPrev = previousMessage?.senderId === message.senderId;
+										const isSameSenderAsNext = nextMessage?.senderId === message.senderId;
+
+										const timeThreshold = 5 * 60 * 1000; // 5 minutes
+
+										const isFirstInSequence = !isSameSenderAsPrev || (new Date(message.createdAt).getTime() - new Date(previousMessage.createdAt).getTime() > timeThreshold);
+										const isLastInSequence = !isSameSenderAsNext || (new Date(nextMessage.createdAt).getTime() - new Date(message.createdAt).getTime() > timeThreshold);
+										const isSequential = !isFirstInSequence;
+
 										const showDate = !previousMessage ||
 											new Date(message.createdAt).toDateString() !== new Date(previousMessage.createdAt).toDateString();
+
+										const isTemp = message._id.startsWith("temp-");
 
 										return (
 											<div key={message._id}>
@@ -98,13 +135,14 @@ const ChatPage = () => {
 												)}
 
 												<motion.div
-													initial={{ opacity: 0, scale: 0.9, y: 10 }}
+													layout
+													initial={{ opacity: 0, scale: 0.95, y: 10 }}
 													animate={{ opacity: 1, scale: 1, y: 0 }}
 													transition={{ type: "spring", stiffness: 400, damping: 25 }}
-													className={`flex items-end gap-2 mb-1 ${isMyMessage ? "justify-end" : "justify-start"}`}
+													className={`flex items-end gap-2 ${isSequential ? "mt-1" : "mt-4"} ${isMyMessage ? "justify-end" : "justify-start"}`}
 												>
 													<div className={`size-7 flex-shrink-0 ${isMyMessage ? 'order-2' : 'order-1'}`}>
-														{!isMyMessage && !isSequential && (
+														{!isMyMessage && isLastInSequence && (
 															<Avatar className='size-7 border border-white/10 shadow-sm ring-1 ring-white/5'>
 																<AvatarImage src={selectedUser.imageUrl} className="object-cover" />
 																<AvatarFallback>{selectedUser.fullName[0]}</AvatarFallback>
@@ -112,15 +150,13 @@ const ChatPage = () => {
 														)}
 													</div>
 
-													<div className={`relative max-w-[70%] group ${isMyMessage ? 'order-1' : 'order-2'}`}>
-														<div className={`px-4 py-2 text-[15px] leading-relaxed shadow-sm ${isMyMessage
-															? "bg-brand-primary text-white rounded-2xl rounded-br-none shadow-md"
-															: "bg-background-elevated/80 text-text-primary rounded-2xl rounded-bl-none border border-white/5 shadow-sm"
-															}`}>
+													<div className={`relative max-w-[75%] group ${isMyMessage ? 'order-1' : 'order-2'}`}>
+														<div className={getBubbleClasses(isMyMessage, isFirstInSequence, isLastInSequence, isTemp)}>
 															<p>{message.content}</p>
 														</div>
-														<span className={`text-[9px] text-text-secondary absolute bottom-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 select-none pointer-events-none w-max ${isMyMessage ? "right-full mr-2" : "left-full ml-2"}`}>
-															{formatTime(message.createdAt)}
+														{/* Hover Timestamp */}
+														<span className={`text-[9px] text-text-secondary absolute bottom-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 select-none pointer-events-none w-max ${isMyMessage ? "right-full mr-2" : "left-full ml-2"}`}>
+															{formatTime(message.createdAt)} {isTemp && "• Sending"}
 														</span>
 													</div>
 												</motion.div>
@@ -128,8 +164,8 @@ const ChatPage = () => {
 										);
 									})}
 
-									{/* Anchor for auto-scroll if needed, or just bottom spacing */}
-									<div className="h-2" />
+									{/* Anchor for auto-scroll */}
+									<div ref={scrollRef} className="h-1" />
 								</div>
 							</ScrollArea>
 
