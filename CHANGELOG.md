@@ -8,16 +8,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- (Changes will be listed here as they are merged)
+- Created `Docs/DEBUGGING_GUIDE.md` and `Docs/GOOD_FIRST_ISSUES.md` based on production audit.
+- Created `Docs/DEV_LOG_UI_UX_OVERHAUL.md` to chronicle the mobile UI architecture and API troubleshooting.
 
 ### Changed
-- (Changes will be listed here as they are merged)
+- Moved pending Friend Requests from the Chat Sidebar exclusively into the global `NotificationBell` dropdown, allowing mobile users to accept requests from any page.
+- Updated `HomeHero` typography sizes on mobile viewports for aesthetic balance.
+- Enforced Apple Music-style glassmorphism across `CategoryCard` components.
+- Increased global `#main-content` padding to `pb-32` to ensure infinite scroll lists clear the mobile safe-area boundaries and PWA navigation tabs.
+- Elevated Hamburger Menu `z-index` to strictly overlay the Bottom Navigation Tab Bar.
 
 ### Fixed
-- (Bug fixes will be listed here)
+- Fixed live "Failed to load users" API error caused by `express-rate-limit` triggering 429 preflight responses before CORS initialization.
+- Fixed Render CI/CD build crash by restoring accidentally deleted `rootDir` variable.
+- Fixed Chat Input text area being pushed permanently off-screen on mobile due to Tailwind `block` vs `flex` class conflicts.
+- Fixed duplicated Chat Search users by implementing strict frontend `_id` deduplication mapping.
+- Fixed `Socket.io` CORS origin rejection blocking live production users.
 
 ### Removed
-- (Removals will be listed here)
+- Removed generic error placeholders from Unreleased log.
 
 ---
 
