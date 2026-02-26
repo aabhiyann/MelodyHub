@@ -22,7 +22,7 @@ export const SidebarLayout = () => {
             {/* Main Content Area */}
             <main
                 id="main-content"
-                className="flex-1 min-w-0 overflow-y-auto focus:outline-none pb-24 md:pb-0"
+                className="flex-1 min-w-0 overflow-y-auto focus:outline-none pb-32 md:pb-0"
                 tabIndex={-1}
             >
                 <Outlet />

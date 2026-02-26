@@ -28,7 +28,7 @@ const Topbar = () => {
 								<Menu className="size-6" />
 							</Button>
 						</SheetTrigger>
-						<SheetContent side="left" className="p-0 bg-background-base w-[280px] border-r border-white/10 shadow-2xl">
+						<SheetContent side="left" className="p-0 bg-background-base w-[280px] border-r border-white/10 shadow-2xl z-[100]">
 							<SheetHeader className="p-4 border-b border-white/10 text-left">
 								<SheetTitle className="flex items-center gap-2">
 									<img src='/mascot/melody-icon.png' alt='Melody mascot' className='size-6 rounded-full' />
