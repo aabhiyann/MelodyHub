@@ -4,7 +4,7 @@ import { Socket } from "socket.io-client";
 import { Message, User, FriendRequest } from "@/types";
 import { ChatManager } from "@/providers/ChatManager";
 
-interface ChatState {
+export interface ChatState {
 	messages: Message[];
 	socket: Socket | null;
 	onlineUsers: Set<string>;
@@ -18,7 +18,7 @@ interface ChatState {
 	searchResult: User[];
 }
 
-interface ChatActions {
+export interface ChatActions {
 	initSocket: (userId: string) => void;
 	disconnectSocket: () => void;
 	sendMessage: (receiverId: string, content: string) => void;
@@ -34,7 +34,7 @@ interface ChatActions {
 	updateActivity: (activity: string) => void;
 }
 
-type ChatStore = ChatState & ChatActions;
+export type ChatStore = ChatState & ChatActions;
 
 const initialState: ChatState = {
 	messages: [],

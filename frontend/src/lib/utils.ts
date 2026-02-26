@@ -22,13 +22,13 @@ export function formatNumber(num: number, compact: boolean = false): string {
   return new Intl.NumberFormat('en-US').format(num);
 }
 
-export function debounce<T extends (...args: any[]) => any>(
-  func: T,
+export function debounce<Args extends unknown[], Return>(
+  func: (...args: Args) => Return,
   wait: number
-): (...args: Parameters<T>) => void {
+): (...args: Args) => void {
   let timeout: ReturnType<typeof setTimeout> | null = null;
 
-  return function (...args: Parameters<T>) {
+  return function (...args: Args) {
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => {
       func(...args);

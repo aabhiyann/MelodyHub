@@ -27,15 +27,19 @@ const DEFAULT_RETRY_CONFIG: Required<RetryConfig> = {
 /**
  * Check if error is a network error
  */
-export const isNetworkError = (error: any): boolean => {
+export const isNetworkError = (error: unknown): boolean => {
     if (!error) return false;
 
-    // No response = network error
-    if (!error.response) return true;
+    if (axios.isAxiosError(error)) {
+        // No response = network error
+        if (!error.response) return true;
 
-    // Check status codes
-    const status = error.response?.status;
-    return status === 0 || status >= 500;
+        // Check status codes
+        const status = error.response.status;
+        return status === 0 || status >= 500;
+    }
+
+    return false;
 };
 
 /**
@@ -69,7 +73,7 @@ const sleep = (ms: number): Promise<void> => {
 /**
  * Axios request with auto-retry
  */
-export const requestWithRetry = async <T = any>(
+export const requestWithRetry = async <T>(
     requestConfig: AxiosRequestConfig,
     retryConfig: RetryConfig = {}
 ): Promise<T> => {
@@ -124,43 +128,55 @@ export const requestWithRetry = async <T = any>(
 /**
  * Get user-friendly error message
  */
-export const getNetworkErrorMessage = (error: any): string => {
+export const getNetworkErrorMessage = (error: unknown): string => {
     if (!error) return 'An unknown error occurred';
 
-    // Network/timeout errors
-    if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
-        return 'Request timeout. Please check your internet connection and try again.';
+    if (axios.isAxiosError(error)) {
+        // Network/timeout errors
+        if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+            return 'Request timeout. Please check your internet connection and try again.';
+        }
+
+        if (!error.response) {
+            return 'Unable to connect to server. Please check your internet connection.';
+        }
+
+        // HTTP error responses
+        const status = error.response.status;
+        const payload = error.response.data as Record<string, unknown> | undefined;
+        const msgStr = typeof payload?.message === 'string' ? payload.message : undefined;
+        const errObj = payload?.error as Record<string, unknown> | undefined;
+        const errMsgDetails = typeof errObj?.message === 'string' ? errObj.message : undefined;
+        const message = msgStr || errMsgDetails;
+
+        switch (status) {
+            case 400:
+                return message || 'Invalid request. Please try again.';
+            case 401:
+                return 'You need to be logged in to perform this action.';
+            case 403:
+                return 'You don\'t have permission to perform this action.';
+            case 404:
+                return 'The requested resource was not found.';
+            case 409:
+                return message || 'This resource already exists.';
+            case 429:
+                return 'Too many requests. Please wait a moment and try again.';
+            case 500:
+            case 502:
+            case 503:
+            case 504:
+                return 'Server error. Our team has been notified. Please try again later.';
+            default:
+                return message || 'Something went wrong. Please try again.';
+        }
     }
 
-    if (!error.response) {
-        return 'Unable to connect to server. Please check your internet connection.';
+    if (error instanceof Error) {
+        return error.message;
     }
 
-    // HTTP error responses
-    const status = error.response?.status;
-    const message = error.response?.data?.message || error.response?.data?.error?.message;
-
-    switch (status) {
-        case 400:
-            return message || 'Invalid request. Please try again.';
-        case 401:
-            return 'You need to be logged in to perform this action.';
-        case 403:
-            return 'You don\'t have permission to perform this action.';
-        case 404:
-            return 'The requested resource was not found.';
-        case 409:
-            return message || 'This resource already exists.';
-        case 429:
-            return 'Too many requests. Please wait a moment and try again.';
-        case 500:
-        case 502:
-        case 503:
-        case 504:
-            return 'Server error. Our team has been notified. Please try again later.';
-        default:
-            return message || 'Something went wrong. Please try again.';
-    }
+    return 'An unknown error occurred';
 };
 
 /**

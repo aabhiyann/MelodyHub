@@ -134,7 +134,10 @@ export const usePlaylistStore = create<PlaylistStore>((set, get) => ({
                 set(state => ({
                     currentPlaylist: state.currentPlaylist ? {
                         ...state.currentPlaylist,
-                        songs: state.currentPlaylist.songs.filter((s: any) => s._id !== songId && s !== songId) // Handle populated vs unpopulated
+                        songs: state.currentPlaylist.songs.filter((s: { _id?: string } | string) => {
+                            const id = typeof s === 'string' ? s : s._id;
+                            return id !== songId;
+                        })
                     } : null
                 }));
             }

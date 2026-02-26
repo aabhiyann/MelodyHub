@@ -87,7 +87,7 @@ export type ActivityType = "like_song" | "create_playlist" | "follow_user" | "so
 
 export interface ActivityTarget {
     type: 'song' | 'playlist' | 'user' | 'album';
-    [key: string]: any; // Allow flexibility for now, but aim to tighten
+    [key: string]: unknown; // Tightened from 'any'
 }
 
 export interface SongTarget extends ActivityTarget {

@@ -1,6 +1,6 @@
 // API Response Types
 
-export interface APIResponse<T = any> {
+export interface APIResponse<T = unknown> {
     success: boolean;
     data?: T;
     message?: string;
@@ -17,7 +17,9 @@ export interface PaginatedResponse<T> {
     };
 }
 
+import { User } from './models';
+
 export interface AuthResponse {
-    user: any; // Replace with User model when imported
+    user: User;
     token?: string;
 }

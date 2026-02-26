@@ -4,6 +4,7 @@ import { axiosInstance } from "@/lib/axios";
 import { Message, User } from "@/types";
 import { getErrorMessage } from "@/utils/errors";
 import toast from "react-hot-toast";
+import type { ChatStore } from "@/stores/ChatStore";
 
 const BASE_URL = import.meta.env.VITE_API_URL?.replace("/api", "") || (import.meta.env.MODE === "development" ? "http://localhost:5001" : "/");
 
@@ -11,14 +12,14 @@ const BASE_URL = import.meta.env.VITE_API_URL?.replace("/api", "") || (import.me
 const typingTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
 
 export class ChatManager {
-    private set: Parameters<StateCreator<any>>[0];
-    private get: Parameters<StateCreator<any>>[1];
+    private set: Parameters<StateCreator<ChatStore>>[0];
+    private get: Parameters<StateCreator<ChatStore>>[1];
     private socket: Socket | null = null;
     private userId: string | null = null;
 
     constructor(
-        set: Parameters<StateCreator<any>>[0],
-        get: Parameters<StateCreator<any>>[1]
+        set: Parameters<StateCreator<ChatStore>>[0],
+        get: Parameters<StateCreator<ChatStore>>[1]
     ) {
         this.set = set;
         this.get = get;
@@ -48,14 +49,14 @@ export class ChatManager {
         });
 
         socket.on("receive_message", (message: Message) => {
-            this.set((state: any) => ({
+            this.set((state: ChatStore) => ({
                 messages: [...state.messages, message],
             }));
         });
 
         socket.on("message_sent", (message: Message) => {
             // Replace the optimistic temp message with the server-confirmed one
-            this.set((state: any) => {
+            this.set((state: ChatStore) => {
                 const filteredMessages = state.messages.filter(
                     (m: Message) => !m._id.startsWith("temp-") || m.content !== message.content
                 );
@@ -64,7 +65,7 @@ export class ChatManager {
         });
 
         socket.on("activity_updated", ({ userId, activity }: { userId: string; activity: string }) => {
-            this.set((state: any) => {
+            this.set((state: ChatStore) => {
                 const newActivities = new Map(state.activities);
                 newActivities.set(userId, activity);
                 return { activities: newActivities };
@@ -80,7 +81,7 @@ export class ChatManager {
         });
 
         socket.on("user_connected", (userId: string) => {
-            this.set((state: any) => {
+            this.set((state: ChatStore) => {
                 const newOnlineUsers = new Set(state.onlineUsers);
                 newOnlineUsers.add(userId);
                 return { onlineUsers: newOnlineUsers };
@@ -88,7 +89,7 @@ export class ChatManager {
         });
 
         socket.on("user_disconnected", (userId: string) => {
-            this.set((state: any) => {
+            this.set((state: ChatStore) => {
                 const newOnlineUsers = new Set(state.onlineUsers);
                 newOnlineUsers.delete(userId);
                 return { onlineUsers: newOnlineUsers };
@@ -96,7 +97,7 @@ export class ChatManager {
         });
 
         socket.on("user_typing", ({ senderId }: { senderId: string }) => {
-            this.set((state: any) => {
+            this.set((state: ChatStore) => {
                 const newTypingUsers = new Set(state.typingUsers);
                 newTypingUsers.add(senderId);
 
@@ -107,7 +108,7 @@ export class ChatManager {
 
                 // Set new timeout to remove user after 3 seconds
                 const timeout = setTimeout(() => {
-                    this.set((state: any) => {
+                    this.set((state: ChatStore) => {
                         const current = new Set(state.typingUsers);
                         current.delete(senderId);
                         typingTimeouts.delete(senderId);
@@ -172,7 +173,7 @@ export class ChatManager {
             updatedAt: new Date().toISOString(),
         };
 
-        this.set((state: any) => ({
+        this.set((state: ChatStore) => ({
             messages: [...state.messages, tempMessage],
         }));
 

@@ -28,14 +28,14 @@ export function useDebounce<T>(value: T, delay: number = 300): T {
 /**
  * Debounced callback hook - returns a debounced version of the callback
  */
-export function useDebouncedCallback<T extends (...args: any[]) => any>(
-    callback: T,
+export function useDebouncedCallback<Args extends unknown[], Return>(
+    callback: (...args: Args) => Return,
     delay: number = 300
-): (...args: Parameters<T>) => void {
+): (...args: Args) => void {
     const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
     return useCallback(
-        (...args: Parameters<T>) => {
+        (...args: Args) => {
             if (timeoutRef.current) {
                 clearTimeout(timeoutRef.current);
             }
@@ -52,14 +52,14 @@ export function useDebouncedCallback<T extends (...args: any[]) => any>(
  * Throttle hook - ensures callback is only called once per interval
  * Perfect for scroll events, drag events
  */
-export function useThrottle<T extends (...args: any[]) => any>(
-    callback: T,
+export function useThrottle<Args extends unknown[], Return>(
+    callback: (...args: Args) => Return,
     delay: number = 100
-): (...args: Parameters<T>) => void {
+): (...args: Args) => void {
     const lastRun = useRef(Date.now());
 
     return useCallback(
-        (...args: Parameters<T>) => {
+        (...args: Args) => {
             const now = Date.now();
 
             if (now - lastRun.current >= delay) {
