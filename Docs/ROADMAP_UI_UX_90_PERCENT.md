@@ -44,4 +44,17 @@ Premium apps respond to the user constantly. The current application is too stat
    - Ensure the AI generation features have beautiful, shimmering `Skeleton` loaders while fetching playlists from Gemini, rather than just a static spinner.
 
 ---
+
+## Phase 5: Deployed Audit & Mobile Upgrades (The 90%+ Push)
+The Vercel deployment requires a final layer of deep mechanical polish:
+1. **Top Mobile Navigation Consistency:**
+   - Every mobile page (especially sub-pages like Chat or Playlist views) must feature a distinct, easily accessible **Back Button** in the top left/right to prevent users from getting trapped.
+2. **Quick Filter Chips (Spotify-Style):**
+   - Implement horizontal scrolling pill/chip buttons (e.g., "All", "Music", "Podcasts", "Profile") on the Home screen or Library to allow instant layout filtering.
+3. **Expandable Mobile Player Constraints:**
+   - Ensure the mobile `MiniPlayer`/Pill flawlessly expands into the `MobilePlayer` full-screen view without gesture stuttering, and ensure it can be dismissed gracefully.
+4. **General Animation Sweetening:**
+   - Audit all page transitions, skeleton loaders, and interactive components on the deployed site. Ensure the latency between click and animation is zero, aiming for 60fps framer-motion layout transitions.
+
+---
 **Execution Strategy:** We will tackle these phase by phase, committing to `main` as we perfect each micro-interaction.

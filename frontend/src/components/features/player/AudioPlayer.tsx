@@ -11,9 +11,11 @@ import { useChatStore } from '@/stores/ChatStore';
 import { NowPlaying } from './NowPlaying';
 import { PlaybackControls } from './PlaybackControls';
 import { ProgressBar } from './ProgressBar';
+import { ProgressBar } from './ProgressBar';
 import { AdditionalControls } from './AdditionalControls';
 import { useKeyboardControls } from '@/hooks/useKeyboardControls';
 import { Play, Pause, SkipForward } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const resolveAudioUrl = (audioUrl?: string) => {
 	if (!audioUrl) return '';
@@ -232,7 +234,13 @@ const AudioPlayer = () => {
 
 			{/* Player UI - Floating Pill */}
 			<div
-				className="fixed bottom-[72px] left-2 right-2 md:bottom-6 md:left-6 md:right-6 z-[1000] h-[60px] md:h-[92px] rounded-xl md:rounded-2xl"
+				onClick={(e) => {
+					// Only expand if clicking the container (not buttons inside) and on mobile layout
+					if (window.innerWidth < 768 && !(e.target as HTMLElement).closest('button')) {
+						toggleExpanded();
+					}
+				}}
+				className={cn("fixed bottom-[72px] left-2 right-2 md:bottom-6 md:left-6 md:right-6 z-[1000] h-[60px] md:h-[92px] rounded-xl md:rounded-2xl cursor-pointer md:cursor-default shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-opacity duration-300", isExpanded ? "opacity-0 pointer-events-none md:opacity-100 md:pointer-events-auto" : "opacity-100")}
 				style={{
 					background: 'rgba(20, 20, 22, 0.85)', // Slightly refined dark glass
 					backdropFilter: 'blur(60px)',

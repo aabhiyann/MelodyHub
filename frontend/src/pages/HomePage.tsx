@@ -68,8 +68,18 @@ const HomePage = () => {
         <div className="flex-1 h-full overflow-hidden" id="home-scroll-container">
           <PullToRefresh onRefresh={refreshData}>
             <div className="space-y-16 min-h-full pb-32 max-w-full overflow-x-hidden animate-in fade-in slide-in-from-bottom-4 duration-700">
+              {/* Quick Filters */}
+              <div className="px-6 pt-2 pb-2 md:hidden">
+                <div className="flex overflow-x-auto no-scrollbar space-x-3 pb-2 -mx-6 px-6">
+                  <button className="px-5 py-2 rounded-full bg-brand-primary text-white font-semibold text-sm transition-transform active:scale-95 shadow-lg shadow-brand-primary/20 shrink-0">All</button>
+                  <button className="px-5 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-sm transition-colors active:scale-95 border border-white/5 shrink-0">Music</button>
+                  <button className="px-5 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-sm transition-colors active:scale-95 border border-white/5 shrink-0">Podcasts</button>
+                  <button className="px-5 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-sm transition-colors active:scale-95 border border-white/5 shrink-0" onClick={() => document.querySelector('.cl-userButtonTrigger')?.dispatchEvent(new window.MouseEvent('click', { bubbles: true }))}>Profile</button>
+                </div>
+              </div>
+
               {/* 1. HERO SECTION */}
-              <div className="px-6 pt-6">
+              <div className="px-6 pt-2 md:pt-6">
                 <HomeHero
                   totalListeningTime={listeningHistory.length * 3.5 * 60} // Estimate
                   newDiscoveriesCount={newDiscoveries}
