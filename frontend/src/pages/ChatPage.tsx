@@ -55,8 +55,8 @@ const ChatPage = () => {
 			<div className='flex md:grid md:grid-cols-[300px_1fr] flex-1 min-h-0 rounded-xl overflow-hidden bg-background-elevated/40 backdrop-blur-lg border border-white/5 relative'>
 				<div
 					className={cn(
-						"w-full md:w-auto h-full flex-shrink-0 md:block transition-all duration-300",
-						selectedUser ? "hidden" : "block"
+						"w-full md:w-auto h-full flex-shrink-0 md:flex transition-all duration-300",
+						selectedUser ? "hidden" : "flex"
 					)}
 				>
 					<SectionErrorBoundary sectionName="Friends List">
@@ -67,7 +67,7 @@ const ChatPage = () => {
 				<div
 					className={cn(
 						"flex flex-col h-full bg-white/[0.02] backdrop-blur-md relative min-h-0 overflow-hidden w-full transition-all duration-300",
-						!selectedUser ? "hidden md:flex" : "block"
+						!selectedUser ? "hidden md:flex" : "flex"
 					)}
 				>
 					{selectedUser ? (

@@ -14,9 +14,23 @@ export function emitToUser(userId: string, event: string, data: unknown): void {
 }
 
 export const initializeSocket = (server: HttpServer) => {
+	const allowedOrigins = [
+		"http://localhost:5173",
+		"http://localhost:5174",
+		"http://localhost:5175",
+		"http://localhost:3000",
+		"https://melodyhubmusic.vercel.app"
+	];
+
 	const io = new Server(server, {
 		cors: {
-			origin: "*",
+			origin: (origin, callback) => {
+				if (!origin) return callback(null, true);
+				if (origin.endsWith('.vercel.app') || allowedOrigins.includes(origin)) {
+					return callback(null, true);
+				}
+				callback(new Error('Not allowed by CORS'));
+			},
 			credentials: true,
 		},
 	});

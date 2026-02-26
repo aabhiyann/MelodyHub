@@ -22,13 +22,10 @@ export const SidebarLayout = () => {
             {/* Main Content Area */}
             <main
                 id="main-content"
-                className="flex-1 min-w-0 overflow-y-auto focus:outline-none"
+                className="flex-1 min-w-0 overflow-y-auto focus:outline-none pb-24 md:pb-0"
                 tabIndex={-1}
             >
                 <Outlet />
-
-                {/* Spacer for bottom tab bar on mobile */}
-                {isMobile && <div className="h-24" />}
             </main>
 
             {/* Right Sidebar (Desktop Only) */}
