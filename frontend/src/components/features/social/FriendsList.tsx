@@ -5,16 +5,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, UserPlus, Check } from "lucide-react";
+import { Search, UserPlus } from "lucide-react";
 import { useEffect, useState } from "react";
-import { FriendRequest } from "@/types";
 import { VirtualScrollList } from "@/components/shared/VirtualScrollList";
 import { motion } from "framer-motion";
 
 export const FriendsList = () => {
     const {
         friends,
-        friendRequests,
         searchResult,
         isLoading,
         selectedUser,
@@ -22,7 +20,6 @@ export const FriendsList = () => {
         fetchFriends,
         fetchFriendRequests,
         sendFriendRequest,
-        acceptFriendRequest,
         searchUsers,
         onlineUsers
     } = useChatStore();
