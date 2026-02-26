@@ -37,6 +37,7 @@ dotenv.config();
 validateEnv();
 
 const app = express();
+const rootDir = path.resolve();
 
 const allowedOrigins = [
     "http://localhost:5173",
