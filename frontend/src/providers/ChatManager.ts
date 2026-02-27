@@ -136,7 +136,7 @@ export class ChatManager {
             });
         });
 
-        // Friend Request Events
+        // Friend request accepted (real-time): refresh friends and requests so chat/friends views update without manual reload
         socket.on("friend_request_accepted", () => {
             this.fetchFriends();
             this.fetchFriendRequests();
