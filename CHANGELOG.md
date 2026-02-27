@@ -8,10 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Added `.cursor/rules/git-workflow.mdc` — Cursor rule enforcing branch-per-feature, commit-after-meaningful-change, conventional commit messages, merge-to-main-and-push, and CHANGELOG updates per session.
 - Created `Docs/DEBUGGING_GUIDE.md` and `Docs/GOOD_FIRST_ISSUES.md` based on production audit.
 - Created `Docs/DEV_LOG_UI_UX_OVERHAUL.md` to chronicle the mobile UI architecture and API troubleshooting.
 
 ### Changed
+- **Navigation & layout (mobile + web):** Mobile bottom bar now has 4 items (Music, Explore, Chat, Profile) with `rgba(0,0,0,0.85)` background and `backdrop-filter: blur(20px)`; always visible with accent active states. Every sub-page shows a back button top-left on mobile. Web sidebar uses glassmorphism (`rgba(16,16,22,0.94)`, `blur(24px)`, `border-right: 1px solid rgba(255,255,255,0.08)`), primary nav aligned with mobile (Music, Explore, Chat, Profile), and clear active highlight (`#22C55E`). Top bar has consistent MelodyHub logo and Spotify-like spacing; mobile sheet and desktop sidebar share the same branding.
 - Moved pending Friend Requests from the Chat Sidebar exclusively into the global `NotificationBell` dropdown, allowing mobile users to accept requests from any page.
 - Updated `HomeHero` typography sizes on mobile viewports for aesthetic balance.
 - Enforced Apple Music-style glassmorphism across `CategoryCard` components.
