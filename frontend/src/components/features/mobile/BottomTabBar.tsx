@@ -1,9 +1,9 @@
 /**
- * BottomTabBar - Mobile navigation
- * Native app-like bottom navigation with 4 tabs
+ * BottomTabBar - Mobile bottom navigation
+ * 4 quick actions: Music, Explore, Chat, Profile. Always visible; active/inactive accent states.
  */
 
-import { Home, Compass, MessageSquare, Library, Search } from 'lucide-react';
+import { Music2, Compass, MessageSquare, User } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -11,35 +11,37 @@ import { cn } from '@/lib/utils';
 interface Tab {
     id: string;
     label: string;
-    icon: typeof Home;
+    icon: typeof Music2;
     path: string;
 }
 
 const tabs: Tab[] = [
-    { id: 'home', label: 'Home', icon: Home, path: '/home' },
-    { id: 'browse', label: 'Browse', icon: Compass, path: '/browse' },
-    { id: 'search', label: 'Search', icon: Search, path: '/search' },
+    { id: 'music', label: 'Music', icon: Music2, path: '/home' },
+    { id: 'explore', label: 'Explore', icon: Compass, path: '/browse' },
     { id: 'chat', label: 'Chat', icon: MessageSquare, path: '/chat' },
-    { id: 'library', label: 'Library', icon: Library, path: '/library' },
+    { id: 'profile', label: 'Profile', icon: User, path: '/profile' },
 ];
 
 export const BottomTabBar = () => {
     return (
         <nav
-            className="fixed bottom-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-lg border-t border-white/10 safe-area-bottom"
+            className="fixed bottom-0 left-0 right-0 z-[100] safe-area-bottom border-t border-white/10"
             style={{
-                paddingBottom: 'env(safe-area-inset-bottom)',
+                paddingBottom: 'max(env(safe-area-inset-bottom), 8px)',
+                background: 'rgba(0,0,0,0.85)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
             }}
         >
-            <div className="flex justify-around items-center h-16 px-2">
+            <div className="flex justify-around items-center h-14 px-2">
                 {tabs.map((tab) => (
                     <NavLink
                         key={tab.id}
                         to={tab.path}
                         className={() =>
                             cn(
-                                'flex flex-col items-center justify-center',
-                                'min-w-[48px] min-h-[48px] flex-1',
+                                'flex flex-col items-center justify-center gap-0.5',
+                                'min-w-[56px] min-h-[44px] flex-1',
                                 'transition-colors duration-200',
                                 'relative'
                             )
@@ -49,26 +51,23 @@ export const BottomTabBar = () => {
                             <>
                                 <tab.icon
                                     className={cn(
-                                        'size-6 mb-1 transition-colors',
-                                        isActive ? 'text-brand-primary' : 'text-gray-400'
+                                        'size-6 transition-colors',
+                                        isActive ? 'text-[#22C55E]' : 'text-white/50'
                                     )}
-                                    fill={isActive && tab.id !== 'search' ? 'currentColor' : 'none'}
                                     strokeWidth={isActive ? 2.5 : 2}
                                 />
                                 <span
                                     className={cn(
-                                        'text-xs font-medium transition-colors',
-                                        isActive ? 'text-brand-primary' : 'text-gray-400'
+                                        'text-[11px] font-medium transition-colors',
+                                        isActive ? 'text-[#22C55E]' : 'text-white/50'
                                     )}
                                 >
                                     {tab.label}
                                 </span>
-
-                                {/* Active indicator */}
                                 {isActive && (
                                     <motion.div
                                         layoutId="activeTabMobile"
-                                        className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-1 bg-brand-primary rounded-full"
+                                        className="absolute top-0 left-1/2 -translate-x-1/2 w-10 h-0.5 rounded-full bg-[#22C55E]"
                                         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                                     />
                                 )}
