@@ -4,7 +4,6 @@
  */
 
 import { Play, Pause } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { usePlayerStore } from "@/stores/PlayerStore";
 import { Song } from "@/types";
 import { EmptyState } from "@/components/shared/EmptyState";
@@ -22,7 +21,6 @@ export const FeaturedHeroSkeleton = () => (
 );
 
 export const FeaturedHero = ({ item, isLoading }: FeaturedHeroProps) => {
-    const navigate = useNavigate();
     const { playAlbum, currentSong, isPlaying, togglePlay } = usePlayerStore();
 
     if (isLoading) return <FeaturedHeroSkeleton />;
