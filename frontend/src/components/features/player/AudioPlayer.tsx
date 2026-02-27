@@ -204,12 +204,25 @@ const AudioPlayer = () => {
 		}
 	}, [currentSong, isPlaying, updateActivity]);
 
-	// Handle seeking
+	// Handle seeking (from mini bar or expanded player)
 	const handleSeek = (time: number) => {
 		if (!audioRef.current) return;
 		audioRef.current.currentTime = time;
 		seek(time);
 	};
+
+	// Sync seek from FullScreenPlayer (which doesn't have audio ref) to actual audio element
+	useEffect(() => {
+		const handler = (e: Event) => {
+			const time = (e as CustomEvent<number>).detail;
+			if (audioRef.current && typeof time === 'number' && !isNaN(time)) {
+				audioRef.current.currentTime = time;
+				seek(time);
+			}
+		};
+		window.addEventListener('player-seek', handler as EventListener);
+		return () => window.removeEventListener('player-seek', handler as EventListener);
+	}, [seek]);
 
 	if (!currentSong) return <audio ref={audioRef} />;
 

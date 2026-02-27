@@ -13,7 +13,6 @@ import {
     ListMusic,
     Mic2,
     MonitorSpeaker,
-    MoreHorizontal,
     Volume1,
     Volume2
 } from 'lucide-react';
@@ -45,10 +44,10 @@ export const FullScreenPlayer = () => {
 
     const [activeTab, setActiveTab] = useState<'player' | 'lyrics' | 'queue'>('player');
 
-    // Handle seeking
     const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
         const time = Number(e.target.value);
         seek(time);
+        window.dispatchEvent(new CustomEvent('player-seek', { detail: time }));
     };
 
     // const { albums } = useMusicStore();
@@ -64,82 +63,70 @@ export const FullScreenPlayer = () => {
 
     if (!isExpanded || !currentSong) return null;
 
-    // Gestures
-    const handleDragEnd = (_: any, info: any) => {
-        // Swipe Down to Close
-        if (info.offset.y > 100 || info.velocity.y > 500) {
-            toggleExpanded();
-        }
-        // Swipe Up for Queue
-        if (info.offset.y < -100 || info.velocity.y < -500) {
-            setActiveTab('queue');
-        }
+    const handleDragEnd = (_: unknown, info: { offset: { y: number }; velocity: { y: number } }) => {
+        if (info.offset.y > 80 || info.velocity.y > 400) toggleExpanded();
     };
 
     const vibrate = () => {
         if ('vibrate' in navigator) navigator.vibrate(10);
     };
 
+    const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
+
     return (
         <AnimatePresence>
             <motion.div
-                className="fixed inset-0 z-[100] bg-zinc-950 flex flex-col"
+                className="fixed inset-0 z-[1100] flex flex-col bg-zinc-950"
                 initial={{ opacity: 0, y: '100%' }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: '100%' }}
-                transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+                transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
                 drag="y"
                 dragConstraints={{ top: 0, bottom: 0 }}
-                dragElastic={{ top: 0, bottom: 0.1 }}
+                dragElastic={{ top: 0, bottom: 0.15 }}
                 onDragEnd={handleDragEnd}
                 style={{ height: '100dvh' }}
             >
-                {/* Background Gradient & Blur */}
+                {/* Background: gradient from album art (blurred image + overlay) */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                     <div
-                        className="absolute inset-0 opacity-40 blur-[100px] scale-150 transition-all duration-1000"
+                        className="absolute inset-0 opacity-50 blur-[120px] scale-150 transition-all duration-700"
                         style={{
                             backgroundImage: `url(${currentSong.imageUrl})`,
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
                         }}
                     />
-                    <div className="absolute inset-0 bg-black/40 backdrop-blur-3xl" />
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/80" />
+                    <div className="absolute inset-0 bg-black/50" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/90" />
                 </div>
 
                 {/* Content Container */}
-                <div className="relative flex flex-col h-full w-full max-w-lg md:max-w-5xl mx-auto px-6 py-4 md:py-12">
-                    {/* Header */}
-                    <div className="flex items-center justify-between mb-6 md:mb-12 shrink-0 z-10">
+                <div className="relative flex flex-col h-full w-full max-w-lg md:max-w-2xl mx-auto px-4 md:px-8 py-4 md:py-8">
+                    {/* Close handle - swipe down or tap to close */}
+                    <div className="flex justify-center shrink-0 z-10 mb-2">
                         <motion.button
                             onClick={() => { vibrate(); toggleExpanded(); }}
-                            className="p-2 md:p-3 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white/20 transition-colors"
-                            whileTap={{ scale: 0.9 }}
-                        >
-                            <div className="w-12 md:w-16 h-1 md:h-1.5 bg-white/50 rounded-full mx-auto" />
-                        </motion.button>
+                            className="w-12 h-1.5 rounded-full bg-white/40 hover:bg-white/60 transition-colors"
+                            whileTap={{ scale: 0.95 }}
+                            aria-label="Close player"
+                        />
+                    </div>
 
-                        <div className="flex gap-1 bg-black/20 backdrop-blur-md rounded-full p-1 md:p-1.5">
-                            {(['player', 'lyrics', 'queue'] as const).map((tab) => (
-                                <button
-                                    key={tab}
-                                    onClick={() => { vibrate(); setActiveTab(tab); }}
-                                    className={cn(
-                                        "px-4 py-1.5 md:px-8 md:py-2 rounded-full text-xs md:text-sm font-medium transition-all duration-300",
-                                        activeTab === tab
-                                            ? "bg-white/20 text-white shadow-lg"
-                                            : "text-white/50 hover:text-white"
-                                    )}
-                                >
-                                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                                </button>
-                            ))}
-                        </div>
-
-                        <button className="p-2 opacity-0 pointer-events-none hidden md:block">
-                            <MoreHorizontal className="size-6" />
-                        </button>
+                    {/* Tabs: Player | Lyrics | Queue */}
+                    <div className="flex justify-center gap-1 shrink-0 z-10 mb-4">
+                        {(['player', 'lyrics', 'queue'] as const).map((tab) => (
+                            <button
+                                key={tab}
+                                onClick={() => { vibrate(); setActiveTab(tab); }}
+                                className={cn(
+                                    'px-4 py-1.5 rounded-full text-xs font-medium transition-colors',
+                                    activeTab === tab ? 'bg-white/20 text-white' : 'text-white/50 hover:text-white'
+                                )}
+                            >
+                                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                            </button>
+                        ))}
                     </div>
 
                     {/* Main Content Area */}
@@ -153,15 +140,17 @@ export const FullScreenPlayer = () => {
                                     exit={{ opacity: 0, scale: 0.95 }}
                                     className="flex flex-col md:flex-row md:items-center md:gap-16 h-full"
                                 >
-                                    {/* Album Art (Large) */}
-                                    <div className="flex-1 flex items-center justify-center py-4 md:py-0 w-full mb-8 md:mb-0">
+                                    {/* Large album art with shadow/glow */}
+                                    <div className="flex-1 flex items-center justify-center py-6 md:py-8 w-full">
                                         <motion.div
-                                            className="relative aspect-square w-full max-w-[340px] md:max-w-[500px] rounded-[32px] md:rounded-[48px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] md:shadow-[0_40px_80px_rgba(0,0,0,0.6)] ring-1 ring-white/10"
-                                            style={{ rotate: isPlaying ? 0 : 0 }} // Could add subtle rotation here
+                                            className="relative aspect-square w-full max-w-[280px] md:max-w-[360px] rounded-3xl md:rounded-[40px] overflow-hidden"
+                                            style={{
+                                                boxShadow: '0 24px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08), 0 0 80px -20px rgba(0,0,0,0.6)',
+                                            }}
                                         >
                                             <img
                                                 src={currentSong.imageUrl}
-                                                alt={currentSong.title}
+                                                alt=""
                                                 className="w-full h-full object-cover"
                                             />
                                         </motion.div>
@@ -189,29 +178,30 @@ export const FullScreenPlayer = () => {
                                             </motion.button>
                                         </div>
 
-                                        {/* Progress */}
-                                        <div className="mb-8 px-1">
-                                            <div className="relative group h-1 w-full flex items-center">
+                                        {/* Full progress bar with current time and total time */}
+                                        <div className="mb-6 px-0">
+                                            <div className="relative group h-1.5 w-full flex items-center">
                                                 <input
                                                     type="range"
                                                     min={0}
                                                     max={duration || 100}
                                                     value={currentTime}
                                                     onChange={handleSeek}
-                                                    className="absolute inset-0 w-full h-4 -top-1.5 opacity-0 cursor-pointer z-20"
+                                                    className="absolute inset-0 w-full h-6 -top-2 opacity-0 cursor-pointer z-20"
                                                 />
-                                                <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                                                <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden">
                                                     <motion.div
-                                                        className="h-full bg-white rounded-full"
-                                                        style={{ width: `${(currentTime / (duration || 1)) * 100}%` }}
+                                                        className="h-full bg-[#22C55E] rounded-full"
+                                                        style={{ width: `${progressPercent}%` }}
+                                                        transition={{ type: 'tween', duration: 0.1 }}
                                                     />
                                                 </div>
                                                 <div
-                                                    className="absolute h-4 w-4 bg-white rounded-full shadow-lg left-0 top-1/2 -translate-y-1/2 pointer-events-none transition-transform"
-                                                    style={{ left: `${(currentTime / (duration || 1)) * 100}%`, transform: 'translate(-50%, -50%)' }}
+                                                    className="absolute h-3.5 w-3.5 bg-white rounded-full shadow-md top-1/2 pointer-events-none -translate-y-1/2 -translate-x-1/2"
+                                                    style={{ left: `${progressPercent}%` }}
                                                 />
                                             </div>
-                                            <div className="flex justify-between text-xs text-white/40 mt-3 font-medium font-mono">
+                                            <div className="flex justify-between text-xs text-white/60 mt-2 font-mono">
                                                 <span>{formatTime(currentTime)}</span>
                                                 <span>{formatTime(duration)}</span>
                                             </div>
