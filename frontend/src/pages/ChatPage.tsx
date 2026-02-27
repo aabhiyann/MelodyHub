@@ -1,9 +1,8 @@
 import Topbar from "@/components/layout/TopBar";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useChatStore } from "@/stores/ChatStore";
 import { ChatHeader } from "@/components/features/chat/ChatHeader";
 import { MessageInput } from "@/components/features/chat/MessageInput";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { FriendsList } from "@/components/features/social/FriendsList";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Message } from "@/types";
@@ -41,6 +40,9 @@ const ChatPage = () => {
 	} = useChatStore();
 
 	const scrollRef = useRef<HTMLDivElement>(null);
+	const scrollContainerRef = useRef<HTMLDivElement>(null);
+	const prevMessageCountRef = useRef(0);
+	const [showNewMessagesChip, setShowNewMessagesChip] = useState(false);
 
 	useEffect(() => {
 		if (user) fetchUsers();
@@ -50,28 +52,63 @@ const ChatPage = () => {
 		if (selectedUser) fetchMessages(selectedUser.clerkId);
 	}, [selectedUser, fetchMessages]);
 
-	// Auto-scroll to bottom on new messages
-	useEffect(() => {
-		if (scrollRef.current) {
-			scrollRef.current.scrollIntoView({ behavior: "smooth" });
-		}
-	}, [messages]);
+	const checkNearBottom = useCallback(() => {
+		const el = scrollContainerRef.current;
+		if (!el) return;
+		const threshold = 80;
+		const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight <= threshold;
+		if (atBottom) setShowNewMessagesChip(false);
+	}, []);
 
+	// Auto-scroll: scroll to bottom when user sends; when receiving, only scroll if already near bottom
+	useEffect(() => {
+		const prevLen = prevMessageCountRef.current;
+		prevMessageCountRef.current = messages.length;
+		const lastMsg = messages[messages.length - 1];
+		const lastIsFromMe = lastMsg?.senderId === user?.id;
+		if (messages.length === 0) return;
+		if (lastIsFromMe || prevLen === 0) {
+			scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+			setShowNewMessagesChip(false);
+			return;
+		}
+		if (messages.length <= prevLen) return;
+		// New incoming message: after layout, check if we were near bottom
+		requestAnimationFrame(() => {
+			const el = scrollContainerRef.current;
+			if (!el) return;
+			const threshold = 80;
+			const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight <= threshold;
+			if (atBottom) {
+				scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+				setShowNewMessagesChip(false);
+			} else {
+				setShowNewMessagesChip(true);
+			}
+		});
+	}, [messages, user?.id]);
+
+	const scrollToBottom = () => {
+		scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+		setShowNewMessagesChip(false);
+	};
+
+	// DESIGN_PLAN: iMessage-style bubbles — self: accent gradient; other: bg_elevated + border_subtle
 	const getBubbleClasses = (isMe: boolean, isFirst: boolean, isLast: boolean, isTemp: boolean) => {
 		return cn(
 			"px-3.5 py-2 text-[15px] leading-relaxed transition-all duration-200 tracking-tight",
-			// Color Theme (Classic flat Apple Blue for Sender, flat dark gray for Recipient)
-			isMe ? "bg-[#0A84FF] text-white" : "bg-[#26252A] text-zinc-100",
-			// Base Radius (iMessage-style deep Pill)
-			"rounded-[20px]",
-			// Dynamic Bubble Clustering (Apple iMessage style)
+			// Color: self = accent_primary → accent_primary_soft, text_invert; other = bg_elevated, border_subtle, text_primary
+			isMe
+				? "text-[#020617] bg-gradient-to-br from-[#22C55E] to-[#16A34A]"
+				: "bg-[#101019] text-[#F9FAFB] border border-[#1F2933]",
+			// Radius: pill 18–24px self, 16–20px other; clustering (iMessage-style)
+			isMe ? "rounded-[22px]" : "rounded-[18px]",
 			isMe && !isFirst && "rounded-tr-[4px]",
 			isMe && !isLast && "rounded-br-[4px]",
 			isMe && isLast && "rounded-br-none",
 			!isMe && !isFirst && "rounded-tl-[4px]",
 			!isMe && !isLast && "rounded-bl-[4px]",
 			!isMe && isLast && "rounded-bl-none",
-			// Optimistic UI State
 			isTemp && "opacity-60"
 		);
 	};
@@ -103,8 +140,21 @@ const ChatPage = () => {
 							<ChatHeader />
 
 							{/* Messages */}
-							<ScrollArea className='flex-1 w-full min-h-0'>
-								<div className='p-4 space-y-4 min-h-0 pb-12'>
+							<div
+								ref={scrollContainerRef}
+								onScroll={checkNearBottom}
+								className='flex-1 w-full min-h-0 overflow-y-auto overflow-x-hidden'
+							>
+								<div className='p-4 space-y-4 min-h-0 pb-12 relative'>
+									{showNewMessagesChip && (
+										<button
+											type="button"
+											onClick={scrollToBottom}
+											className="sticky top-2 left-1/2 -translate-x-1/2 z-10 px-3 py-1.5 rounded-full text-xs font-medium bg-[#101019] border border-[#1F2933] text-[#F9FAFB] shadow-lg hover:bg-[#1F2933] transition-colors"
+										>
+											New messages
+										</button>
+									)}
 									{messages.map((message: Message, index) => {
 										const isMyMessage = message.senderId === user?.id;
 										const previousMessage = messages[index - 1];
@@ -128,7 +178,7 @@ const ChatPage = () => {
 											<div key={message._id}>
 												{showDate && (
 													<div className="flex justify-center my-6">
-														<span className="text-[10px] uppercase tracking-wider text-text-secondary font-medium bg-white/5 px-3 py-1 rounded-full border border-white/5 backdrop-blur-sm">
+														<span className="text-[12px] text-[#6B7280] font-normal tracking-wide">
 															{formatDate(message.createdAt)}
 														</span>
 													</div>
@@ -150,12 +200,12 @@ const ChatPage = () => {
 														)}
 													</div>
 
-													<div className={`relative max-w-[75%] group ${isMyMessage ? 'order-1' : 'order-2'}`}>
+													<div className={`relative max-w-[70%] group ${isMyMessage ? 'order-1' : 'order-2'}`}>
 														<div className={getBubbleClasses(isMyMessage, isFirstInSequence, isLastInSequence, isTemp)}>
 															<p>{message.content}</p>
 														</div>
-														{/* Hover Timestamp */}
-														<span className={`text-[9px] text-text-secondary absolute bottom-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 select-none pointer-events-none w-max ${isMyMessage ? "right-full mr-2" : "left-full ml-2"}`}>
+														{/* Timestamp: caption style, reveal on hover/tap (DESIGN_PLAN) */}
+														<span className={`text-[12px] text-[#6B7280] absolute bottom-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 select-none pointer-events-none w-max ${isMyMessage ? "right-full mr-2" : "left-full ml-2"}`}>
 															{formatTime(message.createdAt)} {isTemp && "• Sending"}
 														</span>
 													</div>
@@ -167,18 +217,20 @@ const ChatPage = () => {
 									{/* Anchor for auto-scroll */}
 									<div ref={scrollRef} className="h-1" />
 								</div>
-							</ScrollArea>
+							</div>
 
 							{/* Typing Indicator & Input Area Container */}
 							<div className="relative w-full z-10">
-								{/* Typing Indicator - Positioned absolutely above the input */}
+								{/* Typing indicator: DESIGN_PLAN — other-bubble style, text_muted, animated dots */}
 								<div className="absolute bottom-full left-6 mb-2 pointer-events-none">
 									{selectedUser && typingUsers?.has(selectedUser.clerkId) && (
-										<div className="flex items-center gap-1.5 bg-background-elevated/90 backdrop-blur-xl px-4 py-2 rounded-full border border-white/10 animate-in slide-in-from-bottom-2 fade-in duration-300 w-fit shadow-lg">
-											<div className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce [animation-delay:-0.3s]" />
-											<div className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce [animation-delay:-0.15s]" />
-											<div className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce" />
-											<span className="text-xs text-text-secondary ml-1.5 font-medium">{selectedUser.fullName} is typing...</span>
+										<div className="flex items-center gap-2 bg-[#101019] border border-[#1F2933] px-4 py-2.5 rounded-[18px] w-fit animate-in slide-in-from-bottom-2 fade-in duration-300">
+											<span className="flex gap-1" aria-hidden>
+												<span className="w-2 h-2 rounded-full bg-[#6B7280] animate-typing-dot" />
+												<span className="w-2 h-2 rounded-full bg-[#6B7280] animate-typing-dot [animation-delay:0.2s]" />
+												<span className="w-2 h-2 rounded-full bg-[#6B7280] animate-typing-dot [animation-delay:0.4s]" />
+											</span>
+											<span className="text-xs text-[#6B7280] font-medium">{selectedUser.fullName} is typing...</span>
 										</div>
 									)}
 								</div>

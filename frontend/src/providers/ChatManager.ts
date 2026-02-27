@@ -136,7 +136,7 @@ export class ChatManager {
             });
         });
 
-        // Friend Request Events
+        // Friend request accepted (real-time): refresh friends and requests so chat/friends views update without manual reload
         socket.on("friend_request_accepted", () => {
             this.fetchFriends();
             this.fetchFriendRequests();
@@ -261,6 +261,18 @@ export class ChatManager {
     }
 
     async acceptFriendRequest(requestId: string) {
+        const state = this.get();
+        const request = state.friendRequests.find((r) => r._id === requestId);
+        const sender = request?.senderId;
+        // Optimistic update: remove request and add sender to friends so UI updates without waiting for fetch
+        if (request && sender) {
+            this.set((s: ChatStore) => ({
+                friendRequests: s.friendRequests.filter((r) => r._id !== requestId),
+                friends: s.friends.some((f) => (f as any)._id === (sender as any)._id || (f as any).clerkId === (sender as any).clerkId)
+                    ? s.friends
+                    : [...s.friends, sender as any],
+            }));
+        }
         try {
             await axiosInstance.post("/friends/accept", { requestId });
             toast.success("Friend request accepted");
@@ -268,6 +280,20 @@ export class ChatManager {
             this.fetchFriendRequests();
         } catch (error) {
             const errorMsg = getErrorMessage(error, "Failed to accept request");
+            toast.error(errorMsg);
+            this.fetchFriends();
+            this.fetchFriendRequests();
+        }
+    }
+
+    async rejectFriendRequest(requestId: string) {
+        try {
+            await axiosInstance.post("/friends/reject", { requestId });
+            this.set((state: ChatStore) => ({
+                friendRequests: state.friendRequests.filter((r) => r._id !== requestId),
+            }));
+        } catch (error) {
+            const errorMsg = getErrorMessage(error, "Failed to ignore request");
             toast.error(errorMsg);
         }
     }

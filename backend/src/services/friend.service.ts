@@ -141,6 +141,28 @@ export class FriendService {
     }
 
     /**
+     * Reject (ignore) friend request
+     */
+    async rejectFriendRequest(requestId: string, userClerkId: string): Promise<void> {
+        const user = await User.findOne({ clerkId: userClerkId });
+        if (!user) {
+            throw new Error("User not found");
+        }
+
+        const request = await FriendRequest.findById(requestId);
+        if (!request) {
+            throw new Error("Request not found");
+        }
+
+        if (request.receiverId.toString() !== (user._id as any).toString()) {
+            throw new Error("Not authorized");
+        }
+
+        request.status = "rejected";
+        await request.save();
+    }
+
+    /**
      * Get pending friend requests for a user
      */
     async getFriendRequests(userClerkId: string): Promise<IFriendRequest[]> {
