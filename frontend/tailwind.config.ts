@@ -143,6 +143,7 @@ const config: Config = {
             animation: {
                 'shimmer': 'shimmer 2s infinite linear',
                 'fade-in-up': 'fade-in-up 0.5s ease-out forwards',
+                'typing-dot': 'typing-dot 1.4s ease-in-out infinite both',
             },
             keyframes: {
                 shimmer: {
@@ -152,6 +153,10 @@ const config: Config = {
                 'fade-in-up': {
                     '0%': { opacity: '0', transform: 'translateY(10px)' },
                     '100%': { opacity: '1', transform: 'translateY(0)' },
+                },
+                'typing-dot': {
+                    '0%, 80%, 100%': { transform: 'scale(0.6)', opacity: '0.5' },
+                    '40%': { transform: 'scale(1)', opacity: '1' },
                 },
             },
         },
