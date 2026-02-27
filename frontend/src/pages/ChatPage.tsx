@@ -57,21 +57,22 @@ const ChatPage = () => {
 		}
 	}, [messages]);
 
+	// DESIGN_PLAN: iMessage-style bubbles — self: accent gradient; other: bg_elevated + border_subtle
 	const getBubbleClasses = (isMe: boolean, isFirst: boolean, isLast: boolean, isTemp: boolean) => {
 		return cn(
 			"px-3.5 py-2 text-[15px] leading-relaxed transition-all duration-200 tracking-tight",
-			// Color Theme (Classic flat Apple Blue for Sender, flat dark gray for Recipient)
-			isMe ? "bg-[#0A84FF] text-white" : "bg-[#26252A] text-zinc-100",
-			// Base Radius (iMessage-style deep Pill)
-			"rounded-[20px]",
-			// Dynamic Bubble Clustering (Apple iMessage style)
+			// Color: self = accent_primary → accent_primary_soft, text_invert; other = bg_elevated, border_subtle, text_primary
+			isMe
+				? "text-[#020617] bg-gradient-to-br from-[#22C55E] to-[#16A34A]"
+				: "bg-[#101019] text-[#F9FAFB] border border-[#1F2933]",
+			// Radius: pill 18–24px self, 16–20px other; clustering (iMessage-style)
+			isMe ? "rounded-[22px]" : "rounded-[18px]",
 			isMe && !isFirst && "rounded-tr-[4px]",
 			isMe && !isLast && "rounded-br-[4px]",
 			isMe && isLast && "rounded-br-none",
 			!isMe && !isFirst && "rounded-tl-[4px]",
 			!isMe && !isLast && "rounded-bl-[4px]",
 			!isMe && isLast && "rounded-bl-none",
-			// Optimistic UI State
 			isTemp && "opacity-60"
 		);
 	};
@@ -128,7 +129,7 @@ const ChatPage = () => {
 											<div key={message._id}>
 												{showDate && (
 													<div className="flex justify-center my-6">
-														<span className="text-[10px] uppercase tracking-wider text-text-secondary font-medium bg-white/5 px-3 py-1 rounded-full border border-white/5 backdrop-blur-sm">
+														<span className="text-[12px] text-[#6B7280] font-normal tracking-wide">
 															{formatDate(message.createdAt)}
 														</span>
 													</div>
@@ -150,12 +151,12 @@ const ChatPage = () => {
 														)}
 													</div>
 
-													<div className={`relative max-w-[75%] group ${isMyMessage ? 'order-1' : 'order-2'}`}>
+													<div className={`relative max-w-[70%] group ${isMyMessage ? 'order-1' : 'order-2'}`}>
 														<div className={getBubbleClasses(isMyMessage, isFirstInSequence, isLastInSequence, isTemp)}>
 															<p>{message.content}</p>
 														</div>
-														{/* Hover Timestamp */}
-														<span className={`text-[9px] text-text-secondary absolute bottom-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 select-none pointer-events-none w-max ${isMyMessage ? "right-full mr-2" : "left-full ml-2"}`}>
+														{/* Timestamp: caption style, reveal on hover/tap (DESIGN_PLAN) */}
+														<span className={`text-[12px] text-[#6B7280] absolute bottom-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 select-none pointer-events-none w-max ${isMyMessage ? "right-full mr-2" : "left-full ml-2"}`}>
 															{formatTime(message.createdAt)} {isTemp && "• Sending"}
 														</span>
 													</div>
