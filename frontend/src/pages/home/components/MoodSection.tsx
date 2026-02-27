@@ -59,8 +59,8 @@ export const MoodSection = () => {
   return (
     <section>
       <div className="flex items-center gap-2 mb-4 px-4 md:px-0">
-        <Smile className="size-6 text-brand-primary" />
-        <h3 className="text-2xl font-bold text-white tracking-tight">Play by mood</h3>
+        <Smile className="size-6 text-[#22C55E]" />
+        <h3 className="text-xl md:text-2xl font-bold text-[#F9FAFB] tracking-tight">Play by mood</h3>
       </div>
       <div className="flex flex-wrap gap-3 px-4 md:px-0">
         {MOODS.map((mood) => (
@@ -70,7 +70,7 @@ export const MoodSection = () => {
             onClick={() => playMoodPlaylist(mood.id)}
             disabled={loadingMood !== null}
             className={`
-              inline-flex items-center gap-2 px-4 py-2.5 rounded-full font-medium text-white
+              inline-flex items-center gap-2 px-4 py-2.5 rounded-full font-medium text-[#F9FAFB]
               bg-gradient-to-r ${mood.accent} opacity-90 hover:opacity-100
               transition-all duration-200 hover:scale-105 disabled:opacity-60 disabled:hover:scale-100
             `}

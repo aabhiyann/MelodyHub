@@ -1,130 +1,84 @@
 import { Song } from '@/types';
 import { usePlayerStore } from '@/stores/PlayerStore';
 import { Play, Sparkles, Calendar, Radio } from 'lucide-react';
-import { OptimizedImage } from '@/components/shared/OptimizedImage';
-import { LikeButton } from '@/components/ui/LikeButton';
+import HorizontalScrollSection from './HorizontalScrollSection';
+import { SectionRowSkeleton } from './SectionRowSkeleton';
+import { EmptyState } from '@/components/shared/EmptyState';
 
 interface MadeForYouProps {
   songs: Song[];
   isLoading: boolean;
 }
 
+const mixesConfig = [
+  { title: 'Daily Mix 1', type: 'daily', accent: 'from-[#22C55E]/80 to-[#16A34A]/80', icon: Sparkles },
+  { title: 'Discover Weekly', type: 'weekly', accent: 'from-blue-500/80 to-cyan-500/80', icon: Calendar },
+  { title: 'Release Radar', type: 'release', accent: 'from-amber-500/80 to-orange-500/80', icon: Radio },
+  { title: 'Chill Vibes', type: 'mood', accent: 'from-slate-500/80 to-slate-600/80', icon: Sparkles },
+];
+
 export const MadeForYou = ({ songs, isLoading }: MadeForYouProps) => {
   const { playAlbum } = usePlayerStore();
 
-  // Mock different "Mixes" from the single list of songs for UI demonstration
-  // In a real app, these would be distinct playlist objects
-  const mixes = [
-    {
-      title: 'Daily Mix 1',
-      type: 'daily',
-      songs: songs.slice(0, 10),
-      accent: 'from-pink-500 to-rose-500',
-      icon: <Sparkles className="size-4 text-pink-200" />,
-    },
-    {
-      title: 'Discover Weekly',
-      type: 'weekly',
-      songs: songs.slice(5, 15),
-      accent: 'from-violet-500 to-purple-500',
-      icon: <Calendar className="size-4 text-violet-200" />,
-    },
-    {
-      title: 'Release Radar',
-      type: 'release',
-      songs: songs.slice(2, 12),
-      accent: 'from-emerald-500 to-green-500',
-      icon: <Radio className="size-4 text-emerald-200" />,
-    },
-    {
-      title: 'Chill Vibes',
-      type: 'mood',
-      songs: songs.slice(8, 18),
-      accent: 'from-blue-500 to-cyan-500',
-      icon: <Sparkles className="size-4 text-blue-200" />,
-    },
-  ];
+  const mixes = mixesConfig.map((config, i) => ({
+    ...config,
+    songs: songs.slice(i * 3, i * 3 + 10).filter(Boolean),
+  }));
 
   if (isLoading) {
-    return <MadeForYouSkeleton />;
+    return <SectionRowSkeleton cardCount={4} />;
   }
 
   return (
-    <section>
-      <div className="flex items-center gap-2 mb-6 px-4 md:px-0">
-        <Sparkles className="size-6 text-brand-primary" />
-        <h3 className="text-2xl font-bold text-white tracking-tight">Made For You</h3>
-      </div>
+    <HorizontalScrollSection title="Recommended for You" seeAllHref="/browse" seeAllLabel="See all">
+      {songs.length === 0 ? (
+        <div className="flex-shrink-0 w-full min-w-[280px] px-6">
+          <EmptyState
+            message="Play something to see recommendations"
+            secondary="We'll build mixes based on your listening."
+          />
+        </div>
+      ) : (
+        mixes.map((mix, idx) => {
+          const firstSong = mix.songs[0];
+          const imageUrl = firstSong?.imageUrl ?? '';
+          const description = mix.songs.length
+            ? `${mix.songs.slice(0, 2).map((s) => s.artist).join(', ')}${mix.songs.length > 2 ? ' and more' : ''}`
+            : '';
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 px-4 md:px-0">
-        {mixes.map((mix, idx) => (
-          <div
-            key={idx}
-            className="group relative h-[280px] rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
-            onClick={() => playAlbum(mix.songs, 0)}
-          >
-            {/* Background Gradient */}
+          return (
             <div
-              className={`absolute inset-0 bg-gradient-to-br ${mix.accent} opacity-80 transition-opacity duration-300 group-hover:opacity-100`}
-            />
-            <div className="absolute inset-0 bg-black/20" />
-
-            {/* Content */}
-            <div className="relative h-full p-6 flex flex-col justify-between z-10">
-              <div>
-                <div className="flex items-center gap-2 mb-2 opacity-90">
-                  <div className="p-1 rounded-md bg-white/20 backdrop-blur-sm">{mix.icon}</div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-white">
-                    AI Generated
-                  </span>
-                </div>
-                <h4 className="text-3xl font-bold text-white leading-tight mb-2">{mix.title}</h4>
-                <p className="text-sm text-white/80 font-medium line-clamp-2">
-                  {mix.songs
-                    .map((s) => s.artist)
-                    .slice(0, 3)
-                    .join(', ')}{' '}
-                  and more
-                </p>
-              </div>
-
-              <div className="flex gap-3 items-end">
-                {/* Preview Grid */}
-                <div className="grid grid-cols-2 gap-2 w-24">
-                  {mix.songs.slice(0, 4).map((song, i) => (
-                    <div
-                      key={i}
-                      className="relative aspect-square rounded-md overflow-hidden bg-black/20 shadow-sm"
-                    >
-                      <OptimizedImage
-                        src={song.imageUrl}
-                        alt=""
-                        className="w-full h-full object-cover opacity-80"
-                      />
-                    </div>
-                  ))}
-                </div>
-
-                {/* Actions */}
-                <div className="flex items-center gap-2 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                  <LikeButton className="size-10 bg-black/40 text-white backdrop-blur-md hover:bg-black/60" />
-                  <div className="size-12 rounded-full bg-white text-black flex items-center justify-center shadow-2xl">
-                    <Play className="size-6 ml-0.5" fill="currentColor" />
+              key={idx}
+              className="flex-shrink-0 w-[180px] snap-start group/card cursor-pointer"
+              style={{ width: '180px' }}
+              onClick={() => mix.songs.length && playAlbum(mix.songs, 0)}
+            >
+              <div className="relative aspect-square rounded-[12px] overflow-hidden mb-3 shadow-lg transition-all duration-200 group-hover/card:shadow-xl group-hover/card:scale-[1.03]">
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt=""
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover/card:scale-105"
+                  />
+                ) : (
+                  <div className={`w-full h-full bg-gradient-to-br ${mix.accent}`} />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-80" />
+                <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between">
+                  <mix.icon className="size-5 text-[#F9FAFB]" />
+                  <div className="p-2 rounded-full bg-[#22C55E] text-[#020617] opacity-0 group-hover/card:opacity-100 transition-opacity">
+                    <Play className="size-4 fill-current ml-0.5" />
                   </div>
                 </div>
               </div>
+              <p className="font-semibold text-sm truncate text-[#F9FAFB]">{mix.title}</p>
+              {description && (
+                <p className="text-xs truncate text-[#9CA3AF] mt-0.5">{description}</p>
+              )}
             </div>
-          </div>
-        ))}
-      </div>
-    </section>
+          );
+        })
+      )}
+    </HorizontalScrollSection>
   );
 };
-
-const MadeForYouSkeleton = () => (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 px-4 md:px-0">
-    {[1, 2, 3, 4, 5].map((i) => (
-      <div key={i} className="h-[280px] rounded-2xl bg-zinc-800/50 animate-pulse" />
-    ))}
-  </div>
-);

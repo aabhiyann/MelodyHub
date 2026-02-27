@@ -85,7 +85,7 @@ const HomePage = () => {
 
               {/* 3. START BROWSING */}
               <div className="px-6">
-                <h2 className="text-2xl font-bold mb-4">Start browsing</h2>
+                <h2 className="text-xl md:text-2xl font-bold mb-4 text-[#F9FAFB]">Start browsing</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <CategoryCard
                     title="Your Library"
@@ -97,7 +97,7 @@ const HomePage = () => {
                   />
                   <CategoryCard
                     title="Discover"
-                    gradient="bg-gradient-to-br from-purple-600 to-pink-600"
+                    gradient="bg-gradient-to-br from-[#22C55E] to-[#16A34A]"
                     icon={<Compass className="w-12 h-12" />}
                     size="large"
                     index={1}

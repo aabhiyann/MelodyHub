@@ -4,7 +4,7 @@ import { Music, Mic2, Guitar, Headphones, Disc3, Piano, Drum } from 'lucide-reac
 const GENRES = [
   { name: 'Pop', color: 'from-pink-500 to-rose-500', icon: Mic2 },
   { name: 'Rock', color: 'from-red-600 to-orange-600', icon: Guitar },
-  { name: 'Hip Hop', color: 'from-purple-600 to-indigo-600', icon: Disc3 },
+  { name: 'Hip Hop', color: 'from-[#1F2933] to-[#0F172A]', icon: Disc3 },
   { name: 'Electronic', color: 'from-cyan-500 to-blue-500', icon: Headphones },
   { name: 'Indie', color: 'from-yellow-500 to-amber-600', icon: Music },
   { name: 'Jazz', color: 'from-amber-700 to-orange-800', icon: Piano },
@@ -18,8 +18,8 @@ export const GenreMosaic = () => {
   return (
     <section>
       <div className="flex items-center gap-2 mb-6 px-4 md:px-0">
-        <Disc3 className="size-6 text-brand-primary" />
-        <h3 className="text-2xl font-bold text-white tracking-tight">Explore Genres</h3>
+        <Disc3 className="size-6 text-[#22C55E]" />
+        <h3 className="text-xl md:text-2xl font-bold text-[#F9FAFB] tracking-tight">Explore Genres</h3>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 px-4 md:px-0">
@@ -27,7 +27,7 @@ export const GenreMosaic = () => {
           <div
             key={genre.name}
             onClick={() => navigate('/browse')}
-            className="group relative aspect-square rounded-2xl overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-2xl"
+            className="group relative aspect-square rounded-[12px] overflow-hidden cursor-pointer hover:scale-[1.03] transition-all duration-200 shadow-lg hover:shadow-xl"
           >
             {/* Gradient Background */}
             <div
