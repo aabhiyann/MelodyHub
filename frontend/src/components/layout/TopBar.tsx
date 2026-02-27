@@ -23,27 +23,27 @@ const Topbar = () => {
 		location.pathname === '/';
 
 	return (
-		<div className='flex flex-col sticky top-0 z-50 glass-toolbar bg-zinc-950/90 w-full'>
-			<div className='flex items-center justify-between p-4 w-full'>
-				{/* Logo with Melody Icon */}
-				<div className='flex gap-3 items-center'>
-					<div className="md:hidden flex items-center">
+		<div className='flex flex-col sticky top-0 z-50 w-full border-b border-white/[0.08]' style={{ background: 'rgba(16,16,22,0.94)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)' }}>
+			<div className='flex items-center justify-between px-4 md:px-5 py-3 w-full'>
+				{/* Logo: consistent with sidebar (top-left; back or menu on mobile) */}
+				<div className='flex gap-2 md:gap-3 items-center min-w-0'>
+					<div className="md:hidden flex items-center shrink-0">
 						{!isRootRoute ? (
-							<Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="text-text-secondary hover:text-white mr-1 -ml-2">
-								<ChevronLeft className="size-8" />
+							<Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="text-[#9CA3AF] hover:text-[#F9FAFB] -ml-1" aria-label="Back">
+								<ChevronLeft className="size-7" />
 							</Button>
 						) : (
 							<Sheet>
 								<SheetTrigger asChild>
-									<Button variant="ghost" size="icon" className="text-text-secondary hover:text-white mr-1">
+									<Button variant="ghost" size="icon" className="text-[#9CA3AF] hover:text-[#F9FAFB]" aria-label="Menu">
 										<Menu className="size-6" />
 									</Button>
 								</SheetTrigger>
-								<SheetContent side="left" className="p-0 bg-black/95 backdrop-blur-2xl w-[280px] border-r border-white/10 shadow-2xl z-[100]">
-									<SheetHeader className="p-4 border-b border-white/10 text-left">
+								<SheetContent side="left" className="p-0 w-[280px] border-r border-white/[0.08] z-[100]" style={{ background: 'rgba(16,16,22,0.98)', backdropFilter: 'blur(24px)' }}>
+									<SheetHeader className="p-4 border-b border-white/[0.08] text-left">
 										<SheetTitle className="flex items-center gap-2">
-											<img src='/mascot/melody-icon.png' alt='Melody mascot' className='size-6 rounded-full' />
-											<span className="font-display font-bold text-lg bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">MelodyHub</span>
+											<img src='/mascot/melody-icon.png' alt='' className='size-8 rounded-full object-cover' />
+											<span className="font-display font-bold text-lg text-[#F9FAFB]">MelodyHub</span>
 										</SheetTitle>
 									</SheetHeader>
 									<div className="p-2 h-[calc(100vh-65px)] overflow-y-auto pb-20">
@@ -54,23 +54,14 @@ const Topbar = () => {
 						)}
 					</div>
 
-					<Link to="/home" className='hidden md:flex items-center gap-2 hover:opacity-80 transition-opacity'>
-						<img
-							src='/mascot/melody-icon.png'
-							alt='Melody mascot'
-							className='size-8 drop-shadow-lg rounded-full object-cover'
-						/>
-						<span className='font-display font-bold text-xl tracking-tight
-            bg-gradient-to-r from-brand-primary to-brand-secondary
-            bg-clip-text text-transparent
-          '>
-							MelodyHub
-						</span>
+					<Link to="/home" className='hidden md:flex items-center gap-2 hover:opacity-90 transition-opacity shrink-0'>
+						<img src='/mascot/melody-icon.png' alt='MelodyHub' className='size-8 rounded-full object-cover' />
+						<span className='font-display font-bold text-lg tracking-tight text-[#F9FAFB]'>MelodyHub</span>
 					</Link>
 				</div>
 
 				{/* User Actions */}
-				<div className='flex items-center gap-4'>
+				<div className='flex items-center gap-2 md:gap-3'>
 					<div className="hidden md:flex items-center gap-2 mr-2">
 						<StreakBadge />
 						<GemsIndicator />
