@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useMusicStore } from '@/stores/MusicStore';
 import { usePlayerStore } from '@/stores/PlayerStore';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Loader, Music2, Mic2, Radio, Grid3x3, List } from 'lucide-react';
+import { Music2, Mic2, Radio, Grid3x3, List } from 'lucide-react';
 import { PageTransition } from '@/components/layout/PageTransition';
 import { CategoryCard } from '@/components/ui/CategoryCard';
 import { VirtualScrollList } from '@/components/shared/VirtualScrollList';
@@ -17,16 +17,20 @@ import { axiosInstance } from '@/lib/axios';
 import { measureGridPerformance } from '@/utils/gridPerformance';
 import Topbar from '@/components/layout/TopBar';
 import { Song } from '@/types';
+import HorizontalScrollSection from '@/pages/home/components/HorizontalScrollSection';
+import { SpotifyCard } from '@/pages/home/components/SpotifyCard';
+import { SectionRowSkeleton } from '@/pages/home/components/SectionRowSkeleton';
+import { EmptyState } from '@/components/shared/EmptyState';
 
 // Genre configuration with gradients and emojis
 const GENRE_CONFIG: Record<string, { gradient: string; icon: string }> = {
   Pop: { gradient: 'bg-gradient-to-br from-pink-500 to-rose-500', icon: '🎤' },
   Rock: { gradient: 'bg-gradient-to-br from-red-600 to-orange-600', icon: '🎸' },
-  'K-Pop': { gradient: 'bg-gradient-to-br from-purple-500 to-pink-500', icon: '💜' },
+  'K-Pop': { gradient: 'bg-gradient-to-br from-rose-500 to-pink-500', icon: '💜' },
   'Hip Hop': { gradient: 'bg-gradient-to-br from-yellow-500 to-orange-600', icon: '🎵' },
   Electronic: { gradient: 'bg-gradient-to-br from-blue-500 to-cyan-500', icon: '🎹' },
   Jazz: { gradient: 'bg-gradient-to-br from-amber-700 to-orange-800', icon: '🎺' },
-  Classical: { gradient: 'bg-gradient-to-br from-indigo-600 to-purple-600', icon: '🎻' },
+  Classical: { gradient: 'bg-gradient-to-br from-indigo-600 to-slate-700', icon: '🎻' },
   'R&B': { gradient: 'bg-gradient-to-br from-fuchsia-600 to-pink-600', icon: '🎶' },
   Country: { gradient: 'bg-gradient-to-br from-green-700 to-emerald-800', icon: '🤠' },
   Latin: { gradient: 'bg-gradient-to-br from-red-500 to-pink-500', icon: '💃' },
@@ -85,14 +89,16 @@ const BrowsePage = () => {
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
   const [viewType, setViewType] = useState<'grid' | 'list'>('grid');
   const [displayCount, setDisplayCount] = useState(50);
-  const { songs, fetchAlbums, fetchSongs, isLoading } = useMusicStore();
-  const { setCurrentSong, currentSong, isPlaying } = usePlayerStore();
+  const { songs, featuredSongs, trendingSongs, fetchAlbums, fetchSongs, fetchFeaturedSongs, fetchTrendingSongs, isLoading } = useMusicStore();
+  const { setCurrentSong, currentSong, isPlaying, playAlbum } = usePlayerStore();
   const genreTheme = useGenreTheme(selectedGenre);
 
   useEffect(() => {
     fetchAlbums();
     fetchSongs();
-  }, [fetchAlbums, fetchSongs]);
+    fetchFeaturedSongs();
+    fetchTrendingSongs();
+  }, [fetchAlbums, fetchSongs, fetchFeaturedSongs, fetchTrendingSongs]);
 
   // Group songs by normalized genre
   const genreSongs = songs.reduce((acc, song) => {
@@ -184,57 +190,82 @@ const BrowsePage = () => {
         <ScrollArea className="h-full flex-1">
           <div className="p-4 md:p-8">
             <div className="max-w-7xl mx-auto">
-              {isLoading ? (
-                <div className="space-y-8">
-                  <div className="space-y-4">
-                    <div className="h-10 w-64 skeleton-shimmer rounded" />
-                    <CategoryCardSkeleton count={3} size="large" />
-                  </div>
-                  <div className="space-y-4">
-                    <div className="h-8 w-48 skeleton-shimmer rounded" />
-                    <CategoryCardSkeleton count={12} />
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-8">
+              <div className="space-y-8">
+                  {/* Featured / Trending row at top */}
+                  {!selectedGenre && (
+                    isLoading ? (
+                      <SectionRowSkeleton cardCount={6} />
+                    ) : (
+                      <HorizontalScrollSection title="Trending Now" seeAllHref="/home" seeAllLabel="See all">
+                        {(() => {
+                          const featured = (featuredSongs?.length ? featuredSongs : trendingSongs?.length ? trendingSongs : songs).slice(0, 6);
+                          if (featured.length === 0) {
+                            return (
+                              <div className="flex-shrink-0 w-full min-w-[280px] px-6">
+                                <EmptyState message="No featured tracks yet" secondary="Explore genres to discover music." />
+                              </div>
+                            );
+                          }
+                          return featured.map((song) => (
+                            <SpotifyCard
+                              key={song._id}
+                              imageUrl={song.imageUrl}
+                              title={song.title}
+                              description={song.artist}
+                              onPlayClick={() => playAlbum([song], 0)}
+                              width={160}
+                            />
+                          ));
+                        })()}
+                      </HorizontalScrollSection>
+                    )
+                  )}
+
                   {/* Start Browsing Section */}
                   {!selectedGenre && (
                     <section>
-                      <h2 className="text-3xl font-bold mb-6">Start browsing</h2>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <CategoryCard
-                          title="Music"
-                          gradient="bg-gradient-to-br from-pink-500 to-rose-500"
-                          icon={<Music2 className="w-16 h-16" />}
-                          size="large"
-                          index={0}
-                          onClick={() => {
-                            // Scroll to the genre grid section
-                            document.querySelector('[role="grid"]')?.scrollIntoView({ behavior: 'smooth' });
-                          }}
-                        />
-                        <CategoryCard
-                          title="Artists"
-                          gradient="bg-gradient-to-br from-teal-600 to-emerald-600"
-                          icon={<Mic2 className="w-16 h-16" />}
-                          size="large"
-                          index={1}
-                          onClick={() => {
-                            // Navigate to first artist from songs
-                            if (songs.length > 0) {
-                              navigate(`/artists/${encodeURIComponent(songs[0].artist)}`);
-                            }
-                          }}
-                        />
-                        <CategoryCard
-                          title="Discover"
-                          gradient="bg-gradient-to-br from-purple-600 to-violet-600"
-                          icon={<Radio className="w-16 h-16" />}
-                          size="large"
-                          index={2}
-                          onClick={() => navigate('/radio')}
-                        />
+                      <div className="flex items-center justify-between mb-4">
+                        <h2 className="text-xl md:text-2xl font-bold text-[#F9FAFB]">Start browsing</h2>
+                        <button
+                          type="button"
+                          onClick={() => document.querySelector('[role="grid"]')?.scrollIntoView({ behavior: 'smooth' })}
+                          className="text-sm font-medium text-[#9CA3AF] hover:text-[#F9FAFB] transition-colors"
+                        >
+                          View all genres
+                        </button>
                       </div>
+                      {isLoading ? (
+                        <CategoryCardSkeleton count={3} size="large" />
+                      ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <CategoryCard
+                            title="Music"
+                            gradient="bg-gradient-to-br from-pink-500 to-rose-500"
+                            icon={<Music2 className="w-16 h-16" />}
+                            size="large"
+                            index={0}
+                            onClick={() => document.querySelector('[role="grid"]')?.scrollIntoView({ behavior: 'smooth' })}
+                          />
+                          <CategoryCard
+                            title="Artists"
+                            gradient="bg-gradient-to-br from-teal-600 to-emerald-600"
+                            icon={<Mic2 className="w-16 h-16" />}
+                            size="large"
+                            index={1}
+                            onClick={() => {
+                              if (songs.length > 0) navigate(`/artists/${encodeURIComponent(songs[0].artist)}`);
+                            }}
+                          />
+                          <CategoryCard
+                            title="Discover"
+                            gradient="bg-gradient-to-br from-[#22C55E] to-[#16A34A]"
+                            icon={<Radio className="w-16 h-16" />}
+                            size="large"
+                            index={2}
+                            onClick={() => navigate('/radio')}
+                          />
+                        </div>
+                      )}
                     </section>
                   )}
 
@@ -249,7 +280,7 @@ const BrowsePage = () => {
                           <span className="text-4xl">{genreTheme.icon}</span>
                         )}
                         <h2
-                          className={`text-3xl font-bold transition-colors ${selectedGenre ? genreTheme.textAccent : 'text-text-primary'
+                          className={`text-xl md:text-2xl font-bold transition-colors ${selectedGenre ? genreTheme.textAccent : 'text-[#F9FAFB]'
                             }`}
                         >
                           {selectedGenre ? `${selectedGenre} Music` : 'Browse all'}
@@ -267,6 +298,13 @@ const BrowsePage = () => {
 
                     {/* Genre Grid */}
                     {!selectedGenre && (
+                      isLoading ? (
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
+                          {Array.from({ length: 12 }).map((_, i) => (
+                            <div key={i} className="aspect-square rounded-[12px] bg-white/10 skeleton-shimmer" />
+                          ))}
+                        </div>
+                      ) : (
                       <div
                         ref={containerRef}
                         role="grid"
@@ -296,6 +334,7 @@ const BrowsePage = () => {
                           );
                         })}
                       </div>
+                      )
                     )}
 
                     {/* Songs Display */}
@@ -331,7 +370,14 @@ const BrowsePage = () => {
                           </div>
                         </div>
 
-                        {viewType === 'list' && displayedSongs.length > 50 ? (
+                        {displayedSongs.length === 0 ? (
+                          <div className="py-12">
+                            <EmptyState
+                              message="No songs in this genre"
+                              secondary="Try another genre or check back later."
+                            />
+                          </div>
+                        ) : viewType === 'list' && displayedSongs.length > 50 ? (
                           /* Virtual Scrolling for large lists */
                           <VirtualScrollList
                             items={displayedSongs}
@@ -372,7 +418,7 @@ const BrowsePage = () => {
                                   className="group cursor-pointer"
                                   onClick={() => handleSongClick(song)}
                                 >
-                                  <div className="relative aspect-square mb-3 rounded-xl overflow-hidden shadow-lg group-hover:shadow-xl group-hover:scale-[1.02] transition-all duration-300">
+                                  <div className="relative aspect-square mb-3 rounded-[12px] overflow-hidden shadow-lg group-hover:shadow-xl group-hover:scale-[1.03] transition-all duration-200">
                                     <img
                                       src={song.imageUrl}
                                       alt={song.title}
@@ -380,10 +426,10 @@ const BrowsePage = () => {
                                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                     />
                                   </div>
-                                  <h3 className="font-semibold truncate text-sm text-text-primary">
+                                  <h3 className="font-semibold truncate text-sm text-[#F9FAFB]">
                                     {song.title}
                                   </h3>
-                                  <p className="text-xs text-text-secondary truncate">{song.artist}</p>
+                                  <p className="text-xs text-[#9CA3AF] truncate">{song.artist}</p>
                                 </div>
                               ))}
                             </div>
@@ -391,7 +437,7 @@ const BrowsePage = () => {
                             {/* Infinite scroll trigger */}
                             {hasMore && (
                               <div ref={loadMoreRef} className="flex items-center justify-center py-8">
-                                <Loader className="size-6 text-brand-primary animate-spin" />
+                                <div className="h-10 w-32 rounded-lg bg-white/10 skeleton-shimmer" />
                               </div>
                             )}
                           </>
@@ -400,7 +446,6 @@ const BrowsePage = () => {
                     )}
                   </section>
                 </div>
-              )}
             </div>
           </div>
         </ScrollArea>
