@@ -5,7 +5,7 @@ import { NotificationItem } from "./NotificationItem";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Check } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { FriendRequest } from "@/types";
 
 interface NotificationDropdownProps {
@@ -16,7 +16,7 @@ interface NotificationDropdownProps {
 
 export const NotificationDropdown = ({ isOpen, onClose, anchorRef }: NotificationDropdownProps) => {
     const { items, fetchNotifications, markAsRead, markAllAsRead, isLoading } = useNotificationStore();
-    const { friendRequests, acceptFriendRequest } = useChatStore();
+    const { friendRequests, acceptFriendRequest, rejectFriendRequest } = useChatStore();
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -68,25 +68,37 @@ export const NotificationDropdown = ({ isOpen, onClose, anchorRef }: Notificatio
                     <div className="p-6 text-center text-zinc-500 text-sm">No notifications yet</div>
                 ) : (
                     <div className="p-2 space-y-1">
-                        {/* Render Friend Requests First */}
+                        {/* Friend requests first (DESIGN_PLAN: primary Accept, outline Ignore) */}
                         {friendRequests.map((req: FriendRequest) => (
-                            <div key={req._id} className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/5 shadow-sm hover:bg-white/10 transition-colors">
+                            <div key={req._id} className="flex items-center gap-3 p-3 rounded-lg bg-[#101019] border border-[#1F2933] hover:bg-white/5 transition-colors">
                                 <Avatar className="size-8 ring-1 ring-white/10">
                                     <AvatarImage src={req.senderId.imageUrl} />
                                     <AvatarFallback>{req.senderId.fullName[0]}</AvatarFallback>
                                 </Avatar>
                                 <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-medium text-text-primary truncate">{req.senderId.fullName}</p>
-                                    <p className="text-xs text-text-secondary truncate">Sent you a friend request</p>
+                                    <p className="text-sm font-medium text-[#F9FAFB] truncate">{req.senderId.fullName}</p>
+                                    <p className="text-xs text-[#9CA3AF] truncate">Sent you a friend request</p>
                                 </div>
-                                <Button
-                                    size="icon"
-                                    variant="ghost"
-                                    className="size-7 text-success hover:text-success/80 hover:bg-success/10 rounded-full"
-                                    onClick={() => acceptFriendRequest(req._id)}
-                                >
-                                    <Check className="size-4" />
-                                </Button>
+                                <div className="flex items-center gap-1">
+                                    <Button
+                                        size="icon"
+                                        variant="ghost"
+                                        className="size-8 rounded-full bg-[#22C55E] hover:bg-[#16A34A] text-[#020617]"
+                                        onClick={() => acceptFriendRequest(req._id)}
+                                        title="Accept"
+                                    >
+                                        <Check className="size-4" />
+                                    </Button>
+                                    <Button
+                                        size="icon"
+                                        variant="ghost"
+                                        className="size-8 rounded-full border border-[#1F2933] text-[#9CA3AF] hover:bg-white/10"
+                                        onClick={() => rejectFriendRequest(req._id)}
+                                        title="Ignore"
+                                    >
+                                        <X className="size-4" />
+                                    </Button>
+                                </div>
                             </div>
                         ))}
 

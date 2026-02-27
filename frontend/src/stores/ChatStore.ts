@@ -31,6 +31,7 @@ export interface ChatActions {
 	fetchFriendRequests: () => Promise<void>;
 	sendFriendRequest: (receiverId: string) => Promise<void>;
 	acceptFriendRequest: (requestId: string) => Promise<void>;
+	rejectFriendRequest: (requestId: string) => Promise<void>;
 	searchUsers: (query: string) => Promise<void>;
 	updateActivity: (activity: string) => void;
 }
@@ -75,6 +76,7 @@ export const useChatStore = create<ChatStore>()(
 				fetchFriendRequests: manager.fetchFriendRequests.bind(manager),
 				sendFriendRequest: manager.sendFriendRequest.bind(manager),
 				acceptFriendRequest: manager.acceptFriendRequest.bind(manager),
+				rejectFriendRequest: manager.rejectFriendRequest.bind(manager),
 				searchUsers: manager.searchUsers.bind(manager),
 			};
 		},

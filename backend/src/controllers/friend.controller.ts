@@ -53,6 +53,25 @@ export const getFriendRequests = async (req: Request, res: Response, next: NextF
     }
 }
 
+export const rejectFriendRequest = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { requestId } = req.body;
+        const userId = (req as any).auth.userId;
+
+        await friendService.rejectFriendRequest(requestId, userId);
+
+        res.status(200).json({ message: "Friend request rejected" });
+    } catch (error) {
+        if ((error instanceof Error ? error.message : "Unknown error") === "User not found" || (error instanceof Error ? error.message : "Unknown error") === "Request not found") {
+            return res.status(404).json({ message: (error instanceof Error ? error.message : "Unknown error") });
+        }
+        if ((error instanceof Error ? error.message : "Unknown error") === "Not authorized") {
+            return res.status(403).json({ message: (error instanceof Error ? error.message : "Unknown error") });
+        }
+        next(error);
+    }
+};
+
 export const getFriends = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userId = (req as any).auth.userId;
