@@ -17,9 +17,9 @@ import {
     Volume2
 } from 'lucide-react';
 import { usePlayerStore } from '@/stores/PlayerStore';
-// import { useMusicStore } from '@/stores/MusicStore';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import { useDominantColor } from '@/hooks/useDominantColor';
 import { ShuffleButton } from './ShuffleButton';
 import { RepeatButton } from './RepeatButton';
 import { LyricsPanel } from './LyricsPanel';
@@ -72,6 +72,7 @@ export const FullScreenPlayer = () => {
     };
 
     const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
+    const dominantColor = useDominantColor(currentSong?.imageUrl);
 
     return (
         <AnimatePresence>
@@ -87,7 +88,7 @@ export const FullScreenPlayer = () => {
                 onDragEnd={handleDragEnd}
                 style={{ height: '100dvh' }}
             >
-                {/* Background: gradient from album art (blurred image + overlay) */}
+                {/* Background: blurred album art + gradient from extracted dominant color */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                     <div
                         className="absolute inset-0 opacity-50 blur-[120px] scale-150 transition-all duration-700"
@@ -97,8 +98,16 @@ export const FullScreenPlayer = () => {
                             backgroundPosition: 'center',
                         }}
                     />
-                    <div className="absolute inset-0 bg-black/50" />
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/90" />
+                    <div className="absolute inset-0 bg-black/40" />
+                    {dominantColor && (
+                        <div
+                            className="absolute inset-0 transition-opacity duration-500"
+                            style={{
+                                background: `linear-gradient(180deg, ${dominantColor}33 0%, transparent 45%, transparent 65%, rgba(0,0,0,0.9) 100%)`,
+                            }}
+                        />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80" />
                 </div>
 
                 {/* Content Container */}
