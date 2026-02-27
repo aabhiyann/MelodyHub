@@ -1,14 +1,23 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
-interface HorizontalScrollSectionProps {
+export interface HorizontalScrollSectionProps {
     title: string;
     subtitle?: string;
+    seeAllHref?: string;
+    seeAllLabel?: string;
     children: React.ReactNode;
 }
 
-const HorizontalScrollSection = ({ title, subtitle, children }: HorizontalScrollSectionProps) => {
+const HorizontalScrollSection = ({
+    title,
+    subtitle,
+    seeAllHref,
+    seeAllLabel = "See all",
+    children,
+}: HorizontalScrollSectionProps) => {
     const scrollRef = useRef<HTMLDivElement>(null);
     const [showLeftArrow, setShowLeftArrow] = useState(false);
     const [showRightArrow, setShowRightArrow] = useState(true);
@@ -18,7 +27,6 @@ const HorizontalScrollSection = ({ title, subtitle, children }: HorizontalScroll
 
         const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
         setShowLeftArrow(scrollLeft > 0);
-        // Using a small buffer (10px) for float math precision
         setShowRightArrow(scrollLeft + clientWidth < scrollWidth - 10);
     };
 
@@ -33,33 +41,42 @@ const HorizontalScrollSection = ({ title, subtitle, children }: HorizontalScroll
 
     return (
         <div className='relative mb-8 group/section overflow-hidden'>
-            {/* Header */}
+            {/* Header: title (left) + See All (right) + arrows */}
             <div className="flex items-end justify-between px-6 mb-4">
                 <div>
-                    <h2 className="text-2xl font-bold text-white tracking-tight">{title}</h2>
-                    {subtitle && <p className="text-zinc-400 text-sm mt-1">{subtitle}</p>}
+                    <h2 className="text-xl md:text-2xl font-bold tracking-tight text-[#F9FAFB]">{title}</h2>
+                    {subtitle && <p className="text-[#9CA3AF] text-sm mt-1">{subtitle}</p>}
                 </div>
 
-                {/* Navigation Arrows (Desktop) */}
-                <div className="hidden md:flex items-center gap-2 opacity-0 transition-opacity duration-300 group-hover/section:opacity-100">
-                    <Button
-                        size='icon'
-                        variant='ghost'
-                        onClick={() => scroll('left')}
-                        disabled={!showLeftArrow}
-                        className="rounded-full bg-white/5 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed"
-                    >
-                        <ChevronLeft className="h-5 w-5" />
-                    </Button>
-                    <Button
-                        size='icon'
-                        variant='ghost'
-                        onClick={() => scroll('right')}
-                        disabled={!showRightArrow}
-                        className="rounded-full bg-white/5 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed"
-                    >
-                        <ChevronRight className="h-5 w-5" />
-                    </Button>
+                <div className="flex items-center gap-2">
+                    {seeAllHref && (
+                        <Link
+                            to={seeAllHref}
+                            className="text-sm font-medium text-[#9CA3AF] hover:text-[#F9FAFB] transition-colors shrink-0"
+                        >
+                            {seeAllLabel}
+                        </Link>
+                    )}
+                    <div className="hidden md:flex items-center gap-2 opacity-0 transition-opacity duration-300 group-hover/section:opacity-100">
+                        <Button
+                            size='icon'
+                            variant='ghost'
+                            onClick={() => scroll('left')}
+                            disabled={!showLeftArrow}
+                            className="rounded-full bg-white/5 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed text-[#F9FAFB]"
+                        >
+                            <ChevronLeft className="h-5 w-5" />
+                        </Button>
+                        <Button
+                            size='icon'
+                            variant='ghost'
+                            onClick={() => scroll('right')}
+                            disabled={!showRightArrow}
+                            className="rounded-full bg-white/5 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed text-[#F9FAFB]"
+                        >
+                            <ChevronRight className="h-5 w-5" />
+                        </Button>
+                    </div>
                 </div>
             </div>
 
@@ -70,7 +87,6 @@ const HorizontalScrollSection = ({ title, subtitle, children }: HorizontalScroll
                 className='flex overflow-x-auto gap-4 px-6 pb-6 snap-x snap-mandatory scrollbar-hide -mx-6 md:mx-0'
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-                {/* Add standard padding to start of list so first item isn't flush against edge */}
                 {children}
             </div>
         </div>
