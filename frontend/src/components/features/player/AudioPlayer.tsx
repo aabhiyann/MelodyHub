@@ -213,6 +213,8 @@ const AudioPlayer = () => {
 
 	if (!currentSong) return <audio ref={audioRef} />;
 
+	const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
+
 	return (
 		<>
 			<audio ref={audioRef} />
@@ -231,93 +233,144 @@ const AudioPlayer = () => {
 						: 'No track loaded'}
 			</div>
 
-			{/* Player UI - Floating Pill */}
+			{/* Mini player bar: progress line at top, then art + title + artist + play + next. Tap (except buttons) to expand. */}
 			<div
+				role="button"
+				tabIndex={0}
 				onClick={(e) => {
-					// Expand if clicking the container (not buttons inside) for all devices
-					if (!(e.target as HTMLElement).closest('button') && !(e.target as HTMLElement).closest('input')) {
-						toggleExpanded();
+					if (!(e.target as HTMLElement).closest('button')) toggleExpanded();
+				}}
+				onKeyDown={(e) => {
+					if (e.key === 'Enter' || e.key === ' ') {
+						e.preventDefault();
+						if (!(e.target as HTMLElement).closest('button')) toggleExpanded();
 					}
 				}}
-				className={cn("fixed bottom-[72px] left-2 right-2 md:bottom-6 md:left-6 md:right-6 z-[1000] h-[60px] md:h-[92px] rounded-xl md:rounded-2xl cursor-pointer md:cursor-default shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-opacity duration-300", isExpanded ? "opacity-0 pointer-events-none md:opacity-100 md:pointer-events-auto" : "opacity-100")}
+				className={cn(
+					'fixed left-0 right-0 z-[1000] cursor-pointer select-none',
+					'bottom-[72px] md:bottom-6 mx-2 md:mx-6',
+					'h-14 md:h-16 rounded-t-xl md:rounded-xl overflow-hidden',
+					'transition-opacity duration-300',
+					isExpanded && 'opacity-0 pointer-events-none'
+				)}
 				style={{
-					background: 'rgba(20, 20, 22, 0.85)', // Slightly refined dark glass
-					backdropFilter: 'blur(60px)',
-					WebkitBackdropFilter: 'blur(60px)',
-					border: '1px solid rgba(255, 255, 255, 0.08)',
-					boxShadow: '0 16px 40px rgba(0, 0, 0, 0.8)'
+					background: 'rgba(0,0,0,0.75)',
+					backdropFilter: 'blur(20px)',
+					WebkitBackdropFilter: 'blur(20px)',
+					border: '1px solid rgba(255,255,255,0.08)',
+					borderBottom: 'none',
+					boxShadow: '0 -4px 24px rgba(0,0,0,0.3)',
 				}}
+				aria-label="Now playing - tap to expand"
 			>
-				{/* Content */}
-				<div className="h-full px-3 md:px-6 max-w-[1920px] mx-auto">
-					<div className="flex md:grid md:grid-cols-3 h-full items-center justify-between gap-4">
+				{/* Progress bar as thin line at the very top */}
+				<div className="absolute top-0 left-0 right-0 h-0.5 bg-white/20">
+					<div
+						className="h-full bg-[#22C55E] transition-[width] duration-100"
+						style={{ width: `${progressPercent}%` }}
+					/>
+				</div>
 
-						{/* Left: Now Playing */}
-						<div className="flex justify-between items-center w-full md:w-auto min-w-0 gap-4">
-							<NowPlaying />
+				<div className="flex items-center gap-3 h-full pl-3 pr-2 py-2 pt-2.5">
+					{/* Album art - small, rounded */}
+					<div className="flex-shrink-0 w-10 h-10 md:w-11 md:h-11 rounded-lg overflow-hidden ring-1 ring-white/10">
+						<img
+							src={currentSong.imageUrl}
+							alt=""
+							className="w-full h-full object-cover"
+						/>
+					</div>
 
-							{/* Mobile Controls */}
-							<div className="flex items-center gap-1 md:hidden shrink-0">
-								{/* Play/Pause Button */}
-								<button
-									onClick={(e) => {
-										e.stopPropagation();
-										togglePlay();
-									}}
-									className="p-2 rounded-full hover:bg-white/10 text-white transition-colors"
-								>
-									{isPlaying ? (
-										<Pause className="w-6 h-6 fill-white" />
-									) : (
-										<Play className="w-6 h-6 fill-white" />
-									)}
-								</button>
+					{/* Title + artist */}
+					<div className="flex-1 min-w-0 text-left">
+						<p className="text-sm font-semibold text-white truncate">{currentSong.title}</p>
+						<p className="text-xs text-white/60 truncate">{currentSong.artist}</p>
+					</div>
 
-								{/* Next Button */}
-								<button
-									onClick={(e) => {
-										e.stopPropagation();
-										playNext();
-									}}
-									className="p-2 rounded-full hover:bg-white/10 text-white transition-colors"
-								>
-									<SkipForward className="w-6 h-6 fill-white" />
-								</button>
-							</div>
-						</div>
-
-						{/* Center: Playback Controls & Progress */}
-						<div className="hidden md:flex flex-col items-center justify-center w-full max-w-[600px] mx-auto gap-2">
-							<PlaybackControls />
-							<div className="w-full px-2">
-								<ProgressBar
-									currentTime={currentTime}
-									duration={duration}
-									bufferedTime={bufferedTime}
-									onSeek={handleSeek}
-								/>
-							</div>
-						</div>
-
-						{/* Right: Additional Controls */}
-						<div className="hidden md:flex justify-end items-center min-w-0">
-							<AdditionalControls
-								queueCount={queue.length}
-								onQueueClick={toggleQueue}
-								volume={volume}
-								isMuted={isMuted}
-								onVolumeChange={setVolume}
-								onToggleMute={toggleMute}
-								isExpanded={isExpanded}
-								onToggleExpanded={toggleExpanded}
-							/>
-						</div>
+					{/* Play/Pause + Next - buttons so they don't trigger expand */}
+					<div className="flex items-center gap-0.5">
+						<button
+							type="button"
+							onClick={(e) => { e.stopPropagation(); togglePlay(); }}
+							className="p-2.5 rounded-full text-white hover:bg-white/10 transition-colors"
+							aria-label={isPlaying ? 'Pause' : 'Play'}
+						>
+							{isPlaying ? (
+								<Pause className="w-5 h-5 md:w-6 md:h-6 fill-current" />
+							) : (
+								<Play className="w-5 h-5 md:w-6 md:h-6 fill-current" />
+							)}
+						</button>
+						<button
+							type="button"
+							onClick={(e) => { e.stopPropagation(); playNext(true); }}
+							className="p-2.5 rounded-full text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+							aria-label="Next"
+						>
+							<SkipForward className="w-5 h-5 md:w-6 md:h-6 fill-current" />
+						</button>
 					</div>
 				</div>
 			</div>
 
-			{/* Spacer to prevent content from being hidden behind player */}
-			<div className="h-[84px] md:h-[120px]" />
+			{/* Desktop: center controls + full progress; tap area to expand */}
+			<div
+				role="button"
+				tabIndex={0}
+				onClick={(e) => {
+					if (!(e.target as HTMLElement).closest('button') && !(e.target as HTMLElement).closest('input')) toggleExpanded();
+				}}
+				onKeyDown={(e) => {
+					if ((e.key === 'Enter' || e.key === ' ') && !(e.target as HTMLElement).closest('button')) {
+						e.preventDefault();
+						toggleExpanded();
+					}
+				}}
+				className={cn(
+					'hidden md:flex fixed bottom-6 left-6 right-6 z-[1000] max-w-[1920px] mx-auto cursor-pointer',
+					'h-[92px] rounded-2xl overflow-hidden',
+					'transition-opacity duration-300',
+					isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'
+				)}
+				style={{
+					background: 'rgba(0,0,0,0.75)',
+					backdropFilter: 'blur(20px)',
+					WebkitBackdropFilter: 'blur(20px)',
+					border: '1px solid rgba(255,255,255,0.08)',
+					boxShadow: '0 16px 40px rgba(0,0,0,0.5)',
+				}}
+				aria-label="Now playing - click to expand"
+			>
+				<div className="absolute top-0 left-0 right-0 h-0.5 bg-white/20">
+					<div className="h-full bg-[#22C55E] transition-[width] duration-100" style={{ width: `${progressPercent}%` }} />
+				</div>
+				<div className="grid grid-cols-3 flex-1 h-full px-6 items-center gap-4 pt-1">
+					<div className="flex items-center min-w-0">
+						<NowPlaying />
+					</div>
+					<div className="flex flex-col items-center justify-center gap-2 max-w-[600px] mx-auto w-full">
+						<PlaybackControls />
+						<div className="w-full px-2" onClick={(e) => e.stopPropagation()}>
+							<ProgressBar currentTime={currentTime} duration={duration} bufferedTime={bufferedTime} onSeek={handleSeek} />
+						</div>
+					</div>
+					<div className="flex justify-end items-center min-w-0" onClick={(e) => e.stopPropagation()}>
+						<AdditionalControls
+							queueCount={queue.length}
+							onQueueClick={toggleQueue}
+							volume={volume}
+							isMuted={isMuted}
+							onVolumeChange={setVolume}
+							onToggleMute={toggleMute}
+							isExpanded={isExpanded}
+							onToggleExpanded={toggleExpanded}
+						/>
+					</div>
+				</div>
+			</div>
+
+			{/* Spacer so content is not hidden behind player */}
+			<div className="h-16 md:h-[100px]" aria-hidden />
 		</>
 	);
 };
