@@ -17,7 +17,10 @@ const Topbar = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	const isRootRoute = ['/home', '/browse', '/search', '/library', '/chat'].includes(location.pathname) || location.pathname === '/';
+	// Root routes (no back button): the 4 bottom-nav destinations + landing
+	const isRootRoute =
+		['/home', '/browse', '/chat', '/profile'].includes(location.pathname) ||
+		location.pathname === '/';
 
 	return (
 		<div className='flex flex-col sticky top-0 z-50 glass-toolbar bg-zinc-950/90 w-full'>
