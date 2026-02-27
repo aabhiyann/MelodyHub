@@ -11,6 +11,7 @@ import { useAIStore } from '@/stores/useAIStore';
 import { CategoryCard } from '@/components/ui/CategoryCard';
 
 // New Components
+import { FeaturedHero } from '@/pages/home/components/FeaturedHero';
 import { HomeHero } from '@/pages/home/components/HomeHero';
 import { JumpBackIn } from '@/pages/home/components/JumpBackIn';
 import { MadeForYou } from '@/pages/home/components/MadeForYou';
@@ -68,15 +69,21 @@ const HomePage = () => {
         <div className="flex-1 h-full overflow-hidden" id="home-scroll-container">
           <PullToRefresh onRefresh={refreshData}>
             <div className="space-y-16 min-h-full pb-32 max-w-full overflow-x-hidden animate-in fade-in slide-in-from-bottom-4 duration-700">
-              {/* 1. HERO SECTION */}
+              {/* 1. FEATURED HERO (top trending/featured) */}
+              <FeaturedHero
+                item={featuredSongs?.[0] ?? trendingSongs?.[0] ?? null}
+                isLoading={isLoading}
+              />
+
+              {/* 2. GREETING + STATS */}
               <div className="px-6 pt-2 md:pt-6">
                 <HomeHero
-                  totalListeningTime={listeningHistory.length * 3.5 * 60} // Estimate
+                  totalListeningTime={listeningHistory.length * 3.5 * 60}
                   newDiscoveriesCount={newDiscoveries}
                 />
               </div>
 
-              {/* 2. START BROWSING */}
+              {/* 3. START BROWSING */}
               <div className="px-6">
                 <h2 className="text-2xl font-bold mb-4">Start browsing</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -107,24 +114,24 @@ const HomePage = () => {
                 </div>
               </div>
 
-              {/* 3. JUMP BACK IN */}
+              {/* 4. JUMP BACK IN */}
               <div className="pl-6">
                 <JumpBackIn history={listeningHistory} />
               </div>
 
-              {/* 4. MADE FOR YOU */}
+              {/* 5. MADE FOR YOU */}
               <div className="px-6">
                 <SectionErrorBoundary sectionName="Made For You">
                   <MadeForYou songs={madeForYouSongs} isLoading={isLoading} />
                 </SectionErrorBoundary>
               </div>
 
-              {/* 5. PLAY BY MOOD */}
+              {/* 6. PLAY BY MOOD */}
               <div className="px-6">
                 <MoodSection />
               </div>
 
-              {/* 6. CHARTS & TRENDING */}
+              {/* 7. CHARTS & TRENDING */}
               <div className="px-6">
                 <SectionErrorBoundary sectionName="Charts & Trending">
                   <ChartsMosaic
@@ -135,17 +142,17 @@ const HomePage = () => {
                 </SectionErrorBoundary>
               </div>
 
-              {/* 7. GENRE EXPLORATION */}
+              {/* 8. GENRE EXPLORATION */}
               <div className="px-6">
                 <GenreMosaic />
               </div>
 
-              {/* 8. NEW RELEASES */}
+              {/* 9. NEW RELEASES */}
               <div className="pl-6">
                 <NewReleases albums={albums} isLoading={isLoading} />
               </div>
 
-              {/* 9. RECOMMENDED */}
+              {/* 10. RECOMMENDED */}
               <div className="pl-6">
                 <RecommendedSection
                   songs={featuredSongs.slice(5, 15)} // Mocking similar songs
@@ -154,7 +161,7 @@ const HomePage = () => {
                 />
               </div>
 
-              {/* 10. TOP ARTISTS */}
+              {/* 11. TOP ARTISTS */}
               <div className="px-6 pb-12">
                 <TopArtists artists={topArtists} />
               </div>

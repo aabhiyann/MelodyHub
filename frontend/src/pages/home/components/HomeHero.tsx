@@ -30,7 +30,7 @@ export const HomeHero = ({ totalListeningTime, newDiscoveriesCount }: HomeHeroPr
 
             if (hour < 5) {
                 setGreeting("Late night vibes");
-                setGradient("from-indigo-950 via-purple-950 to-black"); // Night
+                setGradient("from-[#0F172A] via-[#101019] to-black"); // Night (DESIGN_PLAN)
             } else if (hour < 12) {
                 setGreeting("Good morning");
                 setGradient("from-orange-500/20 via-amber-500/10 to-transparent"); // Sunrise warm
@@ -39,7 +39,7 @@ export const HomeHero = ({ totalListeningTime, newDiscoveriesCount }: HomeHeroPr
                 setGradient("from-blue-600/20 via-cyan-500/10 to-transparent"); // Day cool
             } else {
                 setGreeting("Good evening");
-                setGradient("from-violet-900/30 via-purple-900/10 to-transparent"); // Evening deep
+                setGradient("from-[#1F2933]/50 via-[#101019]/30 to-transparent"); // Evening dark (DESIGN_PLAN)
             }
         };
 
@@ -61,15 +61,15 @@ export const HomeHero = ({ totalListeningTime, newDiscoveriesCount }: HomeHeroPr
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 0.2, y: -20 }}
+                    animate={{ opacity: 0.15, y: -20 }}
                     transition={{ duration: 5, repeat: Infinity, repeatType: "reverse" }}
-                    className="absolute top-1/4 right-1/4 w-64 h-64 bg-brand-primary/20 rounded-full blur-3xl"
+                    className="absolute top-1/4 right-1/4 w-64 h-64 bg-[#22C55E]/20 rounded-full blur-3xl"
                 />
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 0.15, x: 20 }}
+                    animate={{ opacity: 0.1, x: 20 }}
                     transition={{ duration: 7, repeat: Infinity, repeatType: "reverse" }}
-                    className="absolute bottom-[-50px] left-10 w-48 h-48 bg-brand-secondary/20 rounded-full blur-3xl"
+                    className="absolute bottom-[-50px] left-10 w-48 h-48 bg-[#1F2933] rounded-full blur-3xl"
                 />
             </div>
 
@@ -85,7 +85,7 @@ export const HomeHero = ({ totalListeningTime, newDiscoveriesCount }: HomeHeroPr
                         <span className="bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">
                             {greeting},
                         </span>{" "}
-                        <span className="text-brand-primary">
+                        <span className="text-[#22C55E]">
                             {user?.firstName || "Music Lover"}
                         </span>
                     </motion.h1>
@@ -94,7 +94,7 @@ export const HomeHero = ({ totalListeningTime, newDiscoveriesCount }: HomeHeroPr
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.3, duration: 0.6 }}
-                        className="text-lg text-zinc-400 font-medium"
+                        className="text-lg text-[#9CA3AF] font-medium"
                     >
                         Ready to discover your next favorite track?
                     </motion.p>
@@ -111,22 +111,22 @@ export const HomeHero = ({ totalListeningTime, newDiscoveriesCount }: HomeHeroPr
                         onClick={() => navigate('/browse')}
                         className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/5 backdrop-blur-sm hover:bg-white/10 hover:border-white/10 hover:shadow-lg transition-all cursor-pointer group"
                     >
-                        <Clock className="size-4 text-brand-secondary group-hover:animate-pulse" />
-                        <span className="text-sm font-medium text-zinc-300 group-hover:text-white transition-colors">
+                        <Clock className="size-4 text-[#22C55E] group-hover:animate-pulse" />
+                        <span className="text-sm font-medium text-[#9CA3AF] group-hover:text-[#F9FAFB] transition-colors">
                             {totalListeningTime > 0 ? `${Math.round(totalListeningTime / 60)}h listening` : "No playtime yet"}
                         </span>
                     </button>
 
                     <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/5 backdrop-blur-sm hover:bg-white/10 transition-colors cursor-default">
                         <Sparkles className="size-4 text-yellow-500" />
-                        <span className="text-sm font-medium text-zinc-300">
+                        <span className="text-sm font-medium text-[#9CA3AF]">
                             {newDiscoveriesCount} new discoveries
                         </span>
                     </div>
 
                     <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/5 backdrop-blur-sm hover:bg-white/10 transition-colors cursor-default">
-                        <Music className="size-4 text-brand-primary" />
-                        <span className="text-sm font-medium text-zinc-300">
+                        <Music className="size-4 text-[#22C55E]" />
+                        <span className="text-sm font-medium text-[#9CA3AF]">
                             Weekly Top 5 available
                         </span>
                     </div>
