@@ -1,9 +1,8 @@
 import Topbar from "@/components/layout/TopBar";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useChatStore } from "@/stores/ChatStore";
 import { ChatHeader } from "@/components/features/chat/ChatHeader";
 import { MessageInput } from "@/components/features/chat/MessageInput";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { FriendsList } from "@/components/features/social/FriendsList";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Message } from "@/types";
@@ -41,6 +40,9 @@ const ChatPage = () => {
 	} = useChatStore();
 
 	const scrollRef = useRef<HTMLDivElement>(null);
+	const scrollContainerRef = useRef<HTMLDivElement>(null);
+	const prevMessageCountRef = useRef(0);
+	const [showNewMessagesChip, setShowNewMessagesChip] = useState(false);
 
 	useEffect(() => {
 		if (user) fetchUsers();
@@ -50,12 +52,46 @@ const ChatPage = () => {
 		if (selectedUser) fetchMessages(selectedUser.clerkId);
 	}, [selectedUser, fetchMessages]);
 
-	// Auto-scroll to bottom on new messages
+	const checkNearBottom = useCallback(() => {
+		const el = scrollContainerRef.current;
+		if (!el) return;
+		const threshold = 80;
+		const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight <= threshold;
+		if (atBottom) setShowNewMessagesChip(false);
+	}, []);
+
+	// Auto-scroll: scroll to bottom when user sends; when receiving, only scroll if already near bottom
 	useEffect(() => {
-		if (scrollRef.current) {
-			scrollRef.current.scrollIntoView({ behavior: "smooth" });
+		const prevLen = prevMessageCountRef.current;
+		prevMessageCountRef.current = messages.length;
+		const lastMsg = messages[messages.length - 1];
+		const lastIsFromMe = lastMsg?.senderId === user?.id;
+		if (messages.length === 0) return;
+		if (lastIsFromMe || prevLen === 0) {
+			scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+			setShowNewMessagesChip(false);
+			return;
 		}
-	}, [messages]);
+		if (messages.length <= prevLen) return;
+		// New incoming message: after layout, check if we were near bottom
+		requestAnimationFrame(() => {
+			const el = scrollContainerRef.current;
+			if (!el) return;
+			const threshold = 80;
+			const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight <= threshold;
+			if (atBottom) {
+				scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+				setShowNewMessagesChip(false);
+			} else {
+				setShowNewMessagesChip(true);
+			}
+		});
+	}, [messages, user?.id]);
+
+	const scrollToBottom = () => {
+		scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+		setShowNewMessagesChip(false);
+	};
 
 	// DESIGN_PLAN: iMessage-style bubbles — self: accent gradient; other: bg_elevated + border_subtle
 	const getBubbleClasses = (isMe: boolean, isFirst: boolean, isLast: boolean, isTemp: boolean) => {
@@ -104,8 +140,21 @@ const ChatPage = () => {
 							<ChatHeader />
 
 							{/* Messages */}
-							<ScrollArea className='flex-1 w-full min-h-0'>
-								<div className='p-4 space-y-4 min-h-0 pb-12'>
+							<div
+								ref={scrollContainerRef}
+								onScroll={checkNearBottom}
+								className='flex-1 w-full min-h-0 overflow-y-auto overflow-x-hidden'
+							>
+								<div className='p-4 space-y-4 min-h-0 pb-12 relative'>
+									{showNewMessagesChip && (
+										<button
+											type="button"
+											onClick={scrollToBottom}
+											className="sticky top-2 left-1/2 -translate-x-1/2 z-10 px-3 py-1.5 rounded-full text-xs font-medium bg-[#101019] border border-[#1F2933] text-[#F9FAFB] shadow-lg hover:bg-[#1F2933] transition-colors"
+										>
+											New messages
+										</button>
+									)}
 									{messages.map((message: Message, index) => {
 										const isMyMessage = message.senderId === user?.id;
 										const previousMessage = messages[index - 1];
@@ -168,7 +217,7 @@ const ChatPage = () => {
 									{/* Anchor for auto-scroll */}
 									<div ref={scrollRef} className="h-1" />
 								</div>
-							</ScrollArea>
+							</div>
 
 							{/* Typing Indicator & Input Area Container */}
 							<div className="relative w-full z-10">
