@@ -1,5 +1,6 @@
 import Topbar from "@/components/layout/TopBar";
 import { useEffect, useRef, useState, useCallback } from "react";
+import { useLocation } from "react-router-dom";
 import { useChatStore } from "@/stores/ChatStore";
 import { ChatHeader } from "@/components/features/chat/ChatHeader";
 import { MessageInput } from "@/components/features/chat/MessageInput";
@@ -31,11 +32,15 @@ const formatDate = (date: string) => {
 
 const ChatPage = () => {
 	const { user } = useUser();
+	const location = useLocation();
 	const {
 		selectedUser,
 		messages,
+		friends,
 		fetchUsers,
 		fetchMessages,
+		fetchFriends,
+		setSelectedUser,
 		typingUsers,
 	} = useChatStore();
 
@@ -47,6 +52,29 @@ const ChatPage = () => {
 	useEffect(() => {
 		if (user) fetchUsers();
 	}, [fetchUsers, user]);
+
+	// Deep link: open conversation with user when navigating from profile "Message" button
+	const openUserIdRef = useRef<string | null>(null);
+	useEffect(() => {
+		const openUserId = (location.state as { openUserId?: string } | null)?.openUserId;
+		if (openUserId) {
+			openUserIdRef.current = openUserId;
+			window.history.replaceState({}, document.title, location.pathname);
+			fetchFriends();
+		}
+	}, [location.state, fetchFriends]);
+
+	useEffect(() => {
+		const openUserId = openUserIdRef.current;
+		if (!openUserId) return;
+		const found = friends.find(
+			(f) => f.clerkId === openUserId || (f as { _id?: string })._id === openUserId
+		);
+		if (found) {
+			setSelectedUser(found);
+			openUserIdRef.current = null;
+		}
+	}, [friends, setSelectedUser]);
 
 	useEffect(() => {
 		if (selectedUser) fetchMessages(selectedUser.clerkId);
