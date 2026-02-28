@@ -93,7 +93,7 @@ export const removeSongFromPlaylist = async (req: Request, res: Response) => {
             return res.status(401).json({ success: false, message: "Authentication required" });
         }
 
-        const playlist = await playlistService.removeSong(String(id), songId, userId);
+        const playlist = await playlistService.removeSong(String(id), String(songId), userId);
         return res.status(200).json({ success: true, data: playlist, message: "Song removed" });
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : "Unknown error";
