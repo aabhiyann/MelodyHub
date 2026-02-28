@@ -37,7 +37,7 @@ export const MelodyMascot = ({ size = 'md' }: MelodyMascotProps) => {
     return (
         <div className={`relative flex items-center justify-center ${sizeClasses[size]} mx-auto mb-6`}>
             {/* Glow Effect */}
-            <div className="absolute inset-0 bg-brand-primary/30 blur-2xl rounded-full animate-pulse" />
+            <div className="absolute inset-0 bg-[#22C55E]/20 blur-2xl rounded-full animate-pulse" />
 
             <motion.div
                 animate={mascotState}

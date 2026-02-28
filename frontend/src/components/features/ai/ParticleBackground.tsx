@@ -38,7 +38,7 @@ export const ParticleBackground = () => {
                     }}
                 >
                     {particle.isMusicNote ? (
-                        <Music2 className="w-4 h-4 text-brand-primary" />
+                        <Music2 className="w-4 h-4 text-[#22C55E]" />
                     ) : (
                         <div className="w-2 h-2 rounded-full bg-white/30" />
                     )}
