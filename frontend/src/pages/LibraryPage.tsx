@@ -54,11 +54,11 @@ interface Playlist {
 
 const PLAYLIST_GRADIENTS = [
   'from-brand-primary/20 to-brand-secondary/20',
-  'from-purple-500/20 to-pink-500/20',
+  'from-rose-500/20 to-pink-500/20',
   'from-blue-500/20 to-cyan-500/20',
   'from-emerald-500/20 to-teal-500/20',
   'from-orange-500/20 to-red-500/20',
-  'from-indigo-500/20 to-purple-500/20'
+  'from-indigo-500/20 to-slate-600/20'
 ];
 
 const getPlaylistGradient = (id: string, isGrid?: boolean) => {

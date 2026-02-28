@@ -6,7 +6,7 @@ export const FeatureSection = () => {
             icon: <Music className="w-7 h-7" />,
             title: "AI-Powered Playlists",
             desc: "Let AI curate perfect playlists based on your mood and taste.",
-            gradient: "from-purple-500 to-blue-500"
+            gradient: "from-emerald-500 to-green-600"
         },
         {
             icon: <MessageCircle className="w-7 h-7" />,
@@ -36,7 +36,7 @@ export const FeatureSection = () => {
             icon: <Compass className="w-7 h-7" />,
             title: "Personalized Discovery",
             desc: "Discover new music tailored to your unique taste every day.",
-            gradient: "from-pink-500 to-purple-500"
+            gradient: "from-rose-500 to-emerald-500"
         }
     ];
 

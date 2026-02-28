@@ -15,7 +15,7 @@ export const SocialProofSection = () => {
                     ].map((user, i) => (
                         <div key={i} className="p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm text-left hover:-translate-y-1 transition-transform duration-300">
                             <div className="flex items-center gap-4 mb-6">
-                                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl">
+                                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center text-white font-bold text-xl">
                                     {user.initial}
                                 </div>
                                 <div>

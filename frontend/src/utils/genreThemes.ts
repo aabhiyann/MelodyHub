@@ -22,10 +22,10 @@ export const GENRE_THEMES: Record<string, GenreTheme> = {
     icon: '🎸',
   },
   'K-Pop': {
-    gradient: 'from-purple-500 to-pink-500',
-    bgAccent: 'bg-purple-500/10',
-    textAccent: 'text-purple-400',
-    borderAccent: 'border-purple-500/20',
+    gradient: 'from-rose-500 to-pink-500',
+    bgAccent: 'bg-rose-500/10',
+    textAccent: 'text-rose-400',
+    borderAccent: 'border-rose-500/20',
     icon: '💜',
   },
   'Hip Hop': {
@@ -50,7 +50,7 @@ export const GENRE_THEMES: Record<string, GenreTheme> = {
     icon: '🎺',
   },
   Classical: {
-    gradient: 'from-indigo-600 to-purple-600',
+    gradient: 'from-indigo-600 to-slate-700',
     bgAccent: 'bg-indigo-500/10',
     textAccent: 'text-indigo-400',
     borderAccent: 'border-indigo-500/20',
