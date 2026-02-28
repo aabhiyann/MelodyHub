@@ -20,6 +20,7 @@ import {
     Target,
     Settings,
     Shield,
+    Sparkles,
 } from 'lucide-react';
 import { Link, NavLink } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -27,6 +28,7 @@ import { useEffect, useState } from 'react';
 
 import { useAuthStore } from '@/stores/AuthStore';
 import { usePlaylistStore } from '@/stores/PlaylistStore';
+import { useAIStore } from '@/stores/useAIStore';
 
 interface NavItem {
     id: string;
@@ -60,6 +62,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
     const [isExpanded, setIsExpanded] = useState(true);
     const { isAdmin } = useAuthStore();
     const { userPlaylists, fetchUserPlaylists } = usePlaylistStore();
+    const { openModal: openAIModal } = useAIStore();
 
     useEffect(() => {
         fetchUserPlaylists();
@@ -171,6 +174,24 @@ export const Sidebar = ({ className }: SidebarProps) => {
                 </div>
 
                 <div className="my-2 border-t border-white/[0.08]" />
+
+                {/* AI Playlist — opens modal, not a route */}
+                <div className="space-y-0.5 mb-2">
+                    <button
+                        type="button"
+                        onClick={openAIModal}
+                        className={cn(
+                            'flex items-center gap-3 px-3 py-2.5 rounded-lg w-full transition-all duration-200',
+                            'text-[#22C55E] hover:bg-[#22C55E]/10 hover:text-[#22C55E]'
+                        )}
+                        aria-label="Generate AI Playlist"
+                    >
+                        <Sparkles className="size-5 shrink-0" />
+                        {isExpanded && (
+                            <span className="font-medium truncate">Magic</span>
+                        )}
+                    </button>
+                </div>
 
                 <div className="space-y-0.5">
                     {secondaryNavItems.map((item) => (
