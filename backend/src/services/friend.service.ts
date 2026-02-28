@@ -74,16 +74,22 @@ export class FriendService {
             status: "pending",
         });
 
-        // Notify receiver
+        // Notify receiver (metadata includes sender image/name for notification item avatar)
         if (receiver.clerkId) {
             const notification = await notificationService.createNotification({
                 userId: receiver.clerkId,
                 type: "FRIEND_REQUEST",
                 title: "New friend request",
                 body: `${(sender as any).fullName} sent you a friend request`,
-                metadata: { senderId: (sender._id as any).toString(), requestId: (newRequest._id as any).toString() },
+                metadata: {
+                    senderId: (sender._id as any).toString(),
+                    requestId: (newRequest._id as any).toString(),
+                    senderImageUrl: (sender as any).imageUrl,
+                    senderName: (sender as any).fullName,
+                },
             });
-            emitToUser(receiver.clerkId, "new_notification", notification);
+            const payload = typeof (notification as any).toObject === "function" ? (notification as any).toObject() : notification;
+            emitToUser(receiver.clerkId, "new_notification", payload);
         }
 
         return newRequest;
