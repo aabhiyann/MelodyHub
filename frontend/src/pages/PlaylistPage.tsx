@@ -174,15 +174,16 @@ const PlaylistPage = () => {
                         <div className='bg-[#101019]/20 backdrop-blur-sm'>
                             {/* table header */}
                             <div
-                                className='grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-6 md:px-10 py-2 text-sm 
+                                className='grid grid-cols-[16px_1fr_2fr_80px_40px] md:grid-cols-[16px_4fr_2fr_1fr_48px] gap-2 md:gap-4 px-3 md:px-4 py-2 text-sm 
             text-[#9CA3AF] border-b border-white/5 uppercase tracking-wider'
                             >
                                 <div>#</div>
                                 <div>Title</div>
                                 <div>Artist</div>
-                                <div>
+                                <div className="flex justify-end md:justify-start">
                                     <Clock className='h-4 w-4' />
                                 </div>
+                                <div aria-hidden />
                             </div>
 
                             {/* songs list */}

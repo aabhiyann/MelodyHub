@@ -20,9 +20,9 @@ vi.mock('@/components/shared/OptimizedImage', () => ({
     ),
 }));
 
-// Mock the imported format function to avoid importing from a page
-vi.mock('@/pages/AlbumPage', () => ({
+vi.mock('@/lib/utils', () => ({
     formatDuration: (seconds: number) => `${Math.floor(seconds / 60)}:${(seconds % 60).toString().padStart(2, '0')}`,
+    cn: (...args: unknown[]) => args.filter(Boolean).join(' '),
 }));
 
 
@@ -71,7 +71,7 @@ describe('PlaylistSongRow', () => {
         );
 
         const row = screen.getByTestId('motion-row');
-        expect(row.className).toContain('bg-brand-primary/10');
+        expect(row.className).toContain('bg-[#22C55E]/10');
         expect(screen.queryByText('1')).toBeNull(); // Index hidden when playing
     });
 
