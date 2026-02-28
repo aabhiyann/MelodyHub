@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Song } from "@/types";
-import { Music, Play, Heart } from "lucide-react";
+import { Music, Play, Heart, Trash2, ChevronUp, ChevronDown } from "lucide-react";
 import { formatDuration } from "@/lib/utils";
 import { OptimizedImage } from "@/components/shared/OptimizedImage";
 import { motion, PanInfo, useAnimation } from "framer-motion";
@@ -13,10 +13,13 @@ interface PlaylistSongRowProps {
     onClick: () => void;
     onRemove?: () => void;
     isOwner?: boolean;
-    showActions?: boolean;
+    onMoveUp?: () => void;
+    onMoveDown?: () => void;
+    canMoveUp?: boolean;
+    canMoveDown?: boolean;
 }
 
-export const PlaylistSongRow = memo(({ song, index, isCurrentSong, isPlaying, onClick, onRemove, isOwner, showActions }: PlaylistSongRowProps) => {
+export const PlaylistSongRow = memo(({ song, index, isCurrentSong, isPlaying, onClick, onRemove, isOwner, onMoveUp, onMoveDown, canMoveUp, canMoveDown }: PlaylistSongRowProps) => {
     const controls = useAnimation();
 
     const handleDragEnd = async (_: MouseEvent | TouchEvent | PointerEvent | Event, info: PanInfo) => {
@@ -66,7 +69,26 @@ export const PlaylistSongRow = memo(({ song, index, isCurrentSong, isPlaying, on
             </div>
             <div className="text-[#9CA3AF] truncate pointer-events-none">{song.artist}</div>
             <div className='flex items-center text-[#9CA3AF] pointer-events-none'>{formatDuration(song.duration)}</div>
-            <div className="flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-end gap-0.5" onClick={(e) => e.stopPropagation()}>
+                {isOwner && (
+                    <>
+                        {canMoveUp && onMoveUp && (
+                            <button type="button" onClick={onMoveUp} className="p-1.5 rounded hover:bg-white/10 text-[#9CA3AF] hover:text-[#F9FAFB] transition-colors min-w-[44px] min-h-[44px] md:min-w-0 md:min-h-0 flex items-center justify-center opacity-0 group-hover:opacity-100 md:opacity-100" aria-label="Move up">
+                                <ChevronUp className="size-4" />
+                            </button>
+                        )}
+                        {canMoveDown && onMoveDown && (
+                            <button type="button" onClick={onMoveDown} className="p-1.5 rounded hover:bg-white/10 text-[#9CA3AF] hover:text-[#F9FAFB] transition-colors min-w-[44px] min-h-[44px] md:min-w-0 md:min-h-0 flex items-center justify-center opacity-0 group-hover:opacity-100 md:opacity-100" aria-label="Move down">
+                                <ChevronDown className="size-4" />
+                            </button>
+                        )}
+                        {onRemove && (
+                            <button type="button" onClick={onRemove} className="p-2 rounded-full hover:bg-white/10 text-[#9CA3AF] hover:text-red-400 transition-colors min-w-[44px] min-h-[44px] md:min-w-0 md:min-h-0 flex items-center justify-center opacity-0 group-hover:opacity-100 md:opacity-100" aria-label="Remove from playlist">
+                                <Trash2 className="size-4" />
+                            </button>
+                        )}
+                    </>
+                )}
                 <button type="button" className="p-2 rounded-full hover:bg-white/10 text-[#9CA3AF] hover:text-[#22C55E] transition-colors min-w-[44px] min-h-[44px] md:min-w-0 md:min-h-0 flex items-center justify-center" aria-label="Like">
                     <Heart className="size-4" />
                 </button>

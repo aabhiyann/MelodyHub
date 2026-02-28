@@ -15,7 +15,7 @@ import Topbar from "@/components/layout/TopBar";
 
 const PlaylistPage = () => {
     const { id } = useParams();
-    const { fetchPlaylistById, currentPlaylist, isLoading, error } = usePlaylistStore();
+    const { fetchPlaylistById, currentPlaylist, isLoading, error, removeSongFromPlaylist, reorderSongs } = usePlaylistStore();
     const { currentSong, isPlaying, playAlbum, togglePlay } = usePlayerStore();
     const { user } = useUser();
 
@@ -93,6 +93,29 @@ const PlaylistPage = () => {
 
     const coverImageUrl = currentPlaylist?.imageUrl ?? (currentPlaylist?.songs?.[0] as { imageUrl?: string } | undefined)?.imageUrl;
     const totalDurationSeconds = currentPlaylist?.songs?.reduce((acc, s) => acc + (s.duration ?? 0), 0) ?? 0;
+
+    const isOwner = Boolean(
+        id && currentPlaylist && (typeof currentPlaylist.owner === "string" ? user?.id === currentPlaylist.owner : (currentPlaylist.owner as { clerkId?: string })?.clerkId === user?.id)
+    );
+
+    const handleRemoveSong = (songId: string) => {
+        if (!id) return;
+        removeSongFromPlaylist(id, songId);
+    };
+
+    const handleMoveUp = (index: number) => {
+        if (!currentPlaylist?.songs.length || !id || index <= 0) return;
+        const songs = [...currentPlaylist.songs];
+        [songs[index - 1], songs[index]] = [songs[index], songs[index - 1]];
+        reorderSongs(id, songs.map((s) => s._id));
+    };
+
+    const handleMoveDown = (index: number) => {
+        if (!currentPlaylist?.songs.length || !id || index >= currentPlaylist.songs.length - 1) return;
+        const songs = [...currentPlaylist.songs];
+        [songs[index], songs[index + 1]] = [songs[index + 1], songs[index]];
+        reorderSongs(id, songs.map((s) => s._id));
+    };
 
     return (
         <main className='rounded-md overflow-hidden h-full bg-transparent flex flex-col'>
@@ -205,6 +228,12 @@ const PlaylistPage = () => {
                                                 isCurrentSong={isCurrentSong}
                                                 isPlaying={isPlaying}
                                                 onClick={() => handlePlaySong(index)}
+                                                isOwner={isOwner}
+                                                onRemove={() => handleRemoveSong(song._id)}
+                                                onMoveUp={() => handleMoveUp(index)}
+                                                onMoveDown={() => handleMoveDown(index)}
+                                                canMoveUp={index > 0}
+                                                canMoveDown={index < (currentPlaylist?.songs?.length ?? 0) - 1}
                                             />
                                         );
                                     })}
