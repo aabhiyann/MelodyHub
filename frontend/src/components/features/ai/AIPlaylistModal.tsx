@@ -53,19 +53,20 @@ export const AIPlaylistModal = () => {
                         onClick={closeModal}
                     />
 
-                    {/* Gradient background overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/10 via-transparent to-brand-secondary/10 pointer-events-none" />
+                    {/* Gradient background overlay — DESIGN_PLAN accent */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#22C55E]/10 via-transparent to-[#16A34A]/10 pointer-events-none" />
 
                     {/* Particle effects */}
                     <ParticleBackground />
 
-                    {/* Modal content container */}
+                    {/* Modal content container — stopPropagation so button clicks don't close modal */}
                     <motion.div
-                        className="relative w-full max-w-4xl max-h-[90vh] overflow-hidden glass-modal rounded-3xl shadow-2xl border border-border-medium flex flex-col"
+                        className="relative z-10 w-full max-w-4xl max-h-[90vh] overflow-hidden glass-modal rounded-3xl shadow-2xl border border-border-medium flex flex-col bg-[#101019]"
                         initial={{ scale: 0.95, opacity: 0, y: 20 }}
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.95, opacity: 0, y: 20 }}
                         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                        onClick={(e) => e.stopPropagation()}
                     >
                         {/* Specular highlight (top edge) - LiquidGlassCard style */}
                         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none z-10" />
