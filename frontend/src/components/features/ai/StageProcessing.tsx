@@ -33,12 +33,23 @@ export const StageProcessing = () => {
                     initial={{ y: 10, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: -10, opacity: 0 }}
-                    className="text-lg font-medium text-brand-primary animate-pulse"
+                    className="text-lg font-medium text-[#22C55E]"
                 >
                     {LOADING_MESSAGES[messageIndex]}
                 </motion.h3>
-                <div className="w-64 h-1 bg-white/10 rounded-full mt-3 overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-brand-primary to-brand-secondary loading-bar-indeterminate" />
+                {/* Animated thinking dots — Spotify/AI DJ style */}
+                <div className="flex items-center gap-1.5 mt-3" aria-label="AI is thinking">
+                    {[0, 1, 2].map((i) => (
+                        <motion.div
+                            key={i}
+                            className="w-2 h-2 rounded-full bg-[#22C55E]"
+                            animate={{ opacity: [0.4, 1, 0.4], scale: [0.9, 1.1, 0.9] }}
+                            transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.2 }}
+                        />
+                    ))}
+                </div>
+                <div className="w-64 h-1 bg-white/10 rounded-full mt-4 overflow-hidden">
+                    <div className="h-full bg-[#22C55E]/80 rounded-full loading-bar-indeterminate" />
                 </div>
             </div>
 
