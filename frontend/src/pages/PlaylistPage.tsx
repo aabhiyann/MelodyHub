@@ -10,6 +10,7 @@ import { InviteCollaboratorsDialog } from "@/components/features/playlist/Invite
 import { PlaylistSongRow } from "@/components/features/playlist/PlaylistSongRow";
 import { OptimizedImage } from "@/components/shared/OptimizedImage";
 import { formatDuration } from "@/lib/utils";
+import { useDominantColor } from "@/hooks/useDominantColor";
 
 import Topbar from "@/components/layout/TopBar";
 
@@ -18,6 +19,9 @@ const PlaylistPage = () => {
     const { fetchPlaylistById, currentPlaylist, isLoading, error, removeSongFromPlaylist, reorderSongs } = usePlaylistStore();
     const { currentSong, isPlaying, playAlbum, togglePlay } = usePlayerStore();
     const { user } = useUser();
+
+    const coverImageUrlForBg = currentPlaylist?.imageUrl ?? (currentPlaylist?.songs?.[0] as { imageUrl?: string } | undefined)?.imageUrl;
+    const dominantColor = useDominantColor(coverImageUrlForBg);
 
     const isReady = currentPlaylist?._id === id;
 
@@ -123,10 +127,15 @@ const PlaylistPage = () => {
             <ScrollArea className='flex-1 rounded-md'>
                 {/* Main Content */}
                 <div className='relative min-h-full'>
-                    {/* bg gradient - subtle; dominant color applied in separate section */}
+                    {/* Background gradient from cover art or neutral */}
                     <div
-                        className='absolute inset-0 bg-gradient-to-b from-[#1F2933]/40 via-transparent to-transparent pointer-events-none'
+                        className='absolute inset-0 pointer-events-none'
                         aria-hidden='true'
+                        style={{
+                            background: dominantColor
+                                ? `linear-gradient(180deg, ${dominantColor}22 0%, transparent 40%, transparent 70%, rgba(0,0,0,0.85) 100%)`
+                                : "linear-gradient(180deg, rgba(31,41,51,0.4) 0%, transparent 40%, transparent 70%, rgba(0,0,0,0.85) 100%)",
+                        }}
                     />
 
                     {/* Content */}
