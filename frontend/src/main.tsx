@@ -54,7 +54,7 @@ createRoot(document.getElementById("root")!).render(
 			appearance={{
 				baseTheme: dark,
 				variables: {
-					colorPrimary: '#8b5cf6', // violet-500
+					colorPrimary: '#22C55E', // brand accent
 					colorBackground: '#0a0a0a', // zinc-950
 					colorText: 'white',
 				}

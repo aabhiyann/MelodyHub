@@ -24,7 +24,7 @@ export const Confetti = () => {
             id: i,
             x: Math.random() * 200 - 100,
             y: 0,
-            color: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6'][
+            color: ['#22C55E', '#3b82f6', '#f59e0b', '#ef4444', '#10b981'][
                 Math.floor(Math.random() * 5)
             ],
             rotation: Math.random() * 360,

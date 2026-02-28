@@ -32,8 +32,8 @@ export const KeyboardShortcutsGuide = () => {
                 {/* Header */}
                 <div className="flex items-center justify-between p-6 border-b border-white/10">
                     <div className="flex items-center gap-3">
-                        <div className="p-2 bg-violet-500/20 rounded-lg">
-                            <Keyboard className="w-6 h-6 text-violet-400" />
+                        <div className="p-2 bg-emerald-500/20 rounded-lg">
+                            <Keyboard className="w-6 h-6 text-emerald-400" />
                         </div>
                         <div>
                             <h2 id="shortcuts-title" className="text-xl font-bold text-white">Keyboard Shortcuts</h2>
@@ -54,7 +54,7 @@ export const KeyboardShortcutsGuide = () => {
 
                     {/* Playback Controls */}
                     <div className="space-y-4">
-                        <h3 className="text-sm font-semibold text-violet-400 uppercase tracking-wider flex items-center gap-2">
+                        <h3 className="text-sm font-semibold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
                             <Command className="w-4 h-4" /> Playback
                         </h3>
                         <div className="space-y-3">

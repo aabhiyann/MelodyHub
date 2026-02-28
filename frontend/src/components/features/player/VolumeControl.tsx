@@ -101,7 +101,7 @@ export const VolumeControl = ({
                   [&::-moz-range-thumb]:cursor-pointer
                   [&::-webkit-slider-track]:bg-transparent"
                                 style={{
-                                    background: `linear-gradient(to right, var(--brand-primary, #8b5cf6) 0%, var(--brand-primary, #8b5cf6) ${displayVolume}%, rgba(255,255,255,0.1) ${displayVolume}%, rgba(255,255,255,0.1) 100%)`,
+                                    background: `linear-gradient(to right, var(--brand-primary, #22C55E) 0%, var(--brand-primary, #22C55E) ${displayVolume}%, rgba(255,255,255,0.1) ${displayVolume}%, rgba(255,255,255,0.1) 100%)`,
                                 }}
                                 aria-label="Volume"
                                 aria-valuemin={0}

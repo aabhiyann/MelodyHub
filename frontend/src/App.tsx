@@ -108,7 +108,7 @@ function App() {
 					},
 					success: {
 						iconTheme: {
-							primary: '#8b5cf6', // brand-primary (violet)
+							primary: '#22C55E', // brand-primary (green)
 							secondary: '#fff',
 						},
 					},

@@ -228,7 +228,7 @@ const LeftSidebar = () => {
                 to={'/library?tab=liked'}
                 className='p-2 hover:bg-white/10 rounded-lg flex items-center gap-3 group cursor-pointer transition-all text-text-secondary hover:text-white'
               >
-                <div className="bg-gradient-to-br from-purple-600 to-pink-600 p-2 rounded-md">
+                <div className="bg-gradient-to-br from-emerald-600 to-green-600 p-2 rounded-md">
                   <Heart className='size-4 text-white' />
                 </div>
                 <span className='font-medium text-sm inline'>Liked Songs</span>
@@ -238,7 +238,7 @@ const LeftSidebar = () => {
                 to={'/library?tab=playlists'}
                 className='p-2 hover:bg-white/10 rounded-lg flex items-center gap-3 group cursor-pointer transition-all text-text-secondary hover:text-white'
               >
-                <div className="bg-gradient-to-br from-indigo-600 to-purple-600 p-2 rounded-md">
+                <div className="bg-gradient-to-br from-indigo-600 to-slate-600 p-2 rounded-md">
                   <ListMusic className='size-4 text-white' />
                 </div>
                 <span className='font-medium text-sm inline'>Playlists</span>

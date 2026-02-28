@@ -22,7 +22,7 @@ export const ActivityFeed = () => {
     const getActivityIcon = (type: ActivityType) => {
         switch (type) {
             case "like_song": return <Heart className="size-3 text-pink-500 fill-pink-500" />;
-            case "create_playlist": return <ListMusic className="size-3 text-violet-500" />;
+            case "create_playlist": return <ListMusic className="size-3 text-emerald-500" />;
             case "follow_user": return <User className="size-3 text-blue-500" />;
             default: return <Music className="size-3 text-text-tertiary" />;
         }
