@@ -33,17 +33,18 @@ export const NotificationBell = () => {
     const totalUnread = unreadCount + friendRequests.length;
 
     return (
-        <div className="relative" ref={anchorRef}>
+        <div className="relative overflow-visible shrink-0" ref={anchorRef}>
             <Button
                 variant="ghost"
                 size="icon"
-                className="text-text-secondary hover:text-text-primary relative"
+                className="text-text-secondary hover:text-text-primary relative size-10 min-w-10 min-h-10"
                 onClick={() => setOpen((o) => !o)}
                 title="Notifications"
+                aria-label={totalUnread > 0 ? `${totalUnread} unread notifications` : "Notifications"}
             >
                 <Bell className="size-5" />
                 {totalUnread > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-brand-primary text-[10px] font-bold text-white shadow-sm ring-1 ring-background-base">
+                    <span className="absolute top-0 right-0 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-[#18181b] px-1">
                         {totalUnread > 99 ? "99+" : totalUnread}
                     </span>
                 )}
