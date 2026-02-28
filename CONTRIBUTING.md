@@ -15,15 +15,16 @@ We follow a professional **Feature Branch Workflow**.
 1.  **Fork** the repo on GitHub.
 2.  **Clone** the project to your own machine.
 3.  **Create a branch** for your work.
-    *   `feat/my-feature`
+    *   `feature/my-feature` or `feat/my-feature`
     *   `fix/my-bug-fix`
     *   `refactor/my-cleanup`
     *   `docs/my-documentation`
 4.  **Commit** changes to your branch.
     *   Use granular, descriptive commits.
-    *   Example: `feat: add play button component` (We follow [Conventional Commits](https://www.conventionalcommits.org/)).
+    *   Prefer format: `type(scope): description` (e.g. `feat(player): add expand animation`, `fix(nav): back button on mobile`). See [Conventional Commits](https://www.conventionalcommits.org/).
 5.  **Push** your work back to your fork.
 6.  **Submit a Pull Request** against the `main` branch.
+7.  **Update CHANGELOG.md** under `[Unreleased]` with your changes before merging.
 
 ## CI/CD Service
 
@@ -52,6 +53,9 @@ Our GitHub Actions pipeline will automatically run on every PR:
 -   Notes (possibly including why you think this might be happening, or stuff you tried that didn't work).
 
 ## Useful Resources
+- [Documentation index](./Docs/README.md): Central index of all docs (design system, features, architecture).
+- [Design plan](./Docs/DESIGN_PLAN.md): Colors, typography, and component rules for UI (chat, player, nav, cards). Follow this for any frontend change.
+- [Git workflow (Cursor)](./.cursor/rules/git-workflow.mdc): Branch naming, commit format, CHANGELOG updates.
 - [Debugging Guide & Lessons Learned](./Docs/DEBUGGING_GUIDE.md): Check this before diving into UI rendering or API strictness bugs.
 - [Good First Issues](./Docs/GOOD_FIRST_ISSUES.md): A curated list of UI/UX styling tweaks and API cleanups perfect for newcomers!
 

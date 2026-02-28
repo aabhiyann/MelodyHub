@@ -23,10 +23,14 @@ MelodyHub is a comprehensive, full-stack music streaming platform designed to de
 ## Live Deployment & Core Documentation
 
 - **Live Application**: [https://melodyhubmusic.vercel.app/](https://melodyhubmusic.vercel.app/)
-- **Technology Stack Documentation**: [Docs/TECH_STACK.md](Docs/TECH_STACK.md)
-- **API Reference**: [API Documentation](Docs/professional/API.md)
-- **System Architecture**: [Architecture Design](Docs/professional/04_SYSTEM_DESIGN.md)
-- **Frontend Architecture**: [Frontend Design Document](Docs/FRONTEND_ARCHITECTURE.md)
+- **Documentation index**: [Docs/README.md](Docs/README.md) — central index for design system, features, and architecture.
+- **Design system**: [Docs/DESIGN_PLAN.md](Docs/DESIGN_PLAN.md) — colors, typography, component rules (chat, player, nav, cards).
+- **Technology Stack**: [Docs/TECH_STACK.md](Docs/TECH_STACK.md)
+- **API Reference**: [Docs/professional/API.md](Docs/professional/API.md)
+- **System Architecture**: [Docs/professional/04_SYSTEM_DESIGN.md](Docs/professional/04_SYSTEM_DESIGN.md)
+- **Frontend Architecture**: [Docs/FRONTEND_ARCHITECTURE.md](Docs/FRONTEND_ARCHITECTURE.md)
+- **Changelog**: [CHANGELOG.md](CHANGELOG.md)
+- **Contributing**: [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ---
 

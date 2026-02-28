@@ -14,8 +14,10 @@ frontend/src/
 │   │   ├── chat/       # Chat interface and message bubbles
 │   │   ├── gamification/# Streaks, badges, leaderboards
 │   │   ├── home/       # Home page specific components (Greeting, Featured)
-│   │   ├── player/     # Audio player controls and visualization
-│   │   ├── playlist/   # Playlist management and song rows
+│   │   ├── player/     # Audio player controls, mini bar, FullScreenPlayer
+│   │   ├── playlist/   # Playlist management, song rows, CreateEditPlaylistModal
+│   │   ├── notifications/ # NotificationBell, NotificationDropdown, NotificationItem
+│   │   ├── ai/         # AIPlaylistModal, StagePrompt, StageProcessing, StageResults
 │   │   └── social/     # Friends activity, user lists, profiles
 │   ├── layout/         # Structural components (LeftSidebar, TopBar, MainLayout)
 │   ├── shared/         # Reusable non-primitive components (StatusIndicator)
@@ -104,7 +106,10 @@ export const useExampleStore = create<State & Actions>((set) => ({
 - `AuthStore`: User session (Clerk wrapper).
 - `GamificationStore`: XP, Level, Challenges.
 - `useSocialStore`: Friends, Activity Feed.
-- `PlaylistStore`: Playlist CRUD.
+- `PlaylistStore`: Playlist CRUD, reorderSongs.
+- `useNotificationStore` / notification store: Notifications list, unread count, mark read; friend requests appear in bell dropdown.
+- `useAIStore`: AI playlist modal state, prompt, stages (prompt/processing/results), API call, error handling.
+- `ChatStore`: Conversations, messages, friends, send message, accept/reject friend request.
 
 ---
 
@@ -137,3 +142,11 @@ const ChatPage = lazy(() => import('./pages/ChatPage'));
 Strict TypeScript is enforced.
 - **No `any`**: All types must be defined.
 - **Shared Types**: API response types are centralized in `src/types`.
+
+---
+
+## 7. Design system and feature docs
+
+- **Design system:** All UI (chat, player, nav, cards, modals) follows [DESIGN_PLAN.md](DESIGN_PLAN.md): accent `#22C55E`, background `#101019`, typography and component rules.
+- **Feature documentation:** Detailed notes per feature (Chat, Player, Notifications, AI, Playlist, Profile, Navigation) live in [Docs/features/](features/). See [Docs/README.md](README.md) for the full index.
+- **Hooks:** `useDominantColor(imageUrl)` (in `hooks/`) extracts a dominant color from an image for gradient theming (e.g. FullScreenPlayer, PlaylistPage hero).

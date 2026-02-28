@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Documentation:** Central docs index `Docs/README.md`; design system `Docs/DESIGN_PLAN.md` (colors, typography, component rules); feature docs in `Docs/features/` for Chat UI, Music Player, Notifications, AI (Magic), Playlist, Profile, Navigation. Updated `Docs/FRONTEND_ARCHITECTURE.md` with NotificationStore, useAIStore, ChatStore, CreateEditPlaylistModal, useDominantColor. README and CONTRIBUTING now link to design plan and docs index.
 - Added `.cursor/rules/git-workflow.mdc` — Cursor rule enforcing branch-per-feature, commit-after-meaningful-change, conventional commit messages, merge-to-main-and-push, and CHANGELOG updates per session.
 - Created `Docs/DEBUGGING_GUIDE.md` and `Docs/GOOD_FIRST_ISSUES.md` based on production audit.
 - Created `Docs/DEV_LOG_UI_UX_OVERHAUL.md` to chronicle the mobile UI architecture and API troubleshooting.
