@@ -2,12 +2,13 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { usePlaylistStore } from "@/stores/PlaylistStore";
 import { usePlayerStore } from "@/stores/PlayerStore";
-import { Clock, Pause, Play, ListMusic, Shuffle } from "lucide-react";
-import { useEffect } from "react";
+import { Clock, Pause, Play, ListMusic, Shuffle, Pencil } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
 import { InviteCollaboratorsDialog } from "@/components/features/playlist/InviteCollaboratorsDialog";
 import { PlaylistSongRow } from "@/components/features/playlist/PlaylistSongRow";
+import { CreateEditPlaylistModal } from "@/components/features/playlist/CreateEditPlaylistModal";
 import { OptimizedImage } from "@/components/shared/OptimizedImage";
 import { formatDuration } from "@/lib/utils";
 import { useDominantColor } from "@/hooks/useDominantColor";
@@ -24,6 +25,7 @@ const PlaylistPage = () => {
     const dominantColor = useDominantColor(coverImageUrlForBg);
 
     const isReady = currentPlaylist?._id === id;
+    const [editModalOpen, setEditModalOpen] = useState(false);
 
     useEffect(() => {
         if (id && currentPlaylist?._id !== id) {
@@ -177,8 +179,8 @@ const PlaylistPage = () => {
                             </div>
                         </div>
 
-                        {/* Play All + Shuffle */}
-                        <div className='px-6 pb-6 flex items-center gap-3'>
+                        {/* Play All + Shuffle + Edit (owner) */}
+                        <div className='px-6 pb-6 flex items-center gap-3 flex-wrap'>
                             <Button
                                 onClick={handlePlayPlaylist}
                                 size='icon'
@@ -200,7 +202,25 @@ const PlaylistPage = () => {
                                 <Shuffle className="h-5 w-5 mr-2" />
                                 Shuffle
                             </Button>
+                            {isOwner && (
+                                <Button
+                                    onClick={() => setEditModalOpen(true)}
+                                    variant="outline"
+                                    className="h-12 px-5 rounded-full border-[#1F2933] text-[#F9FAFB] hover:bg-[#1F2933] hover:border-[#22C55E]/50 hover:text-[#22C55E]"
+                                >
+                                    <Pencil className="h-4 w-4 mr-2" />
+                                    Edit playlist
+                                </Button>
+                            )}
                         </div>
+
+                        <CreateEditPlaylistModal
+                            open={editModalOpen}
+                            onClose={() => setEditModalOpen(false)}
+                            mode="edit"
+                            playlist={currentPlaylist ?? undefined}
+                            onSuccess={() => id && fetchPlaylistById(id)}
+                        />
 
                         {/* Table Section */}
                         <div className='bg-[#101019]/20 backdrop-blur-sm'>

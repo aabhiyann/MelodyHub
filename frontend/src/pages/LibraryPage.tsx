@@ -28,6 +28,7 @@ import { axiosInstance } from '@/lib/axios';
 import { Song } from '@/types';
 import toast from 'react-hot-toast';
 import { PlaylistShareModal } from '@/components/features/playlist/PlaylistShareModal';
+import { CreateEditPlaylistModal } from '@/components/features/playlist/CreateEditPlaylistModal';
 import { PullToRefresh } from '@/components/features/mobile/PullToRefresh';
 import {
   AlertDialog,
@@ -39,17 +40,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-
 type TabType = 'playlists' | 'artists' | 'albums' | 'liked';
 type ViewType = 'grid' | 'list';
 
@@ -94,11 +84,9 @@ const LibraryPage = () => {
   const [editingPlaylist, setEditingPlaylist] = useState<Playlist | null>(null);
   const [deletingPlaylist, setDeletingPlaylist] = useState<Playlist | null>(null);
   const [sharingPlaylist, setSharingPlaylist] = useState<Playlist | null>(null);
-  const [editName, setEditName] = useState('');
 
   // Create state
   const [isCreating, setIsCreating] = useState(false);
-  const [newPlaylistName, setNewPlaylistName] = useState('');
 
   const { albums, songs } = useMusicStore();
   const { playAlbum } = usePlayerStore();
@@ -169,36 +157,11 @@ const LibraryPage = () => {
 
   const handleCreatePlaylist = () => {
     setIsCreating(true);
-    setNewPlaylistName('');
   };
 
-  const confirmCreatePlaylist = async () => {
-    if (!newPlaylistName.trim()) return;
-
-    try {
-      await axiosInstance.post('/social/playlists', { name: newPlaylistName.trim() });
-      toast.success('Playlist created!');
-      setIsCreating(false);
-      fetchPlaylists();
-    } catch (error) {
-      toast.error('Failed to create playlist');
-    }
-  };
-
-  const handleEditPlaylist = async () => {
-    if (!editingPlaylist || !editName.trim()) return;
-
-    try {
-      await axiosInstance.put(`/social/playlists/${editingPlaylist._id}`, {
-        name: editName.trim(),
-      });
-      toast.success('Playlist updated!');
-      setEditingPlaylist(null);
-      setEditName('');
-      fetchPlaylists();
-    } catch (error) {
-      toast.error('Failed to update playlist');
-    }
+  const handleCloseCreateEdit = () => {
+    setIsCreating(false);
+    setEditingPlaylist(null);
   };
 
   const handleDeletePlaylist = async () => {
@@ -358,7 +321,6 @@ const LibraryPage = () => {
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   setEditingPlaylist(playlist);
-                                  setEditName(playlist.name);
                                 }}
                                 className="p-2 rounded-lg bg-black/40 hover:bg-white/20 backdrop-blur-sm border border-white/10"
                                 title="Edit Playlist"
@@ -417,7 +379,6 @@ const LibraryPage = () => {
                             <button
                               onClick={() => {
                                 setEditingPlaylist(playlist);
-                                setEditName(playlist.name);
                               }}
                               className="p-2 rounded-lg bg-white/10 hover:bg-white/20"
                               title="Edit Playlist"
@@ -604,49 +565,14 @@ const LibraryPage = () => {
         />
       )}
 
-      {/* Create Playlist Dialog */}
-      <Dialog open={isCreating} onOpenChange={setIsCreating}>
-        <DialogContent className="glass-modal bg-surface-elevated/95 border-white/10">
-          <DialogHeader>
-            <DialogTitle>Create New Playlist</DialogTitle>
-            <DialogDescription>Enter a name for your playlist</DialogDescription>
-          </DialogHeader>
-          <Input
-            value={newPlaylistName}
-            onChange={(e) => setNewPlaylistName(e.target.value)}
-            placeholder="Playlist name"
-            onKeyDown={(e) => e.key === 'Enter' && confirmCreatePlaylist()}
-          />
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsCreating(false)}>
-              Cancel
-            </Button>
-            <Button onClick={confirmCreatePlaylist}>Create</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Edit Playlist Dialog */}
-      <Dialog open={!!editingPlaylist} onOpenChange={() => setEditingPlaylist(null)}>
-        <DialogContent className="glass-modal bg-surface-elevated/95 border-white/10">
-          <DialogHeader>
-            <DialogTitle>Edit Playlist</DialogTitle>
-            <DialogDescription>Update your playlist name</DialogDescription>
-          </DialogHeader>
-          <Input
-            value={editName}
-            onChange={(e) => setEditName(e.target.value)}
-            placeholder="Playlist name"
-            onKeyDown={(e) => e.key === 'Enter' && handleEditPlaylist()}
-          />
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setEditingPlaylist(null)}>
-              Cancel
-            </Button>
-            <Button onClick={handleEditPlaylist}>Save Changes</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {/* Create / Edit Playlist Modal */}
+      <CreateEditPlaylistModal
+        open={isCreating || !!editingPlaylist}
+        onClose={handleCloseCreateEdit}
+        mode={editingPlaylist ? 'edit' : 'create'}
+        playlist={editingPlaylist ?? undefined}
+        onSuccess={() => fetchPlaylists()}
+      />
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={!!deletingPlaylist} onOpenChange={() => setDeletingPlaylist(null)}>
