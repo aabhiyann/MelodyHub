@@ -32,10 +32,10 @@ export const StagePrompt = () => {
             className="flex flex-col items-center w-full max-w-lg mx-auto"
         >
             <div className="text-center mb-8">
-                <h3 className="text-2xl md:text-3xl font-bold text-text-primary mb-2">
+                <h3 className="text-2xl md:text-3xl font-bold text-[#F9FAFB] mb-2">
                     Create a playlist with AI
                 </h3>
-                <p className="text-text-secondary text-base md:text-lg">
+                <p className="text-[#9CA3AF] text-base md:text-lg">
                     Describe the mood, genre, or occasion
                 </p>
             </div>
@@ -49,25 +49,24 @@ export const StagePrompt = () => {
                     onBlur={() => setIsFocused(false)}
                     placeholder="e.g. Upbeat pop for my morning run, chill lo-fi for studying..."
                     maxLength={250}
-                    className="input-liquid w-full h-32 rounded-xl p-4 text-lg text-text-primary placeholder:text-text-tertiary focus:ring-2 focus:ring-brand-primary/30 resize-none"
+                    className="w-full h-32 rounded-xl p-4 text-lg text-[#F9FAFB] placeholder:text-[#6B7280] bg-white/5 border border-white/10 focus:ring-2 focus:ring-[#22C55E]/40 focus:border-[#22C55E]/50 resize-none"
                 />
 
                 {/* Character Counter */}
-                <span className={`absolute bottom-4 right-4 text-xs font-medium transition-colors ${userPrompt.length > 230 ? 'text-semantic-error' : 'text-text-tertiary'
-                    }`}>
+                <span className={`absolute bottom-4 right-4 text-xs font-medium transition-colors ${userPrompt.length > 230 ? 'text-red-400' : 'text-[#6B7280]'}`}>
                     {userPrompt.length} / 250
                 </span>
             </div>
 
             {/* Example Chips - pill style */}
             <div className="w-full mb-8">
-                <p className="text-sm text-text-tertiary mb-3 text-center">Not sure? Try these:</p>
+                <p className="text-sm text-[#6B7280] mb-3 text-center">Not sure? Try these:</p>
                 <div className="flex flex-wrap justify-center gap-2">
                     {EXAMPLE_PROMPTS.map((prompt, i) => (
                         <button
                             key={i}
                             onClick={() => setPrompt(prompt)}
-                            className="px-4 py-2.5 rounded-full bg-white/5 border border-border-subtle hover:bg-white/10 transition-smooth text-sm text-text-secondary hover:text-text-primary"
+                            className="px-4 py-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-sm text-[#9CA3AF] hover:text-[#F9FAFB] transition-colors"
                         >
                             {prompt}
                         </button>
@@ -75,9 +74,9 @@ export const StagePrompt = () => {
                 </div>
             </div>
 
-            {/* Error Display */}
+            {/* Error Display — always friendly message */}
             {error && (
-                <div className="w-full mb-4 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center animate-in fade-in slide-in-from-bottom-2 duration-300">
+                <div className="w-full mb-4 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center animate-in fade-in slide-in-from-bottom-2 duration-300" role="alert">
                     {error}
                 </div>
             )}
@@ -86,7 +85,7 @@ export const StagePrompt = () => {
             <Button
                 onClick={handleSubmit}
                 disabled={!userPrompt.trim()}
-                className="btn-liquid w-full h-14 text-lg font-bold bg-gradient-to-r from-brand-primary to-brand-secondary hover:opacity-90 rounded-full shadow-lg shadow-brand-primary/20 flex items-center justify-center gap-2"
+                className="w-full h-14 text-lg font-bold bg-[#22C55E] hover:bg-[#16A34A] text-white rounded-full shadow-lg shadow-[#22C55E]/25 flex items-center justify-center gap-2 transition-colors"
             >
                 <Sparkles className={`w-5 h-5 ${userPrompt.trim() ? 'animate-pulse' : ''}`} />
                 Create Playlist

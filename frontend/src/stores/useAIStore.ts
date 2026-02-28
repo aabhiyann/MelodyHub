@@ -84,7 +84,8 @@ export const useAIStore = create<AIStore>((set, get) => ({
             } else if (axiosError?.response?.status === 503) {
                 errorMsg = "AI service is temporarily unavailable. Please try again later.";
             } else {
-                errorMsg = getErrorMessage(error, "Failed to generate playlist");
+                // Always show a friendly message; never raw API/stack to the user
+                errorMsg = "We couldn’t create your playlist right now. Please try again or use a different prompt.";
             }
 
             set({
