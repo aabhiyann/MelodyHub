@@ -65,7 +65,7 @@ export const NotificationDropdown = ({ isOpen, onClose, anchorRef }: Notificatio
                 {isLoading ? (
                     <div className="p-6 text-center text-zinc-500 text-sm">Loading...</div>
                 ) : hasNoItems ? (
-                    <div className="p-6 text-center text-zinc-500 text-sm">No notifications yet</div>
+                    <div className="p-6 text-center text-zinc-500 text-sm">You&apos;re all caught up</div>
                 ) : (
                     <div className="p-2 space-y-1">
                         {/* Friend requests first (DESIGN_PLAN: primary Accept, outline Ignore) */}
@@ -102,10 +102,12 @@ export const NotificationDropdown = ({ isOpen, onClose, anchorRef }: Notificatio
                             </div>
                         ))}
 
-                        {/* Regular Notifications */}
-                        {items.map((item) => (
-                            <NotificationItem key={item._id} item={item} onMarkRead={markAsRead} />
-                        ))}
+                        {/* Regular Notifications (exclude FRIEND_REQUEST — shown in block above) */}
+                        {items
+                            .filter((item) => item.type !== "FRIEND_REQUEST")
+                            .map((item) => (
+                                <NotificationItem key={item._id} item={item} onMarkRead={markAsRead} />
+                            ))}
                     </div>
                 )}
             </ScrollArea>
