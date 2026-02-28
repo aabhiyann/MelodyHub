@@ -35,7 +35,7 @@ export default defineConfig({
         name: 'MelodyHub - AI Music Streaming',
         short_name: 'MelodyHub',
         description: 'Discover millions of songs with AI-powered playlists',
-        theme_color: '#8B5CF6',
+        theme_color: '#22C55E',
         background_color: '#0A0A0A',
         display: 'standalone',
         orientation: 'portrait-primary',

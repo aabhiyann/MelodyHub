@@ -7,8 +7,8 @@ import type { Appearance } from '@clerk/types';
 
 export const clerkTheme: Appearance = {
   variables: {
-    // Primary brand colors - MelodyHub purple gradient
-    colorPrimary: '#8b5cf6', // violet-500
+    // Primary brand colors - MelodyHub accent green (DESIGN_PLAN)
+    colorPrimary: '#22C55E',
     colorDanger: '#ef4444', // red-500
     colorSuccess: '#10b981', // green-500
     colorWarning: '#f59e0b', // amber-500
@@ -47,10 +47,10 @@ export const clerkTheme: Appearance = {
 
     // Form buttons
     formButtonPrimary: `
-      bg-gradient-to-r from-violet-600 to-purple-600 
-      hover:from-violet-700 hover:to-purple-700 
+      bg-gradient-to-r from-emerald-500 to-emerald-600 
+      hover:from-emerald-600 hover:to-emerald-700 
       text-white font-semibold 
-      shadow-lg shadow-violet-500/20 
+      shadow-lg shadow-emerald-500/20 
       transition-all duration-200
       hover:scale-[1.02]
       active:scale-[0.98]
@@ -69,9 +69,9 @@ export const clerkTheme: Appearance = {
       border border-zinc-700 
       text-white 
       placeholder:text-zinc-500
-      focus:border-violet-500 
+      focus:border-emerald-500 
       focus:ring-2 
-      focus:ring-violet-500/20
+      focus:ring-emerald-500/20
       transition-all
     `,
 
@@ -81,7 +81,7 @@ export const clerkTheme: Appearance = {
     formFieldInputShowPasswordButton: 'text-zinc-400 hover:text-white',
 
     // Form layout
-    formResendCodeLink: 'text-violet-400 hover:text-violet-300 font-medium',
+    formResendCodeLink: 'text-emerald-400 hover:text-emerald-300 font-medium',
 
     // Divider
     dividerLine: 'bg-white/10',
@@ -90,7 +90,7 @@ export const clerkTheme: Appearance = {
     // Footer
     footer: 'bg-zinc-900/50',
     footerActionText: 'text-zinc-400 text-sm',
-    footerActionLink: 'text-violet-400 hover:text-violet-300 font-semibold',
+    footerActionLink: 'text-emerald-400 hover:text-emerald-300 font-semibold',
 
     // Social buttons (Google, GitHub, etc.)
     socialButtonsBlockButton: `
@@ -106,10 +106,10 @@ export const clerkTheme: Appearance = {
     // Identity preview (user info display)
     identityPreview: 'bg-zinc-800 border border-zinc-700',
     identityPreviewText: 'text-white',
-    identityPreviewEditButton: 'text-violet-400 hover:text-violet-300',
+    identityPreviewEditButton: 'text-emerald-400 hover:text-emerald-300',
 
     // Avatar
-    avatarBox: 'border-2 border-violet-500',
+    avatarBox: 'border-2 border-emerald-500',
     avatarImage: 'rounded-full',
 
     // Alert/Error messages
@@ -118,10 +118,10 @@ export const clerkTheme: Appearance = {
 
     // User profile specific
     profileSectionPrimaryButton: `
-      bg-gradient-to-r from-violet-600 to-purple-600 
-      hover:from-violet-700 hover:to-purple-700
+      bg-gradient-to-r from-emerald-500 to-emerald-600 
+      hover:from-emerald-600 hover:to-emerald-700
       text-white
-      shadow-lg shadow-violet-500/20
+      shadow-lg shadow-emerald-500/20
     `,
 
     profileSection: 'bg-zinc-800/50 border border-zinc-700',
@@ -130,12 +130,12 @@ export const clerkTheme: Appearance = {
     profileSectionContent: 'text-zinc-300',
 
     // Badges
-    badge: 'bg-violet-500/20 text-violet-300 border border-violet-500/30',
+    badge: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30',
 
     // Navbar (in user profile)
     navbar: 'bg-zinc-900 border-b border-white/10',
     navbarButton: 'text-zinc-400 hover:text-white hover:bg-zinc-800',
-    navbarButtonActive: 'text-white bg-zinc-800 border-b-2 border-violet-500',
+    navbarButtonActive: 'text-white bg-zinc-800 border-b-2 border-emerald-500',
 
     // Table (for sessions/devices)
     table: 'border border-zinc-700',
@@ -156,7 +156,7 @@ export const clerkTheme: Appearance = {
     organizationPreview: 'bg-zinc-800 border border-zinc-700',
 
     // Loading spinner
-    spinner: 'border-violet-500',
+    spinner: 'border-emerald-500',
 
     // User Button Popover - CRITICAL for readability
     userButtonPopoverCard: `

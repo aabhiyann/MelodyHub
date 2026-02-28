@@ -8,9 +8,9 @@
    * COLOR PALETTE
    * ============================================ */
 
-    /* Brand Colors */
-    --brand-primary: #8B5CF6;
-    /* Electric Violet */
+    /* Brand Colors (aligned with DESIGN_PLAN accent #22C55E) */
+    --brand-primary: #22C55E;
+    /* Emerald Green */
     --brand-secondary: #3B82F6;
     /* Sonic Blue */
     --brand-tertiary: #06B6D4;
@@ -19,6 +19,10 @@
     /* Sunset Orange */
     --brand-dark: #0A0A0A;
     /* Deep Space Black */
+
+    /* Expose brand colors for legacy helpers */
+    --color-brand-primary: var(--brand-primary);
+    --color-brand-secondary: var(--brand-secondary);
 
     /* Surface Colors */
     --surface-base: #0A0A0A;
@@ -125,7 +129,7 @@
     --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.6);
 
     /* Glows */
-    --glow-primary: 0 0 20px rgba(139, 92, 246, 0.4);
+    --glow-primary: 0 0 20px rgba(34, 197, 94, 0.4);
     --glow-accent: 0 0 20px rgba(59, 130, 246, 0.4);
 
     /* ============================================
