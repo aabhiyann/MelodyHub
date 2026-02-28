@@ -18,6 +18,7 @@ interface PlaylistActions {
     deletePlaylist: (id: string) => Promise<void>;
     addSongToPlaylist: (playlistId: string, songId: string) => Promise<void>;
     removeSongFromPlaylist: (playlistId: string, songId: string) => Promise<void>;
+    reorderSongs: (playlistId: string, songIds: string[]) => Promise<void>;
     resetError: () => void;
 }
 
@@ -140,6 +141,20 @@ export const usePlaylistStore = create<PlaylistStore>((set, get) => ({
                         })
                     } : null
                 }));
+            }
+        } catch (error) {
+            set({ error: getErrorMessage(error) });
+        } finally {
+            set({ isLoading: false });
+        }
+    },
+
+    reorderSongs: async (playlistId, songIds) => {
+        set({ isLoading: true, error: null });
+        try {
+            await playlistApi.reorderSongs(playlistId, songIds);
+            if (get().currentPlaylist?._id === playlistId) {
+                await get().fetchPlaylistById(playlistId);
             }
         } catch (error) {
             set({ error: getErrorMessage(error) });

@@ -49,6 +49,7 @@ export interface Playlist {
     _id: string;
     name: string;
     description?: string;
+    imageUrl?: string;
     owner: string | User;
     collaborators: string[];
     viewers: string[];

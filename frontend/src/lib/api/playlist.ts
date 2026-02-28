@@ -33,5 +33,10 @@ export const playlistApi = {
 
     removeSong: async (playlistId: string, songId: string): Promise<void> => {
         await axiosInstance.delete(`/social/playlists/${playlistId}/songs/${songId}`);
+    },
+
+    reorderSongs: async (playlistId: string, songIds: string[]): Promise<Playlist> => {
+        const response = await axiosInstance.put(`/social/playlists/${playlistId}/songs`, { songIds });
+        return extractData<Playlist>(response.data);
     }
 };
