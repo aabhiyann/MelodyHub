@@ -34,7 +34,7 @@ const GamificationPage = () => {
     return (
         <div className="h-full flex flex-col p-6 space-y-6">
             {/* Header / Hero Section */}
-            <div className="flex flex-col md:flex-row items-end justify-between bg-gradient-to-r from-violet-900/50 to-fuchsia-900/50 p-6 rounded-2xl border border-white/10 relative overflow-hidden">
+            <div className="flex flex-col md:flex-row items-end justify-between bg-gradient-to-r from-emerald-900/50 to-slate-800/50 p-6 rounded-2xl border border-white/10 relative overflow-hidden">
                 <div className="absolute inset-0 bg-grid-white/5 mask-image-gradient" />
 
                 <div className="relative z-10 flex items-center gap-6">
@@ -64,19 +64,19 @@ const GamificationPage = () => {
             {/* Main Content Tabs */}
             <Tabs defaultValue="quests" className="flex-1 flex flex-col min-h-0">
                 <TabsList className="bg-zinc-900/50 p-1 w-full flex overflow-x-auto rounded-xl">
-                    <TabsTrigger value="quests" className="flex-1 rounded-lg data-[state=active]:bg-violet-600 data-[state=active]:text-white data-[state=active]:border-transparent transition-all">
+                    <TabsTrigger value="quests" className="flex-1 rounded-lg data-[state=active]:bg-emerald-600 data-[state=active]:text-white data-[state=active]:border-transparent transition-all">
                         <Target className="mr-2 size-4" />
                         Quests
                     </TabsTrigger>
-                    <TabsTrigger value="leaderboard" className="flex-1 rounded-lg data-[state=active]:bg-violet-600 data-[state=active]:text-white data-[state=active]:border-transparent transition-all">
+                    <TabsTrigger value="leaderboard" className="flex-1 rounded-lg data-[state=active]:bg-emerald-600 data-[state=active]:text-white data-[state=active]:border-transparent transition-all">
                         <Trophy className="mr-2 size-4" />
                         Leaderboard
                     </TabsTrigger>
-                    <TabsTrigger value="achievements" className="flex-1 rounded-lg data-[state=active]:bg-violet-600 data-[state=active]:text-white data-[state=active]:border-transparent transition-all">
+                    <TabsTrigger value="achievements" className="flex-1 rounded-lg data-[state=active]:bg-emerald-600 data-[state=active]:text-white data-[state=active]:border-transparent transition-all">
                         <Medal className="mr-2 size-4" />
                         Achievements
                     </TabsTrigger>
-                    <TabsTrigger value="shop" className="flex-1 rounded-lg data-[state=active]:bg-violet-600 data-[state=active]:text-white data-[state=active]:border-transparent transition-all">
+                    <TabsTrigger value="shop" className="flex-1 rounded-lg data-[state=active]:bg-emerald-600 data-[state=active]:text-white data-[state=active]:border-transparent transition-all">
                         <Store className="mr-2 size-4" />
                         Shop
                     </TabsTrigger>

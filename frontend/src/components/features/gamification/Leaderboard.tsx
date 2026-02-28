@@ -20,7 +20,7 @@ export const Leaderboard = () => {
 
     return (
         <div className="space-y-6">
-            <div className="bg-gradient-to-r from-purple-900/40 to-blue-900/40 p-6 rounded-xl border border-white/5 flex items-center justify-between">
+            <div className="bg-gradient-to-r from-emerald-900/40 to-slate-800/40 p-6 rounded-xl border border-white/5 flex items-center justify-between">
                 <div>
                     <h2 className="text-xl font-bold flex items-center gap-2">
                         <Trophy className="text-yellow-400" />
