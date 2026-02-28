@@ -65,58 +65,58 @@ export const EditProfileModal = ({ user, isOpen, onClose, onUpdate }: EditProfil
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-[425px] bg-zinc-900 border-zinc-800 text-white">
+            <DialogContent className="sm:max-w-[425px] bg-[#101019] border-[#1F2933] text-[#F9FAFB]">
                 <DialogHeader>
-                    <DialogTitle>Edit Profile</DialogTitle>
-                    <DialogDescription>
+                    <DialogTitle className="text-[#F9FAFB]">Edit Profile</DialogTitle>
+                    <DialogDescription className="text-[#9CA3AF]">
                         Make changes to your public profile here.
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4 py-4">
                     <div className="space-y-2">
-                        <Label htmlFor="name" className="text-right">Name</Label>
+                        <Label htmlFor="name" className="text-[#9CA3AF]">Name</Label>
                         <Input
                             id="name"
                             value={formData.fullName}
                             onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                            className="bg-zinc-800 border-zinc-700 focus:border-brand-primary"
+                            className="bg-[#1F2933] border-[#1F2933] text-[#F9FAFB] placeholder:text-[#6B7280] focus-visible:ring-[#22C55E]"
                         />
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="bio">Bio</Label>
+                        <Label htmlFor="bio" className="text-[#9CA3AF]">Bio</Label>
                         <Textarea
                             id="bio"
                             value={formData.bio}
                             onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                            className="bg-zinc-800 border-zinc-700 focus:border-brand-primary resize-none"
+                            className="bg-[#1F2933] border-[#1F2933] text-[#F9FAFB] placeholder:text-[#6B7280] focus-visible:ring-[#22C55E] resize-none"
                             placeholder="Tell a bit about yourself..."
                             rows={3}
                         />
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="location">Location</Label>
+                        <Label htmlFor="location" className="text-[#9CA3AF]">Location</Label>
                         <Input
                             id="location"
                             value={formData.location}
                             onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                            className="bg-zinc-800 border-zinc-700 focus:border-brand-primary"
+                            className="bg-[#1F2933] border-[#1F2933] text-[#F9FAFB] placeholder:text-[#6B7280] focus-visible:ring-[#22C55E]"
                             placeholder="City, Country"
                         />
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="website">Website</Label>
+                        <Label htmlFor="website" className="text-[#9CA3AF]">Website</Label>
                         <Input
                             id="website"
                             value={formData.website}
                             onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-                            className="bg-zinc-800 border-zinc-700 focus:border-brand-primary"
+                            className="bg-[#1F2933] border-[#1F2933] text-[#F9FAFB] placeholder:text-[#6B7280] focus-visible:ring-[#22C55E]"
                             placeholder="https://..."
                         />
                     </div>
                     <div className="flex items-center justify-between pt-2">
                         <div className="space-y-0.5">
-                            <Label htmlFor="private-mode">Private Account</Label>
-                            <p className="text-xs text-zinc-400">Only approved followers can see your activity</p>
+                            <Label htmlFor="private-mode" className="text-[#9CA3AF]">Private Account</Label>
+                            <p className="text-xs text-[#6B7280]">Only approved followers can see your activity</p>
                         </div>
                         <Switch
                             id="private-mode"
@@ -125,10 +125,20 @@ export const EditProfileModal = ({ user, isOpen, onClose, onUpdate }: EditProfil
                         />
                     </div>
                     <DialogFooter className="pt-4">
-                        <Button variant="outline" type="button" onClick={onClose} disabled={isLoading}>
+                        <Button
+                            variant="outline"
+                            type="button"
+                            onClick={onClose}
+                            disabled={isLoading}
+                            className="border-[#1F2933] text-[#9CA3AF] hover:bg-[#1F2933] hover:text-[#F9FAFB]"
+                        >
                             Cancel
                         </Button>
-                        <Button type="submit" disabled={isLoading} className="bg-brand-primary hover:bg-brand-primary/90">
+                        <Button
+                            type="submit"
+                            disabled={isLoading}
+                            className="bg-[#22C55E] text-[#020617] hover:bg-[#16A34A]"
+                        >
                             {isLoading ? 'Saving...' : 'Save Changes'}
                         </Button>
                     </DialogFooter>
