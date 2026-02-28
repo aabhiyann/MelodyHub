@@ -5,7 +5,7 @@ export class PlaylistService {
     /**
      * Create a new playlist
      */
-    async createPlaylist(userId: string, data: { name: string; description?: string; isPublic?: boolean }): Promise<ISharedPlaylist> {
+    async createPlaylist(userId: string, data: { name: string; description?: string; isPublic?: boolean; imageUrl?: string }): Promise<ISharedPlaylist> {
         const playlist = await SharedPlaylist.create({
             ...data,
             owner: userId,
@@ -63,7 +63,27 @@ export class PlaylistService {
         if (updates.name) playlist.name = updates.name;
         if (updates.description !== undefined) playlist.description = updates.description;
         if (updates.isPublic !== undefined) playlist.isPublic = updates.isPublic;
+        if (updates.imageUrl !== undefined) playlist.imageUrl = updates.imageUrl;
 
+        await playlist.save();
+        return playlist;
+    }
+
+    /**
+     * Reorder songs in playlist
+     */
+    async reorderSongs(playlistId: string, userId: string, songIds: string[]): Promise<ISharedPlaylist | null> {
+        const playlist = await SharedPlaylist.findById(playlistId);
+
+        if (!playlist) {
+            throw new Error("Playlist not found");
+        }
+
+        if ((playlist.owner as any).toString() !== userId) {
+            throw new Error("Not authorized");
+        }
+
+        playlist.songs = songIds.map((id) => id as any);
         await playlist.save();
         return playlist;
     }

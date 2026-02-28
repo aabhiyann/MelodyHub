@@ -14,6 +14,8 @@ import {
     createPlaylist,
     getPlaylists,
     addSongToPlaylist,
+    removeSongFromPlaylist,
+    reorderPlaylistSongs,
     sharePlaylist,
     updatePlaylist,
     deletePlaylist,
@@ -42,6 +44,8 @@ router.get("/playlists/:id", getPlaylistById);
 router.put("/playlists/:id", updatePlaylist);
 router.delete("/playlists/:id", deletePlaylist);
 router.post("/playlists/:id/songs", addSongToPlaylist);
+router.delete("/playlists/:id/songs/:songId", removeSongFromPlaylist);
+router.put("/playlists/:id/songs", reorderPlaylistSongs);
 router.post("/playlists/:id/share", sharePlaylist);
 
 export default router;

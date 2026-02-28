@@ -14,13 +14,13 @@ const playlistService = new PlaylistService();
 export const createPlaylist = async (req: Request, res: Response) => {
     try {
         const userId = (req as AuthenticatedRequest).auth?.userId;
-        const { name, description, isPublic } = req.body;
+        const { name, description, isPublic, imageUrl } = req.body;
 
         if (!userId) {
             return res.status(401).json({ success: false, message: "Authentication required" });
         }
 
-        const playlist = await playlistService.createPlaylist(userId, { name, description, isPublic });
+        const playlist = await playlistService.createPlaylist(userId, { name, description, isPublic, imageUrl });
 
         // Create activity
         await activityService.logActivity(userId, ActivityType.CREATE_PLAYLIST, playlist.id);
@@ -81,6 +81,52 @@ export const addSongToPlaylist = async (req: Request, res: Response) => {
 };
 
 /**
+ * DELETE /playlists/:id/songs/:songId
+ * Remove song from playlist
+ */
+export const removeSongFromPlaylist = async (req: Request, res: Response) => {
+    try {
+        const userId = (req as AuthenticatedRequest).auth?.userId;
+        const { id, songId } = req.params;
+
+        if (!userId) {
+            return res.status(401).json({ success: false, message: "Authentication required" });
+        }
+
+        const playlist = await playlistService.removeSong(String(id), songId, userId);
+        return res.status(200).json({ success: true, data: playlist, message: "Song removed" });
+    } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
+        return res.status(500).json({ success: false, message: "Failed to remove song", error: errorMessage });
+    }
+};
+
+/**
+ * PUT /playlists/:id/songs
+ * Reorder playlist songs (body: { songIds: string[] })
+ */
+export const reorderPlaylistSongs = async (req: Request, res: Response) => {
+    try {
+        const userId = (req as AuthenticatedRequest).auth?.userId;
+        const { id } = req.params;
+        const { songIds } = req.body;
+
+        if (!userId) {
+            return res.status(401).json({ success: false, message: "Authentication required" });
+        }
+        if (!Array.isArray(songIds)) {
+            return res.status(400).json({ success: false, message: "songIds must be an array" });
+        }
+
+        const playlist = await playlistService.reorderSongs(String(id), userId, songIds);
+        return res.status(200).json({ success: true, data: playlist, message: "Playlist reordered" });
+    } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
+        return res.status(500).json({ success: false, message: "Failed to reorder playlist", error: errorMessage });
+    }
+};
+
+/**
  * POST /playlists/:id/share
  * Share playlist with users
  */
@@ -130,19 +176,19 @@ export const sharePlaylist = async (req: Request, res: Response) => {
 
 /**
  * PUT /playlists/:id
- * Update playlist (name, description, isPublic)
+ * Update playlist (name, description, isPublic, imageUrl)
  */
 export const updatePlaylist = async (req: Request, res: Response) => {
     try {
         const userId = (req as AuthenticatedRequest).auth?.userId;
         const { id } = req.params;
-        const { name, description, isPublic } = req.body;
+        const { name, description, isPublic, imageUrl } = req.body;
 
         if (!userId) {
             return res.status(401).json({ success: false, message: "Authentication required" });
         }
 
-        const playlist = await playlistService.updatePlaylist(String(id), userId, { name, description, isPublic });
+        const playlist = await playlistService.updatePlaylist(String(id), userId, { name, description, isPublic, imageUrl });
 
         return res.status(200).json({ success: true, data: playlist, message: "Playlist updated" });
     } catch (error: unknown) {
