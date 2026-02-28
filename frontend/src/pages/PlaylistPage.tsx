@@ -2,12 +2,14 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { usePlaylistStore } from "@/stores/PlaylistStore";
 import { usePlayerStore } from "@/stores/PlayerStore";
-import { Clock, Pause, Play, ListMusic } from "lucide-react";
+import { Clock, Pause, Play, ListMusic, Shuffle } from "lucide-react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
 import { InviteCollaboratorsDialog } from "@/components/features/playlist/InviteCollaboratorsDialog";
 import { PlaylistSongRow } from "@/components/features/playlist/PlaylistSongRow";
+import { OptimizedImage } from "@/components/shared/OptimizedImage";
+import { formatDuration } from "@/lib/utils";
 
 import Topbar from "@/components/layout/TopBar";
 
@@ -48,7 +50,7 @@ const PlaylistPage = () => {
                     <div>
                         <ListMusic className="size-16 mx-auto mb-4 text-white/20" />
                         <h2 className="text-xl font-semibold text-white mb-2">Playlist not found</h2>
-                        <p className="text-text-secondary text-sm">This playlist may have been deleted or doesn't exist.</p>
+                        <p className="text-[#9CA3AF] text-sm">This playlist may have been deleted or doesn't exist.</p>
                     </div>
                 </div>
             </main>
@@ -83,38 +85,56 @@ const PlaylistPage = () => {
         playAlbum(currentPlaylist?.songs, index);
     };
 
+    const handleShuffle = () => {
+        if (!currentPlaylist?.songs.length) return;
+        const shuffled = [...currentPlaylist.songs].sort(() => Math.random() - 0.5);
+        playAlbum(shuffled, 0);
+    };
+
+    const coverImageUrl = currentPlaylist?.imageUrl ?? (currentPlaylist?.songs?.[0] as { imageUrl?: string } | undefined)?.imageUrl;
+    const totalDurationSeconds = currentPlaylist?.songs?.reduce((acc, s) => acc + (s.duration ?? 0), 0) ?? 0;
+
     return (
         <main className='rounded-md overflow-hidden h-full bg-transparent flex flex-col'>
             <Topbar />
             <ScrollArea className='flex-1 rounded-md'>
                 {/* Main Content */}
                 <div className='relative min-h-full'>
-                    {/* bg gradient - Reduced for cleaner glass look */}
+                    {/* bg gradient - subtle; dominant color applied in separate section */}
                     <div
-                        className='absolute inset-0 bg-gradient-to-b from-brand-primary/20 via-transparent to-transparent pointer-events-none'
+                        className='absolute inset-0 bg-gradient-to-b from-[#1F2933]/40 via-transparent to-transparent pointer-events-none'
                         aria-hidden='true'
                     />
 
                     {/* Content */}
                     <div className='relative z-10'>
-                        <div className='flex p-6 gap-6 pb-8'>
-                            {/* Playlist Cover - Fallback to gradient if no image (playlists might not have images yet) */}
-                            <div className="w-[240px] h-[240px] shadow-2xl rounded-lg ring-1 ring-white/10 bg-gradient-to-br from-brand-primary/40 to-background-elevated flex items-center justify-center">
-                                <ListMusic className="size-20 text-white/50" />
+                        <div className='flex flex-col md:flex-row p-6 gap-6 pb-8 items-center md:items-end'>
+                            {/* Playlist Cover */}
+                            <div className="w-[208px] h-[208px] md:w-[240px] md:h-[240px] flex-shrink-0 shadow-2xl rounded-xl ring-1 ring-white/10 overflow-hidden bg-gradient-to-br from-[#1F2933] to-[#101019] flex items-center justify-center">
+                                {coverImageUrl ? (
+                                    <OptimizedImage src={coverImageUrl} alt={currentPlaylist?.name ?? "Playlist"} className="w-full h-full object-cover" size="large" />
+                                ) : (
+                                    <ListMusic className="size-20 text-[#6B7280]" />
+                                )}
                             </div>
 
-                            <div className='flex flex-col justify-end'>
-                                <p className='text-sm font-medium text-text-secondary uppercase tracking-wider'>Playlist</p>
-                                <h1 className='text-5xl md:text-7xl font-bold my-4 text-white tracking-tight'>{currentPlaylist?.name}</h1>
+                            <div className='flex flex-col justify-end text-center md:text-left flex-1 min-w-0'>
+                                <p className='text-sm font-medium text-[#9CA3AF] uppercase tracking-wider'>Playlist</p>
+                                <h1 className='text-3xl md:text-5xl lg:text-7xl font-bold my-2 md:my-4 text-[#F9FAFB] tracking-tight'>{currentPlaylist?.name}</h1>
                                 {currentPlaylist?.description && (
-                                    <p className="text-text-secondary text-sm mb-4 max-w-lg">{currentPlaylist.description}</p>
+                                    <p className="text-[#9CA3AF] text-sm mb-2 md:mb-4 max-w-lg">{currentPlaylist.description}</p>
                                 )}
-                                <div className='flex items-center gap-2 text-sm text-text-secondary'>
-                                    <span className='font-medium text-white'>Created by {getOwnerName()}</span>
-                                    <span className="flex items-center text-text-secondary"><span className="w-1 h-1 rounded-full bg-text-tertiary mx-2" /> {currentPlaylist?.songs.length} songs</span>
-
-                                    {user?.id === currentPlaylist?.owner && currentPlaylist && (
-                                        <div className="ml-4">
+                                <div className='flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-[#9CA3AF] justify-center md:justify-start'>
+                                    <span className='font-medium text-[#F9FAFB]'>Created by {getOwnerName()}</span>
+                                    <span className="flex items-center"><span className="w-1 h-1 rounded-full bg-[#6B7280] mx-2" /> {currentPlaylist?.songs.length} songs</span>
+                                    {totalDurationSeconds > 0 && (
+                                        <>
+                                            <span className="w-1 h-1 rounded-full bg-[#6B7280] mx-1" aria-hidden />
+                                            <span>{formatDuration(totalDurationSeconds)}</span>
+                                        </>
+                                    )}
+                                    {((typeof currentPlaylist?.owner === "string" && user?.id === currentPlaylist?.owner) || ((currentPlaylist?.owner as { clerkId?: string })?.clerkId === user?.id)) && currentPlaylist && (
+                                        <div className="ml-2">
                                             <InviteCollaboratorsDialog
                                                 playlistId={currentPlaylist._id}
                                                 currentCollaborators={currentPlaylist.collaborators}
@@ -125,28 +145,37 @@ const PlaylistPage = () => {
                             </div>
                         </div>
 
-                        {/* play button */}
-                        <div className='px-6 pb-6 flex items-center gap-6'>
+                        {/* Play All + Shuffle */}
+                        <div className='px-6 pb-6 flex items-center gap-3'>
                             <Button
                                 onClick={handlePlayPlaylist}
                                 size='icon'
                                 disabled={!currentPlaylist?.songs.length}
-                                className='w-14 h-14 rounded-full bg-brand-primary hover:bg-brand-primary/90 hover:scale-105 transition-all shadow-lg'
+                                className='w-14 h-14 rounded-full bg-[#22C55E] hover:bg-[#16A34A] hover:scale-105 transition-all shadow-lg text-[#020617]'
                             >
                                 {isPlaying && currentPlaylist?.songs.some((song) => song._id === currentSong?._id) ? (
-                                    <Pause className='h-7 w-7 text-white' />
+                                    <Pause className='h-7 w-7' />
                                 ) : (
-                                    <Play className='h-7 w-7 text-white ml-1' />
+                                    <Play className='h-7 w-7 ml-1' />
                                 )}
+                            </Button>
+                            <Button
+                                onClick={handleShuffle}
+                                variant="outline"
+                                disabled={!currentPlaylist?.songs.length}
+                                className="h-12 px-6 rounded-full border-[#1F2933] text-[#F9FAFB] hover:bg-[#1F2933] hover:border-[#22C55E]/50 hover:text-[#22C55E]"
+                            >
+                                <Shuffle className="h-5 w-5 mr-2" />
+                                Shuffle
                             </Button>
                         </div>
 
                         {/* Table Section */}
-                        <div className='bg-background-elevated/20 backdrop-blur-sm'>
+                        <div className='bg-[#101019]/20 backdrop-blur-sm'>
                             {/* table header */}
                             <div
-                                className='grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-10 py-2 text-sm 
-            text-text-secondary border-b border-white/5 uppercase tracking-wider'
+                                className='grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-6 md:px-10 py-2 text-sm 
+            text-[#9CA3AF] border-b border-white/5 uppercase tracking-wider'
                             >
                                 <div>#</div>
                                 <div>Title</div>
@@ -161,8 +190,8 @@ const PlaylistPage = () => {
                             <div className='px-6'>
                                 <div className='space-y-2 py-4'>
                                     {currentPlaylist?.songs.length === 0 && (
-                                        <div className="text-center py-10 text-text-secondary">
-                                            This playlist is empty. Add songs from the library or player!
+                                        <div className="text-center py-10 text-[#9CA3AF]">
+                                            This playlist is empty. Add songs from Browse or Library.
                                         </div>
                                     )}
                                     {currentPlaylist?.songs.map((song, index) => {
