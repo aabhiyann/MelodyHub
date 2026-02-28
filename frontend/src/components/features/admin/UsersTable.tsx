@@ -87,7 +87,7 @@ export const UsersTable = ({
                     className={cn(
                         "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-body-xs font-semibold",
                         row.original.role === 'admin'
-                            ? "bg-purple-100 text-purple-700"
+                            ? "bg-emerald-100 text-emerald-700"
                             : "bg-gray-100 text-gray-700"
                     )}
                 >

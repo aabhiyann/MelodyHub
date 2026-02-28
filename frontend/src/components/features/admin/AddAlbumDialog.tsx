@@ -73,7 +73,7 @@ const AddAlbumDialog = () => {
 	return (
 		<Dialog open={albumDialogOpen} onOpenChange={setAlbumDialogOpen}>
 			<DialogTrigger asChild>
-				<Button className='bg-violet- hover:bg-violet-600 text-white bg-purple-900'>
+				<Button className='bg-emerald-600 hover:bg-emerald-700 text-white'>
 					<Plus className='mr-2 h-4 w-4' />
 					Add Album
 				</Button>
@@ -96,7 +96,7 @@ const AddAlbumDialog = () => {
 						onClick={() => fileInputRef.current?.click()}
 					>
 						<div className='text-center'>
-							<div className='p-3 bg-purple-950 rounded-full inline-block mb-2'>
+							<div className='p-3 bg-emerald-600/20 rounded-full inline-block mb-2'>
 								<Upload className='h-6 w-6 text-white' />
 							</div>
 							<div className='font-semibold text-sm text-fuchsia-950 mb-2'>
@@ -144,7 +144,7 @@ const AddAlbumDialog = () => {
 					</Button>
 					<Button
 						onClick={handleSubmit}
-						className='bg-violet-500 hover:bg-violet-600'
+						className='bg-emerald-600 hover:bg-emerald-700'
 						disabled={isLoading || !imageFile || !newAlbum.title || !newAlbum.artist}
 					>
 						{isLoading ? "Creating..." : "Add Album"}

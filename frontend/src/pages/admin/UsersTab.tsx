@@ -75,8 +75,8 @@ export const UsersTab = () => {
                                 <p className="text-body-sm text-gray-600">Admins</p>
                                 <p className="text-display-md font-bold text-gray-900 mt-1">1</p>
                             </div>
-                            <div className="p-3 bg-purple-100 rounded-lg">
-                                <Users className="size-6 text-purple-600" />
+                            <div className="p-3 bg-emerald-100 rounded-lg">
+                                <Users className="size-6 text-emerald-600" />
                             </div>
                         </div>
                     </CardContent>

@@ -30,7 +30,7 @@ const genreData = [
     { name: 'Jazz', value: 100 },
 ];
 
-const COLORS = ['#8B5CF6', '#3B82F6', '#10B981', '#F59E0B', '#EC4899'];
+const COLORS = ['#22C55E', '#3B82F6', '#10B981', '#F59E0B', '#EC4899'];
 
 const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: { value: number; name: string }[]; label?: string }) => {
     if (active && payload && payload.length) {
@@ -77,8 +77,8 @@ export const ChartsSection = () => {
                         <AreaChart data={streamData} margin={{ top: 5, right: 0, bottom: 0, left: -20 }}>
                             <defs>
                                 <linearGradient id="colorStreams" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.3} />
-                                    <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0} />
+                                    <stop offset="5%" stopColor="#22C55E" stopOpacity={0.3} />
+                                    <stop offset="95%" stopColor="#22C55E" stopOpacity={0} />
                                 </linearGradient>
                             </defs>
                             <CartesianGrid strokeDasharray="3 3" stroke="#333" opacity={0.1} vertical={false} />
@@ -94,11 +94,11 @@ export const ChartsSection = () => {
                                 tickLine={false}
                                 tick={{ fontSize: 12, fill: '#888' }}
                             />
-                            <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#8B5CF6', strokeWidth: 1, strokeDasharray: '4 4' }} />
+                            <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#22C55E', strokeWidth: 1, strokeDasharray: '4 4' }} />
                             <Area
                                 type="monotone"
                                 dataKey="streams"
-                                stroke="#8B5CF6"
+                                stroke="#22C55E"
                                 strokeWidth={3}
                                 fillOpacity={1}
                                 fill="url(#colorStreams)"
@@ -120,7 +120,7 @@ export const ChartsSection = () => {
                                     cursor={{ fill: 'transparent' }}
                                     contentStyle={{ borderRadius: '8px', border: 'none', background: '#18181b', color: '#fff' }}
                                 />
-                                <Bar dataKey="plays" fill="#8B5CF6" radius={[4, 4, 0, 0]} />
+                                <Bar dataKey="plays" fill="#22C55E" radius={[4, 4, 0, 0]} />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>

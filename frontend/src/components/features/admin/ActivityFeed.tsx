@@ -59,11 +59,11 @@ export const ActivityFeed = () => {
                                 background: activity.type === "upload" ? "rgba(16, 185, 129, 0.1)" :
                                     activity.type === "edit" ? "rgba(59, 130, 246, 0.1)" :
                                         activity.type === "delete" ? "rgba(239, 68, 68, 0.1)" :
-                                            "rgba(139, 92, 246, 0.1)",
+                                            "rgba(34, 197, 94, 0.1)",
                                 color: activity.type === "upload" ? "#10B981" :
                                     activity.type === "edit" ? "#3B82F6" :
                                         activity.type === "delete" ? "#EF4444" :
-                                            "#8B5CF6"
+                                            "#22C55E"
                             }}
                         >
                             <activity.icon size={14} />

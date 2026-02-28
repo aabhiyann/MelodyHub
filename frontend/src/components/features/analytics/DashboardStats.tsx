@@ -14,7 +14,7 @@ const DashboardStats = () => {
 	// Prepare data for the chart
 	const chartData = [
 		{ name: "Songs", count: stats.totalSongs, fill: "#10b981" },
-		{ name: "Albums", count: stats.totalAlbums, fill: "#8b5cf6" },
+		{ name: "Albums", count: stats.totalAlbums, fill: "#22C55E" },
 		{ name: "Artists", count: stats.totalArtists, fill: "#f97316" },
 		{ name: "Users", count: stats.totalUsers, fill: "#0ea5e9" },
 	];

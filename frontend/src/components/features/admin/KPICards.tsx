@@ -7,7 +7,7 @@ const kpiData = [
         change: "+12.5%",
         trend: "up",
         icon: Play,
-        color: "#8B5CF6",
+        color: "#22C55E",
     },
     {
         title: "Active Users",

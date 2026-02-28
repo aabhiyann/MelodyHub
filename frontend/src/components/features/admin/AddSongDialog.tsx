@@ -92,7 +92,7 @@ const AddSongDialog = () => {
 	return (
 		<Dialog open={songDialogOpen} onOpenChange={setSongDialogOpen}>
 			<DialogTrigger asChild>
-				<Button className='bg-violet- hover:bg-violet-600 text-white bg-purple-900'>
+				<Button className='bg-emerald-600 hover:bg-emerald-700 text-white'>
 					<Plus className='mr-2 h-4 w-4' />
 					Add Songs
 				</Button>
@@ -129,12 +129,12 @@ const AddSongDialog = () => {
 						<div className='text-center'>
 							{files.image ? (
 								<div className='space-y-2'>
-									<div className='text-l text-purple-900'>Image selected:</div>
-									<div className='text-xs text-purple-900'>{files.image.name.slice(0, 20)}</div>
+									<div className='text-l text-zinc-800'>Image selected:</div>
+									<div className='text-xs text-zinc-800'>{files.image.name.slice(0, 20)}</div>
 								</div>
 							) : (
 								<>
-									<div className='p-3 bg-purple-950 rounded-full inline-block mb-2'>
+									<div className='p-3 bg-emerald-600/20 rounded-full inline-block mb-2'>
 										<Upload className='h-6 w-6 text-white' />
 									</div>
 									<div className='font-semibold text-sm text-fuchsia-950 mb-2'>Upload image cover</div>
@@ -213,7 +213,7 @@ const AddSongDialog = () => {
 					<Button className='hover:bg-zinc-500' variant='outline' onClick={() => setSongDialogOpen(false)} disabled={isLoading}>
 						Cancel
 					</Button>
-					<Button className='bg-violet-500 hover:bg-violet-600' variant='outline' onClick={handleSubmit} disabled={isLoading}>
+					<Button className='bg-emerald-600 hover:bg-emerald-700' variant='outline' onClick={handleSubmit} disabled={isLoading}>
 						{isLoading ? "Uploading..." : "Add Song"}
 					</Button>
 				</DialogFooter>

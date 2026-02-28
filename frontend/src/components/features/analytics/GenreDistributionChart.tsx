@@ -6,7 +6,7 @@ interface GenreDistributionChartProps {
     genres: string[];
 }
 
-const COLORS = ["#10b981", "#8b5cf6", "#06b6d4", "#f59e0b", "#ef4444"];
+const COLORS = ["#22C55E", "#3B82F6", "#06b6d4", "#f59e0b", "#ef4444"];
 
 export const GenreDistributionChart = ({ genres }: GenreDistributionChartProps) => {
     // Aggregate genres from the list
@@ -38,7 +38,7 @@ export const GenreDistributionChart = ({ genres }: GenreDistributionChartProps) 
             <Card className="bg-zinc-900 border-zinc-800 h-full">
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-lg font-medium text-white">
-                        <Disc className="size-5 text-violet-500" />
+                        <Disc className="size-5 text-emerald-500" />
                         Top Genres
                     </CardTitle>
                 </CardHeader>
@@ -53,7 +53,7 @@ export const GenreDistributionChart = ({ genres }: GenreDistributionChartProps) 
         <Card className="bg-zinc-900 border-zinc-800 h-full">
             <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg font-medium text-white">
-                    <Disc className="size-5 text-violet-500" />
+                    <Disc className="size-5 text-emerald-500" />
                     Top Genres
                 </CardTitle>
             </CardHeader>

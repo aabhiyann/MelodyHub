@@ -174,8 +174,8 @@ const AnalyticsPage = () => {
                             icon={User}
                             label="Top Artists"
                             value={uniqueArtists}
-                            color="text-purple-400"
-                            bgColor="bg-purple-400/10"
+                            color="text-emerald-400"
+                            bgColor="bg-emerald-400/10"
                         />
                         <StatsCard
                             icon={Disc3}

@@ -35,8 +35,8 @@ const generateMockTopSongs = (): SongData[] => {
 };
 
 const COLORS = [
-    '#10b981', // 1st - brand green
-    '#8b5cf6', // 2nd - purple
+    '#22C55E', // 1st - brand green
+    '#3B82F6', // 2nd - blue
     '#06b6d4', // 3rd - cyan
     '#6b7280', // 4th+ - gray
     '#6b7280',
@@ -121,7 +121,7 @@ export const TopSongsChart = ({ data = generateMockTopSongs(), limit = 10 }: Top
                         <span>#1</span>
                     </div>
                     <div className='flex items-center gap-2'>
-                        <div className='size-3 rounded-full bg-purple-500' />
+                        <div className='size-3 rounded-full bg-blue-500' />
                         <span>#2</span>
                     </div>
                     <div className='flex items-center gap-2'>
