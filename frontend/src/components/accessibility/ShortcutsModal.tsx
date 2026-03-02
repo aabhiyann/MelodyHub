@@ -114,7 +114,7 @@ export const ShortcutsModal = ({ isOpen, onClose }: ShortcutsModalProps) => {
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.95, opacity: 0 }}
                     className={`
-                        relative w-full max-w-2xl bg-zinc-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden
+                        relative w-full max-w-2xl max-h-[90dvh] bg-zinc-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col
                         ${highContrast ? 'border-2 border-white' : ''}
                         ${largeText ? 'text-lg' : 'text-base'}
                     `}
@@ -137,7 +137,7 @@ export const ShortcutsModal = ({ isOpen, onClose }: ShortcutsModalProps) => {
                     </div>
 
                     {/* Content */}
-                    <div className="p-6 grid gap-8 md:grid-cols-2 max-h-[70vh] overflow-y-auto">
+                    <div className="p-6 grid gap-8 md:grid-cols-2 flex-1 min-h-0 overflow-y-auto overflow-x-hidden touch-scroll">
                         {SHORTCUTS.map((group) => (
                             <div key={group.category} className="space-y-4">
                                 <h3 className={`font-semibold text-brand-primary tracking-wide uppercase text-sm`}>

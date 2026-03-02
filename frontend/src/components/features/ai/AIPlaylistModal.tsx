@@ -61,7 +61,7 @@ export const AIPlaylistModal = () => {
 
                     {/* Modal content container — stopPropagation so button clicks don't close modal */}
                     <motion.div
-                        className="relative z-10 w-full max-w-4xl max-h-[90vh] overflow-hidden glass-modal rounded-3xl shadow-2xl border border-border-medium flex flex-col bg-[#101019]"
+                        className="relative z-10 w-full max-w-4xl max-h-[90dvh] sm:max-h-[90vh] overflow-hidden glass-modal rounded-3xl shadow-2xl border border-border-medium flex flex-col bg-[#101019]"
                         initial={{ scale: 0.95, opacity: 0, y: 20 }}
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -81,7 +81,7 @@ export const AIPlaylistModal = () => {
                         </button>
 
                         {/* Scrollable Content Area */}
-                        <div className="flex-1 overflow-y-auto custom-scrollbar p-6 pb-24 md:p-12 flex flex-col items-center">
+                        <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar touch-scroll p-6 pb-24 md:p-12 flex flex-col items-center">
 
                             {/* Mascot - shown in prompt/processing only; hidden in results for content-first Spotify-style look */}
                             {stage !== 'results' && (
