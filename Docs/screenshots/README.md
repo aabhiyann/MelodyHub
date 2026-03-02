@@ -1,8 +1,8 @@
-# Screenshots for README
+# Screenshots for README & QA
 
-Screenshots in this folder are used in the main [README.md](../../README.md). Capture them from the running app (local or live) so the README reflects the current UI.
+Screenshots in this folder are used in the main [README.md](../../README.md) and for QA visual regression. Capture them from the live app at [melodyhubmusic.vercel.app](https://melodyhubmusic.vercel.app/) so the README and QA docs reflect the current UI.
 
-## Recommended screenshots
+## README screenshots (legacy)
 
 | Filename        | Description                                                                       |
 | --------------- | --------------------------------------------------------------------------------- |
@@ -13,4 +13,6 @@ Screenshots in this folder are used in the main [README.md](../../README.md). Ca
 | **chat.png**    | (Optional) Messaging / real-time chat.                                            |
 | **player.png**  | (Optional) Mini or expanded player.                                               |
 
-Start with **hero.png**, **home.png**, and **feature.png**; add the rest as needed. Use PNG for clarity. Once added, the main README will display them automatically.
+## QA visual regression (see [QA_VISUAL_INDEX.md](../QA_VISUAL_INDEX.md))
+
+Full list of flows and filenames: [Docs/QA_VISUAL_INDEX.md](../QA_VISUAL_INDEX.md). Key flows: first-impression, auth, home, player-mini, player-expanded, explore, playlist, chat, notifications, profile (desktop + mobile).

@@ -181,7 +181,7 @@ If I downloaded this app as a real user, I would *withhold judgment* because **t
 ### Top 10 MUST-FIX Items Before Launch (Process-Focused, Given Environment Limits)
 
 1. ~~**Run a full, on-device end-to-end QA pass in a real browser (desktop + mobile)**~~ – Completed on 2026-03-02 via branch `fix/on-device-qa-pass`; core flows (first impression, auth, home, player, navigation, explore, playlists, social, chat, notifications, profile) were exercised on desktop and mobile and summarized above.
-2. **Capture screenshots and screen recordings across key flows**: Document first impression, auth, home, player (mini + expanded), search, playlists, social, chat, notifications, and profile flows for visual review and regression tracking.
+2. ~~**Capture screenshots and screen recordings across key flows**~~ – Completed 2026-03-02 via branch `fix/qa-screenshots-recordings`. Structure: [Docs/QA_VISUAL_INDEX.md](Docs/QA_VISUAL_INDEX.md) (index of flows and filenames), [Docs/screenshots/](Docs/screenshots/), [Docs/screencasts/](Docs/screencasts/). Capture instructions documented; assets to be added per flow as needed.
 3. **Verify core auth and protected routes end-to-end**: Ensure sign-up, login, logout, and access control behave correctly across direct URLs, back-button navigation, and multiple tabs.
 4. **Stress-test the music player under real network conditions**: On real devices, validate smooth playback, seeking, playlist queuing, and resilience to refreshes and navigation.
 5. **Manually test social/friends and notifications with two real accounts**: Confirm request/accept flows, sync between accounts, and notification accuracy (including badge counts and unread states).
