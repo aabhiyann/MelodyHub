@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Trophy, Target, Medal, Store } from "lucide-react";
 import { GamificationPageSkeleton } from "@/components/shared/LoadingSkeletons";
+import Topbar from "@/components/layout/TopBar";
 
 const GamificationPage = () => {
     const { xp, level, gems, dailyChallenges, isLoading } = useGamificationStore();
@@ -35,6 +36,7 @@ const GamificationPage = () => {
     if (isLoading) {
         return (
             <div className="h-full flex flex-col">
+                <Topbar />
                 <ScrollArea className="flex-1">
                     <GamificationPageSkeleton />
                 </ScrollArea>
@@ -43,7 +45,9 @@ const GamificationPage = () => {
     }
 
     return (
-        <div className="h-full flex flex-col p-6 space-y-6">
+        <div className="h-full flex flex-col">
+            <Topbar />
+            <div className="flex-1 flex flex-col p-6 space-y-6">
             {/* Header / Hero Section */}
             <div className="flex flex-col md:flex-row items-end justify-between bg-gradient-to-r from-emerald-900/50 to-slate-800/50 p-6 rounded-2xl border border-white/10 relative overflow-hidden">
                 <div className="absolute inset-0 bg-grid-white/5 mask-image-gradient" />
@@ -121,6 +125,7 @@ const GamificationPage = () => {
                     </ScrollArea>
                 </div>
             </Tabs>
+            </div>
         </div>
     );
 };

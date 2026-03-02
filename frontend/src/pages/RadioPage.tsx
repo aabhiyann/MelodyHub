@@ -7,6 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Song } from "@/types";
 import React from "react";
 import { Button } from "@/components/ui/button";
+import Topbar from "@/components/layout/TopBar";
 
 const RadioPage = () => {
     const { songId } = useParams();
@@ -60,28 +61,36 @@ const RadioPage = () => {
 
     if (pageLoading) {
         return (
-            <div className="h-full flex flex-col items-center justify-center gap-4">
-                <Loader className="size-8 text-brand-primary animate-spin" />
-                <p className="text-zinc-400">Generating your radio station...</p>
+            <div className="h-full flex flex-col">
+                <Topbar />
+                <div className="flex-1 flex flex-col items-center justify-center gap-4">
+                    <Loader className="size-8 text-brand-primary animate-spin" />
+                    <p className="text-zinc-400">Generating your radio station...</p>
+                </div>
             </div>
         );
     }
 
     if (error) {
         return (
-            <div className="h-full flex flex-col items-center justify-center gap-4 p-6">
-                <AlertCircle className="size-16 text-red-500" />
-                <h2 className="text-2xl font-bold text-white">Oops!</h2>
-                <p className="text-zinc-400 text-center max-w-md">{error}</p>
-                <Button onClick={() => navigate('/home')} className="mt-4">
-                    Back to Home
-                </Button>
+            <div className="h-full flex flex-col">
+                <Topbar />
+                <div className="flex-1 flex flex-col items-center justify-center gap-4 p-6">
+                    <AlertCircle className="size-16 text-red-500" />
+                    <h2 className="text-2xl font-bold text-white">Oops!</h2>
+                    <p className="text-zinc-400 text-center max-w-md">{error}</p>
+                    <Button onClick={() => navigate('/home')} className="mt-4">
+                        Back to Home
+                    </Button>
+                </div>
             </div>
         );
     }
 
     return (
-        <ScrollArea className="h-full p-6">
+        <div className="h-full flex flex-col">
+            <Topbar />
+            <ScrollArea className="flex-1 p-6">
             <div className="mb-6">
                 <div className="flex items-center gap-3 mb-2">
                     <RadioIcon className="size-8 text-brand-primary" />
@@ -114,7 +123,8 @@ const RadioPage = () => {
                     </div>
                 )}
             </div>
-        </ScrollArea>
+            </ScrollArea>
+        </div>
     );
 };
 
