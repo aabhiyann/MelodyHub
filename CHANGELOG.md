@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Elevated Hamburger Menu `z-index` to strictly overlay the Bottom Navigation Tab Bar.
 
 ### Fixed
+- **Full regression QA:** Play button on song/album cards (SpotifyCard, MusicCard) was hidden until hover, blocking touch and keyboard; now visible with `group-focus-within` and `max-md:opacity-100`. Full checklist documented in `QA_REPORT.md`; single failure logged as [#41](https://github.com/aabhiyann/MelodyHub/issues/41) and fixed.
 - **Mobile final pass:** Back button (Topbar) on every sub-page, including Radio and Quest pages. Mini player bar positioned above bottom nav using safe-area-aware CSS variable `--mobile-mini-player-bottom`. Bottom nav and main content padding verified; no overlap. Text overflow: truncate and min-w-0 on profile username, playlist/album/artist titles. Minimum 44×44px touch targets: Button icon size, mini bar controls, FullScreenPlayer close/tabs/like/volume/devices. Momentum scrolling (`.touch-scroll`) on main and key scroll containers; overflow-x-hidden on main and scroll areas. Modals (Dialog, AIPlaylistModal, ShortcutsModal) use max-h-[90dvh] and touch-scroll. FullScreenPlayer full-width on mobile and 44px tap targets. See `MOBILE_FIXES.md`.
 - Fixed live "Failed to load users" API error caused by `express-rate-limit` triggering 429 preflight responses before CORS initialization.
 - Fixed Render CI/CD build crash by restoring accidentally deleted `rootDir` variable.
