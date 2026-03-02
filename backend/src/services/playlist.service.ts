@@ -29,6 +29,9 @@ export class PlaylistService {
 
     /**
      * Get playlist by ID
+     * Access rules:
+     *  - Public playlist: anyone can view (even unauthenticated)
+     *  - Private playlist: owner, collaborators, and viewers can view
      */
     async getPlaylistById(id: string, userId?: string): Promise<ISharedPlaylist | null> {
         const playlist = await SharedPlaylist.findById(id).populate("songs").lean();
@@ -37,8 +40,22 @@ export class PlaylistService {
             return null;
         }
 
-        // Check access permissions
-        if (!playlist.isPublic && userId && (playlist.owner as any).toString() !== userId) {
+        // If public, everyone can read
+        if (playlist.isPublic) {
+            return playlist;
+        }
+
+        // Private playlist — requiresa valid userId
+        if (!userId) {
+            throw new Error("Access denied");
+        }
+
+        const ownerStr = String(playlist.owner);
+        const isOwner = ownerStr === userId;
+        const isCollaborator = (playlist.collaborators ?? []).map(String).includes(userId);
+        const isViewer = (playlist.viewers ?? []).map(String).includes(userId);
+
+        if (!isOwner && !isCollaborator && !isViewer) {
             throw new Error("Access denied");
         }
 
