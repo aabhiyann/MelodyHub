@@ -1,7 +1,7 @@
 import { lazy, Suspense, useState, useEffect } from "react";
 import { Route, Routes, useLocation, Outlet } from "react-router-dom";
 import { AuthenticateWithRedirectCallback } from "@clerk/clerk-react";
-import { LoadingScreen } from "@/components/shared/LoadingScreen";
+import { RouteSkeleton } from "@/components/shared/LoadingSkeletons";
 import { Toaster } from "react-hot-toast";
 import { AnimatePresence } from "framer-motion";
 import { LoadingBar } from "@/components/shared/LoadingBar";
@@ -86,7 +86,7 @@ function App() {
 
 	return (
 
-		<Suspense fallback={<LoadingScreen />}>
+		<Suspense fallback={<RouteSkeleton variant="generic" fullHeight />}>
 			<SEO />
 			<SkipLinks />
 			<OfflineIndicator />
@@ -159,26 +159,26 @@ function App() {
 								</RequireAuth>
 							}
 						>
-							<Route path='/home' element={<Suspense fallback={<LoadingScreen message="Loading your feed..." fullScreen={false} />}><PageTransition><HomePage /></PageTransition></Suspense>} />
-							<Route path='/browse' element={<Suspense fallback={<LoadingScreen message="Curating genres..." fullScreen={false} />}><PageTransition><BrowsePage /></PageTransition></Suspense>} />
-							<Route path='/radio' element={<Suspense fallback={<LoadingScreen message="Tuning the dial..." fullScreen={false} />}><PageTransition><RadioPage /></PageTransition></Suspense>} />
-							<Route path='/search' element={<Suspense fallback={<LoadingScreen message="Ready to explore..." fullScreen={false} />}><PageTransition><SearchPage /></PageTransition></Suspense>} />
-							<Route path='/library' element={<Suspense fallback={<LoadingScreen message="Opening your library..." fullScreen={false} />}><PageTransition><LibraryPage /></PageTransition></Suspense>} />
-							<Route path='/community' element={<Suspense fallback={<LoadingScreen message="Finding fellow listeners..." fullScreen={false} />}><PageTransition><CommunityPage /></PageTransition></Suspense>} />
-							<Route path='/profile' element={<Suspense fallback={<LoadingScreen message="Loading profile..." fullScreen={false} />}><PageTransition><ProfilePage /></PageTransition></Suspense>} />
-							<Route path='/profile/:userId' element={<Suspense fallback={<LoadingScreen message="Loading profile..." fullScreen={false} />}><PageTransition><ProfilePage /></PageTransition></Suspense>} />
-							<Route path='/user/:userId' element={<Suspense fallback={<LoadingScreen message="Loading user data..." fullScreen={false} />}><PageTransition><ProfilePage /></PageTransition></Suspense>} />
-							<Route path='/followers/:userId' element={<Suspense fallback={<LoadingScreen message="Fetching followers..." fullScreen={false} />}><PageTransition><FollowersPage /></PageTransition></Suspense>} />
-							<Route path='/following/:userId' element={<Suspense fallback={<LoadingScreen message="Fetching following..." fullScreen={false} />}><PageTransition><FollowingPage /></PageTransition></Suspense>} />
-							<Route path='/chat' element={<Suspense fallback={<LoadingScreen message="Connecting to friends..." fullScreen={false} />}><PageTransition><ChatPage /></PageTransition></Suspense>} />
-							<Route path='/playlists/:id' element={<Suspense fallback={<LoadingScreen message="Loading playlist..." fullScreen={false} />}><PageTransition><PlaylistPage /></PageTransition></Suspense>} />
-							<Route path='/analytics' element={<Suspense fallback={<LoadingScreen message="Crunching the numbers..." fullScreen={false} />}><PageTransition><AnalyticsPage /></PageTransition></Suspense>} />
-							<Route path='/settings' element={<Suspense fallback={<LoadingScreen message="Warming up the studio..." fullScreen={false} />}><PageTransition><SettingsPage /></PageTransition></Suspense>} />
-							<Route path='/radio/:songId' element={<Suspense fallback={<LoadingScreen message="Creating station..." fullScreen={false} />}><PageTransition><RadioPage /></PageTransition></Suspense>} />
-							<Route path='/albums/:albumId' element={<Suspense fallback={<LoadingScreen message="Loading album..." fullScreen={false} />}><PageTransition><AlbumPage /></PageTransition></Suspense>} />
-							<Route path='/artists/:artistId' element={<Suspense fallback={<LoadingScreen message="Loading artist..." fullScreen={false} />}><PageTransition><ArtistPage /></PageTransition></Suspense>} />
-							<Route path='/quests' element={<Suspense fallback={<LoadingScreen message="Gathering your quests..." fullScreen={false} />}><PageTransition><GamificationPage /></PageTransition></Suspense>} />
-							<Route path='*' element={<Suspense fallback={<LoadingScreen fullScreen={false} />}><PageTransition><NotFoundPage /></PageTransition></Suspense>} />
+							<Route path='/home' element={<Suspense fallback={<RouteSkeleton variant="home" fullHeight={false} />}><PageTransition><HomePage /></PageTransition></Suspense>} />
+							<Route path='/browse' element={<Suspense fallback={<RouteSkeleton variant="browse" fullHeight={false} />}><PageTransition><BrowsePage /></PageTransition></Suspense>} />
+							<Route path='/radio' element={<Suspense fallback={<RouteSkeleton variant="generic" fullHeight={false} />}><PageTransition><RadioPage /></PageTransition></Suspense>} />
+							<Route path='/search' element={<Suspense fallback={<RouteSkeleton variant="search" fullHeight={false} />}><PageTransition><SearchPage /></PageTransition></Suspense>} />
+							<Route path='/library' element={<Suspense fallback={<RouteSkeleton variant="library" fullHeight={false} />}><PageTransition><LibraryPage /></PageTransition></Suspense>} />
+							<Route path='/community' element={<Suspense fallback={<RouteSkeleton variant="generic" fullHeight={false} />}><PageTransition><CommunityPage /></PageTransition></Suspense>} />
+							<Route path='/profile' element={<Suspense fallback={<RouteSkeleton variant="profile" fullHeight={false} />}><PageTransition><ProfilePage /></PageTransition></Suspense>} />
+							<Route path='/profile/:userId' element={<Suspense fallback={<RouteSkeleton variant="profile" fullHeight={false} />}><PageTransition><ProfilePage /></PageTransition></Suspense>} />
+							<Route path='/user/:userId' element={<Suspense fallback={<RouteSkeleton variant="profile" fullHeight={false} />}><PageTransition><ProfilePage /></PageTransition></Suspense>} />
+							<Route path='/followers/:userId' element={<Suspense fallback={<RouteSkeleton variant="generic" fullHeight={false} />}><PageTransition><FollowersPage /></PageTransition></Suspense>} />
+							<Route path='/following/:userId' element={<Suspense fallback={<RouteSkeleton variant="generic" fullHeight={false} />}><PageTransition><FollowingPage /></PageTransition></Suspense>} />
+							<Route path='/chat' element={<Suspense fallback={<RouteSkeleton variant="chat" fullHeight={false} />}><PageTransition><ChatPage /></PageTransition></Suspense>} />
+							<Route path='/playlists/:id' element={<Suspense fallback={<RouteSkeleton variant="playlist" fullHeight={false} />}><PageTransition><PlaylistPage /></PageTransition></Suspense>} />
+							<Route path='/analytics' element={<Suspense fallback={<RouteSkeleton variant="analytics" fullHeight={false} />}><PageTransition><AnalyticsPage /></PageTransition></Suspense>} />
+							<Route path='/settings' element={<Suspense fallback={<RouteSkeleton variant="generic" fullHeight={false} />}><PageTransition><SettingsPage /></PageTransition></Suspense>} />
+							<Route path='/radio/:songId' element={<Suspense fallback={<RouteSkeleton variant="generic" fullHeight={false} />}><PageTransition><RadioPage /></PageTransition></Suspense>} />
+							<Route path='/albums/:albumId' element={<Suspense fallback={<RouteSkeleton variant="album" fullHeight={false} />}><PageTransition><AlbumPage /></PageTransition></Suspense>} />
+							<Route path='/artists/:artistId' element={<Suspense fallback={<RouteSkeleton variant="artist" fullHeight={false} />}><PageTransition><ArtistPage /></PageTransition></Suspense>} />
+							<Route path='/quests' element={<Suspense fallback={<RouteSkeleton variant="generic" fullHeight={false} />}><PageTransition><GamificationPage /></PageTransition></Suspense>} />
+							<Route path='*' element={<Suspense fallback={<RouteSkeleton variant="generic" fullHeight={false} />}><PageTransition><NotFoundPage /></PageTransition></Suspense>} />
 						</Route>
 
 						{/* Admin Routes - Separate Layout */}
@@ -190,11 +190,11 @@ function App() {
 							}
 						>
 							<Route path='/admin' element={<AdminLayout />}>
-								<Route index element={<Suspense fallback={<LoadingScreen message="Loading dashboard..." fullScreen={false} />}><PageTransition><AdminDashboard /></PageTransition></Suspense>} />
-								<Route path='songs' element={<Suspense fallback={<LoadingScreen message="Loading catalog..." fullScreen={false} />}><PageTransition><AdminSongsPage /></PageTransition></Suspense>} />
-								<Route path='analytics' element={<Suspense fallback={<LoadingScreen message="Analyzing platform data..." fullScreen={false} />}><PageTransition><AnalyticsPage /></PageTransition></Suspense>} />
-								<Route path='settings' element={<Suspense fallback={<LoadingScreen message="Loading settings..." fullScreen={false} />}><PageTransition><AdminSettingsPage /></PageTransition></Suspense>} />
-								<Route path='*' element={<Suspense fallback={<LoadingScreen fullScreen={false} />}><PageTransition><AdminDashboard /></PageTransition></Suspense>} />
+								<Route index element={<Suspense fallback={<RouteSkeleton variant="admin" fullHeight={false} />}><PageTransition><AdminDashboard /></PageTransition></Suspense>} />
+								<Route path='songs' element={<Suspense fallback={<RouteSkeleton variant="admin" fullHeight={false} />}><PageTransition><AdminSongsPage /></PageTransition></Suspense>} />
+								<Route path='analytics' element={<Suspense fallback={<RouteSkeleton variant="admin" fullHeight={false} />}><PageTransition><AnalyticsPage /></PageTransition></Suspense>} />
+								<Route path='settings' element={<Suspense fallback={<RouteSkeleton variant="admin" fullHeight={false} />}><PageTransition><AdminSettingsPage /></PageTransition></Suspense>} />
+								<Route path='*' element={<Suspense fallback={<RouteSkeleton variant="admin" fullHeight={false} />}><PageTransition><AdminDashboard /></PageTransition></Suspense>} />
 							</Route>
 						</Route>
 					</Routes>

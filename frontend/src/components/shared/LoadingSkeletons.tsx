@@ -1,38 +1,250 @@
 /**
  * Loading skeletons for route-level code splitting
- * Optimized fallbacks while lazy-loaded components load
+ * Skeleton-only fallbacks (no spinners) while lazy-loaded components load
  */
 
-import { motion } from 'framer-motion';
-import { Loader2 } from 'lucide-react';
+const SKELETON_BG = 'bg-white/10';
+const SKELETON_PULSE = 'animate-pulse';
 
 /**
- * Full page loading skeleton
- * Used for major route transitions
+ * Route-specific skeleton layouts (pulse blocks only, no spinners)
  */
-export const PageLoadingSkeleton = () => {
+export type RouteSkeletonVariant =
+    | 'home'
+    | 'browse'
+    | 'profile'
+    | 'library'
+    | 'playlist'
+    | 'album'
+    | 'artist'
+    | 'search'
+    | 'chat'
+    | 'admin'
+    | 'analytics'
+    | 'generic';
+
+interface RouteSkeletonProps {
+    variant?: RouteSkeletonVariant;
+    /** Use full viewport height for route-level Suspense fallback */
+    fullHeight?: boolean;
+}
+
+const RowOfCards = ({ count = 5 }: { count?: number }) => (
+    <div className="flex gap-4 overflow-hidden">
+        {Array.from({ length: count }).map((_, i) => (
+            <div key={i} className="flex-shrink-0 w-36 flex flex-col">
+                <div className={`aspect-square rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                <div className={`h-3.5 w-3/4 rounded mt-2 ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                <div className={`h-3 w-1/2 rounded mt-1 ${SKELETON_BG} ${SKELETON_PULSE}`} />
+            </div>
+        ))}
+    </div>
+);
+
+export const RouteSkeleton = ({ variant = 'generic', fullHeight = true }: RouteSkeletonProps) => {
+    const wrapperClass = fullHeight
+        ? 'min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 p-6'
+        : 'h-full min-h-[50vh] rounded-2xl w-full bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 p-6';
+
+    if (variant === 'home' || variant === 'browse') {
+        return (
+            <div className={wrapperClass}>
+                <div className={`h-48 md:h-64 rounded-2xl mb-8 ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                <div className="space-y-8">
+                    <RowOfCards count={6} />
+                    <RowOfCards count={6} />
+                    <RowOfCards count={5} />
+                </div>
+            </div>
+        );
+    }
+
+    if (variant === 'profile') {
+        return (
+            <div className={wrapperClass}>
+                <div className="flex flex-col md:flex-row items-center md:items-end gap-6 mb-8">
+                    <div className={`size-32 rounded-full ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                    <div className="flex-1 w-full space-y-2">
+                        <div className={`h-8 w-48 rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                        <div className={`h-4 w-32 rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                        <div className="flex gap-6 mt-4">
+                            {[1, 2, 3].map((i) => (
+                                <div key={i} className={`h-6 w-16 rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+                <div className={`h-10 w-full rounded-lg mb-6 ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {[1, 2, 3, 4, 5, 6].map((i) => (
+                        <div key={i} className="space-y-2">
+                            <div className={`aspect-square rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                            <div className={`h-4 w-3/4 rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
+    if (variant === 'library') {
+        return (
+            <div className={wrapperClass}>
+                <div className={`h-10 w-48 rounded-lg mb-6 ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                        <div key={i} className="space-y-2">
+                            <div className={`aspect-square rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                            <div className={`h-4 w-3/4 rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                            <div className={`h-3 w-1/2 rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
+    if (variant === 'playlist' || variant === 'album' || variant === 'artist') {
+        return (
+            <div className={wrapperClass}>
+                <div className="flex flex-col md:flex-row gap-6 mb-8">
+                    <div className={`w-48 h-48 rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                    <div className="flex-1 space-y-3">
+                        <div className={`h-10 w-64 rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                        <div className={`h-4 w-32 rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                        <div className="flex gap-2 mt-4">
+                            <div className={`h-10 w-24 rounded-full ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                            <div className={`h-10 w-24 rounded-full ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                        </div>
+                    </div>
+                </div>
+                <div className="space-y-2">
+                    {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                        <div key={i} className="flex items-center gap-4 py-2">
+                            <div className={`size-10 rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                            <div className={`h-4 flex-1 max-w-xs rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                            <div className={`h-4 w-12 rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
+    if (variant === 'search') {
+        return (
+            <div className={wrapperClass}>
+                <div className={`h-12 w-full max-w-xl rounded-full mb-8 ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                <div className={`h-8 w-32 rounded mb-4 ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                        <div key={i} className="space-y-2">
+                            <div className={`aspect-square rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                            <div className={`h-4 w-3/4 rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
+    if (variant === 'chat') {
+        return (
+            <div className={wrapperClass}>
+                <div className="flex h-full min-h-[60vh] gap-0">
+                    <div className={`w-64 border-r border-white/10 hidden md:block ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                    <div className="flex-1 flex flex-col">
+                        <div className={`h-14 border-b border-white/10 ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                        <div className="flex-1 p-4 space-y-4">
+                            {[1, 2, 3, 4, 5].map((i) => (
+                                <div
+                                    key={i}
+                                    className={`h-12 rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`}
+                                    style={{ width: i % 2 === 0 ? '70%' : '50%', marginLeft: i % 2 === 0 ? 0 : 'auto' }}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (variant === 'admin') {
+        return (
+            <div className={wrapperClass}>
+                <div className={`h-12 w-64 rounded mb-6 ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    {[1, 2, 3, 4].map((i) => (
+                        <div key={i} className={`h-28 rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                    ))}
+                </div>
+                <div className={`h-96 rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+            </div>
+        );
+    }
+
+    if (variant === 'analytics') {
+        return (
+            <div className={wrapperClass}>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    {[1, 2, 3, 4].map((i) => (
+                        <div key={i} className={`h-24 rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                    ))}
+                </div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div className={`h-72 rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                    <div className={`h-72 rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                </div>
+            </div>
+        );
+    }
+
+    // generic: simple content blocks
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
-            <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="flex flex-col items-center gap-4"
-            >
-                <Loader2 className="size-12 text-brand-primary animate-spin" />
-                <p className="text-body-md text-gray-400">Loading...</p>
-            </motion.div>
+        <div className={wrapperClass}>
+            <div className={`h-12 w-3/4 max-w-md rounded-lg mb-6 ${SKELETON_BG} ${SKELETON_PULSE}`} />
+            <div className="space-y-4">
+                <div className={`h-24 rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                <div className={`h-24 rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                <div className={`h-24 rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+            </div>
         </div>
     );
 };
 
 /**
- * Minimal loading skeleton
+ * Full page loading skeleton (pulse only, no spinner)
+ * Used for major route transitions
+ */
+export const PageLoadingSkeleton = () => {
+    return (
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 p-6">
+            <div className="w-full max-w-2xl space-y-6">
+                <div className={`h-12 w-48 rounded-lg ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                <div className={`h-32 rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                <div className="grid grid-cols-3 gap-4">
+                    {[1, 2, 3].map((i) => (
+                        <div key={i} className={`h-24 rounded-lg ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+/**
+ * Minimal loading skeleton (pulse only)
  * Used for smaller component splits
  */
 export const MinimalLoadingSkeleton = () => {
     return (
         <div className="flex items-center justify-center py-12">
-            <Loader2 className="size-8 text-brand-primary animate-spin" />
+            <div className="flex gap-2">
+                {[1, 2, 3].map((i) => (
+                    <div key={i} className={`w-2 h-2 rounded-full ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                ))}
+            </div>
         </div>
     );
 };
