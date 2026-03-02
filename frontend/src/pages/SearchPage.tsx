@@ -288,7 +288,7 @@ const SearchPage = () => {
                           <div
                             key={song._id}
                             onClick={() => handlePlaySong(song)}
-                            className="flex items-center gap-4 p-3 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group"
+                            className="flex items-center gap-4 min-h-[44px] p-3 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group"
                           >
                             <div className="relative size-14 rounded-md overflow-hidden shrink-0">
                               <img
