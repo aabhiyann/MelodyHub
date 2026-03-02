@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useChatStore } from "@/stores/ChatStore";
 import { useUser } from "@clerk/clerk-react";
+import toast from "react-hot-toast";
 import { Send } from "lucide-react";
 import { useState, useRef } from "react";
 import { Textarea } from "@/components/ui/textarea";
@@ -11,9 +12,16 @@ export const MessageInput = () => {
 	const { selectedUser, sendMessage, sendTyping, sendStopTyping } = useChatStore();
 	const lastTypingTimeRef = useRef<number>(0);
 
+	const MAX_MESSAGE_LENGTH = 2000;
+
 	const handleSend = () => {
 		if (!selectedUser || !user || !newMessage.trim()) return;
-		sendMessage(selectedUser.clerkId, newMessage.trim());
+		const trimmed = newMessage.trim();
+		if (trimmed.length > MAX_MESSAGE_LENGTH) {
+			toast.error(`Message must be under ${MAX_MESSAGE_LENGTH} characters`);
+			return;
+		}
+		sendMessage(selectedUser.clerkId, trimmed);
 		setNewMessage("");
 
 		// Instantly kill typing indicator on send
@@ -58,10 +66,12 @@ export const MessageInput = () => {
 		<div className='p-4 border-t border-white/5 bg-background-elevated/40 backdrop-blur-md'>
 			<div className='flex items-center gap-2 bg-background-base/50 backdrop-blur-xl border border-white/10 rounded-3xl p-1.5 shadow-sm ring-1 ring-white/5 transition-all focus-within:ring-brand-primary/50 focus-within:border-brand-primary/50'>
 				<Textarea
+					data-testid="chat-message-input"
 					placeholder='Type a message...'
 					value={newMessage}
 					onChange={handleChange}
 					onKeyDown={handleKeyDown}
+					maxLength={MAX_MESSAGE_LENGTH}
 					className='bg-transparent border-none text-text-primary placeholder:text-text-secondary focus-visible:ring-0 min-h-[42px] max-h-32 resize-none py-2.5 px-4 rounded-3xl flex-1'
 				/>
 

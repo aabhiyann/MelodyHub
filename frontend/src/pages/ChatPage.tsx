@@ -170,6 +170,7 @@ const ChatPage = () => {
 
 							{/* Messages */}
 							<div
+								data-testid="chat-messages"
 								ref={scrollContainerRef}
 								onScroll={checkNearBottom}
 								className='flex-1 w-full min-h-0 overflow-y-auto overflow-x-hidden touch-scroll'

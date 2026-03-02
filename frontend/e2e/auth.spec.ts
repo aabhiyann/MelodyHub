@@ -21,4 +21,10 @@ test.describe('Authentication Flow', () => {
             await expect(loginBtn).toBeEnabled();
         }
     });
+
+    test('guest visiting protected route redirects to home', async ({ page }) => {
+        await page.goto('/library');
+        await expect(page).not.toHaveURL(/\/library/);
+        await expect(page.locator('h1').first()).toBeVisible({ timeout: 10000 });
+    });
 });

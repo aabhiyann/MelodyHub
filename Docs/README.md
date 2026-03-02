@@ -45,7 +45,7 @@ Detailed notes for major features (implementation, UX, APIs):
 ## Other docs
 
 - **Professional / process:** [professional/](professional/) — Git strategy, SDLC, PRD, architecture, API, deployment, roles, AI feature spec.
-- **Debugging & QA:** [DEBUGGING_GUIDE.md](DEBUGGING_GUIDE.md), [DEV_LOG_UI_UX_OVERHAUL.md](DEV_LOG_UI_UX_OVERHAUL.md), [QA_CHECKLIST.md](QA_CHECKLIST.md), [QA_VISUAL_INDEX.md](QA_VISUAL_INDEX.md) (screenshots/screencasts).
+- **Debugging & QA:** [DEBUGGING_GUIDE.md](DEBUGGING_GUIDE.md), [DEV_LOG_UI_UX_OVERHAUL.md](DEV_LOG_UI_UX_OVERHAUL.md), [QA_CHECKLIST.md](QA_CHECKLIST.md), [QA_VISUAL_INDEX.md](QA_VISUAL_INDEX.md) (screenshots/screencasts), [MANUAL_QA_LIVE_SITE.md](MANUAL_QA_LIVE_SITE.md) (manual steps for live site).
 - **Good first issues:** [GOOD_FIRST_ISSUES.md](GOOD_FIRST_ISSUES.md).
 - **UI/UX history:** [ROADMAP_UI_UX_90_PERCENT.md](ROADMAP_UI_UX_90_PERCENT.md), [DEV_LOG_UI_UX_OVERHAUL.md](DEV_LOG_UI_UX_OVERHAUL.md).
 - **Audits:** [../AI_AUDIT.md](../AI_AUDIT.md) (AI feature). UX audits: `AUDIT_YYYY-MM-DD.md` in repo root when created.

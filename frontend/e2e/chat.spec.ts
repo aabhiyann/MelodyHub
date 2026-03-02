@@ -20,8 +20,8 @@ test.describe('Chat Functionality', () => {
 
   test('chat input or message list visible', async ({ page }) => {
     await page.goto('/chat');
-    const input = page.getByRole('textbox', { name: /message|type/i }).first();
-    const messageList = page.locator('[data-testid="message-list"], .messages, [role="list"]').first();
+    const input = page.getByTestId('chat-message-input');
+    const messageList = page.getByTestId('chat-messages');
     const hasInput = await input.isVisible().catch(() => false);
     const hasList = await messageList.isVisible().catch(() => false);
     expect(hasInput || hasList || true).toBe(true);
