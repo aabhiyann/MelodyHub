@@ -35,6 +35,8 @@ interface PlayerState {
 	duration: number;
 	/** Buffered duration in seconds */
 	bufferedTime: number;
+	/** Whether the audio is buffering (loading) */
+	isBuffering: boolean;
 
 	// UI State
 	/** Whether the keyboard shortcuts guide is visible */
@@ -89,6 +91,8 @@ interface PlayerActions {
 	setDuration: (duration: number) => void;
 	/** Set buffered time */
 	setBufferedTime: (time: number) => void;
+	/** Set buffering state */
+	setBuffering: (value: boolean) => void;
 
 	// Real-time actions
 	setActiveListeners: (count: number) => void;
@@ -111,6 +115,7 @@ const initialState: PlayerState = {
 	currentTime: 0,
 	duration: 0,
 	bufferedTime: 0,
+	isBuffering: false,
 	isShortcutsGuideOpen: false,
 	isExpanded: false,
 };
@@ -150,6 +155,7 @@ export const usePlayerStore = create<PlayerStore>()(
 				setCurrentTime: (time) => set({ currentTime: time }, false, "player/setTime"),
 				setDuration: (duration) => set({ duration }, false, "player/setDuration"),
 				setBufferedTime: (time) => set({ bufferedTime: time }, false, "player/setBuffered"),
+				setBuffering: (value) => set({ isBuffering: value }, false, "player/setBuffering"),
 				seek: (time) => set({ currentTime: time }, false, "player/seek"),
 
 				// Real-time State Actions

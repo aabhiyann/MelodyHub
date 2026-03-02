@@ -47,9 +47,11 @@ const AudioPlayer = () => {
 		currentTime,
 		duration,
 		bufferedTime,
+		isBuffering,
 		setCurrentTime,
 		setDuration,
 		setBufferedTime,
+		setBuffering,
 		seek,
 		queue,
 		toggleQueue,
@@ -133,16 +135,25 @@ const AudioPlayer = () => {
 			setDuration(audio.duration);
 		};
 
+		const handleWaiting = () => setBuffering(true);
+		const handleCanPlay = () => setBuffering(false);
+
 		audio.addEventListener('timeupdate', handleTimeUpdate);
 		audio.addEventListener('loadedmetadata', handleLoadedMetadata);
 		audio.addEventListener('durationchange', handleDurationChange);
+		audio.addEventListener('waiting', handleWaiting);
+		audio.addEventListener('canplay', handleCanPlay);
+		audio.addEventListener('canplaythrough', handleCanPlay);
 
 		return () => {
 			audio.removeEventListener('timeupdate', handleTimeUpdate);
 			audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
 			audio.removeEventListener('durationchange', handleDurationChange);
+			audio.removeEventListener('waiting', handleWaiting);
+			audio.removeEventListener('canplay', handleCanPlay);
+			audio.removeEventListener('canplaythrough', handleCanPlay);
 		};
-	}, [setCurrentTime, setDuration, setBufferedTime]);
+	}, [setCurrentTime, setDuration, setBufferedTime, setBuffering]);
 
 	// MediaSession API for lock screen / OS media controls
 	useEffect(() => {
@@ -277,11 +288,14 @@ const AudioPlayer = () => {
 				aria-label="Now playing - tap to expand"
 			>
 				{/* Progress bar as thin line at the very top */}
-				<div className="absolute top-0 left-0 right-0 h-0.5 bg-white/20">
+				<div className="absolute top-0 left-0 right-0 h-0.5 bg-white/20 overflow-hidden">
 					<div
-						className="h-full bg-[#22C55E] transition-[width] duration-100"
+						className="h-full bg-[#22C55E] transition-[width] duration-100 relative"
 						style={{ width: `${progressPercent}%` }}
 					/>
+					{isBuffering && (
+						<div className="absolute inset-0 h-full bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse" style={{ width: '40%', left: progressPercent + '%' }} aria-hidden />
+					)}
 				</div>
 
 				<div className="flex items-center gap-3 h-full pl-3 pr-2 py-2 pt-2.5">
@@ -354,8 +368,11 @@ const AudioPlayer = () => {
 				}}
 				aria-label="Now playing - click to expand"
 			>
-				<div className="absolute top-0 left-0 right-0 h-0.5 bg-white/20">
-					<div className="h-full bg-[#22C55E] transition-[width] duration-100" style={{ width: `${progressPercent}%` }} />
+				<div className="absolute top-0 left-0 right-0 h-0.5 bg-white/20 overflow-hidden">
+					<div className="h-full bg-[#22C55E] transition-[width] duration-100 relative" style={{ width: `${progressPercent}%` }} />
+					{isBuffering && (
+						<div className="absolute inset-0 h-full bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse" style={{ width: '40%', left: progressPercent + '%' }} aria-hidden />
+					)}
 				</div>
 				<div className="grid grid-cols-3 flex-1 h-full px-6 items-center gap-4 pt-1">
 					<div className="flex items-center min-w-0">
@@ -364,7 +381,7 @@ const AudioPlayer = () => {
 					<div className="flex flex-col items-center justify-center gap-2 max-w-[600px] mx-auto w-full">
 						<PlaybackControls />
 						<div className="w-full px-2" onClick={(e) => e.stopPropagation()}>
-							<ProgressBar currentTime={currentTime} duration={duration} bufferedTime={bufferedTime} onSeek={handleSeek} />
+							<ProgressBar currentTime={currentTime} duration={duration} bufferedTime={bufferedTime} isBuffering={isBuffering} onSeek={handleSeek} />
 						</div>
 					</div>
 					<div className="flex justify-end items-center min-w-0" onClick={(e) => e.stopPropagation()}>

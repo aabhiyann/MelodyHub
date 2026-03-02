@@ -13,6 +13,7 @@ interface SliderProps {
     className?: string;
     showTooltip?: boolean;
     bufferedValue?: number;
+    isBuffering?: boolean;
 }
 
 export const InteractiveSlider = ({
@@ -24,7 +25,8 @@ export const InteractiveSlider = ({
     onDragEnd,
     className,
     showTooltip = true,
-    bufferedValue = 0
+    bufferedValue = 0,
+    isBuffering = false,
 }: SliderProps) => {
     const [isDragging, setIsDragging] = useState(false);
     const [hoverPosition, setHoverPosition] = useState<number | null>(null);
@@ -43,7 +45,7 @@ export const InteractiveSlider = ({
         >
             {/* Background Track */}
             <div className="absolute inset-0 flex items-center">
-                <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden group-hover:h-2 transition-all duration-300">
+                <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden group-hover:h-2 transition-all duration-300 relative">
                     {/* Buffered Fill */}
                     <div
                         className="absolute top-0 left-0 h-full bg-white/30 rounded-full transition-all duration-300"
@@ -55,6 +57,15 @@ export const InteractiveSlider = ({
                         className="relative h-full bg-brand-primary rounded-full"
                         style={{ width: `${(value / max) * 100}%` }}
                     />
+
+                    {/* Buffering indicator: subtle shimmer */}
+                    {isBuffering && (
+                        <div
+                            className="absolute inset-0 h-full rounded-full bg-gradient-to-r from-transparent via-white/25 to-transparent animate-pulse pointer-events-none"
+                            style={{ left: `${(value / max) * 100}%`, width: '30%' }}
+                            aria-hidden
+                        />
+                    )}
                 </div>
             </div>
 

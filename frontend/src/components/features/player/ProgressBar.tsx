@@ -4,6 +4,7 @@ interface ProgressBarProps {
     currentTime: number;
     duration: number;
     bufferedTime: number;
+    isBuffering?: boolean;
     onSeek: (time: number) => void;
 }
 
@@ -19,6 +20,7 @@ export const ProgressBar = ({
     currentTime,
     duration,
     bufferedTime,
+    isBuffering = false,
     onSeek,
 }: ProgressBarProps) => {
 
@@ -35,6 +37,7 @@ export const ProgressBar = ({
                     value={currentTime}
                     max={duration || 100}
                     bufferedValue={bufferedTime}
+                    isBuffering={isBuffering}
                     onChange={onSeek}
                     className="h-8"
                 />

@@ -35,6 +35,8 @@ export const FullScreenPlayer = () => {
         playPrevious,
         currentTime,
         duration,
+        bufferedTime,
+        isBuffering,
         seek,
         volume,
         setVolume,
@@ -72,6 +74,7 @@ export const FullScreenPlayer = () => {
     };
 
     const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
+    const bufferedPercent = duration > 0 ? (bufferedTime / duration) * 100 : 0;
     const dominantColor = useDominantColor(currentSong?.imageUrl);
 
     return (
@@ -200,12 +203,24 @@ export const FullScreenPlayer = () => {
                                                     onChange={handleSeek}
                                                     className="absolute inset-0 w-full h-6 -top-2 opacity-0 cursor-pointer z-20"
                                                 />
-                                                <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden">
+                                                <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden relative">
+                                                    {/* Buffered region */}
+                                                    <div
+                                                        className="absolute inset-0 h-full bg-white/30 rounded-full transition-all duration-200"
+                                                        style={{ width: `${bufferedPercent}%` }}
+                                                    />
                                                     <motion.div
-                                                        className="h-full bg-[#22C55E] rounded-full"
+                                                        className="relative h-full bg-[#22C55E] rounded-full"
                                                         style={{ width: `${progressPercent}%` }}
                                                         transition={{ type: 'tween', duration: 0.1 }}
                                                     />
+                                                    {isBuffering && (
+                                                        <div
+                                                            className="absolute inset-0 h-full rounded-full bg-gradient-to-r from-transparent via-white/25 to-transparent animate-pulse pointer-events-none"
+                                                            style={{ left: `${progressPercent}%`, width: '30%' }}
+                                                            aria-hidden
+                                                        />
+                                                    )}
                                                 </div>
                                                 <div
                                                     className="absolute h-3.5 w-3.5 bg-white rounded-full shadow-md top-1/2 pointer-events-none -translate-y-1/2 -translate-x-1/2"
