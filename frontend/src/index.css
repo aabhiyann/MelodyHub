@@ -114,6 +114,11 @@
    UTILITY CLASSES
    ============================================ */
 
+/* Momentum scrolling on iOS for scrollable areas */
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+}
+
 /* Glassmorphism Presets */
 /* Glassmorphism Presets */
 /* Glassmorphism Presets - Updated to use Liquid Glass Tokens */

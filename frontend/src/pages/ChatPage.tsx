@@ -172,7 +172,7 @@ const ChatPage = () => {
 							<div
 								ref={scrollContainerRef}
 								onScroll={checkNearBottom}
-								className='flex-1 w-full min-h-0 overflow-y-auto overflow-x-hidden'
+								className='flex-1 w-full min-h-0 overflow-y-auto overflow-x-hidden touch-scroll'
 							>
 								<div className='p-4 space-y-4 min-h-0 pb-12 relative'>
 									{showNewMessagesChip && (

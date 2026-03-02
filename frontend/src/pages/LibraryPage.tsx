@@ -205,7 +205,7 @@ const LibraryPage = () => {
       <div className="flex-1 overflow-hidden relative">
         <PullToRefresh onRefresh={refreshData}>
           <SectionErrorBoundary sectionName="Library">
-          <div className="p-6 space-y-6 h-full min-h-[calc(100vh-180px)] overflow-y-auto pb-32">
+          <div className="p-6 space-y-6 h-full min-h-[calc(100vh-180px)] overflow-y-auto overflow-x-hidden pb-32 touch-scroll">
             {/* Header */}
             <div>
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">Your Library</h1>

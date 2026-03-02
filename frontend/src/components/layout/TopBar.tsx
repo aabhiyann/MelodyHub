@@ -46,7 +46,7 @@ const Topbar = () => {
 											<span className="font-display font-bold text-lg text-[#F9FAFB]">MelodyHub</span>
 										</SheetTitle>
 									</SheetHeader>
-									<div className="p-2 h-[calc(100vh-65px)] overflow-y-auto pb-20">
+									<div className="p-2 h-[calc(100vh-65px)] overflow-y-auto overflow-x-hidden pb-20 touch-scroll">
 										<LeftSidebar />
 									</div>
 								</SheetContent>

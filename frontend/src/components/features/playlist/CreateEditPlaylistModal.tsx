@@ -240,7 +240,7 @@ export function CreateEditPlaylistModal({
                                     className="pl-9 bg-[#1F2933] border-[#1F2933] text-[#F9FAFB] placeholder:text-[#6B7280] focus-visible:ring-[#22C55E]"
                                 />
                             </div>
-                            <div className="max-h-40 overflow-y-auto rounded-lg border border-[#1F2933] bg-[#0f0f14]">
+                            <div className="max-h-40 overflow-y-auto overflow-x-hidden rounded-lg border border-[#1F2933] bg-[#0f0f14] touch-scroll">
                                 {searchResults.length === 0 ? (
                                     <p className="p-3 text-sm text-[#6B7280]">No songs match or catalog is empty.</p>
                                 ) : (
@@ -271,7 +271,7 @@ export function CreateEditPlaylistModal({
                             {currentSongs.length > 0 && (
                                 <div className="mt-2">
                                     <p className="text-xs text-[#9CA3AF] mb-1">In playlist ({currentSongs.length})</p>
-                                    <ul className="max-h-24 overflow-y-auto space-y-1">
+                                    <ul className="max-h-24 overflow-y-auto overflow-x-hidden space-y-1 touch-scroll">
                                         {currentSongs.map((s) => {
                                             const song = typeof s === "object" ? s : { _id: s, title: "—", artist: "" };
                                             return (
