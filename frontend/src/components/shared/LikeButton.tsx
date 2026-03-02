@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Heart } from 'lucide-react';
 import { useState } from 'react';
 import { useMascot } from '@/hooks/useMascot';
-import { likeAnimation, vibrate } from '@/lib/interactions';
+import { likeAnimation, vibrate, createRipple } from '@/lib/interactions';
 import { cn } from '@/lib/utils';
 
 interface LikeButtonProps {
@@ -32,12 +32,13 @@ export const LikeButton = ({
 
     const mascot = useMascot();
 
-    const handleClick = () => {
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         const newLiked = !isLiked;
         setIsLiked(newLiked);
         onLike?.(newLiked);
 
         if (newLiked) {
+            createRipple(e);
             setShowParticles(true);
             vibrate([10, 20, 10]); // Haptic feedback
             mascot.celebrate("Loved it! ❤️");
@@ -52,7 +53,7 @@ export const LikeButton = ({
                 aria-label={isLiked ? "Unlike song" : "Like song"}
                 aria-pressed={isLiked}
                 className={cn(
-                    'relative p-2 rounded-full transition-colors',
+                    'relative overflow-hidden p-2 rounded-full transition-colors',
                     isLiked
                         ? 'bg-error/10 text-error'
                         : 'hover:bg-surface-raised text-text-secondary hover:text-text-primary'

@@ -2,6 +2,7 @@ import { User } from '@/types';
 import { Camera, MapPin, Globe, Edit2, Lock, UserPlus, UserCheck, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '@/lib/axios';
 import toast from 'react-hot-toast';
@@ -157,27 +158,32 @@ export const ProfileHeader = ({ user, isOwnProfile, onEdit, stats: statsProp }: 
                         )}
                         {!isOwnProfile && (
                             <>
-                                <Button
-                                    onClick={handleFollowToggle}
-                                    disabled={isLoading}
-                                    className={`h-9 rounded-full font-semibold gap-2 transition-all ${
-                                        isFollowing
-                                            ? 'bg-[#101019] text-[#F9FAFB] hover:bg-[#1F2933] border border-[#1F2933]'
-                                            : 'bg-[#22C55E] text-[#020617] hover:bg-[#16A34A]'
-                                    }`}
+                                <motion.div
+                                    whileTap={{ scale: 0.96 }}
+                                    transition={{ duration: 0.15 }}
                                 >
-                                    {isFollowing ? (
-                                        <>
-                                            <UserCheck className="size-4" />
-                                            Following
-                                        </>
-                                    ) : (
-                                        <>
-                                            <UserPlus className="size-4" />
-                                            Follow
-                                        </>
-                                    )}
-                                </Button>
+                                    <Button
+                                        onClick={handleFollowToggle}
+                                        disabled={isLoading}
+                                        className={`h-9 rounded-full font-semibold gap-2 transition-all duration-200 ${
+                                            isFollowing
+                                                ? 'bg-[#101019] text-[#F9FAFB] hover:bg-[#1F2933] border border-[#1F2933]'
+                                                : 'bg-[#22C55E] text-[#020617] hover:bg-[#16A34A]'
+                                        }`}
+                                    >
+                                        {isFollowing ? (
+                                            <>
+                                                <UserCheck className="size-4" />
+                                                Following
+                                            </>
+                                        ) : (
+                                            <>
+                                                <UserPlus className="size-4" />
+                                                Follow
+                                            </>
+                                        )}
+                                    </Button>
+                                </motion.div>
                                 <Button
                                     variant="outline"
                                     size="sm"

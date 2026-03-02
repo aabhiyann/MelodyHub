@@ -62,14 +62,14 @@ export const cardHover: Variants = {
     },
 };
 
-// Like Button Animation Sequence
+// Like Button Animation Sequence (heart pulse, max 200ms)
 export const likeAnimation = {
     initial: { scale: 1 },
     liked: {
-        scale: [1, 1.3, 1],
+        scale: [1, 1.25, 1],
         transition: {
-            duration: 0.3,
-            times: [0, 0.4, 1],
+            duration: 0.2,
+            times: [0, 0.5, 1],
             ease: EASINGS.bounce,
         },
     },
@@ -152,7 +152,7 @@ export const createRipple = (event: React.MouseEvent<HTMLElement>) => {
     ripple.style.width = ripple.style.height = `${size}px`;
     ripple.style.left = `${x}px`;
     ripple.style.top = `${y}px`;
-    ripple.classList.add('ripple');
+    ripple.classList.add('ripple-effect');
 
     button.appendChild(ripple);
 
