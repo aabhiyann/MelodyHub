@@ -189,5 +189,5 @@ If I downloaded this app as a real user, I would *withhold judgment* because **t
 7. **Perform a focused navigation and information architecture review**: Validate discoverability and clarity of Home/Explore/Playlists/Chat/Profile/Notifications on both desktop and mobile, including active states and back navigation.
 8. **Audit animations and micro-interactions in a real browser**: Ensure page transitions, hover/click states, toasts, skeleton loaders, and player transitions feel deliberate, smooth, and consistent.
 9. **Test edge cases and error states explicitly**: Offline usage, invalid inputs, large uploads, rapid interaction patterns, and unauthorized access should all be exercised and hardened.
-10. **Establish a repeatable manual QA checklist and sign-off process**: Turn the 16-section script into a standard pre-release checklist, so future deployments are validated with real browser sessions before going live.
+10. ~~**Establish a repeatable manual QA checklist and sign-off process**~~ – Completed 2026-03-02 via branch `fix/qa-checklist-signoff-process`. [Docs/QA_CHECKLIST.md](Docs/QA_CHECKLIST.md) expanded to the 16-section structure with desktop/mobile viewports and a sign-off table; referenced from [Docs/README.md](Docs/README.md).
 

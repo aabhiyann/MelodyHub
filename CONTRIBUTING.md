@@ -52,6 +52,10 @@ Our GitHub Actions pipeline will automatically run on every PR:
 -   What actually happened.
 -   Notes (possibly including why you think this might be happening, or stuff you tried that didn't work).
 
+## QA & Release
+
+Before merging major UI/UX changes or releasing, run the [QA Checklist](./Docs/QA_CHECKLIST.md) in a real browser on both desktop (1440×900) and mobile (390×844) viewports. Sign off in the checklist table when done.
+
 ## Useful Resources
 - [Documentation index](./Docs/README.md): Central index of all docs (design system, features, architecture).
 - [Design plan](./Docs/DESIGN_PLAN.md): Colors, typography, and component rules for UI (chat, player, nav, cards). Follow this for any frontend change.
