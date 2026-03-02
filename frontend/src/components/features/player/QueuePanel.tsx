@@ -36,7 +36,8 @@ export const QueuePanel = ({ isOpen, onClose }: QueuePanelProps) => {
                     <h2 className="text-xl font-bold text-white">Queue</h2>
                     <button
                         onClick={onClose}
-                        className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                        className="min-w-11 min-h-11 flex items-center justify-center p-2 hover:bg-white/10 rounded-lg transition-colors"
+                        aria-label="Close queue"
                     >
                         <X className="size-5 text-text-secondary" />
                     </button>
@@ -74,7 +75,7 @@ export const QueuePanel = ({ isOpen, onClose }: QueuePanelProps) => {
                 </div>
 
                 {/* Queue List */}
-                <div className="flex-1 overflow-y-auto p-4">
+                <div className="flex-1 overflow-y-auto overflow-x-hidden touch-scroll p-4">
                     <div className="flex items-center justify-between mb-3">
                         <p className="text-xs font-semibold text-text-tertiary uppercase tracking-wider">
                             Next Up ({queue.length})
