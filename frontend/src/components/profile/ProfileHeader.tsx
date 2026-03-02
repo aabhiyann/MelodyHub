@@ -51,7 +51,7 @@ export const ProfileHeader = ({ user, isOwnProfile, onEdit, stats: statsProp }: 
                 toast.success(`Following ${user.fullName}`);
             }
         } catch (error) {
-            toast.error('Failed to update follow status');
+            toast.error("Couldn't update follow status. Please try again.");
             console.error(error);
         } finally {
             setIsLoading(false);

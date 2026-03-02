@@ -14,7 +14,7 @@ export const NetworkStatusToast = () => {
 
     useEffect(() => {
         if (!online) {
-            toast.error('No internet connection: Check your network', {
+            toast.error("You're offline. Check your connection and try again.", {
                 icon: <WifiOff className="size-5" />,
                 duration: Infinity, // Stay until dismissed or back online
                 id: 'network-offline'

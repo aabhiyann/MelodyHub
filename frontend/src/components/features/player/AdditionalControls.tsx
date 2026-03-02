@@ -64,7 +64,7 @@ export const AdditionalControls = memo(({
                     await navigator.clipboard.writeText(shareUrl);
                     toast.success('Link copied to clipboard!');
                 } catch {
-                    toast.error('Could not share or copy');
+                    toast.error("Sharing didn't work. Check permissions or try again.");
                 }
             }
         }
