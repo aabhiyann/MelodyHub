@@ -79,8 +79,11 @@ export const useAIStore = create<AIStore>((set, get) => ({
             const axiosError = error as AxiosError<{ retryAfter?: number }>;
 
             if (axiosError?.response?.status === 429) {
-                const retryAfter = axiosError.response?.data?.retryAfter || 60;
-                errorMsg = `AI is taking a breather! Please try again in ${retryAfter} seconds. ☕`;
+                const retryAfter = axiosError.response?.data?.retryAfter ?? 60;
+                const waitTime = retryAfter >= 60
+                    ? `${Math.ceil(retryAfter / 60)} minute${Math.ceil(retryAfter / 60) > 1 ? 's' : ''}`
+                    : `${retryAfter} second${retryAfter !== 1 ? 's' : ''}`;
+                errorMsg = `Melody AI has hit its request limit. Please wait ${waitTime} before generating another playlist. 🎵`;
             } else if (axiosError?.response?.status === 503) {
                 errorMsg = "AI service is temporarily unavailable. Please try again later.";
             } else {

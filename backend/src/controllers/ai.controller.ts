@@ -126,9 +126,10 @@ export class AIController {
 
 			// Handle rate limiting
 			if (errorMsg.includes("429") || errorMsg.includes("quota") || errorMsg.includes("Too Many Requests")) {
+				const retryAfter = 60;
 				res.status(429).json({
-					message: "AI generation rate limit reached. Please try again in a minute.",
-					retryAfter: 60
+					message: `Melody AI has reached its request limit. Please wait ${retryAfter} seconds before generating another playlist.`,
+					retryAfter
 				});
 				return;
 			}
