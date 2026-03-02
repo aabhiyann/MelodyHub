@@ -193,7 +193,7 @@ export const AddToPlaylistDialog = ({ songId, onClose, children, open: controlle
                         No playlists match "{searchQuery}"
                     </div>
                 ) : (
-                    <div className="space-y-2 max-h-[300px] overflow-y-auto">
+                    <div className="space-y-2 max-h-[300px] overflow-y-auto overflow-x-hidden touch-scroll">
                         {filteredPlaylists.map((playlist) => {
                             // Get playlist cover from first song or use fallback
                             const coverImage = playlist.songs?.[0]?.imageUrl;
@@ -202,7 +202,7 @@ export const AddToPlaylistDialog = ({ songId, onClose, children, open: controlle
                                 <button
                                     key={playlist._id}
                                     onClick={() => handleAddToPlaylist(playlist._id)}
-                                    className="w-full flex items-center p-3 rounded-md hover:bg-white/5 transition-colors text-left group"
+                                    className="w-full flex items-center min-h-[44px] p-3 rounded-md hover:bg-white/5 transition-colors text-left group"
                                 >
                                     {coverImage ? (
                                         <img

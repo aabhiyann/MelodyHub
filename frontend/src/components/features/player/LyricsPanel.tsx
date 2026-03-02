@@ -167,7 +167,7 @@ export const LyricsPanel = ({ song, currentTime = 0 }: LyricsPanelProps) => {
     return (
         <motion.div
             ref={containerRef}
-            className="h-full overflow-y-auto px-4 py-[30vh] text-center scrollbar-none" // 30vh padding so first/last lines can reach the center
+            className="h-full overflow-y-auto overflow-x-hidden touch-scroll px-4 py-[30vh] text-center scrollbar-none" // 30vh padding so first/last lines can reach the center
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             style={{ msOverflowStyle: 'none', scrollbarWidth: 'none' }} // Hide scrollbar specifically for immersive scroll
