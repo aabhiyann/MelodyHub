@@ -3,6 +3,9 @@
  * Cloudinary transformations, WebP support detection, responsive images
  */
 
+/** Fallback image for broken or missing album art */
+export const PLACEHOLDER_ALBUM = '/placeholder-album.svg';
+
 /**
  * Check if browser supports WebP
  */

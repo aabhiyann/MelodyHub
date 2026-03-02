@@ -60,6 +60,8 @@ export const SpotifyCard = ({
                     src={imageUrl}
                     alt=""
                     className="w-full h-full object-cover transition-transform duration-300 group-hover/card:scale-105"
+                    loading="lazy"
+                    onError={(e) => { e.currentTarget.src = '/placeholder-album.svg'; }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-200" />
                 {onPlayClick && (

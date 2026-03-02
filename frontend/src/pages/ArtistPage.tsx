@@ -86,7 +86,7 @@ const ArtistPage = () => {
             <div className="flex flex-col md:flex-row items-center gap-8">
               <div className="size-56 rounded-full overflow-hidden shadow-2xl border-4 border-white/10">
                 {artistImage ? (
-                  <img src={artistImage} alt={artistName} className="w-full h-full object-cover" />
+                  <img src={artistImage} alt={artistName} className="w-full h-full object-cover" loading="lazy" onError={(e) => { e.currentTarget.src = '/placeholder-album.svg'; }} />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-brand-primary to-blue-600 flex items-center justify-center">
                     <Music className="size-24 text-white" />

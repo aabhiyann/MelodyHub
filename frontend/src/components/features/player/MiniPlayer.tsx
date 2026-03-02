@@ -20,7 +20,7 @@ export const MiniPlayer = () => {
             <div className="bg-background-elevated/80 border-t border-white/10 backdrop-blur-2xl shadow-2xl">
                 <div className="flex items-center gap-4 px-4 py-3">
                     <button onClick={() => { }} className="flex items-center gap-3 flex-1 min-w-0 hover:bg-white/5 p-2 -m-2 rounded-lg transition-colors group">
-                        <img src={currentSong.imageUrl} alt={currentSong.title} className="size-12 rounded-md object-cover shrink-0 shadow-lg shadow-black/50 border border-white/5 group-hover:shadow-xl transition-shadow" />
+                        <img src={currentSong.imageUrl} alt={currentSong.title} className="size-12 rounded-md object-cover shrink-0 shadow-lg shadow-black/50 border border-white/5 group-hover:shadow-xl transition-shadow" loading="lazy" onError={(e) => { e.currentTarget.src = '/placeholder-album.svg'; }} />
                         <div className="flex-1 min-w-0 text-left">
                             <p className="text-sm font-semibold text-white truncate">{currentSong.title}</p>
                             <p className="text-xs text-text-secondary truncate">{currentSong.artist}</p>

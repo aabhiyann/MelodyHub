@@ -52,7 +52,7 @@ const QueueView = () => {
                                     onClick={() => setCurrentSong(song)}
                                 >
                                     <div className="relative size-10 rounded-md overflow-hidden flex-shrink-0">
-                                        <img src={song.imageUrl} alt={song.title} className="w-full h-full object-cover" />
+                                        <img src={song.imageUrl} alt={song.title} className="w-full h-full object-cover" loading="lazy" onError={(e) => { e.currentTarget.src = '/placeholder-album.svg'; }} />
                                         <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                             <Play className="size-4 text-white fill-current" />
                                         </div>

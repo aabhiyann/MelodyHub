@@ -79,6 +79,8 @@ export const ProfileHeader = ({ user, isOwnProfile, onEdit, stats: statsProp }: 
                             src={user.imageUrl}
                             alt={user.fullName}
                             className="w-full h-full object-cover"
+                            loading="lazy"
+                            onError={(e) => { e.currentTarget.src = '/placeholder-album.svg'; }}
                         />
                         {isOwnProfile && (
                             <button

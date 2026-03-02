@@ -175,7 +175,7 @@ export function CreateEditPlaylistModal({
                         <div className="flex gap-3 items-center">
                             <div className="w-20 h-20 rounded-lg bg-[#1F2933] flex items-center justify-center overflow-hidden flex-shrink-0">
                                 {imageUrl.trim() ? (
-                                    <img src={imageUrl} alt="Cover" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                                    <img src={imageUrl} alt="Cover" className="w-full h-full object-cover" loading="lazy" onError={(e) => { e.currentTarget.src = '/placeholder-album.svg'; }} />
                                 ) : (
                                     <ListMusic className="size-8 text-[#6B7280]" />
                                 )}

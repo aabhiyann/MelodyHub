@@ -161,6 +161,8 @@ export const FullScreenPlayer = () => {
                                                 src={currentSong.imageUrl}
                                                 alt=""
                                                 className="w-full h-full object-cover"
+                                                loading="lazy"
+                                                onError={(e) => { e.currentTarget.src = '/placeholder-album.svg'; }}
                                             />
                                         </motion.div>
                                     </div>

@@ -425,6 +425,8 @@ const LibraryPage = () => {
                               src={artist.imageUrl}
                               alt={artist.name}
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              loading="lazy"
+                              onError={(e) => { e.currentTarget.src = '/placeholder-album.svg'; }}
                             />
                           </div>
                           <div className="text-center">
@@ -478,6 +480,8 @@ const LibraryPage = () => {
                               src={album.imageUrl}
                               alt={album.title}
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              loading="lazy"
+                              onError={(e) => { e.currentTarget.src = '/placeholder-album.svg'; }}
                             />
                           </div>
                           <div>
@@ -499,6 +503,8 @@ const LibraryPage = () => {
                             src={album.imageUrl}
                             alt={album.title}
                             className="size-14 rounded-md object-cover"
+                            loading="lazy"
+                            onError={(e) => { e.currentTarget.src = '/placeholder-album.svg'; }}
                           />
                           <div className="flex-1 min-w-0">
                             <p className="font-semibold text-white truncate">{album.title}</p>
@@ -547,6 +553,8 @@ const LibraryPage = () => {
                             src={song.imageUrl}
                             alt={song.title}
                             className="size-14 rounded-md object-cover"
+                            loading="lazy"
+                            onError={(e) => { e.currentTarget.src = '/placeholder-album.svg'; }}
                           />
                           <div className="flex-1 min-w-0">
                             <p className="font-semibold text-white truncate group-hover:text-brand-primary transition-colors">

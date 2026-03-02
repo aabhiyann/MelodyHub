@@ -164,6 +164,8 @@ const MobilePlayer = () => {
                         alt="cover"
                         className="size-12 rounded-lg object-cover shrink-0 mr-3 animate-spin-slow shadow-lg shadow-black/50 ring-1 ring-white/5"
                         style={{ animationPlayState: isPlaying ? 'running' : 'paused' }}
+                        loading="lazy"
+                        onError={(e) => { e.currentTarget.src = '/placeholder-album.svg'; }}
                     />
 
                     <div className="flex-1 min-w-0 mr-4">

@@ -295,6 +295,8 @@ const SearchPage = () => {
                                 src={song.imageUrl}
                                 alt={song.title}
                                 className="w-full h-full object-cover"
+                                loading="lazy"
+                                onError={(e) => { e.currentTarget.src = '/placeholder-album.svg'; }}
                               />
                               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                 <Play className="size-5 text-white fill-white ml-0.5" />
@@ -340,6 +342,8 @@ const SearchPage = () => {
                                     src={artistSong.imageUrl}
                                     alt={artist}
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                    loading="lazy"
+                                    onError={(e) => { e.currentTarget.src = '/placeholder-album.svg'; }}
                                   />
                                 )}
                               </div>
@@ -373,6 +377,8 @@ const SearchPage = () => {
                                 src={album.imageUrl}
                                 alt={album.title}
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                loading="lazy"
+                                onError={(e) => { e.currentTarget.src = '/placeholder-album.svg'; }}
                               />
                             </div>
                             <h3 className="font-semibold truncate text-sm text-text-primary group-hover:text-brand-primary transition-colors">
