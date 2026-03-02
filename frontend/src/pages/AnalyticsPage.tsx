@@ -115,7 +115,7 @@ const AnalyticsPage = () => {
                         </p>
                         <button
                             onClick={() => window.location.reload()}
-                            className="px-6 py-2.5 rounded-full bg-brand-primary text-white font-medium hover:bg-brand-primary/90 transition-colors"
+                            className="min-h-[44px] px-6 py-2.5 rounded-full bg-brand-primary text-white font-medium hover:bg-brand-primary/90 transition-colors"
                         >
                             Refresh
                         </button>
@@ -129,7 +129,7 @@ const AnalyticsPage = () => {
         <main className="rounded-md overflow-hidden h-full bg-transparent">
             <Topbar />
             <ScrollArea className="h-[calc(100vh-180px)]">
-                <div className="p-6 space-y-8">
+                <div className="p-6 space-y-8 pb-32 md:pb-8">
                     {/* Header + Period */}
                     <div className="flex flex-wrap items-center justify-between gap-4">
                         <div className="flex items-center gap-4">

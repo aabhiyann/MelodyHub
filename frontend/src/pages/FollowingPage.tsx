@@ -47,8 +47,8 @@ export default function FollowingPage() {
         <main className="rounded-md overflow-hidden h-full bg-transparent">
             <Topbar />
             <ScrollArea className="h-[calc(100vh-120px)]">
-                <div className="p-6 max-w-2xl mx-auto">
-                    <Button variant="ghost" size="sm" className="mb-4 -ml-2" onClick={() => navigate(-1)}>
+                <div className="p-6 max-w-2xl mx-auto pb-32 md:pb-6">
+                    <Button variant="ghost" size="sm" className="mb-4 -ml-2 min-h-[44px]" onClick={() => navigate(-1)}>
                         <ArrowLeft className="size-4 mr-2" />
                         Back
                     </Button>

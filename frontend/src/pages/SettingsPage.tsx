@@ -17,7 +17,7 @@ const SettingsPage = () => {
             <Topbar />
 
             <ScrollArea className="flex-1 w-full">
-                <div className="p-6 max-w-4xl mx-auto space-y-8 pb-20">
+                <div className="p-6 max-w-4xl mx-auto space-y-8 pb-32 md:pb-20">
                     <div className="flex flex-col gap-2">
                         <h1 className="text-3xl font-bold text-text-primary">Settings</h1>
                         <p className="text-text-secondary">Manage your account and app preferences</p>

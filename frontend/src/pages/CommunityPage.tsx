@@ -77,7 +77,7 @@ const CommunityPage = () => {
         <main className="rounded-md overflow-hidden h-full bg-transparent">
             <Topbar />
             <ScrollArea className="h-[calc(100vh-180px)]">
-                <div className="p-6 space-y-6">
+                <div className="p-6 space-y-6 pb-32 md:pb-20">
                     {/* Header */}
                     <div>
                         <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">Community</h1>
@@ -128,7 +128,7 @@ const CommunityPage = () => {
                                                     <Button
                                                         size="sm"
                                                         variant="ghost"
-                                                        className="w-full text-red-400 hover:text-red-300 hover:bg-red-500/10 h-8 text-xs justify-start px-2"
+                                                        className="w-full text-red-400 hover:text-red-300 hover:bg-red-500/10 min-h-[44px] text-xs justify-start px-2"
                                                         onClick={() => removeFriend(user.clerkId)}
                                                     >
                                                         <UserMinus className="size-3.5 mr-2" />
@@ -139,7 +139,7 @@ const CommunityPage = () => {
                                                         <Button
                                                             size="sm"
                                                             variant="secondary"
-                                                            className="w-full h-8 text-xs bg-white/10 text-zinc-400 cursor-default"
+                                                            className="w-full min-h-[44px] text-xs bg-white/10 text-zinc-400 cursor-default"
                                                             disabled
                                                         >
                                                             <Loader className="size-3.5 mr-2 animate-spin" />
@@ -147,7 +147,7 @@ const CommunityPage = () => {
                                                         </Button>
                                                         <Button
                                                             variant="ghost"
-                                                            className="w-full text-zinc-400 hover:text-white hover:bg-white/5 h-8 text-xs justify-start px-2"
+                                                            className="w-full text-zinc-400 hover:text-white hover:bg-white/5 min-h-[44px] text-xs justify-start px-2"
                                                             onClick={() => handleCancelRequest(user.clerkId)}
                                                         >
                                                             <X className="size-3.5 mr-2" />
@@ -157,7 +157,7 @@ const CommunityPage = () => {
                                                 ) : (
                                                     <Button
                                                         size="sm"
-                                                        className="w-full bg-brand-primary h-8 text-xs hover:bg-brand-primary/90"
+                                                        className="w-full bg-brand-primary min-h-[44px] text-xs hover:bg-brand-primary/90"
                                                         onClick={() => sendFriendRequest(user.clerkId)}
                                                     >
                                                         <UserPlus className="size-3.5 mr-2" />
