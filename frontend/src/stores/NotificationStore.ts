@@ -46,11 +46,11 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
                 set({
                     items: data.data ?? [],
                     unreadCount: data.unreadCount ?? 0,
-                    isLoading: false,
                 });
             }
         } catch (e) {
             console.error("Failed to fetch notifications", e);
+        } finally {
             set({ isLoading: false });
         }
     },

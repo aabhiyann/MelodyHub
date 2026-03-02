@@ -7,6 +7,7 @@ import { useUser } from "@clerk/clerk-react";
 import { Loader, Search, UserMinus, UserPlus, Users, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SectionErrorBoundary } from "@/components/shared/SectionErrorBoundary";
+import { useNavigate } from "react-router-dom";
 
 const CommunityPage = () => {
     const {
@@ -22,6 +23,7 @@ const CommunityPage = () => {
     } = useSocialStore();
 
     const { user: currentUser } = useUser();
+    const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
@@ -116,55 +118,62 @@ const CommunityPage = () => {
                                         key={user._id}
                                         className="glass-panel p-4 rounded-xl flex items-center gap-4 hover:bg-surface-elevated/40 transition-colors group"
                                     >
-                                        <Avatar className="size-16 border-2 border-white/10">
-                                            <AvatarImage src={user.imageUrl} alt={user.fullName} />
-                                            <AvatarFallback>{user.fullName[0]}</AvatarFallback>
-                                        </Avatar>
-
-                                        <div className="flex-1 min-w-0">
-                                            <h3 className="font-semibold text-white truncate">{user.fullName}</h3>
-                                            <div className="mt-2">
-                                                {isFriend(user.clerkId) ? (
-                                                    <Button
-                                                        size="sm"
-                                                        variant="ghost"
-                                                        className="w-full text-red-400 hover:text-red-300 hover:bg-red-500/10 min-h-[44px] text-xs justify-start px-2"
-                                                        onClick={() => removeFriend(user.clerkId)}
-                                                    >
-                                                        <UserMinus className="size-3.5 mr-2" />
-                                                        Remove
-                                                    </Button>
-                                                ) : isPending(user.clerkId) ? (
-                                                    <div className="space-y-1">
-                                                        <Button
-                                                            size="sm"
-                                                            variant="secondary"
-                                                            className="w-full min-h-[44px] text-xs bg-white/10 text-zinc-400 cursor-default"
-                                                            disabled
-                                                        >
-                                                            <Loader className="size-3.5 mr-2 animate-spin" />
-                                                            Pending
-                                                        </Button>
-                                                        <Button
-                                                            variant="ghost"
-                                                            className="w-full text-zinc-400 hover:text-white hover:bg-white/5 min-h-[44px] text-xs justify-start px-2"
-                                                            onClick={() => handleCancelRequest(user.clerkId)}
-                                                        >
-                                                            <X className="size-3.5 mr-2" />
-                                                            Cancel
-                                                        </Button>
-                                                    </div>
-                                                ) : (
-                                                    <Button
-                                                        size="sm"
-                                                        className="w-full bg-brand-primary min-h-[44px] text-xs hover:bg-brand-primary/90"
-                                                        onClick={() => sendFriendRequest(user.clerkId)}
-                                                    >
-                                                        <UserPlus className="size-3.5 mr-2" />
-                                                        Connect
-                                                    </Button>
-                                                )}
+                                        <button
+                                            type="button"
+                                            onClick={() => navigate(`/profile/${user.clerkId}`)}
+                                            className="flex items-center gap-4 flex-1 min-w-0 text-left hover:opacity-90 transition-opacity"
+                                            aria-label={`View ${user.fullName}'s profile`}
+                                        >
+                                            <Avatar className="size-16 border-2 border-white/10 flex-shrink-0">
+                                                <AvatarImage src={user.imageUrl} alt={user.fullName} />
+                                                <AvatarFallback>{user.fullName[0]}</AvatarFallback>
+                                            </Avatar>
+                                            <div className="flex-1 min-w-0">
+                                                <h3 className="font-semibold text-white truncate group-hover:text-brand-primary transition-colors">{user.fullName}</h3>
                                             </div>
+                                        </button>
+
+                                        <div className="mt-0 shrink-0">
+                                            {isFriend(user.clerkId) ? (
+                                                <Button
+                                                    size="sm"
+                                                    variant="ghost"
+                                                    className="w-full text-red-400 hover:text-red-300 hover:bg-red-500/10 min-h-[44px] text-xs justify-start px-2"
+                                                    onClick={() => removeFriend(user.clerkId)}
+                                                >
+                                                    <UserMinus className="size-3.5 mr-2" />
+                                                    Remove
+                                                </Button>
+                                            ) : isPending(user.clerkId) ? (
+                                                <div className="space-y-1">
+                                                    <Button
+                                                        size="sm"
+                                                        variant="secondary"
+                                                        className="w-full min-h-[44px] text-xs bg-white/10 text-zinc-400 cursor-default"
+                                                        disabled
+                                                    >
+                                                        <Loader className="size-3.5 mr-2 animate-spin" />
+                                                        Pending
+                                                    </Button>
+                                                    <Button
+                                                        variant="ghost"
+                                                        className="w-full text-zinc-400 hover:text-white hover:bg-white/5 min-h-[44px] text-xs justify-start px-2"
+                                                        onClick={() => handleCancelRequest(user.clerkId)}
+                                                    >
+                                                        <X className="size-3.5 mr-2" />
+                                                        Cancel
+                                                    </Button>
+                                                </div>
+                                            ) : (
+                                                <Button
+                                                    size="sm"
+                                                    className="w-full bg-brand-primary min-h-[44px] text-xs hover:bg-brand-primary/90"
+                                                    onClick={() => sendFriendRequest(user.clerkId)}
+                                                >
+                                                    <UserPlus className="size-3.5 mr-2" />
+                                                    Connect
+                                                </Button>
+                                            )}
                                         </div>
                                     </div>
                                 ))}
@@ -172,8 +181,8 @@ const CommunityPage = () => {
                         )}
                     </SectionErrorBoundary>
                 </div>
-            </ScrollArea>
-        </main>
+            </ScrollArea >
+        </main >
     );
 };
 
