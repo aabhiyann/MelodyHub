@@ -272,7 +272,7 @@ const AudioPlayer = () => {
 				}}
 				className={cn(
 					'fixed left-0 right-0 z-[1000] cursor-pointer select-none',
-					'bottom-[72px] md:bottom-6 mx-2 md:mx-6',
+					'bottom-[var(--mobile-mini-player-bottom)] md:bottom-6 mx-2 md:mx-6',
 					'h-14 md:h-16 rounded-t-xl md:rounded-xl overflow-hidden',
 					'transition-opacity duration-300',
 					isExpanded && 'opacity-0 pointer-events-none'

@@ -17,6 +17,9 @@
     --safe-area-inset-bottom: env(safe-area-inset-bottom);
     --safe-area-inset-left: env(safe-area-inset-left);
 
+    /* Mini player sits above bottom nav: 56px nav + safe area + 8px gap */
+    --mobile-mini-player-bottom: calc(3.5rem + env(safe-area-inset-bottom, 0px) + 8px);
+
     /* Accessibility Variables */
     --focus-ring-color: #22C55E;
     --focus-ring-width: 3px;
