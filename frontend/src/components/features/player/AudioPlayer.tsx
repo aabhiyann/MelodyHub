@@ -314,12 +314,12 @@ const AudioPlayer = () => {
 						<p className="text-xs text-white/60 truncate">{currentSong.artist}</p>
 					</div>
 
-					{/* Play/Pause + Next - buttons so they don't trigger expand */}
+					{/* Play/Pause + Next - buttons so they don't trigger expand; 44px min touch targets */}
 					<div className="flex items-center gap-0.5">
 						<button
 							type="button"
 							onClick={(e) => { e.stopPropagation(); togglePlay(); }}
-							className="p-2.5 rounded-full text-white hover:bg-white/10 transition-colors"
+							className="min-w-11 min-h-11 p-2.5 rounded-full text-white hover:bg-white/10 transition-colors flex items-center justify-center"
 							aria-label={isPlaying ? 'Pause' : 'Play'}
 						>
 							{isPlaying ? (
@@ -331,7 +331,7 @@ const AudioPlayer = () => {
 						<button
 							type="button"
 							onClick={(e) => { e.stopPropagation(); playNext(true); }}
-							className="p-2.5 rounded-full text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+							className="min-w-11 min-h-11 p-2.5 rounded-full text-white/80 hover:text-white hover:bg-white/10 transition-colors flex items-center justify-center"
 							aria-label="Next"
 						>
 							<SkipForward className="w-5 h-5 md:w-6 md:h-6 fill-current" />
