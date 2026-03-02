@@ -107,6 +107,7 @@ cd backend
 npm install
 npm run dev
 ```
+Runs at `http://localhost:5000` by default.
 
 #### Frontend Service
 ```bash
@@ -114,6 +115,50 @@ cd frontend
 npm install
 npm run dev
 ```
+Runs at `http://localhost:5173` by default. Set `VITE_API_URL` to your backend URL (e.g. `http://localhost:5000`) for API calls.
+
+---
+
+## Environment Variables
+
+Configure `.env` in each package using the corresponding `.env.example`.
+
+### Frontend (`frontend/.env`)
+
+| Variable | Description |
+|----------|-------------|
+| `VITE_API_URL` | Backend API base URL (e.g. `http://localhost:5000`) |
+| `VITE_CLERK_PUBLISHABLE_KEY` | Clerk publishable key for authentication |
+| `VITE_GEMINI_API_KEY` | Google Gemini API key for AI playlist (optional) |
+
+### Backend (`backend/.env`)
+
+| Variable | Description |
+|----------|-------------|
+| `MONGODB_URI` | MongoDB connection string |
+| `CLERK_PUBLISHABLE_KEY` | Clerk publishable key |
+| `CLERK_SECRET_KEY` | Clerk secret key |
+| `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name (media uploads) |
+| `CLOUDINARY_API_KEY` | Cloudinary API key |
+| `CLOUDINARY_API_SECRET` | Cloudinary API secret |
+| `GEMINI_API_KEY` | Google Gemini API key (AI playlists) |
+| `REDIS_URL` | Optional; Redis URL for caching |
+| `PORT` | Optional; server port (default 5000) |
+
+---
+
+## Screenshots
+
+Key pages on the [live app](https://melodyhubmusic.vercel.app/):
+
+- **[Home](https://melodyhubmusic.vercel.app/home)** — Featured hero, recently played, recommended, and new releases
+- **[Explore / Browse](https://melodyhubmusic.vercel.app/browse)** — Genres and featured tracks
+- **[Search](https://melodyhubmusic.vercel.app/search)** — Search by song, artist, album with filters
+- **[Library](https://melodyhubmusic.vercel.app/library)** — Playlists and liked songs
+- **[Chat](https://melodyhubmusic.vercel.app/chat)** — Real-time messaging and friends
+- **[Profile](https://melodyhubmusic.vercel.app/profile)** — User profile, stats, playlists, and activity
+
+Sign in to access full features. Screenshots of these pages can be captured from the deployed site for documentation.
 
 ---
 
