@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Elevated Hamburger Menu `z-index` to strictly overlay the Bottom Navigation Tab Bar.
 
 ### Fixed
+- **Player state on song change (Top10 #4):** PlayerManager now resets `currentTime` to 0 when changing songs (playAlbum, setCurrentSong, playNext, playPrevious, shuffleQueue) to prevent incorrect seek position when switching tracks. AudioPlayer uses store's `currentTime` when loading a song.
 - **Auth and protected routes (Top10 #3):** Added dedicated `/sign-in` and `/sign-up` routes with Clerk components so users can always access auth. Landing hero "Get Started" now navigates to `/sign-up`; "Already have an account? Sign in" link and footer Account section (Sign in, Sign up) added. Resolves QA finding that auth entry was not discoverable after logout.
 - **Vercel deployment:** SectionErrorBoundary fallback now uses `sectionName` in the heading (e.g. "Something went wrong in [section]") so the prop is read and TS6133 no longer fails the frontend build.
 - **Full regression QA:** Play button on song/album cards (SpotifyCard, MusicCard) was hidden until hover, blocking touch and keyboard; now visible with `group-focus-within` and `max-md:opacity-100`. Full checklist documented in `QA_REPORT.md`; single failure logged as [#41](https://github.com/aabhiyann/MelodyHub/issues/41) and fixed.

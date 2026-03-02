@@ -74,6 +74,7 @@ export class PlayerManager {
 			currentIndex: startIndex,
 			isPlaying: true,
 			shuffled: false,
+			currentTime: 0,
 		});
 	}
 
@@ -94,6 +95,7 @@ export class PlayerManager {
 				currentSong: song,
 				currentIndex: index,
 				isPlaying: true,
+				currentTime: 0,
 			});
 		} else {
 			this.set({
@@ -101,6 +103,7 @@ export class PlayerManager {
 				currentSong: song,
 				currentIndex: 0,
 				isPlaying: true,
+				currentTime: 0,
 			});
 		}
 	}
@@ -154,6 +157,7 @@ export class PlayerManager {
 				currentSong: nextSong,
 				currentIndex: nextIndex,
 				isPlaying: true,
+				currentTime: 0,
 			});
 		} else {
 			this.set({ isPlaying: false });
@@ -176,6 +180,7 @@ export class PlayerManager {
 				currentSong: prevSong,
 				currentIndex: prevIndex,
 				isPlaying: true,
+				currentTime: 0,
 			});
 		} else {
 			this.set({ isPlaying: false });
@@ -195,6 +200,7 @@ export class PlayerManager {
 			currentSong: shuffled[0],
 			isPlaying: true,
 			shuffled: true,
+			currentTime: 0,
 		});
 	}
 

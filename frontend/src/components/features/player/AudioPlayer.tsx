@@ -104,7 +104,8 @@ const AudioPlayer = () => {
 			prevSongIdRef.current = currentSong._id;
 			if (resolvedUrl) {
 				audio.src = resolvedUrl;
-				audio.currentTime = 0;
+				// Use store's currentTime: 0 for new songs (manager sets it), persisted value on restore
+				audio.currentTime = currentTime;
 				if (isPlaying) {
 					audio.play().catch(err => console.error('Playback error:', err));
 				}
