@@ -38,6 +38,8 @@ const AdminSongsPage = lazy(() => import("./pages/admin/AdminSongsPage"));
 // const AdminPage = lazy(() => import("./pages/AdminPage")); // Deprecated
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
+const SignInPage = lazy(() => import("./pages/SignInPage"));
+const SignUpPage = lazy(() => import("./pages/SignUpPage"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
 const LibraryPage = lazy(() => import("./pages/LibraryPage"));
 const ProfilePage = lazy(() => import("./pages/ProfilePage"));
@@ -140,6 +142,24 @@ function App() {
 
 						{/* Auth Callback */}
 						<Route path='/auth-callback' element={<PageTransition><AuthCallbackPage /></PageTransition>} />
+
+						{/* Sign in / Sign up - dedicated pages for auth (fallback when modal fails) */}
+						<Route
+							path='/sign-in'
+							element={
+								<RequireGuest>
+									<PageTransition><SignInPage /></PageTransition>
+								</RequireGuest>
+							}
+						/>
+						<Route
+							path='/sign-up'
+							element={
+								<RequireGuest>
+									<PageTransition><SignUpPage /></PageTransition>
+								</RequireGuest>
+							}
+						/>
 
 						{/* Landing Page - for guests only */}
 						<Route

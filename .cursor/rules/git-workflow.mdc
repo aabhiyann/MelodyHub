@@ -1,0 +1,41 @@
+---
+description: Git branching, commits, and release workflow for MelodyHub
+alwaysApply: true
+---
+
+# Git Workflow
+
+Always follow this workflow when making changes to MelodyHub.
+
+## Branching
+
+- **Create a new branch** for every feature or fix.
+- **Naming**: `feature/[name]` for new features, `fix/[name]` for bugfixes.
+- Examples: `feature/player-expand`, `fix/nav-back-mobile`.
+
+## Commits
+
+- **Commit after every meaningful change** — not only at the end of a session.
+- **Never commit broken code** (failing tests, broken build, or obviously broken UI).
+- **Message format**: `type(scope): description`
+  - **type**: `feat`, `fix`, `docs`, `chore`, `refactor`, `style`, `test`.
+  - **scope**: short area (e.g. `player`, `nav`, `chat`, `auth`).
+  - **description**: imperative, lowercase, no period at end.
+
+### Examples
+
+- `feat(player): add expand animation`
+- `fix(nav): back button on mobile`
+- `docs(readme): add setup steps`
+- `chore(deps): bump axios`
+
+## After Completing a Feature
+
+- **Merge** the feature/fix branch into `main` (e.g. via PR or local merge).
+- **Push** the updated `main` branch to GitHub.
+
+## CHANGELOG.md
+
+- **Update CHANGELOG.md every session** with the changes made.
+- Add entries under `[Unreleased]` in the appropriate section: `Added`, `Changed`, `Fixed`, `Removed`, etc.
+- Use clear, user-facing descriptions.

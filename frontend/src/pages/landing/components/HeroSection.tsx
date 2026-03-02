@@ -3,14 +3,13 @@ import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'fram
 import { Play, ArrowRight, Music } from 'lucide-react';
 import { FloatingAlbums } from '@/components/landing/FloatingAlbums';
 import WaveformVisualization from '@/components/landing/WaveformVisualization';
-import { useUser, useClerk } from '@clerk/clerk-react';
+import { useUser } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
 
 export const HeroSection = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollY } = useScroll();
     const { isSignedIn } = useUser();
-    const { openSignIn } = useClerk();
     const navigate = useNavigate();
 
     // Mouse Parallax Logic for 3D Card
@@ -145,15 +144,23 @@ export const HeroSection = () => {
                                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                             </motion.button>
                         ) : (
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.98 }}
-                                onClick={() => openSignIn()}
-                                className="group relative z-50 h-14 px-8 bg-white text-black rounded-full font-semibold text-base flex items-center justify-center space-x-2 shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] transition-all hover:shadow-[0_0_60px_-10px_rgba(255,255,255,0.5)]"
-                            >
-                                <span>Get Started</span>
-                                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                            </motion.button>
+                            <div className="flex flex-col gap-3">
+                                <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.98 }}
+                                    onClick={() => navigate('/sign-up')}
+                                    className="group relative z-50 h-14 px-8 bg-white text-black rounded-full font-semibold text-base flex items-center justify-center space-x-2 shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] transition-all hover:shadow-[0_0_60px_-10px_rgba(255,255,255,0.5)]"
+                                >
+                                    <span>Get Started</span>
+                                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                                </motion.button>
+                                <a
+                                    href="/sign-in"
+                                    className="relative z-50 text-sm text-white/70 hover:text-white transition-colors underline underline-offset-2"
+                                >
+                                    Already have an account? Sign in
+                                </a>
+                            </div>
                         )}
 
                         {/* Watch Demo - Scroll to features */}

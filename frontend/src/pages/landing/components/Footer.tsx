@@ -30,10 +30,19 @@ export const Footer = () => {
                     <div>
                         <h4 className="text-white font-semibold mb-6 uppercase text-sm tracking-wider">Product</h4>
                         <ul className="space-y-4">
-                            <li><a href="/home" className="text-zinc-400 hover:text-white transition-colors text-sm">Features</a></li>
+                            <li><a href="#features" className="text-zinc-400 hover:text-white transition-colors text-sm">Features</a></li>
                             <li><a href="/search" className="text-zinc-400 hover:text-white transition-colors text-sm">Search Music</a></li>
                             <li><a href="/radio" className="text-zinc-400 hover:text-white transition-colors text-sm">Radio</a></li>
                             <li><a href="/browse" className="text-zinc-400 hover:text-white transition-colors text-sm">Browse</a></li>
+                        </ul>
+                    </div>
+
+                    {/* Account - visible auth entry for returning users */}
+                    <div>
+                        <h4 className="text-white font-semibold mb-6 uppercase text-sm tracking-wider">Account</h4>
+                        <ul className="space-y-4">
+                            <li><a href="/sign-in" className="text-zinc-400 hover:text-white transition-colors text-sm">Sign in</a></li>
+                            <li><a href="/sign-up" className="text-zinc-400 hover:text-white transition-colors text-sm">Sign up</a></li>
                         </ul>
                     </div>
                 </div>
