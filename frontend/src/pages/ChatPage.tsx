@@ -164,6 +164,7 @@ const ChatPage = () => {
 					)}
 				>
 					{selectedUser ? (
+						<SectionErrorBoundary sectionName="Conversation">
 						<>
 							<ChatHeader />
 
@@ -266,6 +267,7 @@ const ChatPage = () => {
 								<MessageInput />
 							</div>
 						</>
+						</SectionErrorBoundary>
 					) : (
 						<NoConversationPlaceholder />
 					)}

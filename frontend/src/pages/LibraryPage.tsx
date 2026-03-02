@@ -41,6 +41,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { LibraryGridSkeleton } from '@/components/shared/LoadingSkeletons';
+import { SectionErrorBoundary } from '@/components/shared/SectionErrorBoundary';
 type TabType = 'playlists' | 'artists' | 'albums' | 'liked';
 type ViewType = 'grid' | 'list';
 
@@ -203,6 +204,7 @@ const LibraryPage = () => {
       {/* Replaced ScrollArea with div + PullToRefresh */}
       <div className="flex-1 overflow-hidden relative">
         <PullToRefresh onRefresh={refreshData}>
+          <SectionErrorBoundary sectionName="Library">
           <div className="p-6 space-y-6 h-full min-h-[calc(100vh-180px)] overflow-y-auto pb-32">
             {/* Header */}
             <div>
@@ -571,6 +573,7 @@ const LibraryPage = () => {
               )}
             </div>
           </div>
+          </SectionErrorBoundary>
         </PullToRefresh>
       </div>
 

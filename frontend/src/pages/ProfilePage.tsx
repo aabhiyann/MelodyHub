@@ -16,6 +16,7 @@ import { EmptyState } from '@/components/shared/EmptyState';
 import { SpotifyCard } from '@/pages/home/components/SpotifyCard';
 import { useChatStore } from '@/stores/ChatStore';
 import { ProfilePageSkeleton } from '@/components/shared/LoadingSkeletons';
+import { SectionErrorBoundary } from '@/components/shared/SectionErrorBoundary';
 
 type ProfileTab = 'activity' | 'playlists' | 'liked' | 'friends';
 
@@ -129,6 +130,7 @@ const ProfilePage = () => {
         <main className="rounded-md overflow-hidden h-full bg-transparent">
             <Topbar />
             <ScrollArea className="h-[calc(100vh-180px)]">
+                <SectionErrorBoundary sectionName="Profile">
                 <div className="p-4 md:p-6 space-y-6">
                     <ProfileHeader
                         user={displayUser}
@@ -314,6 +316,7 @@ const ProfilePage = () => {
                         </div>
                     )}
                 </div>
+                </SectionErrorBoundary>
             </ScrollArea>
 
             <EditProfileModal

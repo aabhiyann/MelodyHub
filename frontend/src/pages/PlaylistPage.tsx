@@ -14,6 +14,7 @@ import { formatDuration } from "@/lib/utils";
 import { useDominantColor } from "@/hooks/useDominantColor";
 
 import Topbar from "@/components/layout/TopBar";
+import { SectionErrorBoundary } from "@/components/shared/SectionErrorBoundary";
 
 const PlaylistPage = () => {
     const { id } = useParams();
@@ -127,6 +128,7 @@ const PlaylistPage = () => {
         <main className='rounded-md overflow-hidden h-full bg-transparent flex flex-col'>
             <Topbar />
             <ScrollArea className='flex-1 rounded-md'>
+                <SectionErrorBoundary sectionName="Playlist">
                 {/* Main Content */}
                 <div className='relative min-h-full'>
                     {/* Background gradient from cover art or neutral */}
@@ -271,6 +273,7 @@ const PlaylistPage = () => {
                         </div>
                     </div>
                 </div>
+                </SectionErrorBoundary>
             </ScrollArea>
         </main>
     );

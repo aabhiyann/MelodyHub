@@ -25,11 +25,11 @@ const SectionErrorFallback = ({
             </div>
 
             <h3 className="text-lg font-semibold text-text-primary mb-2">
-                {sectionName ? `${sectionName} Error` : 'Section Error'}
+                Something went wrong
             </h3>
 
             <p className="text-text-secondary text-sm mb-4">
-                We couldn't load this section. The rest of the page should still work fine.
+                This section couldn't load. The rest of the page should still work.
             </p>
 
             <Button
@@ -39,7 +39,7 @@ const SectionErrorFallback = ({
                 className="border-white/10 hover:bg-white/5 text-text-primary flex items-center gap-2 mx-auto"
             >
                 <RefreshCw className="size-4" />
-                Try Again
+                Retry
             </Button>
 
             {/* Error Details (Dev Only) */}

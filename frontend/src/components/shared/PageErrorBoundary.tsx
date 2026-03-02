@@ -39,12 +39,11 @@ const PageErrorFallback = ({ error }: { error: Error | null }) => {
 
                 {/* Error Message */}
                 <h1 className="text-3xl font-display font-bold text-text-primary mb-4">
-                    Oops! Something Went Wrong
+                    Something went wrong
                 </h1>
 
                 <p className="text-text-secondary mb-8 leading-relaxed">
-                    We encountered an unexpected error while loading this page.
-                    Don't worry, your data is safe. Try refreshing the page or going back home.
+                    We encountered an unexpected error. Your data is safe. Try again or go back home.
                 </p>
 
                 {/* Action Buttons */}
@@ -54,7 +53,7 @@ const PageErrorFallback = ({ error }: { error: Error | null }) => {
                         className="bg-brand-primary hover:bg-brand-primary/90 text-white shadow-glow-primary flex items-center gap-2"
                     >
                         <RefreshCw className="size-4" />
-                        Reload Page
+                        Retry
                     </Button>
 
                     <Button

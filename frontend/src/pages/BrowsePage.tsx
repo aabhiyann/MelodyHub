@@ -21,6 +21,7 @@ import HorizontalScrollSection from '@/pages/home/components/HorizontalScrollSec
 import { SpotifyCard } from '@/pages/home/components/SpotifyCard';
 import { SectionRowSkeleton } from '@/pages/home/components/SectionRowSkeleton';
 import { EmptyState } from '@/components/shared/EmptyState';
+import { SectionErrorBoundary } from '@/components/shared/SectionErrorBoundary';
 
 // Genre configuration with gradients and emojis
 const GENRE_CONFIG: Record<string, { gradient: string; icon: string }> = {
@@ -189,8 +190,9 @@ const BrowsePage = () => {
       <PageTransition>
         <ScrollArea className="h-full flex-1">
           <div className="p-4 md:p-8">
-            <div className="max-w-7xl mx-auto">
-              <div className="space-y-8">
+            <SectionErrorBoundary sectionName="Browse">
+              <div className="max-w-7xl mx-auto">
+                <div className="space-y-8">
                   {/* Featured / Trending row at top */}
                   {!selectedGenre && (
                     isLoading ? (
@@ -447,7 +449,8 @@ const BrowsePage = () => {
                     )}
                   </section>
                 </div>
-            </div>
+              </div>
+            </SectionErrorBoundary>
           </div>
         </ScrollArea>
       </PageTransition>
