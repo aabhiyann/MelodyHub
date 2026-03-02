@@ -402,18 +402,18 @@
 
 ## 🔥 TOP 10 Must-Fix Before Public Launch (Ranked by Priority)
 
-| # | Issue | Area | Severity |
-|---|-------|------|----------|
-| **1** | Fix playlist detail page crash — songs never load, "Something went wrong" error fires for ALL playlists | Playlists | 🔴 CRITICAL |
-| **2** | Fix playlist creation modal — controlled input state bug causes "Enter a name" validation even when field has a value | Playlists | 🔴 CRITICAL |
-| **3** | Fix notifications panel — stuck permanently on "Loading..." in production; check API endpoint and response handling | Notifications | 🔴 CRITICAL |
-| **4** | Resolve Cloudflare Turnstile captcha issue — new user sign-up is completely blocked because the widget never becomes interactive | Authentication | 🔴 CRITICAL |
-| **5** | Make Community user cards clickable links to user profiles — currently clicking a user card does nothing | Social / UX | 🟠 HIGH |
-| **6** | Fix profile bio save flakiness — success toast fires but bio reverts to old value on page reload | Profile | 🟠 HIGH |
-| **7** | Add user search functionality — users cannot find other users by name or username (search only finds music) | Social | 🟠 HIGH |
-| **8** | Rename or clarify "Analytics" in the sidebar — looks like a developer/admin tool, confusing for regular users | Navigation | 🟡 MEDIUM |
-| **9** | Add song title marquee animation in mini player — long titles are statically truncated, losing context | Music Player | 🟡 MEDIUM |
-| **10** | Improve AI rate-limit messaging — "Breather" message should tell users exactly how long they need to wait | AI Feature | 🟢 LOW |
+| # | Issue | Area | Severity | Status |
+|---|-------|------|----------|---------|
+| **1** | Fix playlist detail page crash — songs never load, "Something went wrong" error fires for ALL playlists | Playlists | 🔴 CRITICAL | ✅ Fixed (2026-03-02) |
+| **2** | Fix playlist creation modal — controlled input state bug causes "Enter a name" validation even when field has a value | Playlists | 🔴 CRITICAL | 🔄 Pending |
+| **3** | Fix notifications panel — stuck permanently on "Loading..." in production; check API endpoint and response handling | Notifications | 🔴 CRITICAL | ✅ Fixed (2026-03-02) |
+| **4** | Resolve Cloudflare Turnstile captcha issue — new user sign-up is completely blocked because the widget never becomes interactive | Authentication | 🔴 CRITICAL | 🔄 Pending |
+| **5** | Make Community user cards clickable links to user profiles — currently clicking a user card does nothing | Social / UX | 🟠 HIGH | ✅ Fixed (2026-03-02) |
+| **6** | Fix profile bio save flakiness — success toast fires but bio reverts to old value on page reload | Profile | 🟠 HIGH | 🔄 Pending |
+| **7** | Add user search functionality — users cannot find other users by name or username (search only finds music) | Social | 🟠 HIGH | 🔄 Pending |
+| **8** | Rename or clarify "Analytics" in the sidebar — looks like a developer/admin tool, confusing for regular users | Navigation | 🟡 MEDIUM | 🔄 Pending |
+| **9** | Add song title marquee animation in mini player — long titles are statically truncated, losing context | Music Player | 🟡 MEDIUM | ✅ Fixed (2026-03-02) |
+| **10** | Improve AI rate-limit messaging — "Breather" message should tell users exactly how long they need to wait | AI Feature | 🟢 LOW | ✅ Already improved in useAIStore |
 
 ---
 
