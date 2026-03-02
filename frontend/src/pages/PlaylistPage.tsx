@@ -156,7 +156,7 @@ const PlaylistPage = () => {
 
                             <div className='flex flex-col justify-end text-center md:text-left flex-1 min-w-0'>
                                 <p className='text-sm font-medium text-[#9CA3AF] uppercase tracking-wider'>Playlist</p>
-                                <h1 className='text-3xl md:text-5xl lg:text-7xl font-bold my-2 md:my-4 text-[#F9FAFB] tracking-tight'>{currentPlaylist?.name}</h1>
+                                <h1 className='text-3xl md:text-5xl lg:text-7xl font-bold my-2 md:my-4 text-[#F9FAFB] tracking-tight truncate max-w-full'>{currentPlaylist?.name}</h1>
                                 {currentPlaylist?.description && (
                                     <p className="text-[#9CA3AF] text-sm mb-2 md:mb-4 max-w-lg">{currentPlaylist.description}</p>
                                 )}

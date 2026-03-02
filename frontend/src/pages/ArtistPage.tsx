@@ -94,12 +94,12 @@ const ArtistPage = () => {
                 )}
               </div>
 
-              <div className="flex-1 text-center md:text-left space-y-4">
-                <div>
+              <div className="flex-1 text-center md:text-left space-y-4 min-w-0">
+                <div className="min-w-0">
                   <p className="text-sm text-text-secondary font-medium uppercase tracking-widest mb-2">
                     Artist
                   </p>
-                  <h1 className="text-5xl md:text-8xl font-black text-white tracking-tight mb-4 drop-shadow-lg">
+                  <h1 className="text-5xl md:text-8xl font-black text-white tracking-tight mb-4 drop-shadow-lg truncate max-w-full">
                     {artistName}
                   </h1>
                 </div>

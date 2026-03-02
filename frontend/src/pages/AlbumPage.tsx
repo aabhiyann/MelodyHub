@@ -79,7 +79,7 @@ const AlbumPage = () => {
 
           {/* Content */}
           <div className="relative z-10">
-            <div className="flex p-6 gap-6 pb-8">
+            <div className="flex p-6 gap-6 pb-8 min-w-0 overflow-hidden">
               <OptimizedImage
                 src={currentAlbum?.imageUrl || ''}
                 alt={currentAlbum?.title || 'Album Art'}
@@ -87,15 +87,15 @@ const AlbumPage = () => {
                 className="w-[240px] h-[240px] shadow-2xl rounded-lg ring-1 ring-white/10 object-cover"
                 priority
               />
-              <div className="flex flex-col justify-end">
+              <div className="flex flex-col justify-end min-w-0 flex-1">
                 <p className="text-sm font-medium text-text-secondary uppercase tracking-wider">
                   Album
                 </p>
-                <h1 className="text-5xl md:text-7xl font-bold my-4 text-white tracking-tight">
+                <h1 className="text-5xl md:text-7xl font-bold my-4 text-white tracking-tight truncate max-w-full">
                   {currentAlbum?.title}
                 </h1>
-                <div className="flex items-center gap-2 text-sm text-text-secondary">
-                  <span className="font-medium text-white">{currentAlbum?.artist}</span>
+                <div className="flex items-center gap-2 text-sm text-text-secondary min-w-0">
+                  <span className="font-medium text-white truncate">{currentAlbum?.artist}</span>
                   <span className="flex items-center text-text-secondary">
                     <Disc className="w-3 h-3 mx-2" /> {currentAlbum?.songs.length} songs
                   </span>

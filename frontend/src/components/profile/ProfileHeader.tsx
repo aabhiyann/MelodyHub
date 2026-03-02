@@ -109,7 +109,7 @@ export const ProfileHeader = ({ user, isOwnProfile, onEdit, stats: statsProp }: 
                             )}
                         </div>
                         {username && (
-                            <p className="text-sm text-[#9CA3AF]">@{username}</p>
+                            <p className="text-sm text-[#9CA3AF] truncate max-w-full">@{username}</p>
                         )}
                     </div>
 
