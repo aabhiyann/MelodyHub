@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `.cursor/rules/git-workflow.mdc` — Cursor rule enforcing branch-per-feature, commit-after-meaningful-change, conventional commit messages, merge-to-main-and-push, and CHANGELOG updates per session.
 - Created `Docs/DEBUGGING_GUIDE.md` and `Docs/GOOD_FIRST_ISSUES.md` based on production audit.
 - Created `Docs/DEV_LOG_UI_UX_OVERHAUL.md` to chronicle the mobile UI architecture and API troubleshooting.
+- Added `BETA_TEST_REPORT.md` capturing a structured 16-section beta test template and environment-limited findings for the live MelodyHub deployment.
 
 ### Changed
 - **Consistency pass:** Aligned colors, typography, and components with `Docs/DESIGN_PLAN.md` across the app. Replaced legacy violet/purple (`#8B5CF6`) with brand accent green (`#22C55E`) in global tokens (design-tokens.css, index.css focus/selection, PWA theme_color), Clerk auth theme, landing (Hero, SocialProof, FeatureSection), Search/Browse genres and genreThemes, Library and PlaylistTab, gamification (GemsIndicator, Leaderboard, GamificationPage tabs), admin/analytics (charts, KPICards, AddSong/AddAlbum dialogs, UsersTable, ActivityFeed), LeftSidebar quick links, PlayButton, toasts (App), main.tsx Clerk variables, VolumeControl fallback, KeyboardShortcutsGuide, home ActivityFeed, Confetti. PlaylistTab and card surfaces use surface-elevated. See `CONSISTENCY_FIXES.md`.
