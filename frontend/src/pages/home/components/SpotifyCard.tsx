@@ -63,7 +63,7 @@ export const SpotifyCard = ({
                     loading="lazy"
                     onError={(e) => { e.currentTarget.src = '/placeholder-album.svg'; }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-200" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover/card:opacity-100 group-focus-within/card:opacity-100 transition-opacity duration-200" />
                 {onPlayClick && (
                     <button
                         type="button"
@@ -71,7 +71,7 @@ export const SpotifyCard = ({
                             e.stopPropagation();
                             onPlayClick(e);
                         }}
-                        className="absolute bottom-2 right-2 p-2.5 rounded-full bg-[#22C55E] text-[#020617] shadow-lg opacity-0 group-hover/card:opacity-100 transition-all duration-200 hover:scale-110 hover:bg-[#16A34A]"
+                        className="absolute bottom-2 right-2 p-2.5 rounded-full bg-[#22C55E] text-[#020617] shadow-lg opacity-0 group-hover/card:opacity-100 group-focus-within/card:opacity-100 max-md:opacity-100 transition-all duration-200 hover:scale-110 hover:bg-[#16A34A]"
                         aria-label={`Play ${title}`}
                     >
                         <Play className="w-5 h-5 fill-current ml-0.5" />

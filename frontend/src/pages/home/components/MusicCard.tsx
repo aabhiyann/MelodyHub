@@ -98,8 +98,8 @@ const MusicCard = memo(({ song, onClick, onPlayClick, index = 0 }: MusicCardProp
                         </div>
                     </div>
 
-                    {/* Modern Play Button - MelodyHub Purple Brand */}
-                    <div className="absolute bottom-2 right-2 translate-y-2 opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100 z-20">
+                    {/* Modern Play Button - visible on hover, focus-within, and always on mobile for touch */}
+                    <div className="absolute bottom-2 right-2 translate-y-2 opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100 max-md:translate-y-0 max-md:opacity-100 z-20">
                         <button
                             onClick={onPlayClick}
                             className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-primary hover:bg-brand-primary/90 text-white shadow-lg hover:shadow-xl hover:shadow-brand-primary/50 transition-all duration-300 hover:scale-110 active:scale-95"
