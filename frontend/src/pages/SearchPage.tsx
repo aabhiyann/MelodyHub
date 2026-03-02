@@ -10,6 +10,7 @@ import {
   Music,
   Disc3,
   User2,
+  Users,
   SlidersHorizontal,
   X,
   Play,
@@ -30,6 +31,8 @@ import {
 } from '@/components/ui/select';
 import { SearchResultsSkeleton } from '@/components/shared/LoadingSkeletons';
 import { EmptyState } from '@/components/shared/EmptyState';
+import { useNavigate } from 'react-router-dom';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const GENRES = [
   { name: 'All Genres', value: 'all' },
@@ -65,6 +68,17 @@ const SearchPage = () => {
   const [showFilters, setShowFilters] = useState(false);
   const { songs, albums, fetchSongs, fetchAlbums } = useMusicStore();
   const { setCurrentSong } = usePlayerStore();
+  const navigate = useNavigate();
+
+  interface AppUser { _id: string; clerkId: string; fullName: string; imageUrl?: string; }
+  const [allUsers, setAllUsers] = useState<AppUser[]>([]);
+
+  useEffect(() => {
+    axiosInstance.get('/users').then(res => {
+      const data = res.data?.data ?? res.data ?? [];
+      setAllUsers(Array.isArray(data) ? data : []);
+    }).catch(() => { });
+  }, []);
 
   useEffect(() => {
     if (songs.length === 0 || albums.length === 0) {
@@ -159,6 +173,9 @@ const SearchPage = () => {
       album.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       album.artist.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  const userResults = searchQuery.trim()
+    ? allUsers.filter((u) => u.fullName?.toLowerCase().includes(searchQuery.toLowerCase()))
+    : [];
 
   return (
     <main className="rounded-md overflow-hidden h-full bg-transparent">
@@ -354,6 +371,37 @@ const SearchPage = () => {
                             </button>
                           );
                         })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Members (user search) */}
+                  {userResults.length > 0 && (
+                    <div>
+                      <div className="flex items-center gap-2 mb-4">
+                        <Users className="size-6 text-brand-primary" />
+                        <h2 className="text-2xl font-bold text-white">Members</h2>
+                        <span className="text-zinc-400">({userResults.length})</span>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                        {userResults.slice(0, 8).map((user) => (
+                          <button
+                            key={user._id}
+                            onClick={() => navigate(`/profile/${user.clerkId}`)}
+                            className="flex items-center gap-3 p-3 rounded-xl bg-surface-card/40 hover:bg-surface-elevated/60 border border-white/5 hover:border-white/10 transition-all duration-200 hover:-translate-y-0.5 text-left group"
+                          >
+                            <Avatar className="size-12 flex-shrink-0 border border-white/10">
+                              <AvatarImage src={user.imageUrl} alt={user.fullName} />
+                              <AvatarFallback>{user.fullName?.[0] ?? '?'}</AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1 min-w-0">
+                              <p className="font-semibold text-sm text-white truncate group-hover:text-brand-primary transition-colors">
+                                {user.fullName}
+                              </p>
+                              <p className="text-xs text-zinc-400">Member</p>
+                            </div>
+                          </button>
+                        ))}
                       </div>
                     </div>
                   )}
