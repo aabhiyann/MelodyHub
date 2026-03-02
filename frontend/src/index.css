@@ -605,3 +605,7 @@ input[type=range]::-webkit-slider-runnable-track {
 .animate-ripple {
   animation: ripple-animation 0.6s ease-out forwards;
 }
+/* Marquee animation pause on hover */
+.hover\:pause-marquee:hover {
+  animation-play-state: paused;
+}

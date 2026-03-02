@@ -144,6 +144,7 @@ const config: Config = {
                 'shimmer': 'shimmer 2s infinite linear',
                 'fade-in-up': 'fade-in-up 0.5s ease-out forwards',
                 'typing-dot': 'typing-dot 1.4s ease-in-out infinite both',
+                'marquee': 'marquee 12s linear infinite',
             },
             keyframes: {
                 shimmer: {
@@ -157,6 +158,10 @@ const config: Config = {
                 'typing-dot': {
                     '0%, 80%, 100%': { transform: 'scale(0.6)', opacity: '0.5' },
                     '40%': { transform: 'scale(1)', opacity: '1' },
+                },
+                'marquee': {
+                    '0%': { transform: 'translateX(0%)' },
+                    '100%': { transform: 'translateX(-50%)' },
                 },
             },
         },

@@ -85,10 +85,20 @@ export const NowPlaying = memo(() => {
             </div>
 
             {/* Track Info */}
-            <div className="flex-1 min-w-0 flex flex-col justify-center">
-                <h3 className="text-[14px] font-semibold text-white truncate hover:underline cursor-pointer leading-tight tracking-wide">
-                    {currentSong.title}
-                </h3>
+            <div className="flex-1 min-w-0 flex flex-col justify-center overflow-hidden">
+                <div className="overflow-hidden relative w-full">
+                    <h3
+                        className={`text-[14px] font-semibold text-white leading-tight tracking-wide whitespace-nowrap ${currentSong.title.length > 22
+                                ? 'inline-block animate-marquee hover:pause-marquee'
+                                : 'truncate'
+                            }`}
+                        title={currentSong.title}
+                    >
+                        {currentSong.title.length > 22
+                            ? `${currentSong.title}\u00a0\u00a0\u00a0\u00a0${currentSong.title}`
+                            : currentSong.title}
+                    </h3>
+                </div>
                 <p className="text-[13px] font-normal text-zinc-400 truncate hover:text-white hover:underline cursor-pointer transition-colors mt-0.5">
                     {currentSong.artist}
                 </p>
