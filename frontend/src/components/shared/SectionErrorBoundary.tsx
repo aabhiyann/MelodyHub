@@ -25,7 +25,7 @@ const SectionErrorFallback = ({
             </div>
 
             <h3 className="text-lg font-semibold text-text-primary mb-2">
-                Something went wrong
+                Something went wrong{sectionName ? ` in ${sectionName}` : ''}
             </h3>
 
             <p className="text-text-secondary text-sm mb-4">
