@@ -62,5 +62,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Performance enhancements: virtual scrolling, card reveal animations, skeleton loaders
 - Genre-based theming, analytics tracking, keyboard navigation
 
-[Unreleased]: https://github.com/aabhiyann/MelodyHub/compare/main...HEAD
+[Unreleased]: https://github.com/aabhiyann/MelodyHub/compare/v1.0.0...HEAD
 [1.0.0]: https://github.com/aabhiyann/MelodyHub/releases/tag/v1.0.0
