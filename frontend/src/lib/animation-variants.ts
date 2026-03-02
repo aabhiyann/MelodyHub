@@ -38,10 +38,10 @@ export const transitions = {
         ease: [0.34, 1.56, 0.64, 1], // Custom cubic-bezier
     } as Transition,
 
-    // Page transitions
+    // Page transitions (max 200ms for snappy feel)
     page: {
         type: 'tween',
-        duration: 0.3,
+        duration: 0.2,
         ease: [0.25, 0.46, 0.45, 0.94],
     } as Transition,
 };
@@ -210,7 +210,7 @@ export const routeTransitions: Record<string, Variants> = {
         },
         animate: {
             opacity: 1,
-            transition: { duration: 0.3 },
+            transition: { duration: 0.2 },
         },
         exit: {
             opacity: 0,
