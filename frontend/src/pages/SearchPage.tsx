@@ -29,6 +29,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { SearchResultsSkeleton } from '@/components/shared/LoadingSkeletons';
+import { EmptyState } from '@/components/shared/EmptyState';
 
 const GENRES = [
   { name: 'All Genres', value: 'all' },
@@ -266,13 +267,12 @@ const SearchPage = () => {
           {searchQuery && !searching && (
             <div className="space-y-8">
               {searchResults.length === 0 ? (
-                <div className="text-center py-12">
-                  <SearchIcon className="size-16 text-zinc-600 mx-auto mb-4" />
-                  <p className="text-zinc-400 text-lg">
-                    No results found for "
-                    <span className="text-white font-semibold">{searchQuery}</span>"
-                  </p>
-                </div>
+                <EmptyState
+                  message={`No results found for "${searchQuery}"`}
+                  secondary="Try a different search term or browse by genre."
+                  icon={<SearchIcon className="size-16 text-[#6B7280]" />}
+                  className="py-12"
+                />
               ) : (
                 <>
                   {/* Songs */}

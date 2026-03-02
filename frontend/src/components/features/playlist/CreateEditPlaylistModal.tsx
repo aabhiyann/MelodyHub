@@ -242,7 +242,7 @@ export function CreateEditPlaylistModal({
                             </div>
                             <div className="max-h-40 overflow-y-auto overflow-x-hidden rounded-lg border border-[#1F2933] bg-[#0f0f14] touch-scroll">
                                 {searchResults.length === 0 ? (
-                                    <p className="p-3 text-sm text-[#6B7280]">No songs match or catalog is empty.</p>
+                                    <p className="p-3 text-sm text-[#6B7280]">No matching songs. Try a different search or add from Browse.</p>
                                 ) : (
                                     <ul className="p-1">
                                         {searchResults.map((song) => {

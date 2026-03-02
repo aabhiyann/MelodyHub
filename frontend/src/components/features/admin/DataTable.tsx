@@ -141,7 +141,7 @@ export function DataTable<TData>({
                                         colSpan={columns.length}
                                         className='px-4 py-8 text-center text-body-md text-gray-500'
                                     >
-                                        No results found
+                                        No items to show. Add or import data to get started.
                                     </td>
                                 </tr>
                             ) : (

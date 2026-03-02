@@ -15,6 +15,7 @@ import { useDominantColor } from "@/hooks/useDominantColor";
 
 import Topbar from "@/components/layout/TopBar";
 import { SectionErrorBoundary } from "@/components/shared/SectionErrorBoundary";
+import { EmptyState } from "@/components/shared/EmptyState";
 
 const PlaylistPage = () => {
     const { id } = useParams();
@@ -245,9 +246,10 @@ const PlaylistPage = () => {
                             <div className='px-6'>
                                 <div className='space-y-2 py-4'>
                                     {currentPlaylist?.songs.length === 0 && (
-                                        <div className="text-center py-10 text-[#9CA3AF]">
-                                            This playlist is empty. Add songs from Browse or Library.
-                                        </div>
+                                        <EmptyState
+                                            message="This playlist is empty"
+                                            secondary="Add songs from Browse or Library to get started."
+                                        />
                                     )}
                                     {currentPlaylist?.songs.map((song, index) => {
                                         const isCurrentSong = currentSong?._id === song._id;

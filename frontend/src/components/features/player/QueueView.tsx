@@ -1,7 +1,8 @@
 import { usePlayerStore } from "@/stores/PlayerStore";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Play } from "lucide-react";
+import { Play, ListMusic } from "lucide-react";
+import { EmptyState } from "@/components/shared/EmptyState";
 
 const QueueView = () => {
     const { queue, currentSong, isPlaying, setCurrentSong } = usePlayerStore();
@@ -64,7 +65,11 @@ const QueueView = () => {
                                 </div>
                             ))}
                             {queue.length === 0 && (
-                                <p className="text-sm text-text-tertiary italic">Your queue is empty.</p>
+                                <EmptyState
+                                    message="Your queue is empty"
+                                    secondary="Play a song to add it here."
+                                    icon={<ListMusic className="size-10 text-[#6B7280]" />}
+                                />
                             )}
                         </div>
                     </div>
