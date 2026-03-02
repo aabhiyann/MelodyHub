@@ -114,25 +114,25 @@ export const FullScreenPlayer = () => {
                 </div>
 
                 {/* Content Container */}
-                <div className="relative flex flex-col h-full w-full max-w-lg md:max-w-2xl mx-auto px-4 md:px-8 py-4 md:py-8">
-                    {/* Close handle - swipe down or tap to close */}
-                    <div className="flex justify-center shrink-0 z-10 mb-2">
+                <div className="relative flex flex-col h-full w-full max-w-full md:max-w-2xl mx-auto px-4 md:px-8 py-4 md:py-8 min-w-0">
+                    {/* Close handle - swipe down or tap to close; 44px min touch target */}
+                    <div className="flex justify-center shrink-0 z-10 mb-2 min-h-11">
                         <motion.button
                             onClick={() => { vibrate(); toggleExpanded(); }}
-                            className="w-12 h-1.5 rounded-full bg-white/40 hover:bg-white/60 transition-colors"
+                            className="w-12 h-1.5 rounded-full bg-white/40 hover:bg-white/60 transition-colors min-w-11 min-h-11 flex items-center justify-center"
                             whileTap={{ scale: 0.95 }}
                             aria-label="Close player"
                         />
                     </div>
 
-                    {/* Tabs: Player | Lyrics | Queue */}
+                    {/* Tabs: Player | Lyrics | Queue - 44px min touch target */}
                     <div className="flex justify-center gap-1 shrink-0 z-10 mb-4">
                         {(['player', 'lyrics', 'queue'] as const).map((tab) => (
                             <button
                                 key={tab}
                                 onClick={() => { vibrate(); setActiveTab(tab); }}
                                 className={cn(
-                                    'px-4 py-1.5 rounded-full text-xs font-medium transition-colors',
+                                    'min-w-11 min-h-11 px-4 py-1.5 rounded-full text-xs font-medium transition-colors flex items-center justify-center',
                                     activeTab === tab ? 'bg-white/20 text-white' : 'text-white/50 hover:text-white'
                                 )}
                             >
@@ -186,7 +186,7 @@ export const FullScreenPlayer = () => {
                                             <motion.button
                                                 whileTap={{ scale: 0.8 }}
                                                 onClick={vibrate}
-                                                className="p-3 bg-white/5 rounded-full text-white/50 hover:text-red-500 hover:bg-white/10 transition-colors"
+                                                className="min-w-11 min-h-11 p-3 bg-white/5 rounded-full text-white/50 hover:text-red-500 hover:bg-white/10 transition-colors flex items-center justify-center shrink-0"
                                             >
                                                 <Heart className="size-6" />
                                             </motion.button>
@@ -270,7 +270,7 @@ export const FullScreenPlayer = () => {
 
                                         {/* Mobile Volume Slider */}
                                         <div className="flex items-center gap-3 px-4 pb-6 w-full max-w-[400px] mx-auto opacity-70 hover:opacity-100 transition-opacity">
-                                            <button onClick={() => setVolume(0)}><Volume1 className="size-4 text-white" /></button>
+                                            <button className="min-w-11 min-h-11 flex items-center justify-center" onClick={() => setVolume(0)} aria-label="Mute"><Volume1 className="size-4 text-white" /></button>
                                             <div className="relative flex-1 h-3 flex items-center group">
                                                 <input
                                                     type="range"
@@ -295,12 +295,12 @@ export const FullScreenPlayer = () => {
                                                     style={{ left: `calc(${isMuted ? 0 : volume}% - 6px)` }}
                                                 />
                                             </div>
-                                            <button onClick={() => setVolume(100)}><Volume2 className="size-4 text-white" /></button>
+                                            <button className="min-w-11 min-h-11 flex items-center justify-center" onClick={() => setVolume(100)} aria-label="Max volume"><Volume2 className="size-4 text-white" /></button>
                                         </div>
 
                                         {/* Bottom Actions */}
                                         <div className="flex items-center justify-between px-4 pb-4">
-                                            <button className="p-2 text-white/40 hover:text-white transition-colors">
+                                            <button className="min-w-11 min-h-11 p-2 text-white/40 hover:text-white transition-colors flex items-center justify-center" aria-label="Devices">
                                                 <MonitorSpeaker className="size-5" />
                                             </button>
                                             <button
