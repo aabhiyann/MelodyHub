@@ -17,7 +17,7 @@ const getTransitionVariant = (pathname: string) => {
     if (pathname.includes('/playlists/')) return 'modal';
     if (pathname.includes('/album')) return 'modal';
     if (pathname.includes('/artist')) return 'fade';
-    return 'default';
+    return 'default'; // fadeFast: 150ms opacity
 };
 
 export const PageTransition = ({ children }: PageTransitionProps) => {

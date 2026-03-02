@@ -159,9 +159,16 @@ export const pageVariants: Variants = {
     },
 };
 
+// 150ms fade-in for perceived performance (opacity only)
+export const fadeFastVariants: Variants = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1, transition: { duration: 0.15 } },
+    exit: { opacity: 0, transition: { duration: 0.15 } },
+};
+
 // Route-specific transition variants
 export const routeTransitions: Record<string, Variants> = {
-    default: pageVariants,
+    default: fadeFastVariants,
     
     modal: {
         initial: {
