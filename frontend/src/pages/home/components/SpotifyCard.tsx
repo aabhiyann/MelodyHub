@@ -71,7 +71,7 @@ export const SpotifyCard = ({
                             e.stopPropagation();
                             onPlayClick(e);
                         }}
-                        className="absolute bottom-2 right-2 p-2.5 rounded-full bg-[#22C55E] text-[#020617] shadow-lg opacity-0 group-hover/card:opacity-100 group-focus-within/card:opacity-100 max-md:opacity-100 transition-all duration-200 hover:scale-110 hover:bg-[#16A34A]"
+                        className="absolute bottom-2 right-2 p-2.5 rounded-full bg-[#22C55E] text-[#020617] shadow-lg opacity-90 group-hover/card:opacity-100 group-focus-within/card:opacity-100 transition-all duration-200 hover:scale-110 hover:bg-[#16A34A]"
                         aria-label={`Play ${title}`}
                     >
                         <Play className="w-5 h-5 fill-current ml-0.5" />
