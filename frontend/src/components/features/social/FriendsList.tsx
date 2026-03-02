@@ -9,6 +9,7 @@ import { Search, UserPlus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { VirtualScrollList } from "@/components/shared/VirtualScrollList";
 import { motion } from "framer-motion";
+import { ChatListSkeleton } from "@/components/shared/LoadingSkeletons";
 
 export const FriendsList = () => {
     const {
@@ -152,7 +153,7 @@ export const FriendsList = () => {
                         <ScrollArea className="flex-1 -mr-4 pr-4">
                             <div className="space-y-2 pb-4">
                                 {isLoading ? (
-                                    <div className="text-center py-4 text-text-secondary">Loading...</div>
+                                    <ChatListSkeleton />
                                 ) : filteredSearch.map((user) => (
                                     <div key={user._id} className="flex items-center justify-between p-3 rounded-lg bg-background-base/30 hover:bg-background-base/50 border border-white/5 transition-all group">
                                         <div className="flex items-center gap-3">

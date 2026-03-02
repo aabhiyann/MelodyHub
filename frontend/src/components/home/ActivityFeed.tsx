@@ -8,9 +8,28 @@ import { useChatStore } from "@/stores/ChatStore";
 
 import { Activity, ActivityType, isSongTarget, isPlaylistTarget, isUserTarget } from "@/types";
 
+const ActivityFeedSkeleton = () => (
+    <div className="w-full h-full bg-surface-elevated border-l border-border-subtle hidden lg:flex lg:flex-col lg:w-72 xl:w-80 p-4">
+        <div className="border-b border-border-subtle pb-4 mb-4">
+            <div className="h-5 w-32 rounded bg-white/10 animate-pulse" />
+        </div>
+        <div className="space-y-3 flex-1">
+            {[1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="flex items-center gap-3 p-3 rounded-xl">
+                    <div className="size-10 rounded-full bg-white/10 animate-pulse shrink-0" />
+                    <div className="flex-1 space-y-2">
+                        <div className="h-4 w-3/4 rounded bg-white/10 animate-pulse" />
+                        <div className="h-3 w-1/2 rounded bg-white/10 animate-pulse" />
+                    </div>
+                </div>
+            ))}
+        </div>
+    </div>
+);
+
 export const ActivityFeed = () => {
     const { onlineUsers, activities: userActivities } = useChatStore();
-    const { data: activities } = useQuery({
+    const { data: activities, isLoading } = useQuery({
         queryKey: ["activities"],
         queryFn: async () => {
             const response = await axiosInstance.get("/activities");
@@ -18,6 +37,10 @@ export const ActivityFeed = () => {
         },
         refetchInterval: 30000,
     });
+
+    if (isLoading) {
+        return <ActivityFeedSkeleton />;
+    }
 
     const getActivityIcon = (type: ActivityType) => {
         switch (type) {

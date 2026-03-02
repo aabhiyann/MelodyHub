@@ -40,6 +40,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { LibraryGridSkeleton } from '@/components/shared/LoadingSkeletons';
 type TabType = 'playlists' | 'artists' | 'albums' | 'liked';
 type ViewType = 'grid' | 'list';
 
@@ -282,7 +283,7 @@ const LibraryPage = () => {
               {activeTab === 'playlists' && (
                 <div>
                   {isLoading ? (
-                    <div className="text-center py-12 text-zinc-400">Loading...</div>
+                    <LibraryGridSkeleton />
                   ) : playlists.length === 0 ? (
                     <div className="text-center py-16">
                       <div className="inline-flex items-center justify-center size-20 rounded-full bg-white/10 mb-4">
@@ -514,7 +515,18 @@ const LibraryPage = () => {
               {activeTab === 'liked' && (
                 <div>
                   {isLoading ? (
-                    <div className="text-center py-12 text-zinc-400">Loading...</div>
+                    <div className="space-y-2">
+                      {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                        <div key={i} className="flex items-center gap-4 p-3 rounded-lg animate-pulse">
+                          <div className="size-14 rounded-md bg-white/10 shrink-0" />
+                          <div className="flex-1 space-y-2">
+                            <div className="h-4 w-48 rounded bg-white/10" />
+                            <div className="h-3 w-32 rounded bg-white/10" />
+                          </div>
+                          <div className="h-4 w-12 rounded bg-white/10" />
+                        </div>
+                      ))}
+                    </div>
                   ) : likedSongs.length === 0 ? (
                     <div className="text-center py-16">
                       <div className="inline-flex items-center justify-center size-20 rounded-full bg-white/10 mb-4">

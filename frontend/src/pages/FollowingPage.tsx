@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, UserPlus } from "lucide-react";
 import { UserListItem } from "@/components/features/social/UserListItem";
+import { ListPageSkeleton } from "@/components/shared/LoadingSkeletons";
 
 interface FollowingUser {
     _id: string;
@@ -59,7 +60,7 @@ export default function FollowingPage() {
                         </div>
                     </div>
                     {loading ? (
-                        <div className="text-zinc-500 text-center py-12">Loading...</div>
+                        <ListPageSkeleton rowCount={10} />
                     ) : data.length === 0 ? (
                         <div className="text-zinc-500 text-center py-12">Not following anyone yet</div>
                     ) : (

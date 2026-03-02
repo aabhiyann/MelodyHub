@@ -15,6 +15,7 @@ import { EditProfileModal } from '@/components/profile/EditProfileModal';
 import { EmptyState } from '@/components/shared/EmptyState';
 import { SpotifyCard } from '@/pages/home/components/SpotifyCard';
 import { useChatStore } from '@/stores/ChatStore';
+import { ProfilePageSkeleton } from '@/components/shared/LoadingSkeletons';
 
 type ProfileTab = 'activity' | 'playlists' | 'liked' | 'friends';
 
@@ -42,6 +43,7 @@ const ProfilePage = () => {
     const [userProfile, setUserProfile] = useState<User | null>(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [activeTab, setActiveTab] = useState<ProfileTab>('playlists');
+    const [profileLoading, setProfileLoading] = useState(true);
 
     const [analyticsData, setAnalyticsData] = useState<{ totalPlays?: number; totalLikes?: number } | null>(null);
     const [playlists, setPlaylists] = useState<PlaylistItem[]>([]);
@@ -52,6 +54,7 @@ const ProfilePage = () => {
 
     useEffect(() => {
         const fetchProfileData = async () => {
+            setProfileLoading(true);
             try {
                 const profileEndpoint = userId ? `/users/${userId}` : '/users/profile';
                 const profileRes = await axiosInstance.get(profileEndpoint);
@@ -67,11 +70,15 @@ const ProfilePage = () => {
                 }
             } catch (error) {
                 console.error('Failed to fetch profile data:', error);
+            } finally {
+                setProfileLoading(false);
             }
         };
 
         if (clerkUser) {
             fetchProfileData();
+        } else {
+            setProfileLoading(false);
         }
     }, [clerkUser, userId, isOwnProfile]);
 
@@ -87,6 +94,17 @@ const ProfilePage = () => {
     };
 
     if (!clerkUser) return null;
+
+    if (profileLoading) {
+        return (
+            <>
+                <Topbar />
+                <ScrollArea className="h-full">
+                    <ProfilePageSkeleton />
+                </ScrollArea>
+            </>
+        );
+    }
 
     const displayUser: User = userProfile || {
         _id: '',

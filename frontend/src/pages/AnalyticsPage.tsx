@@ -10,6 +10,7 @@ import { RecentlyPlayed } from "@/components/features/analytics/RecentlyPlayed";
 import { ListeningPatternsHeatmap } from "@/components/features/analytics/ListeningPatternsHeatmap";
 import { GenreDistributionChart } from "@/components/features/analytics/GenreDistributionChart";
 import { Clock, Disc3, Play, TrendingUp, User } from "lucide-react";
+import { AnalyticsPageSkeleton } from "@/components/shared/LoadingSkeletons";
 
 type Period = "week" | "month" | "year" | "all";
 
@@ -90,9 +91,12 @@ const AnalyticsPage = () => {
 
     if (isLoading) {
         return (
-            <div className="h-full flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-brand-primary" />
-            </div>
+            <>
+                <Topbar />
+                <ScrollArea className="h-full">
+                    <AnalyticsPageSkeleton />
+                </ScrollArea>
+            </>
         );
     }
 

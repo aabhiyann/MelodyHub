@@ -250,6 +250,128 @@ export const MinimalLoadingSkeleton = () => {
 };
 
 /**
+ * Library tab content skeleton (grid of playlist-style cards)
+ */
+export const LibraryGridSkeleton = () => (
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+        {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+            <div key={i} className="space-y-3">
+                <div className={`aspect-square rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                <div className={`h-4 w-3/4 rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                <div className={`h-3 w-1/2 rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+            </div>
+        ))}
+    </div>
+);
+
+/**
+ * Profile page skeleton (header + stats + tab content)
+ */
+export const ProfilePageSkeleton = () => (
+    <div className="p-6 space-y-6">
+        <div className="flex flex-col md:flex-row items-center md:items-end gap-6">
+            <div className={`size-32 rounded-full ${SKELETON_BG} ${SKELETON_PULSE}`} />
+            <div className="flex-1 w-full space-y-2">
+                <div className={`h-8 w-48 rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                <div className={`h-4 w-32 rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                <div className="flex gap-6 mt-4">
+                    {[1, 2, 3, 4].map((i) => (
+                        <div key={i} className={`h-6 w-16 rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                    ))}
+                </div>
+            </div>
+        </div>
+        <div className={`h-10 w-full rounded-lg ${SKELETON_BG} ${SKELETON_PULSE}`} />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="space-y-2">
+                    <div className={`aspect-square rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                    <div className={`h-4 w-3/4 rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                </div>
+            ))}
+        </div>
+    </div>
+);
+
+/**
+ * Analytics page skeleton (stats cards + chart areas)
+ */
+export const AnalyticsPageSkeleton = () => (
+    <div className="p-6 space-y-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[1, 2, 3, 4].map((i) => (
+                <div key={i} className={`h-24 rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+            ))}
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className={`h-72 rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+            <div className={`h-72 rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+        </div>
+    </div>
+);
+
+/**
+ * List skeleton (e.g. followers, following, chat list)
+ */
+export const ListPageSkeleton = ({ rowCount = 8 }: { rowCount?: number }) => (
+    <div className="space-y-2">
+        {Array.from({ length: rowCount }).map((_, i) => (
+            <div key={i} className="flex items-center gap-4 py-3">
+                <div className={`size-12 rounded-full ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                <div className={`h-4 flex-1 max-w-[200px] rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+            </div>
+        ))}
+    </div>
+);
+
+/**
+ * Chat / friends list skeleton
+ */
+export const ChatListSkeleton = () => (
+    <div className="p-4 space-y-2">
+        {[1, 2, 3, 4, 5, 6, 7].map((i) => (
+            <div key={i} className="flex items-center gap-3 py-2">
+                <div className={`size-10 rounded-full ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                <div className="flex-1 space-y-1">
+                    <div className={`h-4 w-32 rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                    <div className={`h-3 w-24 rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                </div>
+            </div>
+        ))}
+    </div>
+);
+
+/**
+ * Gamification / quests page skeleton
+ */
+export const GamificationPageSkeleton = () => (
+    <div className="p-6 space-y-6">
+        <div className={`h-32 rounded-2xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+        <div className={`h-12 w-full rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[1, 2, 3, 4].map((i) => (
+                <div key={i} className={`h-28 rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+            ))}
+        </div>
+    </div>
+);
+
+/**
+ * Search results skeleton
+ */
+export const SearchResultsSkeleton = () => (
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+        {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+            <div key={i} className="space-y-2">
+                <div className={`aspect-square rounded-xl ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                <div className={`h-4 w-3/4 rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+                <div className={`h-3 w-1/2 rounded ${SKELETON_BG} ${SKELETON_PULSE}`} />
+            </div>
+        ))}
+    </div>
+);
+
+/**
  * Dashboard loading skeleton
  * Matches admin dashboard layout
  */

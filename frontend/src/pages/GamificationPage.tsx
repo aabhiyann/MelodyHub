@@ -5,9 +5,10 @@ import { AchievementsList } from "@/components/features/gamification/Achievement
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Trophy, Target, Medal, Store } from "lucide-react";
+import { GamificationPageSkeleton } from "@/components/shared/LoadingSkeletons";
 
 const GamificationPage = () => {
-    const { xp, level, gems, dailyChallenges } = useGamificationStore();
+    const { xp, level, gems, dailyChallenges, isLoading } = useGamificationStore();
 
     // Mock data for now if store is empty/loading
     const challenges = dailyChallenges.length > 0 ? dailyChallenges : [
@@ -30,6 +31,16 @@ const GamificationPage = () => {
             reward: { xp: 20, gems: 5 }
         }
     ];
+
+    if (isLoading) {
+        return (
+            <div className="h-full flex flex-col">
+                <ScrollArea className="flex-1">
+                    <GamificationPageSkeleton />
+                </ScrollArea>
+            </div>
+        );
+    }
 
     return (
         <div className="h-full flex flex-col p-6 space-y-6">

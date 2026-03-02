@@ -28,6 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { SearchResultsSkeleton } from '@/components/shared/LoadingSkeletons';
 
 const GENRES = [
   { name: 'All Genres', value: 'all' },
@@ -261,6 +262,7 @@ const SearchPage = () => {
           )}
 
           {/* Search Results */}
+          {searchQuery && searching && <SearchResultsSkeleton />}
           {searchQuery && !searching && (
             <div className="space-y-8">
               {searchResults.length === 0 ? (
