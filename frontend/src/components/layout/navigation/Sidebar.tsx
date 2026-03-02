@@ -48,7 +48,7 @@ const secondaryNavItems: NavItem[] = [
     { id: 'radio', label: 'Radio', icon: Radio, path: '/radio' },
     { id: 'library', label: 'Library', icon: Library, path: '/library' },
     { id: 'search', label: 'Search', icon: Search, path: '/search' },
-    { id: 'analytics', label: 'Analytics', icon: TrendingUp, path: '/analytics' },
+    { id: 'analytics', label: 'My Stats', icon: TrendingUp, path: '/analytics' },
     { id: 'community', label: 'Community', icon: Users, path: '/community' },
     { id: 'quests', label: 'Quests', icon: Target, path: '/quests' },
     { id: 'settings', label: 'Settings', icon: Settings, path: '/settings' },

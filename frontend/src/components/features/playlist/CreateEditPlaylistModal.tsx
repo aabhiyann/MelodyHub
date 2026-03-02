@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ListMusic, Search, X, Loader2, Check } from "lucide-react";
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { usePlaylistStore } from "@/stores/PlaylistStore";
 import { useMusicStore } from "@/stores/MusicStore";
 import { Playlist } from "@/types";
@@ -52,8 +52,16 @@ export function CreateEditPlaylistModal({
     const playlistId = mode === "edit" ? playlist?._id : null;
     const currentSongs = (mode === "edit" ? playlist?.songs : []) ?? [];
 
+    // Track previous open state so we only reset the form on the false→true transition,
+    // not on every parent re-render (which would wipe the user's input mid-typing).
+    const prevOpenRef = useRef(false);
+
     useEffect(() => {
-        if (!open) return;
+        const justOpened = open && !prevOpenRef.current;
+        prevOpenRef.current = open;
+
+        if (!justOpened) return;
+
         if (mode === "edit" && playlist) {
             setName(playlist.name ?? "");
             setDescription(playlist.description ?? "");
