@@ -180,10 +180,11 @@ export const StageResults = () => {
                         }
                     }}
                     disabled={isLoading}
+                    isLoading={isLoading}
                     className="flex-1 h-12 bg-white/10 text-[#F9FAFB] border border-white/20 hover:bg-white/20 font-semibold rounded-xl disabled:opacity-50 transition-colors order-2"
                 >
                     <Save className="w-4 h-4 mr-2" />
-                    {isLoading ? "Saving..." : "Save to Library"}
+                    Save to Library
                 </Button>
 
                 <div className="flex gap-3 order-3 sm:flex-1 sm:justify-end">

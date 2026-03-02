@@ -300,15 +300,8 @@ export function CreateEditPlaylistModal({
                         {mode === "edit" ? "Close" : "Cancel"}
                     </Button>
                     {mode === "create" && (
-                        <Button onClick={handleCreate} disabled={isSubmitting} className="bg-[#22C55E] hover:bg-[#16A34A] text-[#020617]">
-                            {isSubmitting ? (
-                                <>
-                                    <Loader2 className="size-4 animate-spin mr-2" />
-                                    Creating…
-                                </>
-                            ) : (
-                                "Create"
-                            )}
+                        <Button onClick={handleCreate} disabled={isSubmitting} isLoading={isSubmitting} className="bg-[#22C55E] hover:bg-[#16A34A] text-[#020617]">
+                            Create
                         </Button>
                     )}
                 </DialogFooter>

@@ -133,9 +133,10 @@ export function InviteCollaboratorsDialog({ playlistId, currentCollaborators }: 
                     <Button
                         onClick={handleInvite}
                         disabled={selectedFriends.length === 0 || isLoading}
+                        isLoading={isLoading}
                         className="bg-brand-primary hover:bg-brand-primary/90"
                     >
-                        {isLoading ? "Inviting..." : "Invite"}
+                        Invite
                     </Button>
                 </div>
             </DialogContent>

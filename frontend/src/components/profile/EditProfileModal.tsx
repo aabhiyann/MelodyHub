@@ -137,9 +137,10 @@ export const EditProfileModal = ({ user, isOpen, onClose, onUpdate }: EditProfil
                         <Button
                             type="submit"
                             disabled={isLoading}
+                            isLoading={isLoading}
                             className="bg-[#22C55E] text-[#020617] hover:bg-[#16A34A]"
                         >
-                            {isLoading ? 'Saving...' : 'Save Changes'}
+                            Save Changes
                         </Button>
                     </DialogFooter>
                 </form>

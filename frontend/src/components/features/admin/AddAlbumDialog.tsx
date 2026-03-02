@@ -146,8 +146,9 @@ const AddAlbumDialog = () => {
 						onClick={handleSubmit}
 						className='bg-emerald-600 hover:bg-emerald-700'
 						disabled={isLoading || !imageFile || !newAlbum.title || !newAlbum.artist}
+						isLoading={isLoading}
 					>
-						{isLoading ? "Creating..." : "Add Album"}
+						Add Album
 					</Button>
 				</DialogFooter>
 			</DialogContent>

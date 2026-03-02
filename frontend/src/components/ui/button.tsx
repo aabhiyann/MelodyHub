@@ -2,6 +2,7 @@ import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 import { motion } from "framer-motion"
+import { Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
@@ -71,6 +72,7 @@ export interface ButtonProps
   extends React.ComponentProps<"button">,
   VariantProps<typeof buttonVariants> {
   asChild?: boolean
+  isLoading?: boolean
 }
 
 function Button({
@@ -80,17 +82,20 @@ function Button({
   shape,
   asChild = false,
   disabled,
+  isLoading = false,
+  children,
   ...props
 }: ButtonProps) {
+  const isDisabled = disabled || isLoading;
 
   // Animation variants for the button
   const animationVariants = {
     initial: { scale: 1 },
-    hover: disabled ? {} : {
+    hover: isDisabled ? {} : {
       scale: variant === 'link' ? 1 : 1.02,
       y: variant === 'link' ? 0 : -1,
     },
-    tap: disabled ? {} : {
+    tap: isDisabled ? {} : {
       scale: 0.98,
       y: 0,
     },
@@ -126,9 +131,12 @@ function Button({
         duration: 0.2,
         ease: "easeOut",
       }}
-      disabled={disabled}
+      disabled={isDisabled}
       {...(props as any)}
-    />
+    >
+      {isLoading && <Loader2 className="size-4 animate-spin shrink-0" aria-hidden />}
+      {children}
+    </motion.button>
   )
 }
 

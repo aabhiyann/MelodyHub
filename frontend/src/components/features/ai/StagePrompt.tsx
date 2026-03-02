@@ -5,7 +5,7 @@ import { useAIStore } from '@/stores/useAIStore';
 import { Button } from '@/components/ui/button';
 
 export const StagePrompt = () => {
-    const { userPrompt, setPrompt, generatePlaylist, error } = useAIStore();
+    const { userPrompt, setPrompt, generatePlaylist, error, isLoading } = useAIStore();
     const [isFocused, setIsFocused] = useState(false);
 
     const EXAMPLE_PROMPTS = [
@@ -84,10 +84,11 @@ export const StagePrompt = () => {
             {/* Submit Button - pill CTA */}
             <Button
                 onClick={handleSubmit}
-                disabled={!userPrompt.trim()}
+                disabled={!userPrompt.trim() || isLoading}
+                isLoading={isLoading}
                 className="w-full h-14 text-lg font-bold bg-[#22C55E] hover:bg-[#16A34A] text-white rounded-full shadow-lg shadow-[#22C55E]/25 flex items-center justify-center gap-2 transition-colors"
             >
-                <Sparkles className={`w-5 h-5 ${userPrompt.trim() ? 'animate-pulse' : ''}`} />
+                <Sparkles className={`w-5 h-5 ${userPrompt.trim() && !isLoading ? 'animate-pulse' : ''}`} />
                 Create Playlist
             </Button>
         </motion.div>

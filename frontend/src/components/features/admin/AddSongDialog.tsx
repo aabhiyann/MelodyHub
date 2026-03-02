@@ -213,8 +213,8 @@ const AddSongDialog = () => {
 					<Button className='hover:bg-zinc-500' variant='outline' onClick={() => setSongDialogOpen(false)} disabled={isLoading}>
 						Cancel
 					</Button>
-					<Button className='bg-emerald-600 hover:bg-emerald-700' variant='outline' onClick={handleSubmit} disabled={isLoading}>
-						{isLoading ? "Uploading..." : "Add Song"}
+					<Button className='bg-emerald-600 hover:bg-emerald-700' variant='outline' onClick={handleSubmit} disabled={isLoading} isLoading={isLoading}>
+						Add Song
 					</Button>
 				</DialogFooter>
 			</DialogContent>
