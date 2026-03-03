@@ -350,7 +350,7 @@ const SearchPage = () => {
                           return (
                             <button
                               key={artist}
-                              onClick={() => setSearchQuery(artist)}
+                              onClick={() => navigate(`/artists/${encodeURIComponent(artist)}`)}
                               className="group relative p-4 rounded-xl bg-surface-card/40 hover:bg-surface-elevated/60 backdrop-blur-md border border-white/5 transition-all duration-300 hover:-translate-y-1 hover:border-white/10 hover:shadow-xl text-center"
                             >
                               <div className="relative aspect-square mb-3 rounded-full overflow-hidden shadow-lg border border-white/5 group-hover:border-brand-primary/30 transition-colors">
