@@ -45,6 +45,7 @@ const ProfilePage = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [activeTab, setActiveTab] = useState<ProfileTab>('playlists');
     const [profileLoading, setProfileLoading] = useState(true);
+    const [profileError, setProfileError] = useState<string | null>(null);
 
     const [analyticsData, setAnalyticsData] = useState<{ totalPlays?: number; totalLikes?: number } | null>(null);
     const [playlists, setPlaylists] = useState<PlaylistItem[]>([]);
@@ -56,6 +57,7 @@ const ProfilePage = () => {
     useEffect(() => {
         const fetchProfileData = async () => {
             setProfileLoading(true);
+            setProfileError(null);
             try {
                 const profileEndpoint = userId ? `/users/${userId}` : '/users/profile';
                 const profileRes = await axiosInstance.get(profileEndpoint);
@@ -69,8 +71,14 @@ const ProfilePage = () => {
                     setAnalyticsData(analyticsRes.data.data ?? null);
                     setPlaylists(playlistRes.data.data ?? []);
                 }
-            } catch (error) {
+            } catch (error: unknown) {
                 console.error('Failed to fetch profile data:', error);
+                const axiosError = error as { response?: { status?: number } };
+                if (axiosError?.response?.status === 404 || userId) {
+                    setProfileError('User not found');
+                } else {
+                    setProfileError('Failed to load profile');
+                }
             } finally {
                 setProfileLoading(false);
             }
@@ -107,6 +115,25 @@ const ProfilePage = () => {
         );
     }
 
+    if (profileError) {
+        return (
+            <>
+                <Topbar />
+                <div className="h-full flex flex-col items-center justify-center gap-4 p-8 text-center">
+                    <Users className="size-16 text-white/20" />
+                    <h2 className="text-xl font-semibold text-white">{profileError}</h2>
+                    <p className="text-sm text-text-secondary">This user may not exist or their profile is private.</p>
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="mt-2 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-sm text-white transition-colors"
+                    >
+                        Go Back
+                    </button>
+                </div>
+            </>
+        );
+    }
+
     const displayUser: User = userProfile || {
         _id: '',
         clerkId: clerkUser.id,
@@ -131,191 +158,190 @@ const ProfilePage = () => {
             <Topbar />
             <ScrollArea className="h-[calc(100vh-180px)]">
                 <SectionErrorBoundary sectionName="Profile">
-                <div className="p-4 md:p-6 space-y-6">
-                    <ProfileHeader
-                        user={displayUser}
-                        isOwnProfile={!!isOwnProfile}
-                        onEdit={isOwnProfile ? () => setIsEditModalOpen(true) : undefined}
-                        stats={profileStats}
-                    />
+                    <div className="p-4 md:p-6 space-y-6">
+                        <ProfileHeader
+                            user={displayUser}
+                            isOwnProfile={!!isOwnProfile}
+                            onEdit={isOwnProfile ? () => setIsEditModalOpen(true) : undefined}
+                            stats={profileStats}
+                        />
 
-                    {/* Tabs */}
-                    <div className="border-b border-[#1F2933]">
-                        <nav className="flex gap-1 overflow-x-auto scrollbar-hide" aria-label="Profile tabs">
-                            {TABS.map((tab) => {
-                                const Icon = tab.icon;
-                                return (
-                                    <button
-                                        key={tab.id}
-                                        type="button"
-                                        onClick={() => setActiveTab(tab.id)}
-                                        className={`flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-t-lg transition-colors whitespace-nowrap ${
-                                            activeTab === tab.id
-                                                ? 'text-[#22C55E] border-b-2 border-[#22C55E] bg-[#101019]/50'
-                                                : 'text-[#9CA3AF] hover:text-[#F9FAFB]'
-                                        }`}
-                                    >
-                                        <Icon className="size-4" />
-                                        {tab.label}
-                                    </button>
-                                );
-                            })}
-                        </nav>
-                    </div>
+                        {/* Tabs */}
+                        <div className="border-b border-[#1F2933]">
+                            <nav className="flex gap-1 overflow-x-auto scrollbar-hide" aria-label="Profile tabs">
+                                {TABS.map((tab) => {
+                                    const Icon = tab.icon;
+                                    return (
+                                        <button
+                                            key={tab.id}
+                                            type="button"
+                                            onClick={() => setActiveTab(tab.id)}
+                                            className={`flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-t-lg transition-colors whitespace-nowrap ${activeTab === tab.id
+                                                    ? 'text-[#22C55E] border-b-2 border-[#22C55E] bg-[#101019]/50'
+                                                    : 'text-[#9CA3AF] hover:text-[#F9FAFB]'
+                                                }`}
+                                        >
+                                            <Icon className="size-4" />
+                                            {tab.label}
+                                        </button>
+                                    );
+                                })}
+                            </nav>
+                        </div>
 
-                    {/* Tab content */}
-                    <div className="min-h-[200px]">
-                        {activeTab === 'activity' && (
-                            <div className="rounded-[12px] bg-[#101019] border border-[#1F2933] p-8">
-                                <EmptyState
-                                    message="No activity yet"
-                                    secondary="Your recent likes, playlists, and follows will show here."
-                                    icon={<Activity className="size-10 text-[#6B7280]" />}
-                                />
-                            </div>
-                        )}
+                        {/* Tab content */}
+                        <div className="min-h-[200px]">
+                            {activeTab === 'activity' && (
+                                <div className="rounded-[12px] bg-[#101019] border border-[#1F2933] p-8">
+                                    <EmptyState
+                                        message="No activity yet"
+                                        secondary="Your recent likes, playlists, and follows will show here."
+                                        icon={<Activity className="size-10 text-[#6B7280]" />}
+                                    />
+                                </div>
+                            )}
 
-                        {activeTab === 'playlists' && (
-                            <>
-                                {isOwnProfile ? (
-                                    playlists.length === 0 ? (
+                            {activeTab === 'playlists' && (
+                                <>
+                                    {isOwnProfile ? (
+                                        playlists.length === 0 ? (
+                                            <div className="rounded-[12px] bg-[#101019] border border-[#1F2933] p-8">
+                                                <EmptyState
+                                                    message="No playlists yet"
+                                                    secondary="Create a playlist from the Library or Browse."
+                                                    icon={<ListMusic className="size-10 text-[#6B7280]" />}
+                                                />
+                                            </div>
+                                        ) : (
+                                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                                                {playlists.map((pl) => {
+                                                    const imageUrl =
+                                                        (pl as PlaylistItem & { imageUrl?: string }).imageUrl ||
+                                                        (pl.songs?.[0] as { imageUrl?: string } | undefined)?.imageUrl ||
+                                                        '';
+                                                    return (
+                                                        <SpotifyCard
+                                                            key={pl._id}
+                                                            imageUrl={imageUrl || 'https://placehold.co/400?text=Playlist'}
+                                                            title={pl.name}
+                                                            description={pl.description ?? `${pl.songs?.length ?? 0} songs`}
+                                                            href={`/playlists/${pl._id}`}
+                                                            width={180}
+                                                        />
+                                                    );
+                                                })}
+                                            </div>
+                                        )
+                                    ) : (
                                         <div className="rounded-[12px] bg-[#101019] border border-[#1F2933] p-8">
                                             <EmptyState
-                                                message="No playlists yet"
-                                                secondary="Create a playlist from the Library or Browse."
-                                                icon={<ListMusic className="size-10 text-[#6B7280]" />}
+                                                message="No public playlists"
+                                                secondary="This user hasn't shared any playlists."
                                             />
                                         </div>
-                                    ) : (
-                                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                                            {playlists.map((pl) => {
-                                                const imageUrl =
-                                                    (pl as PlaylistItem & { imageUrl?: string }).imageUrl ||
-                                                    (pl.songs?.[0] as { imageUrl?: string } | undefined)?.imageUrl ||
-                                                    '';
-                                                return (
-                                                    <SpotifyCard
-                                                        key={pl._id}
-                                                        imageUrl={imageUrl || 'https://placehold.co/400?text=Playlist'}
-                                                        title={pl.name}
-                                                        description={pl.description ?? `${pl.songs?.length ?? 0} songs`}
-                                                        href={`/playlists/${pl._id}`}
-                                                        width={180}
-                                                    />
-                                                );
-                                            })}
-                                        </div>
-                                    )
-                                ) : (
-                                    <div className="rounded-[12px] bg-[#101019] border border-[#1F2933] p-8">
+                                    )}
+                                </>
+                            )}
+
+                            {activeTab === 'liked' && (
+                                <div className="rounded-[12px] bg-[#101019] border border-[#1F2933] p-8">
+                                    {isOwnProfile ? (
                                         <EmptyState
-                                            message="No public playlists"
-                                            secondary="This user hasn't shared any playlists."
+                                            message="Liked songs"
+                                            secondary={`You have ${songsCount} liked song${songsCount !== 1 ? 's' : ''}. They'll appear here when we add the list.`}
+                                            icon={<Heart className="size-10 text-[#6B7280]" />}
                                         />
-                                    </div>
-                                )}
-                            </>
-                        )}
+                                    ) : (
+                                        <EmptyState
+                                            message="Liked songs are private"
+                                            secondary="Only the user can see their liked songs."
+                                        />
+                                    )}
+                                </div>
+                            )}
 
-                        {activeTab === 'liked' && (
-                            <div className="rounded-[12px] bg-[#101019] border border-[#1F2933] p-8">
-                                {isOwnProfile ? (
-                                    <EmptyState
-                                        message="Liked songs"
-                                        secondary={`You have ${songsCount} liked song${songsCount !== 1 ? 's' : ''}. They'll appear here when we add the list.`}
-                                        icon={<Heart className="size-10 text-[#6B7280]" />}
-                                    />
-                                ) : (
-                                    <EmptyState
-                                        message="Liked songs are private"
-                                        secondary="Only the user can see their liked songs."
-                                    />
-                                )}
-                            </div>
-                        )}
-
-                        {activeTab === 'friends' && (
-                            <div className="rounded-[12px] bg-[#101019] border border-[#1F2933] overflow-hidden">
-                                {isOwnProfile ? (
-                                    friends.length === 0 ? (
+                            {activeTab === 'friends' && (
+                                <div className="rounded-[12px] bg-[#101019] border border-[#1F2933] overflow-hidden">
+                                    {isOwnProfile ? (
+                                        friends.length === 0 ? (
+                                            <div className="p-8">
+                                                <EmptyState
+                                                    message="No friends yet"
+                                                    secondary="Find friends in Chat or from search."
+                                                    icon={<Users className="size-10 text-[#6B7280]" />}
+                                                />
+                                            </div>
+                                        ) : (
+                                            <ul className="divide-y divide-[#1F2933]">
+                                                {friends.map((friend) => (
+                                                    <li key={friend._id || friend.clerkId}>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => navigate(`/profile/${friend.clerkId || friend._id}`)}
+                                                            className="w-full flex items-center gap-4 p-4 hover:bg-white/5 transition-colors text-left"
+                                                        >
+                                                            <img
+                                                                src={friend.imageUrl || ''}
+                                                                alt=""
+                                                                className="size-12 rounded-full object-cover bg-[#1F2933]"
+                                                            />
+                                                            <div className="min-w-0 flex-1">
+                                                                <p className="font-medium text-[#F9FAFB] truncate">
+                                                                    {friend.fullName || 'Unknown'}
+                                                                </p>
+                                                                {(friend as { username?: string }).username && (
+                                                                    <p className="text-sm text-[#9CA3AF] truncate">
+                                                                        @{(friend as { username?: string }).username}
+                                                                    </p>
+                                                                )}
+                                                            </div>
+                                                        </button>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )
+                                    ) : (
                                         <div className="p-8">
                                             <EmptyState
-                                                message="No friends yet"
-                                                secondary="Find friends in Chat or from search."
-                                                icon={<Users className="size-10 text-[#6B7280]" />}
+                                                message="Friends are private"
+                                                secondary="Only the user can see their friends list."
                                             />
                                         </div>
-                                    ) : (
-                                        <ul className="divide-y divide-[#1F2933]">
-                                            {friends.map((friend) => (
-                                                <li key={friend._id || friend.clerkId}>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => navigate(`/profile/${friend.clerkId || friend._id}`)}
-                                                        className="w-full flex items-center gap-4 p-4 hover:bg-white/5 transition-colors text-left"
-                                                    >
-                                                        <img
-                                                            src={friend.imageUrl || ''}
-                                                            alt=""
-                                                            className="size-12 rounded-full object-cover bg-[#1F2933]"
-                                                        />
-                                                        <div className="min-w-0 flex-1">
-                                                            <p className="font-medium text-[#F9FAFB] truncate">
-                                                                {friend.fullName || 'Unknown'}
-                                                            </p>
-                                                            {(friend as { username?: string }).username && (
-                                                                <p className="text-sm text-[#9CA3AF] truncate">
-                                                                    @{(friend as { username?: string }).username}
-                                                                </p>
-                                                            )}
-                                                        </div>
-                                                    </button>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    )
-                                ) : (
-                                    <div className="p-8">
-                                        <EmptyState
-                                            message="Friends are private"
-                                            secondary="Only the user can see their friends list."
-                                        />
-                                    </div>
-                                )}
+                                    )}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Account Settings - own profile only */}
+                        {isOwnProfile && (
+                            <div className="space-y-4 pt-4 border-t border-[#1F2933]">
+                                <div className="flex items-center justify-between">
+                                    <h2 className="text-xl font-bold text-[#F9FAFB] tracking-tight">Account</h2>
+                                    <button
+                                        type="button"
+                                        onClick={handleSignOut}
+                                        className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/20 hover:border-red-500/40 transition-all font-medium text-sm"
+                                    >
+                                        <LogOut className="size-4" />
+                                        Sign Out
+                                    </button>
+                                </div>
+                                <div className="space-y-2">
+                                    <button
+                                        type="button"
+                                        onClick={() => navigate('/settings')}
+                                        className="w-full flex items-center gap-3 p-4 rounded-[12px] bg-[#101019] border border-[#1F2933] hover:bg-white/5 transition-colors text-left"
+                                    >
+                                        <Settings className="size-5 text-[#9CA3AF]" />
+                                        <div>
+                                            <p className="font-medium text-[#F9FAFB]">Settings</p>
+                                            <p className="text-sm text-[#9CA3AF]">Playback, notifications, and more</p>
+                                        </div>
+                                    </button>
+                                </div>
                             </div>
                         )}
                     </div>
-
-                    {/* Account Settings - own profile only */}
-                    {isOwnProfile && (
-                        <div className="space-y-4 pt-4 border-t border-[#1F2933]">
-                            <div className="flex items-center justify-between">
-                                <h2 className="text-xl font-bold text-[#F9FAFB] tracking-tight">Account</h2>
-                                <button
-                                    type="button"
-                                    onClick={handleSignOut}
-                                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/20 hover:border-red-500/40 transition-all font-medium text-sm"
-                                >
-                                    <LogOut className="size-4" />
-                                    Sign Out
-                                </button>
-                            </div>
-                            <div className="space-y-2">
-                                <button
-                                    type="button"
-                                    onClick={() => navigate('/settings')}
-                                    className="w-full flex items-center gap-3 p-4 rounded-[12px] bg-[#101019] border border-[#1F2933] hover:bg-white/5 transition-colors text-left"
-                                >
-                                    <Settings className="size-5 text-[#9CA3AF]" />
-                                    <div>
-                                        <p className="font-medium text-[#F9FAFB]">Settings</p>
-                                        <p className="text-sm text-[#9CA3AF]">Playback, notifications, and more</p>
-                                    </div>
-                                </button>
-                            </div>
-                        </div>
-                    )}
-                </div>
                 </SectionErrorBoundary>
             </ScrollArea>
 
