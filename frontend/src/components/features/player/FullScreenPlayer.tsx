@@ -114,7 +114,10 @@ export const FullScreenPlayer = () => {
                 </div>
 
                 {/* Content Container */}
-                <div className="relative flex flex-col h-full w-full max-w-full md:max-w-2xl mx-auto px-4 md:px-8 py-4 md:py-8 min-w-0">
+                <div
+                    className="relative flex flex-col h-full w-full max-w-full md:max-w-2xl mx-auto px-4 md:px-8 pt-4 md:pt-8 min-w-0"
+                    style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px) + 16px, 24px)' }}
+                >
                     {/* Close handle - swipe down or tap to close; 44px min touch target */}
                     <div className="flex justify-center shrink-0 z-10 mb-2 min-h-11">
                         <motion.button
@@ -194,14 +197,14 @@ export const FullScreenPlayer = () => {
 
                                         {/* Full progress bar with current time and total time */}
                                         <div className="mb-6 px-0">
-                                            <div className="relative group h-1.5 w-full flex items-center">
+                                            <div className="relative group h-2 w-full flex items-center">
                                                 <input
                                                     type="range"
                                                     min={0}
                                                     max={duration || 100}
                                                     value={currentTime}
                                                     onChange={handleSeek}
-                                                    className="absolute inset-0 w-full h-6 -top-2 opacity-0 cursor-pointer z-20"
+                                                    className="absolute inset-0 w-full h-10 -top-4 opacity-0 cursor-pointer z-20"
                                                 />
                                                 <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden relative">
                                                     {/* Buffered region */}
@@ -223,7 +226,7 @@ export const FullScreenPlayer = () => {
                                                     )}
                                                 </div>
                                                 <div
-                                                    className="absolute h-3.5 w-3.5 bg-white rounded-full shadow-md top-1/2 pointer-events-none -translate-y-1/2 -translate-x-1/2"
+                                                    className="absolute h-4 w-4 bg-white rounded-full shadow-md top-1/2 pointer-events-none -translate-y-1/2 -translate-x-1/2"
                                                     style={{ left: `${progressPercent}%` }}
                                                 />
                                             </div>
@@ -234,7 +237,7 @@ export const FullScreenPlayer = () => {
                                         </div>
 
                                         {/* Controls */}
-                                        <div className="flex items-center justify-between px-2 pb-6">
+                                        <div className="flex items-center justify-between px-2 pb-4">
                                             <ShuffleButton />
 
                                             <motion.button

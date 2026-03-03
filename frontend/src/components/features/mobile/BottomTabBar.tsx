@@ -50,28 +50,28 @@ export const BottomTabBar = () => {
                     >
                         {({ isActive }) => (
                             <>
-                                <tab.icon
-                                    className={cn(
-                                        'size-6 transition-colors',
-                                        isActive ? 'text-[#22C55E]' : 'text-white/50'
-                                    )}
-                                    strokeWidth={isActive ? 2.5 : 2}
-                                />
+                                <motion.div
+                                    animate={{
+                                        scale: isActive ? 1.2 : 1,
+                                    }}
+                                    transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+                                >
+                                    <tab.icon
+                                        className={cn(
+                                            'size-6 transition-colors duration-200',
+                                            isActive ? 'text-[#22C55E]' : 'text-white/50'
+                                        )}
+                                        strokeWidth={isActive ? 2.5 : 2}
+                                    />
+                                </motion.div>
                                 <span
                                     className={cn(
-                                        'text-[11px] font-medium transition-colors',
+                                        'text-[11px] font-medium transition-colors duration-200',
                                         isActive ? 'text-[#22C55E]' : 'text-white/50'
                                     )}
                                 >
                                     {tab.label}
                                 </span>
-                                {isActive && (
-                                    <motion.div
-                                        layoutId="activeTabMobile"
-                                        className="absolute top-0 left-1/2 -translate-x-1/2 w-10 h-0.5 rounded-full bg-[#22C55E]"
-                                        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                                    />
-                                )}
                             </>
                         )}
                     </NavLink>
@@ -80,3 +80,4 @@ export const BottomTabBar = () => {
         </nav>
     );
 };
+
