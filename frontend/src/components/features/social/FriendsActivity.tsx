@@ -15,7 +15,13 @@ export const FriendsActivity = () => {
 
     // Filter out current user - guard against non-array data from API errors
     const usersList = Array.isArray(users) ? users : [];
-    const friends = usersList.filter((u) => u.clerkId !== user?.id && u.fullName !== "Admin");
+    const friends = Array.from(
+        new Map(
+            usersList
+                .filter((u) => u.clerkId !== user?.id && u.fullName !== "Admin")
+                .map((u) => [u._id, u])
+        ).values()
+    );
 
     return (
         <div className='h-full flex flex-col'>

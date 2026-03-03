@@ -3,7 +3,7 @@
  * 4 quick actions: Music, Explore, Chat, Profile. Always visible; active/inactive accent states.
  */
 
-import { Music2, Compass, MessageSquare, User } from 'lucide-react';
+import { Home, Search, Library, MessageSquare, User } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -11,13 +11,14 @@ import { cn } from '@/lib/utils';
 interface Tab {
     id: string;
     label: string;
-    icon: typeof Music2;
+    icon: typeof Home;
     path: string;
 }
 
 const tabs: Tab[] = [
-    { id: 'music', label: 'Music', icon: Music2, path: '/home' },
-    { id: 'explore', label: 'Explore', icon: Compass, path: '/browse' },
+    { id: 'home', label: 'Home', icon: Home, path: '/home' },
+    { id: 'search', label: 'Search', icon: Search, path: '/search' },
+    { id: 'library', label: 'Library', icon: Library, path: '/library' },
     { id: 'chat', label: 'Chat', icon: MessageSquare, path: '/chat' },
     { id: 'profile', label: 'Profile', icon: User, path: '/profile' },
 ];

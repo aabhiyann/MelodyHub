@@ -14,7 +14,9 @@ import {
   SlidersHorizontal,
   X,
   Play,
+  ListPlus,
 } from 'lucide-react';
+
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { CategoryCard } from '@/components/ui/CategoryCard';
 import Topbar from '@/components/layout/TopBar';
@@ -33,6 +35,8 @@ import { SearchResultsSkeleton } from '@/components/shared/LoadingSkeletons';
 import { EmptyState } from '@/components/shared/EmptyState';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { AddToPlaylistDialog } from '@/components/features/playlist/AddToPlaylistDialog';
+
 
 const GENRES = [
   { name: 'All Genres', value: 'all' },
@@ -66,6 +70,7 @@ const SearchPage = () => {
   const [selectedGenre, setSelectedGenre] = useState('all');
   const [sortBy, setSortBy] = useState('relevance');
   const [showFilters, setShowFilters] = useState(false);
+  const [selectedSongForPlaylist, setSelectedSongForPlaylist] = useState<string | null>(null);
   const { songs, albums, fetchSongs, fetchAlbums } = useMusicStore();
   const { setCurrentSong } = usePlayerStore();
   const navigate = useNavigate();
@@ -291,6 +296,7 @@ const SearchPage = () => {
                   className="py-12"
                 />
               ) : (
+
                 <>
                   {/* Songs */}
                   {songsResults.length > 0 && (
@@ -305,7 +311,7 @@ const SearchPage = () => {
                           <div
                             key={song._id}
                             onClick={() => handlePlaySong(song)}
-                            className="flex items-center gap-4 min-h-[44px] p-3 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group"
+                            className="flex items-center gap-4 min-h-[44px] p-3 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group relative"
                           >
                             <div className="relative size-14 rounded-md overflow-hidden shrink-0">
                               <img
@@ -326,15 +332,32 @@ const SearchPage = () => {
                               <p className="text-zinc-400 text-sm truncate">{song.artist}</p>
                             </div>
                             {song.genre && (
-                              <span className="px-3 py-1 rounded-full text-xs bg-white/10 text-zinc-300">
+                              <span className="px-3 py-1 rounded-full text-xs bg-white/10 text-zinc-300 hidden sm:inline">
                                 {song.genre}
                               </span>
                             )}
+                            {/* Inline Add to Playlist button — appears on row hover */}
+                            <button
+                              onClick={(e) => { e.stopPropagation(); setSelectedSongForPlaylist(song._id); }}
+                              className="opacity-0 group-hover:opacity-100 transition-opacity p-2 rounded-full hover:bg-white/10 text-zinc-400 hover:text-white shrink-0"
+                              title="Add to playlist"
+                            >
+                              <ListPlus className="size-4" />
+                            </button>
                           </div>
                         ))}
                       </div>
+                      {/* AddToPlaylistDialog renders outside the rows to avoid event conflicts */}
+                      {selectedSongForPlaylist && (
+                        <AddToPlaylistDialog
+                          songId={selectedSongForPlaylist}
+                          open={true}
+                          onOpenChange={(open) => { if (!open) setSelectedSongForPlaylist(null); }}
+                        />
+                      )}
                     </div>
                   )}
+
 
                   {/* Artists */}
                   {artistsResults.length > 0 && (
@@ -344,13 +367,14 @@ const SearchPage = () => {
                         <h2 className="text-2xl font-bold text-white">Artists</h2>
                         <span className="text-zinc-400">({artistsResults.length})</span>
                       </div>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
+                      <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
+
                         {artistsResults.slice(0, 12).map((artist) => {
                           const artistSong = songs.find((s) => s.artist === artist);
                           return (
                             <button
                               key={artist}
-                              onClick={() => setSearchQuery(artist)}
+                              onClick={() => navigate(`/artists/${encodeURIComponent(artist)}`)}
                               className="group relative p-4 rounded-xl bg-surface-card/40 hover:bg-surface-elevated/60 backdrop-blur-md border border-white/5 transition-all duration-300 hover:-translate-y-1 hover:border-white/10 hover:shadow-xl text-center"
                             >
                               <div className="relative aspect-square mb-3 rounded-full overflow-hidden shadow-lg border border-white/5 group-hover:border-brand-primary/30 transition-colors">

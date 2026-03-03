@@ -175,16 +175,16 @@ export const Sidebar = ({ className }: SidebarProps) => {
 
                 <div className="my-2 border-t border-white/[0.08]" />
 
-                {/* AI Playlist — opens modal, not a route */}
                 <div className="space-y-0.5 mb-2">
                     <button
                         type="button"
                         onClick={openAIModal}
+                        title="AI Playlist Generator — describe your vibe, get a custom playlist"
                         className={cn(
                             'flex items-center gap-3 px-3 py-2.5 rounded-lg w-full transition-all duration-200',
                             'text-[#22C55E] hover:bg-[#22C55E]/10 hover:text-[#22C55E]'
                         )}
-                        aria-label="Generate AI Playlist"
+                        aria-label="AI Playlist Generator"
                     >
                         <Sparkles className="size-5 shrink-0" />
                         {isExpanded && (
@@ -198,6 +198,11 @@ export const Sidebar = ({ className }: SidebarProps) => {
                         <NavLink
                             key={item.id}
                             to={item.path}
+                            title={
+                                item.id === 'quests'
+                                    ? 'Complete daily challenges to earn badges and XP'
+                                    : item.label
+                            }
                             className={({ isActive }) => navLinkClass(isActive)}
                         >
                             {({ isActive }) => (
