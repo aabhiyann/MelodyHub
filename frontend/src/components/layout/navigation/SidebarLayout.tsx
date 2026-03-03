@@ -1,5 +1,3 @@
-import { useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
 import { Sidebar } from './Sidebar';
 import { useIsMobile } from '@/hooks/useMediaQuery';
 import { Outlet } from 'react-router-dom';
@@ -11,7 +9,6 @@ const BottomTabBar = lazy(() => import('@/components/features/mobile/BottomTabBa
 
 export const SidebarLayout = () => {
     const isMobile = useIsMobile();
-    const location = useLocation();
 
     return (
         <div className="h-screen flex bg-surface-base text-text-primary font-sans antialiased selection:bg-brand-primary/30">
@@ -22,17 +19,15 @@ export const SidebarLayout = () => {
                 </aside>
             )}
 
-            {/* Main Content Area */}
+            {/* Main Content Area
+                pb-[88px] accounts for BottomTabBar (56px) + mini player (32px) on mobile.
+                md:pb-0 resets on desktop where the bar doesn't exist. */}
             <main
                 id="main-content"
-                className="flex-1 min-w-0 overflow-y-auto overflow-x-hidden focus:outline-none pb-32 md:pb-0 touch-scroll"
+                className="flex-1 min-w-0 overflow-y-auto overflow-x-hidden focus:outline-none pb-[88px] md:pb-0 touch-scroll"
                 tabIndex={-1}
             >
-                <AnimatePresence mode="wait">
-                    <div key={location.pathname} className="h-full w-full">
-                        <Outlet />
-                    </div>
-                </AnimatePresence>
+                <Outlet />
             </main>
 
             {/* Right Sidebar (Desktop Only) */}
