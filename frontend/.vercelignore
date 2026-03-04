@@ -1,0 +1,5 @@
+playwright-report/
+test-results/
+*.zip
+src/**/*.test.tsx
+src/**/__tests__/
