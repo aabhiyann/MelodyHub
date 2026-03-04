@@ -240,10 +240,10 @@ const SearchPage = () => {
 
               <div className="flex-1" />
 
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2 w-full sm:w-auto">
                 {/* Genre Filter */}
                 <Select value={selectedGenre} onValueChange={setSelectedGenre}>
-                  <SelectTrigger className="w-40 bg-white/10 border-white/10 text-white">
+                  <SelectTrigger className="flex-1 sm:flex-none sm:w-36 min-w-0 bg-white/10 border-white/10 text-white text-sm">
                     <SelectValue placeholder="Genre" />
                   </SelectTrigger>
                   <SelectContent>
@@ -258,7 +258,7 @@ const SearchPage = () => {
 
                 {/* Sort Dropdown */}
                 <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-48 bg-white/10 border-white/10 text-white">
+                  <SelectTrigger className="flex-1 sm:flex-none sm:w-44 min-w-0 bg-white/10 border-white/10 text-white text-sm">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent>
