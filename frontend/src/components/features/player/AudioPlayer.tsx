@@ -62,14 +62,30 @@ const AudioPlayer = () => {
 	// Enable keyboard controls
 	useKeyboardControls();
 
-	// Handle play/pause logic
+	// Handle play/pause logic — track the play() Promise to avoid AbortError on rapid toggles
+	const playPromiseRef = useRef<Promise<void> | null>(null);
 	useEffect(() => {
 		if (!audioRef.current) return;
 
 		if (isPlaying) {
-			audioRef.current.play().catch(err => console.error('Playback error:', err));
+			const promise = audioRef.current.play();
+			playPromiseRef.current = promise;
+			promise.catch((err) => {
+				// AbortError is expected when pause() is called before play() resolves
+				if (err?.name !== 'AbortError') {
+					console.error('Playback error:', err);
+				}
+			});
 		} else {
-			audioRef.current.pause();
+			// If a play() is in-flight, wait for it to resolve before pausing
+			if (playPromiseRef.current) {
+				playPromiseRef.current
+					.then(() => audioRef.current?.pause())
+					.catch(() => audioRef.current?.pause()); // pause even if play was aborted
+				playPromiseRef.current = null;
+			} else {
+				audioRef.current.pause();
+			}
 		}
 	}, [isPlaying]);
 
