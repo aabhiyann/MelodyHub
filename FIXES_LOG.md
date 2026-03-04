@@ -23,16 +23,14 @@ Compiled from `BETA_TEST_REPORT_PASS3.md` and `STRESS_TEST_REPORT.md`.
 
 ---
 
-## MEDIUM Fixes (Deferred)
+## MEDIUM Fixes
 
-| Fix | Status | Notes |
-|-----|--------|-------|
-| Music stops on browser back/forward navigation | 🔜 Pending | Requires PlayerStore persistence across `popstate` events |
-| Play/pause icon desync under rapid clicking | 🔜 Pending | Need debounce on togglePlay in AudioPlayer |
-| Radio page empty state on direct `/radio` visit | ✅ Already OK | Code auto-redirects to random song when songs are loaded |
-| AI rate limit error message humanized | ✅ Already OK | AIStore already shows friendly "wait X minutes" message (429 handler) |
-| Home page UI overflow at 320px | 🔜 Pending | Minor visual polish |
-| Chat page: open specific user from profile Message button | 🔜 Pending | ChatPage needs to handle `openUserId` route state |
+| Fix | Branch | Status | Tested |
+|-----|--------|--------|--------|
+| Play/pause icon desync under rapid clicks (AbortError race: `audio.play()` interrupted by `pause()`) | `fix/medium-priority-issues` | ✅ Done | ✅ Promise chain properly aborted/resolved |
+| Search filter dropdowns overflow on 320px screens (w-40/w-48 fixed width > viewport) | `fix/medium-priority-issues` | ✅ Done | ✅ Now `flex-1` on mobile, wraps responsively |
+| Chat page: open specific user from profile "Message" button | Already implemented | ✅ Pre-existing | ✅ ChatPage lines 56-77 handle `openUserId` from location.state |
+| Music stops on browser back/forward | N/A | ⚠️ SPAs don't unmount AudioPlayer — audio should persist. Needs further investigation if still reproducible on deployed site. | |
 
 ---
 
