@@ -336,10 +336,10 @@ const SearchPage = () => {
                                 {song.genre}
                               </span>
                             )}
-                            {/* Inline Add to Playlist button — appears on row hover */}
+                            {/* Inline Add to Playlist button — always visible on mobile, hover-reveal on desktop */}
                             <button
                               onClick={(e) => { e.stopPropagation(); setSelectedSongForPlaylist(song._id); }}
-                              className="opacity-0 group-hover:opacity-100 transition-opacity p-2 rounded-full hover:bg-white/10 text-zinc-400 hover:text-white shrink-0"
+                              className="opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity p-2 rounded-full hover:bg-white/10 text-zinc-400 hover:text-white shrink-0"
                               title="Add to playlist"
                             >
                               <ListPlus className="size-4" />

@@ -1,9 +1,9 @@
 /**
  * BottomTabBar - Mobile bottom navigation
- * 4 quick actions: Music, Explore, Chat, Profile. Always visible; active/inactive accent states.
+ * 6 quick actions: Home, Search, Library, Community, Chat, Profile.
  */
 
-import { Home, Search, Library, MessageSquare, User } from 'lucide-react';
+import { Home, Search, Library, MessageSquare, User, Users } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -19,6 +19,7 @@ const tabs: Tab[] = [
     { id: 'home', label: 'Home', icon: Home, path: '/home' },
     { id: 'search', label: 'Search', icon: Search, path: '/search' },
     { id: 'library', label: 'Library', icon: Library, path: '/library' },
+    { id: 'community', label: 'Community', icon: Users, path: '/community' },
     { id: 'chat', label: 'Chat', icon: MessageSquare, path: '/chat' },
     { id: 'profile', label: 'Profile', icon: User, path: '/profile' },
 ];
@@ -42,7 +43,7 @@ export const BottomTabBar = () => {
                         className={() =>
                             cn(
                                 'flex flex-col items-center justify-center gap-0.5',
-                                'min-w-[56px] min-h-[44px] flex-1',
+                                'min-w-[40px] min-h-[44px] flex-1',
                                 'transition-colors duration-200',
                                 'relative'
                             )
@@ -58,7 +59,7 @@ export const BottomTabBar = () => {
                                 >
                                     <tab.icon
                                         className={cn(
-                                            'size-6 transition-colors duration-200',
+                                            'size-5 transition-colors duration-200',
                                             isActive ? 'text-[#22C55E]' : 'text-white/50'
                                         )}
                                         strokeWidth={isActive ? 2.5 : 2}
@@ -66,7 +67,7 @@ export const BottomTabBar = () => {
                                 </motion.div>
                                 <span
                                     className={cn(
-                                        'text-[11px] font-medium transition-colors duration-200',
+                                        'text-[10px] font-medium transition-colors duration-200',
                                         isActive ? 'text-[#22C55E]' : 'text-white/50'
                                     )}
                                 >
