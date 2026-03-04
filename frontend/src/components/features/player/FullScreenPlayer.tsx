@@ -45,6 +45,8 @@ export const FullScreenPlayer = () => {
     } = usePlayerStore();
 
     const [activeTab, setActiveTab] = useState<'player' | 'lyrics' | 'queue'>('player');
+    // IMPORTANT: useDominantColor must be called before any conditional return — it's a hook (uses useState/useEffect)
+    const dominantColor = useDominantColor(currentSong?.imageUrl);
 
     const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
         const time = Number(e.target.value);
@@ -75,7 +77,7 @@ export const FullScreenPlayer = () => {
 
     const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
     const bufferedPercent = duration > 0 ? (bufferedTime / duration) * 100 : 0;
-    const dominantColor = useDominantColor(currentSong?.imageUrl);
+    // dominantColor is now declared before the early return (see hook call above)
 
     return (
         <AnimatePresence>
