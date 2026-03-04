@@ -344,7 +344,8 @@ export const FullScreenPlayer = () => {
                                     className="flex-1 h-full flex flex-col items-center justify-center text-white/50"
                                 >
                                     <ListMusic className="size-16 mb-4 opacity-30" />
-                                    <p className="text-lg font-medium">Coming Soon</p>
+                                    <p className="text-lg font-medium">Queue — Coming Soon</p>
+                                    <p className="text-sm text-white/30 mt-1">Track queue is on the roadmap</p>
                                 </motion.div>
                             )}
                         </AnimatePresence>
