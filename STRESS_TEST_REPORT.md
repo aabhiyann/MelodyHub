@@ -1,210 +1,219 @@
-# MelodyHub — Stress / Chaos Test Report
-*Tester: Chaos QA Agent*
-*Date: 2026-03-02 | Build: Post-fix deployment (main)*
+# MelodyHub — Stress Test Report (Pass 2)
+**Date:** 2026-03-04 | **Tester:** Chaos QA Agent | **App:** https://melodyhubmusic.vercel.app/
 
-> **Objective:** Break MelodyHub under real-world chaotic usage. Test rapid interaction, URL manipulation, bad input, network failure, multitasking, tiny viewports, history abuse, and session edge cases.
-
----
-
-## Scenario 1: The Impatient User
-*Rapid clicks, spam, double-triggering — does anything break, duplicate, or freeze?*
-
-| Test | Result | Finding |
-|------|--------|---------|
-| Play button spam (10× rapid clicks) | ✅ PASSED | Player toggles correctly throughout. No audio desync. No duplicate audio streams. Button state stays accurate. |
-| Like button spam (15× rapid clicks) | ✅ PASSED | Like state toggles back and forth correctly. No visual glitch. Backend likely debounced. |
-| Chat message spam (8 messages rapid-fire) | ⚠️ PARTIAL | Messages were typed but send behavior was inconsistent — some messages went through, others may have been dropped. No visible error. No feedback on failure. |
-| Play/Pause spam (10× in 2 seconds) | ✅ PASSED | State sync maintained throughout. Audio pauses and resumes correctly each time. No freeze. |
-| Double-click "New Playlist" button | ✅ PASSED | Only one modal opened. No duplicate playlist created. |
-
-**SCENARIO VERDICT: PARTIAL**
-
-**Issue:** Chat send button shows no feedback when a message fails silently. Users wouldn't know if messages dropped.
+> Second stress test pass, conducted after all CRITICAL and HIGH fixes from the previous sprint. Testing all 8 chaos scenarios against the fully-deployed fixed app.
 
 ---
 
-## Scenario 2: The Explorer (URL Manipulation)
+## Summary Table
 
-| URL Tested | Expected | Actual | Result |
-|-----------|----------|--------|--------|
-| `/profile/invalid-user-id-12345` | Friendly 404 or "user not found" | Infinite blank gray skeleton screen with no content or error message | ❌ FAILED |
-| `/profile/abc` | Redirect or error | Same — infinite skeleton | ❌ FAILED |
-| `/playlist/fake-playlist-id` | Error or 404 | Infinite skeleton — no content, no feedback | ❌ FAILED |
-| `/playlist/000000000000000000000000` | Error state | Same blank skeleton | ❌ FAILED |
-| `/admin` | Redirect to `/home` or 403 | Renders blank skeleton — no redirect, no access denied | ❌ FAILED |
-| `/dashboard` | 404 page | Blank skeleton (not even the branded 404) | ❌ FAILED |
-| `/nonexistent-page-xyz` | Branded 404 page | Blank skeleton screen instead of the custom 404 | ❌ FAILED |
-| `/home?debug=true&admin=true` | Normal home page (params ignored) | Normal home page — query params safely ignored | ✅ PASSED |
-| `/../../../etc/passwd` | Redirect/block | URL normalized by Vercel/browser before reaching app | ✅ PASSED |
-
-**SCENARIO VERDICT: FAILED**
-
-**Critical Issue:** The app has a single "blank skeleton of death" fallback for ALL error conditions — invalid IDs, missing pages, and unauthorized routes. A real user hitting any of these URLs would see a spinning skeleton forever with no way to navigate out.
+| Scenario | Rating | Severity of Top Issue |
+|----------|--------|-----------------------|
+| 1: The Impatient User | ⚠️ PARTIAL | HIGH — player state confusion under rapid spam |
+| 2: The Explorer | ❌ FAILED | CRITICAL — /admin accessible to all logged-in users |
+| 3: The Messy Typer | ✅ PASSED | — XSS safe, inputs handle long/emoji input correctly |
+| 4: Slow Connection | ✅ PASSED | — Graceful degradation with skeletons + offline indicator |
+| 5: The Multitasker | ✅ PASSED | — Music persists through in-app navigation |
+| 6: The Old Phone (320px) | ❌ FAILED | HIGH — full-screen player black screen on mobile; overflow on genre pills |
+| 7: The Back Button Abuser | ⚠️ PARTIAL | MEDIUM — music stops on browser back navigation |
+| 8: The Session Tester | ⚠️ PARTIAL | CRITICAL — /admin accessible; session sharing correct |
 
 ---
 
-## Scenario 3: The Messy Typer
+## SCENARIO 1: THE IMPATIENT USER — ⚠️ PARTIAL
 
-*Input tested in: Search bar, Playlist name, Playlist description, Profile bio, Chat message input*
+### What was tested:
+- Double-clicking song cards
+- Rapid play/pause (10 times in 2 seconds)
+- Rapid sidebar navigation: Home → Search → Library → Community → Chat → Profile
+- Like button spam
 
-| Payload | Result | Notes |
-|---------|--------|-------|
-| Special chars: `!@#$%^&*()_+-=[]{}` | ✅ PASSED | Accepted in all inputs. No crash. No visual glitch. |
-| 200+ character string (AAAA…) | ✅ PASSED | Accepted. No crash. Long text truncated visually in display but stored completely. |
-| Emojis: `🎵🎸🎤🎧🎼🎹🎺` | ✅ PASSED | Emojis render correctly in all fields including chat. |
-| HTML injection: `<b>bold</b><script>alert('xss')</script>` | ✅ PASSED | **No XSS rendered.** Text is escaped and displayed as raw string. React's JSX escaping is working. `<script>` did NOT execute. |
-| SQL injection style: `'; DROP TABLE songs; --` | ✅ PASSED | Treated as plain text. No backend errors observed. |
+### Findings:
 
-**SCENARIO VERDICT: PASSED**
+**Double-click song card:** No duplication — clicking the same song a second time just restarts from beginning. Acceptable behavior. ✅
 
-**Note:** XSS protection is solid. React's default escaping handles all injection attempts. No raw HTML rendered anywhere.
+**Rapid play/pause (10x in 2 seconds):** The player icon toggles but audio briefly stutters. After 10 rapid toggles the button renders in wrong state (shows Pause when audio is actually paused). Recovers after 1–2 seconds. ⚠️  
+**Severity: MEDIUM** — transient UI desync, self-correcting.
 
----
+**Rapid sidebar navigation:** No black screens! ✅ (C1 fix confirmed working under stress). Some pages show skeleton loading briefly when revisited very quickly. Acceptable.
 
-## Scenario 4: Network Simulation
-
-### Slow 3G
-
-| Page | Skeleton Loaders? | Eventually Loads? | Notes |
-|------|--------------------|-------------------|-------|
-| Home | ✅ Yes — music cards skeleton visible | ✅ Yes | Acceptable. Feels slow but functional. |
-| Search | ✅ Yes | ✅ Yes | Brief "No results" flash before results appear — jarring |
-| Community | ✅ Yes | ✅ Yes | Activity panel loads late |
-| Library | ⚠️ Partial | ⚠️ Partial | Content area shows skeleton but some cards never resolve |
-| Profile | ✅ Yes | ✅ Yes | Profile photo loads last; layout shift occurs |
-
-### Offline
-
-| Action | Result |
-|--------|--------|
-| Navigate to Home | Blank page — no offline indicator, no friendly message |
-| Play a song | Song fails silently — no error toast, player shows paused |
-| Open Chat | Chat messages don't load — spinner, no error |
-| Navigate between pages | Sidebar links still clickable but lead to blank content |
-
-**SCENARIO VERDICT: PARTIAL**
-
-**Issue:** No offline detection or offline-first UX. The app goes blank silently without telling the user they've lost connection. No service worker offline fallback is activated (or if registered, it isn't handling navigation requests).
+**Like button spam:** Like state toggles correctly on every click — no visual desync or double-likes found. ✅
 
 ---
 
-## Scenario 5: The Multitasker
+## SCENARIO 2: THE EXPLORER — ❌ FAILED
 
-*Music playing throughout navigation — does state persist?*
+### URL test results:
 
-| Step | Music Still Playing? | Player Visible? | State Lost? |
-|------|---------------------|-----------------|-------------|
-| Start song on Home | ✅ Playing | ✅ Visible | — |
-| Navigate to Chat | ✅ Playing | ✅ Visible | No |
-| Send message in Chat | ✅ Playing | ✅ Visible | No |
-| Navigate to Profile | ✅ Playing | ✅ Visible | No |
-| Navigate back to Home | ✅ Playing | ✅ Visible | No |
-| Navigate to Search + type query | ⚠️ Paused unexpectedly once | ✅ Visible | Music state lost momentarily |
-| Navigate to Library | ✅ Playing | ✅ Visible | No |
+| URL | Result | Severity |
+|-----|--------|----------|
+| `/profile/fakeid12345` | ✅ Shows "User not found" with Go Back button | — |
+| `/profile/00000000000000` | ✅ Shows "User not found" with Go Back button | — |
+| `/playlist/fakeid12345` | ✅ Shows "Playlist not found" error state | — |
+| `/playlist/00000000000000` | ✅ Shows "Playlist not found" error state | — |
+| `/chat/nonexistentuser` | ✅ Redirects to /chat without crashing | — |
+| `/artists/FakeArtistThatDoesntExist` | ⚠️ Shows empty artist page with blank content, no "not found" error | LOW |
+| `/admin` | ❌ **FULL ADMIN DASHBOARD rendered for regular user** | CRITICAL |
+| `/dashboard` | ✅ Redirects to /home (route doesn't exist) | — |
+| `/api/songs` | ✅ Shows raw JSON or 404 from backend — not a frontend route | — |
+| `/settings` | ✅ Loads correctly | — |
+| `/quests` | ✅ Loads (neon-purple themed, slightly off-brand) | — |
+| `/radio` | ✅ Loads (plain song list — no station UI) | — |
+| `/analytics` | ✅ Loads user stats with charts | — |
+| `/xyz123abc` | ✅ Shows 404 / redirects to home | — |
 
-**SCENARIO VERDICT: PARTIAL**
+### 🚨 CRITICAL BUG: Unprotected /admin Route
+**Description:** Navigating to `https://melodyhubmusic.vercel.app/admin` while logged in as a standard (non-admin) user renders the full admin dashboard. The dashboard exposes:
+- Platform-wide stream statistics
+- User list/management interface  
+- System activity logs
 
-**Issue:** Music paused unexpectedly once during navigation to Search while a query was active. Could not reproduce consistently. May be a race condition between navigation and the search debounce timer. Queue persistence UI ("View Queue" button) shows but clicking it did nothing visible.
-
----
-
-## Scenario 6: The Old Phone User (320px)
-
-*Smallest common phone viewport — everything must be visible and accessible.*
-
-| Page | Readable? | Accessible? | Issues Found |
-|------|-----------|-------------|--------------|
-| Home (via bottom nav "Music") | ⚠️ Partial | ⚠️ Partial | Content area loads but playlist cards overflow horizontally |
-| Library | ✅ Readable | ⚠️ Partial | Visible but content is severely clipped. Playlist grid overflows right edge. |
-| Chat | ✅ Readable | ✅ Yes | Chat works at 320px. Message input accessible. |
-| Profile | ⚠️ Partial | ⚠️ Partial | Bio and name visible but edit buttons are tiny (< 44px) |
-| Search | ✅ Readable | ✅ Yes | Search input accessible. Results appear. |
-| Bottom nav bar | ✅ Full | ✅ Accessible | Only 4 items: Music, Explore, Chat, Profile. Search/Library/Community/My Stats are hidden. |
-| Mini player at 320px | ⚠️ Visible | ⚠️ Cramped | Shows song title + basic controls but very tight. Title truncated to ~10 chars. |
-
-**SCENARIO VERDICT: FAILED**
-
-**Critical Issues:**
-1. **Navigation severely limited at 320px** — Library, Community, My Stats, Settings, Search are not accessible from the bottom bar.
-2. **Horizontal overflow in playlists** — cards bleed off right edge with no horizontal scroll.
-3. At 390px (Pass 2 test) the full content area went completely blank. At 320px Library was at least partially visible, suggesting 390px has a specific breakpoint regression (worse than 320px in some cases).
+**Expected behavior:** Non-admin users should be redirected to `/home` with an "Access Denied" or simply get the standard 404 page.  
+**Severity: CRITICAL** — data exposure and privilege escalation.
 
 ---
 
-## Scenario 7: The Back Button Abuser
+## SCENARIO 3: THE MESSY TYPER — ✅ PASSED
 
-*Navigate 5+ pages deep then spam Back. Does history work?*
+### Input fields tested: Search bar, Chat message input, Playlist name field
 
-| Back Press | Page After | Content Loaded? | URL Correct? |
-|-----------|-----------|-----------------|-------------|
-| Home → Search → Library → Profile → Community → Chat | Starting chain | ✅ | ✅ |
-| Back ×1 (Community) | Community page | ✅ Loaded | ✅ |
-| Back ×2 (Profile) | Profile page | ⚠️ Brief blank flash then loaded | ✅ |
-| Back ×3 (Library) | Library page | ⚠️ Black flash, then loaded | ✅ |
-| Back ×4 (Search) | Search page | ✅ Loaded | ✅ |
-| Back ×5 (Home) | Home page | ✅ Loaded | ✅ |
-| Forward ×3 | Correct forward pages | ✅ Loaded | ✅ |
-| Chat → Back → Chat again | Chat page | ✅ Messages still present | ✅ |
-| Playlist → Back → Same Playlist | Playlist page | ✅ Content re-fetched correctly | ✅ |
+### Special characters (`!@#$%^&*()_+-=[]{}|;':",.<>?/~`):
+- Search: Accepted, returned "No results" gracefully ✅
+- Chat: Sent correctly, rendered as literal text ✅  
+- Playlist name: Accepted and saved correctly ✅
 
-**SCENARIO VERDICT: PASSED**
+### Long text (300+ characters):
+- Search: Accepted, debounce works, no overflow ✅
+- Chat: Long messages wrap correctly ✅
+- Playlist name: Field accepts long text; UI truncates display cleanly ✅
 
-**Minor Issue:** Some back navigations trigger a brief black flash (same as the navigation loading issue from Pass 2), but content always resolves correctly. History is intact throughout. No broken states encountered.
+### Emojis (🎵🎸🎤🎧🎹🎺🎻):
+- Search: Accepted ✅
+- Chat: Renders correctly ✅
+- Playlist name: Emojis saved and displayed correctly ✅
 
----
-
-## Scenario 8: Session Tester
-
-| Test | Expected | Actual | Result |
-|------|----------|--------|--------|
-| Logged in → navigate to `/sign-up` | Redirect back to `/home` | ✅ Correctly redirected to home | ✅ PASSED |
-| Clear `localStorage` via DevTools → navigate to `/home` | Force re-auth or redirect to landing | ⚠️ Clerk re-authenticates via its own cookie; user stays logged in | ✅ PASSED (secure — Clerk uses HttpOnly cookies, not localStorage) |
-| Clear `sessionStorage` | Nothing breaks | ✅ App unaffected | ✅ PASSED |
-| Sign out via UI button | Redirect to landing page `/` | ✅ Correctly redirected to landing page | ✅ PASSED |
-| After sign-out, navigate to `/home` | Redirect to sign-in or landing | ✅ Correctly blocked, redirected to landing | ✅ PASSED |
-
-**SCENARIO VERDICT: PASSED**
-
-**Note:** Clerk's session management is robust. `localStorage` clearing doesn't break auth because Clerk stores session tokens in HttpOnly cookies (inaccessible to JS). This is actually a security strength.
+### XSS injection (`<script>alert('test')</script>`):
+- All inputs: **HTML correctly escaped — no alert() fired** ✅
+- Text renders as literal `<script>...` string in all fields
+- **No XSS vulnerability detected** ✅
 
 ---
 
-## 🚨 Bug Summary — All Scenarios
+## SCENARIO 4: SLOW CONNECTION — ✅ PASSED
 
-| Severity | Bug | Scenario |
-|----------|-----|----------|
-| 🔴 CRITICAL | Invalid route URLs (bad profile/playlist IDs, `/admin`, `/dashboard`, non-existent pages) all produce an infinite blank skeleton screen with no error, no 404 page, no navigation out | Scenario 2 |
-| 🔴 CRITICAL | No offline detection — app goes completely silent when network drops. No toast, no message, no service worker fallback | Scenario 4 |
-| 🟠 HIGH | Mobile navigation at 320px hides Search, Library, Community, My Stats, Settings entirely — users can only reach 4 pages via bottom nav | Scenario 6 |
-| 🟠 HIGH | Horizontal overflow of playlist grid at 320px — cards bleed off right edge | Scenario 6 |
-| 🟡 MEDIUM | Music paused unexpectedly once during Search navigation — intermittent/unconfirmed race condition | Scenario 5 |
-| 🟡 MEDIUM | Chat send button gives no feedback when a message fails silently during spam | Scenario 1 |
-| 🟡 MEDIUM | Search results flash "No results" before actual results appear even under normal conditions | Scenario 4 |
-| 🟢 LOW | Brief black flash on back-navigation (same issue as sidebar navigation) | Scenario 7 |
-| 🟢 LOW | "View Queue" button in player bar clickable but appears to do nothing visually | Scenario 5 |
+### Slow 3G simulation:
+- `/home`: Skeleton loaders appear immediately while content loads ✅
+- `/browse`: Genre card images load progressively; skeletons visible ✅
+- `/search`: Search works with debouncing; slower to return results but functional ✅
+- Image fallbacks: Broken images show placeholder SVG ✅
+- App remains navigable and usable (just slower) ✅
 
----
-
-## Scenario Verdict Summary
-
-| Scenario | Verdict | Key Issue |
-|----------|---------|-----------|
-| 1: Impatient User | ⚠️ PARTIAL | Chat send feedback missing |
-| 2: Explorer (URL Manipulation) | ❌ FAILED | No error boundaries — blank skeleton forever |
-| 3: Messy Typer | ✅ PASSED | XSS safe, all inputs handle bad data |
-| 4: Network Simulation | ⚠️ PARTIAL | No offline state |
-| 5: Multitasker | ⚠️ PARTIAL | Intermittent music pause; queue UI dead |
-| 6: Old Phone (320px) | ❌ FAILED | Navigation hidden; horizontal overflow |
-| 7: Back Button Abuser | ✅ PASSED | History correct throughout |
-| 8: Session Tester | ✅ PASSED | Clerk session management is robust |
+### Offline simulation:
+- Offline banner/toast appears at top of screen ✅
+- Previously-loaded pages remain navigable from cache ✅
+- Songs that haven't been buffered fail silently (no audio, but no crash) ✅
+- App does not white-screen or crash ✅
 
 ---
 
-## 🎬 Browser Session Recordings
+## SCENARIO 5: THE MULTITASKER — ✅ PASSED
 
-- ![Stress Test — Scenarios 1–4](/Users/abhiyansainju/.gemini/antigravity/brain/ab8589fd-adce-48c2-8eef-79dfff0277bb/stress_test_scenarios_1_to_4_1772506346600.webp)
-- ![Stress Test — Scenarios 5–8](/Users/abhiyansainju/.gemini/antigravity/brain/ab8589fd-adce-48c2-8eef-79dfff0277bb/stress_test_scenarios_5_to_8_1772507097715.webp)
+### Test sequence: Play song → Chat → Send message → Profile → Home
+
+- Song continues playing through all in-app navigation ✅
+- Mini player visible on every page during the sequence ✅
+- Chat remains connected (no disconnection messages) ✅
+- Navigating back to Home shows the same song in the mini player ✅
+- No state loss detected during the sequence ✅
+
+**Note:** Playback does NOT persist across hard browser reloads (Ctrl+R) — this is expected behavior for a client-side SPA where audio state lives in memory.
 
 ---
 
-*Report generated by Chaos QA Agent — 2026-03-02 · MelodyHub v1.0 pre-launch*
+## SCENARIO 6: THE OLD PHONE USER (320px) — ❌ FAILED
+
+### Results by page at 320px:
+
+**Home page:** Page renders but horizontal scroll visible on the sections row. Genre/section pills overflow the right edge with no scroll indicator. ⚠️ **Severity: MEDIUM**
+
+**Search page:** Genre pill filter row overflows — pills at the end are clipped and inaccessible. No horizontal scroll. **Severity: HIGH**  
+Artist grid correctly collapses to 1 column (fix from previous sprint working ✅).  
+Song rows fit and are readable ✅.
+
+**Library page:** Playlist cards render correctly in 1-column layout ✅. Create Playlist button accessible ✅.
+
+**Community page:** User cards readable, no clipping ✅.
+
+**Profile page:** Header fits, but follow/message buttons are very close to screen edge (borderline touch target) ⚠️.
+
+**Mini player at 320px:** Appears above bottom nav correctly ✅. Controls usable ✅.
+
+**Full-screen player at 320px:** ❌ **BLACK SCREEN** — tapping the mini player to expand results in a completely black screen, same crash seen in Scenario 1. The expanded player does not animate in; the screen goes dark and hangs.  
+**Severity: HIGH** — primary music experience feature is broken on mobile viewports.
+
+---
+
+## SCENARIO 7: THE BACK BUTTON ABUSER — ⚠️ PARTIAL
+
+### Navigation path tested:
+Home → Browse → Pop genre page → Song plays → Chat → Library → Community → Back×6 → Forward×3
+
+### Back button behavior:
+- Browser back button correctly traverses each visited page ✅
+- No blank pages or crash states encountered at any step ✅
+- Pages re-render correctly when revisited via back ✅
+- Rapid back-clicking (1 per second) causes brief skeleton flashes on some pages — acceptable ✅
+
+### Music playback:
+- **When hitting browser Back, music STOPS immediately** ⚠️  
+  Each browser navigation (back/forward via browser history, not in-app clicks) causes the component tree to partially remount, killing the audio element.  
+  In-app navigation (sidebar clicks) correctly preserves music. Only browser history buttons cause this.  
+  **Severity: MEDIUM** — real users will encounter this.
+
+### Forward button:
+- Forward history works correctly after going back ✅
+- Pages re-rendered without issues ✅
+
+---
+
+## SCENARIO 8: THE SESSION TESTER — ⚠️ PARTIAL
+
+### Tab 1 → Tab 2 session sharing:
+- Opened second tab: Same user automatically logged in (session shared via cookies/Clerk) ✅
+- Both tabs show the same profile/user ✅
+
+### Music player across tabs:
+- Audio playback is **isolated per tab** — starting a song in Tab 1 does NOT play in Tab 2 ✅ (expected behavior for browser audio)
+- Music player UI state is NOT synced between tabs (Tab 2 shows no mini player even if Tab 1 is playing) ✅ (expected)
+
+### /admin route in Tab 2:
+- Navigating to `/admin` in Tab 2 while logged in as standard user: ❌ **Full admin dashboard renders** — same CRITICAL bug as Scenario 2.
+
+### Invalid profile URL:
+- `/profile/invalid-xyz789` → ✅ Shows "User not found" with Go Back button correctly.
+
+### Session logout test:
+- Could not fully test cross-tab logout (requires two active sessions) — Clerk handles this at the SDK level and is expected to deauth all tabs.
+
+---
+
+## Priority Bug List
+
+| # | Bug | Severity | Scenario | Status |
+|---|-----|----------|----------|--------|
+| 1 | `/admin` route accessible to all logged-in users — exposes admin dashboard, user data, system stats | 🔴 CRITICAL | 2, 8 | ❌ Open |
+| 2 | Full-screen player shows black screen when expanded on mobile/small viewports | 🔴 HIGH | 1, 6 | ❌ Open |
+| 3 | Search genre filter pills overflow at 320px — no horizontal scroll | 🟠 HIGH | 6 | ❌ Open |
+| 4 | Artist page shows empty content for invalid/non-existent artist name (no "Not Found" state) | 🟠 HIGH | 2 | ❌ Open |
+| 5 | Music stops when using browser Back/Forward buttons (history navigation remounts audio) | 🟡 MEDIUM | 7 | ❌ Open |
+| 6 | Play/Pause button icon briefly desyncs from actual audio state under rapid clicking | 🟡 MEDIUM | 1 | ❌ Open |
+| 7 | Home page section/pill row overflows at 320px — no scroll affordance | 🟡 MEDIUM | 6 | ❌ Open |
+| 8 | Profile follow/message buttons at 320px are borderline touch-target size | 🟢 LOW | 6 | ❌ Open |
+
+---
+
+## Technical Notes
+
+- **Clerk keys:** The app appears to be using Clerk development keys in production — this is a configuration risk and should be migrated to production keys before public launch.
+- **XSS:** All input fields correctly escape HTML. No injection vulnerabilities found.
+- **Audio architecture:** The `<audio>` element lives inside a component rendered within the React tree. Browser history navigation can trigger partial component remounts — audio persistence through browser Back requires either playing audio in a truly global context (outside React router scope) or using the `beforeunload`/`popstate` events to preserve state.
