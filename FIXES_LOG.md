@@ -34,18 +34,41 @@ Compiled from `BETA_TEST_REPORT_PASS3.md` and `STRESS_TEST_REPORT.md`.
 
 ---
 
-## LOW (Skipped)
+## LOW Fixes
 
-Typography inconsistencies, hero CTA copy ("Start Listening Free" → "Jump In"), subtle scrollbar styling.
+| Fix | Branch | Status | Tested |
+|-----|--------|--------|--------|
+| Sidebar "Explore" → "Browse" (label didn't match /browse route) | `fix/low-priority-polish` | ✅ Done | ✅ Browser tested — shows "Browse" in sidebar |
+| Sidebar "My Stats" → "Analytics" (label didn't match /analytics route) | `fix/low-priority-polish` | ✅ Done | ✅ Browser tested — shows "Analytics" in sidebar |
+| Sidebar "Magic" → "AI Playlist ✨ AI" (badge added, more descriptive) | `fix/low-priority-polish` | ✅ Done | ✅ Browser tested — shows "AI Playlist ✨ AI" badge |
+| FullScreenPlayer queue tab label: "Coming Soon" → "Queue — Coming Soon" | `fix/low-priority-polish` | ✅ Done | ✅ Browser tested — queue tab shows improved copy |
+| RadioPage station identity redesign (hero banner, blurred art, Play Station + Shuffle buttons) | `fix/low-priority-polish` | ✅ Done | ✅ Browser tested — station hero confirmed |
+| Search no-results CTA: added "Browse Popular Songs" green button | `fix/low-priority-polish` | ✅ Done | ✅ Browser tested — green CTA button visible |
+| shared/EmptyState: added optional actionLabel/onAction CTA prop | `fix/low-priority-polish` | ✅ Done | ✅ Used by SearchPage |
 
 ---
 
-## Mini Verification Results (after all CRITICAL + HIGH fixes)
+## Bonus Fixes (discovered during verification)
+
+| Fix | Branch | Status | Notes |
+|-----|--------|--------|-------|
+| FullScreenPlayer React hooks violation (`useDominantColor` called after conditional return — true root cause of black screen) | `main` | ✅ Done | Fixed by moving hook before `if (!isExpanded) return null` |
+| Playwright test artifacts committed to git (blocking Vercel builds) | `main` | ✅ Done | Added `playwright-report/` + `test-results/` to `.gitignore` + `.vercelignore` |
+| Duplicate `useNavigate` import in SearchPage (TS2300 blocking Vercel builds) | `main` | ✅ Done | Removed extra import added during LOW fix pass |
+
+---
+
+## Final Verification Results (all CRITICAL + HIGH + MEDIUM + LOW)
 
 | Fix | Result |
 |-----|--------|
 | `/admin` route security | ✅ CONFIRMED — regular users redirected to /home |
-| FullScreenPlayer black screen | ✅ FIXED (root cause: double toggleExpanded race condition — mobile mini player now `md:hidden`) |
+| FullScreenPlayer black screen | ✅ CONFIRMED — album art and controls visible on expansion |
 | Add-to-playlist on mobile | ✅ CONFIRMED — ListPlus icon always visible at 390px |
 | Artist not-found state | ✅ CONFIRMED — friendly error page with Go Back button |
 | Community in mobile nav | ✅ CONFIRMED — 6 tabs including Community visible at 390px |
+| Play/pause sync under rapid clicks | ✅ CONFIRMED — no desync after 8+ rapid toggles |
+| Sidebar labels: Browse/Analytics/AI Playlist | ✅ CONFIRMED — all 3 labels updated in production |
+| RadioPage station identity | ✅ CONFIRMED — hero banner with Play Station + Shuffle |
+| Search no-results CTA | ✅ CONFIRMED — green "Browse Popular Songs" button |
+| Queue tab label | ✅ CONFIRMED — "Queue — Coming Soon" with subtitle |
