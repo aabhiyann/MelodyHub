@@ -8,6 +8,7 @@ import { LoadingBar } from "@/components/shared/LoadingBar";
 import { PageTransition } from "@/components/layout/PageTransition";
 import { RequireAuth } from "./guards/RequireAuth";
 import { RequireGuest } from "./guards/RequireGuest";
+import { RequireAdmin } from "./guards/RequireAdmin";
 import { PageErrorBoundary } from "@/components/shared/PageErrorBoundary";
 import { SEO } from "@/components/shared/SEO";
 // Lazy load all pages for better code splitting
@@ -20,7 +21,7 @@ import { ShortcutsModal } from "@/components/accessibility/ShortcutsModal";
 import { useAccessibilityStore } from "@/stores/AccessibilityStore";
 
 // Lazy load heavy global components
-const FullScreenPlayer = lazy(() => import('@/components/features/player/FullScreenPlayer').then(m => ({ default: m.FullScreenPlayer })));
+import { FullScreenPlayer } from '@/components/features/player/FullScreenPlayer';
 const Mascot = lazy(() => import('@/components/features/mascot/Mascot').then(m => ({ default: m.Mascot })));
 const AIPlaylistModal = lazy(() => import('@/components/features/ai/AIPlaylistModal').then(m => ({ default: m.AIPlaylistModal })));
 const InstallPrompt = lazy(() => import('@/components/features/mobile/InstallPrompt').then(m => ({ default: m.InstallPrompt })));
@@ -201,12 +202,12 @@ function App() {
 							<Route path='*' element={<Suspense fallback={<RouteSkeleton variant="generic" fullHeight={false} />}><PageTransition><NotFoundPage /></PageTransition></Suspense>} />
 						</Route>
 
-						{/* Admin Routes - Separate Layout */}
+						{/* Admin Routes - Separate Layout, requires admin role */}
 						<Route
 							element={
-								<RequireAuth>
+								<RequireAdmin>
 									<Outlet />
-								</RequireAuth>
+								</RequireAdmin>
 							}
 						>
 							<Route path='/admin' element={<AdminLayout />}>
@@ -221,8 +222,8 @@ function App() {
 				</PageErrorBoundary>
 			</AnimatePresence>
 			<AudioPlayer />
+			<FullScreenPlayer />
 			<Suspense fallback={null}>
-				<FullScreenPlayer />
 				<Mascot />
 				<AIPlaylistModal />
 				<InstallPrompt />

@@ -64,6 +64,28 @@ const ArtistPage = () => {
 
   if (!artistName) return <div>Artist not found</div>;
 
+  // After data loads, if this artist has no songs AND no albums, they don't exist
+  if (!isLoading && artistSongs.length === 0 && artistAlbums.length === 0) {
+    return (
+      <main className="rounded-md relative overflow-hidden h-full bg-transparent">
+        <Topbar />
+        <div className="h-full flex flex-col items-center justify-center gap-4 p-8 text-center">
+          <Music className="size-16 text-white/20" />
+          <h2 className="text-xl font-semibold text-white">Artist not found</h2>
+          <p className="text-sm text-text-secondary">
+            We couldn't find any music for "{artistName}". They may have been removed or the URL may be incorrect.
+          </p>
+          <button
+            onClick={() => navigate(-1)}
+            className="mt-2 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-sm text-white transition-colors"
+          >
+            Go Back
+          </button>
+        </div>
+      </main>
+    );
+  }
+
   const artistImage = artistSongs[0]?.imageUrl || artistAlbums[0]?.imageUrl;
 
   return (
