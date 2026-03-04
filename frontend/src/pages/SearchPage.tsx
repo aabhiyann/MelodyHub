@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Search as SearchIcon,
   Loader,
@@ -294,6 +295,8 @@ const SearchPage = () => {
                   secondary="Try a different search term or browse by genre."
                   icon={<SearchIcon className="size-16 text-[#6B7280]" />}
                   className="py-12"
+                  actionLabel="Browse Popular Songs"
+                  onAction={() => { setSearchQuery(''); navigate('/browse'); }}
                 />
               ) : (
 

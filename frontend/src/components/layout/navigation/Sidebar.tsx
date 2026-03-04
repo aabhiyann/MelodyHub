@@ -39,7 +39,7 @@ interface NavItem {
 
 const primaryNavItems: NavItem[] = [
     { id: 'music', label: 'Music', icon: Music2, path: '/home' },
-    { id: 'explore', label: 'Explore', icon: Compass, path: '/browse' },
+    { id: 'explore', label: 'Browse', icon: Compass, path: '/browse' },
     { id: 'chat', label: 'Chat', icon: MessageCircle, path: '/chat' },
     { id: 'profile', label: 'Profile', icon: User, path: '/profile' },
 ];
@@ -48,7 +48,7 @@ const secondaryNavItems: NavItem[] = [
     { id: 'radio', label: 'Radio', icon: Radio, path: '/radio' },
     { id: 'library', label: 'Library', icon: Library, path: '/library' },
     { id: 'search', label: 'Search', icon: Search, path: '/search' },
-    { id: 'analytics', label: 'My Stats', icon: TrendingUp, path: '/analytics' },
+    { id: 'analytics', label: 'Analytics', icon: TrendingUp, path: '/analytics' },
     { id: 'community', label: 'Community', icon: Users, path: '/community' },
     { id: 'quests', label: 'Quests', icon: Target, path: '/quests' },
     { id: 'settings', label: 'Settings', icon: Settings, path: '/settings' },
@@ -188,7 +188,10 @@ export const Sidebar = ({ className }: SidebarProps) => {
                     >
                         <Sparkles className="size-5 shrink-0" />
                         {isExpanded && (
-                            <span className="font-medium truncate">Magic</span>
+                            <span className="font-medium truncate flex items-center gap-1.5">
+                                AI Playlist
+                                <span className="text-[10px] font-bold px-1 py-0.5 rounded bg-[#22C55E]/20 text-[#22C55E] leading-none">✨ AI</span>
+                            </span>
                         )}
                     </button>
                 </div>
